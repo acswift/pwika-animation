@@ -10,17 +10,15 @@ This repository contains the development files for Svija Animation, which is inc
 
 The files are developed at `svija.dev/sync/Svija/Scripts` (which also contains other files that are *not* part of this repository).
 
-*For info, folding information is kept in:*
+And to restore Vim folds when starting work:
 ```
-ls ~/.vim/view/*animation-1.0.4*
+cp ~=* ~/.vim/view/
 ```
-To copy it to this repo:
+To save folds when stopping work:
 ```
 cp ~/.vim/view/*animation-1.0.4* ./
+git commit -m "updated folding info" -a
 ```
-And to restore it:
-
-
 
 ---
 <details><summary>completely unrelated</summary>
