@@ -4,10 +4,15 @@
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-# Svija Animation 1.0.4
+### Svija Animation 1.0.4
+
+This repository contains the development files for Svija Animation, which is included with each new Svija website.
+
+The files are developed at `svija.dev/sync/Svija/Scripts` which contains other files that are *not* part of this repository.
 
 ---
 <details><summary>completely unrelated</summary>
+
 
 Once development is finished, code is moved to the [tools][l1] repository.
 
