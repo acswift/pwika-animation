@@ -8,7 +8,7 @@
 
 This repository contains the development files for Svija Animation, which is included with each new Svija website.
 
-The files are developed at `svija.dev/sync/Svija/Scripts` which contains other files that are *not* part of this repository.
+The files are developed at `svija.dev/sync/Svija/Scripts` (which also contains other files that are *not* part of this repository).
 
 ---
 <details><summary>completely unrelated</summary>
