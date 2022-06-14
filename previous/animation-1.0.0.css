@@ -1,0 +1,21 @@
+/*———————————————————————————————————————— triggers */
+
+ellipse[id^='user_x7C_'],
+      g[id^='user_x7C_'],
+   path[id^='user_x7C_'],
+polygon[id^='user_x7C_'],
+   rect[id^='user_x7C_'],
+
+/*———————————————————————————————————————— actions */
+
+ellipse[id^='msovout_x7C_'],
+      g[id^='msovout_x7C_'],
+   path[id^='msovout_x7C_'],
+polygon[id^='msovout_x7C_'],
+   rect[id^='msovout_x7C_'],
+
+/*———————————————————————————————————————— disappear */
+
+#x{ opacity:0; }
+
+/*———————————————————————————————————————— fin */
