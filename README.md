@@ -14,12 +14,12 @@ The files are developed at `svija.dev/sync/Svija/Scripts` (which also contains o
 
 To restore Vim folds when starting work:
 ```
-cp ~=* ~/.vim/view/
+cp ~/.vim/view/*animation-1.0.4* ./
+git commit -m "updated folding info" -a
 ```
 To save folds when stopping work:
 ```
-cp ~/.vim/view/*animation-1.0.4* ./
-git commit -m "updated folding info" -a
+cp ~=* ~/.vim/view/
 ```
 
 ---
