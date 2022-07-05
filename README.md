@@ -4,7 +4,7 @@
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-### Svija Animation 1.0.4
+### Svija FVX 1.0.5
 
 This repository contains the development files for Svija Animation, which is included with each new Svija website.
 
@@ -21,8 +21,14 @@ To save folds when stopping work:
 cp ~/.vim/view/*animation-1.0.4* ./
 git commit -m "updated folding info" -a
 ```
-
 ---
+### Releasing a new versions
+
+Update the version numbers:
+```
+vi -O svija-fvx.css svija-fvx.js
+```
+
 <details><summary>completely unrelated</summary>
 
 
