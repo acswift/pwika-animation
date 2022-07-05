@@ -1,5 +1,5 @@
 
-//———————————————————————————————————————— animations-1.0.3.js
+//———————————————————————————————————————— svija-fvx.js
 
 /*———————————————————————————————————————— notes
 
@@ -42,7 +42,7 @@ https://www.freecodecamp.org/news/how-javascript-implements-oop/
 
 const d1 = new Date();
 let start_time = d1.getTime();
-log("animations-1.0.3.js");
+log("svija-fvx-1.0.5.js");
 
 //———————————————————————————————————————— separator, types of triggers and actions
 
