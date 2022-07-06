@@ -22,7 +22,7 @@ cp ~=* ~/.vim/view/
 ```
 To save folds when stopping work:
 ```
-cp ~/.vim/view/*animation-1.0.4* ./
+cp ~/.vim/view/*svija-svx* ./
 git commit -m "updated folding info" -a
 ```
 ---
