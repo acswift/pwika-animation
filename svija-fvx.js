@@ -525,14 +525,15 @@ actions.forEach(kind => {
   // loop through adding actions
   for(var x=0; x<obj_array.length; x++){
     var obj = obj_array[x];
-    var flags = obj.id.split(separator);
+
+    var obj_id = obj.id;
+    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
+    if (obj_id.length > 50) obj_id = obj_id.slice(0, -52);
+
+    var flags = obj_id.split(separator);
 
     //  kind = flags[0];
     var name = flags[1];
-
-    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
-    if (name.length > 50) 
-       name = name.slice(0, -52);
 
     if (Object.keys(animations).includes(name))
       animations[name].add_action(obj, kind, flags)
@@ -700,7 +701,6 @@ function mouse_single(animation, x, type){
 function mouse_ovaway(animation, x){
 
   params = gsap_params(animation.action[x]);
-  if (animation.name == 'name1') log('——————————————————— params length '+animation.name+': '+Object.keys(params).length);
   animation.trigger.element.addEventListener('pointerover',  create_anim.bind(null, animation.name+x, animation.action[x], params), false);
   animation.trigger.element.addEventListener('pointerout',  reverse_anim.bind(null, animation.name+x                             ), false);
 
@@ -709,10 +709,7 @@ function mouse_ovaway(animation, x){
 //———————————————————————————————————————— mouse_toggle(animation, x)
 
 function mouse_toggle(animation, x){
-  if (animation.name == 'name3') log('——————————————————— name3 action length '+animation.action.length);
-
   params = gsap_params(animation.action[x]);
-  if (animation.name == 'name3') log('——————————————————— params length '+animation.name+x+': '+Object.keys(params).length);
   animation.trigger.element.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.action[x], params), false);
 }
 
@@ -871,7 +868,6 @@ function create_anim(name, action, params){
 
 //nction execute_toggle(animation, params){
 function execute_toggle(name, action, params){
-  log('———————— execute toggle: '+name+', '+action.id);
 
   var obj      = action.element;
   var funcName = name + '_timeline';
@@ -968,7 +964,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
+//r a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
 
 
 //———————————————————————————————————————— fin
