@@ -230,8 +230,6 @@ class Animation{
   
     } //—————————————————————————————————————————————————————————————————————-
 
-    log('Trigger '+this.name+' added');
-
     // log trigger add results
 
 //  log('——— trigger '+this.name+' — '+
@@ -246,19 +244,15 @@ class Animation{
 
   add_action(obj, kind, flags){
 
-    // set defaults
-
-    this.duration = action_defaults.duration;
-
-    // if action doesn't exist, create it
-
-//  if (typeof this.action == 'undefined') alert('booby');
-//    this.action = [];
-
     // initialize
 
-    this.action   = obj;
-    this.a_kind   = kind;
+    var zoopy     = new Action;
+    zoopy.element = obj;
+    zoopy.a_kind  = kind;
+
+    // set defaults
+
+    zoopy.duration = action_defaults.duration;
 
     // loop through flags (kind|name|parameters...)
 
@@ -273,46 +267,47 @@ class Animation{
       [key, is_duration] = this.get_key(flag, is_duration);
 
       // assign value to flag
-      this[key] = this.get_val(key, flag);
-//    log(this.name+': '+key+' = '+this[key]);
+      zoopy[key] = this.get_val(key, flag);
+//    log(zoopy.name+': '+key+' = '+zoopy[key]);
 
-      if (key == 'rotate') this[key] = this[key] * this.fix_rotation(flag);
+      if (key == 'rotate') zoopy[key] = zoopy[key] * this.fix_rotation(flag);
 
     }
 
     // special cases (so absence of flags behaves as expected)
 
     // set opacity 0 to 100
-    if ( typeof this.xmove    == 'undefined' &&
-         typeof this.ymove    == 'undefined' &&
-         typeof this.rotate   == 'undefined' &&
-         typeof this.scale    == 'undefined' &&
-         typeof this.xscale   == 'undefined' &&
-         typeof this.yscale   == 'undefined' &&
-         typeof this.opac_to  == 'undefined' ){
-      this.opac_from = 0;
-      this.opac_to   = 100;
+    if ( typeof zoopy.xmove    == 'undefined' &&
+         typeof zoopy.ymove    == 'undefined' &&
+         typeof zoopy.rotate   == 'undefined' &&
+         typeof zoopy.scale    == 'undefined' &&
+         typeof zoopy.xscale   == 'undefined' &&
+         typeof zoopy.yscale   == 'undefined' &&
+         typeof zoopy.opac_to  == 'undefined' ){
+      zoopy.opac_from = 0;
+      zoopy.opac_to   = 100;
     }
 
-    if (this.opac_to == 0 && typeof this.opac_from == 'undefined')
-      this.opac_from = 100;
+    if (zoopy.opac_to == 0 && typeof zoopy.opac_from == 'undefined')
+      zoopy.opac_from = 100;
 
     // set default duration
-    if (this.a_kind=='timed' && typeof this.delay=='undefined'){
-      this.delay    = this.duration;
-      this.duration = action_defaults.duration;
+    if (zoopy.a_kind=='timed' && typeof zoopy.delay=='undefined'){
+      zoopy.delay    = zoopy.duration;
+      zoopy.duration = action_defaults.duration;
     }
 
     // if destination opacity is not 0, default starting opacity is 0
-    if (typeof this.opac_from == 'undefined' && typeof this.opac_to != 'undefined') 
-      this.opac_from = 0;
+    if (typeof zoopy.opac_from == 'undefined' && typeof zoopy.opac_to != 'undefined') 
+      zoopy.opac_from = 0;
 
+    this.action = zoopy;
 
   }
 
   delete_if_no_action(){
   
-    if (this.a_kind == undefined && !this.func && !this.link){
+    if (typeof this.action == 'undefined' && !this.trigger.func && !this.trigger.link){
       errlog('Trigger '+this.name+' deleted (no action, link or function).');
       delete animations[this.name];
       return true;
@@ -323,20 +318,20 @@ class Animation{
   turn_on_if_on(){
 
     if (typeof this.action=='undefined') return true;
-    if (this.opac_from == 0            ) return true;
+    if (this.action.opac_from == 0            ) return true;
 
-    if (typeof this.opac_from != 'undefined')
-      this.action.style.opacity = this.opac_from/100;
-    else this.action.style.opacity = 1;
+    if (typeof this.action.opac_from != 'undefined')
+      this.action.element.style.opacity = this.action.opac_from/100;
+    else this.action.element.style.opacity = 1;
 
-    this.action.style.display = 'block';
-    set_clickable(this.action, true);
+    this.action.element.style.display = 'block';
+    set_clickable(this.action.element, true);
 
   }
 
   set_cursor(){
   
-    if (typeof this.cursor != 'undefined')
+    if (typeof this.trigger.cursor != 'undefined')
       this.trigger.element.style.cursor = cursors[this.cursor];
   
     else{
@@ -424,7 +419,7 @@ class Animation{
     // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
     // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
 
-    if (!this.func) return true;
+    if (!this.trigger.func) return true;
 
     // var args = this.args;
 
@@ -519,11 +514,10 @@ triggers.forEach(kind => {
     animations[name].add_trigger(obj, kind, flags);
   }
 
+
   // log results
-//if (obj_array.length == 0)
-//  log('—› no '+kind+' triggers');
-//else
-//  log(obj_array.length+' '+ kind+' triggers');
+  if (obj_array.length == 0) log('—› no '+kind+' triggers');
+                        else log(obj_array.length+' '+ kind+' triggers registered');
 
 
 });
@@ -567,7 +561,7 @@ Object.keys(animations).forEach(name => {
   animations[name].activate_function();
 })
 
-//———————————————————————————————————————— delete unused triggers · DISABLED
+//———————————————————————————————————————— delete unused triggers
 
 log('\n——— deleting actionless animations ———');
 
@@ -608,7 +602,12 @@ log('\n———————————————————— finished in 
 
 function activate_mouse(animation){
 
-  switch (animation.a_kind) {
+  if (typeof animation.action == 'undefined'){
+    // is link or function
+    return true;
+  }
+
+  switch (animation.action.a_kind) {
   case undefined: break; // if it's just a link or func
 
   case 'click':
@@ -633,7 +632,7 @@ function activate_mouse(animation){
     break;
 
   default:
-    log('⚠️ unimplemented mouse a_kind:'+animation.a_kind+'in animation '+animation.name);
+    log('⚠️ unimplemented mouse a_kind:'+animation.action.a_kind+'in animation '+animation.action.name);
   }
 
   log('mouse animations activated');
@@ -643,7 +642,7 @@ function activate_mouse(animation){
 
 function activate_delay(animation){
 
-  switch (animation.a_kind) {
+  switch (animation.action.a_kind) {
   case 'timed':
     delay_timed(animation);
     break;
@@ -660,7 +659,7 @@ function activate_delay(animation){
 
 function activate_scroll(animation){
 
-  switch (animation.a_kind) {
+  switch (animation.action.a_kind) {
   case 'zone':
     scroll_anim(animation);
     break;
@@ -680,8 +679,8 @@ function activate_scroll(animation){
 
 function delay_timed(animation){
 
-  delay  = animation.delay * 1000;
-  params = gsap_params(animation);
+  delay  = animation.action.delay * 1000;
+  params = gsap_params(animation.action);
   setTimeout(create_anim.bind(null, animation, params), delay);
 
 }
@@ -691,7 +690,7 @@ function delay_timed(animation){
 
 function mouse_single(animation, type){
 
-  params = gsap_params(animation);
+  params = gsap_params(animation.action);
   animation.trigger.element.addEventListener(type, create_anim.bind(null, animation, params), false);
 
 }
@@ -702,7 +701,7 @@ function mouse_single(animation, type){
 
 function mouse_ovaway(animation){
 
-  params = gsap_params(animation);
+  params = gsap_params(animation.action);
 
   animation.trigger.element.addEventListener('pointerover',  create_anim.bind(null, animation, params), false);
   animation.trigger.element.addEventListener('pointerout',  reverse_anim.bind(null, animation        ), false);
@@ -713,7 +712,7 @@ function mouse_ovaway(animation){
 
 function mouse_toggle(animation){
 
-  params = gsap_params(animation);
+  params = gsap_params(animation.action);
   animation.trigger.element.addEventListener('pointerup', create_toggle_anim.bind(null, animation, params), false);
 }
 
@@ -727,7 +726,7 @@ function scroll_anim(animation){
   var box = obj.getBBox();      // get bounding box of trigger
   var t = box['y'];             // top
   var b = t + box['height'];    // bottom
-  var params = gsap_params(animation);
+  var params = gsap_params(animation.action);
 
   window.addEventListener('scroll', create_scroll_anim.bind(null, animation, t, b, params)); 
 }
@@ -755,7 +754,7 @@ function create_scroll_anim(animation, trig_top, trig_bot, params){
   var rem_top = page_top / illustrator_pixel;
   var rem_bot = page_bot / illustrator_pixel;
 
-  var obj      = animation.action;
+  var obj      = animation.action.element;
   var funcName = animation.name + '_timeline';
   var tline    = window[funcName];
 
@@ -847,7 +846,7 @@ function create_scroll_anim1(animation, trig_top, trig_bot, params){
 
 function create_toggle_anim(animation, params){
 
-  var obj      = animation.action;
+  var obj      = animation.action.element;
   var funcName = animation.name + '_timeline';
   var tline    = window[funcName];
 
@@ -881,14 +880,9 @@ function reverse_anim(animation){
 
 function create_anim(animation, params){
 
-  obj = animation.action;
+  obj = animation.action.element;
 
   var funcName = animation.name + '_timeline';
-
-
-if(animation.name=="name3") log('———————————————————————————————————- line 798');
-
-
 
   // create if it doesn't exist
   if (typeof window[funcName] == 'undefined'){
@@ -925,29 +919,29 @@ function convert_transform(fixed){
   return result;
 }
 
-//———————————————————————————————————————— gsap_params(animation)
+//———————————————————————————————————————— gsap_params(action)
 
-function gsap_params(animation){
+function gsap_params(action){
 
   var params = {};
 
-  params['duration'       ] = animation.duration;
-  params['transformOrigin'] = convert_transform(animation. fixed);
+  params['duration'       ] = action.duration;
+  params['transformOrigin'] = convert_transform(action.fixed);
 
-  if (typeof animation.ease     == 'undefined') params['ease'     ] = Power1.easeInOut        ;
-                                           else params['ease'     ] = eases[animation.ease]   ;
+  if (typeof action.ease     == 'undefined') params['ease'     ] = Power1.easeInOut        ;
+                                           else params['ease'     ] = eases[action.ease]   ;
 
-  if (typeof animation.delay    != 'undefined') params['delay'    ] = animation.delay         ;
+  if (typeof action.delay    != 'undefined') params['delay'    ] = action.delay         ;
 
-  if (typeof animation.xmove    != 'undefined') params['x'        ] = '+=' + animation.xmove  ;
-  if (typeof animation.ymove    != 'undefined') params['y'        ] = '+=' + animation.ymove  ;
+  if (typeof action.xmove    != 'undefined') params['x'        ] = '+=' + action.xmove  ;
+  if (typeof action.ymove    != 'undefined') params['y'        ] = '+=' + action.ymove  ;
 
-  if (typeof animation.scale    != 'undefined') params['scale'    ] = animation.scale    / 100;
-  if (typeof animation.xscale   != 'undefined') params['scaleX'   ] = animation.xscale   / 100;
-  if (typeof animation.yscale   != 'undefined') params['scaleY'   ] = animation.yscale   / 100;
+  if (typeof action.scale    != 'undefined') params['scale'    ] = action.scale    / 100;
+  if (typeof action.xscale   != 'undefined') params['scaleX'   ] = action.xscale   / 100;
+  if (typeof action.yscale   != 'undefined') params['scaleY'   ] = action.yscale   / 100;
 
-  if (typeof animation.opac_to != 'undefined') params['autoAlpha'] = animation.opac_to / 100;
-  if (typeof animation.rotate   != 'undefined') params['rotation' ] = animation.rotate        ;
+  if (typeof action.opac_to != 'undefined') params['autoAlpha'] = action.opac_to / 100;
+  if (typeof action.rotate   != 'undefined') params['rotation' ] = action.rotate        ;
 
   return params;
 }

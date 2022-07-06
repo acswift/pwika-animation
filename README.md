@@ -20,10 +20,9 @@ To restore Vim folds when starting work:
 ```
 cp ~=* ~/.vim/view/
 ```
-To save folds when stopping work:
+To save folds before committing:
 ```
 cp ~/.vim/view/*svija-fvx* ./
-git commit -m "updated folding info" -a
 ```
 ---
 ### Releasing a New Version
