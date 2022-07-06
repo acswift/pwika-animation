@@ -1,17 +1,7 @@
 
 //———————————————————————————————————————— svija-fvx.js
 
-/*
-
-		multiple objects with the same name look like this:
-
-		<path id="ovaway_x2F_name2_00000108990784386930675110000010966918876623013772_" class="st7" "/>
-		<path id="ovaway_x2F_name2" class="st7" />
-		<path id="ovaway_x2F_name1_00000120548986159519617020000014196769091662536361_" class="st7" />
-		<path id="ovaway_x2F_name1_00000018952208152505492020000014739121534903857057_" class="st7" />
-		<path id="ovaway_x2F_name1" class="st7" />
-
-*/
+/* will need to remove 52 characters from end of flags */
 
 /*———————————————————————————————————————— notes
 
@@ -287,31 +277,6 @@ class Animation{
 
     if (typeof this.action == 'undefined') this.action = [];
     this.action.push(zoopy);
-    log('-———————————————————————————————————————————————————————- zoopy converted: '+this.name);
-
-  }
-
-  delete_if_no_action(){
-  
-    if (typeof this.action == 'undefined' && !this.trigger.func && !this.trigger.link){
-      errlog('Trigger '+this.name+' deleted (no action, link or function).');
-      delete animations[this.name];
-      return true;
-    }
-    return false;
-  }
-
-  turn_on_if_on(){
-
-    if (typeof this.action=='undefined') return true;
-    if (this.action[0].opac_from == 0            ) return true;
-
-    if (typeof this.action[0].opac_from != 'undefined')
-      this.action[0].element.style.opacity = this.action[0].opac_from/100;
-    else this.action[0].element.style.opacity = 1;
-
-    this.action[0].element.style.display = 'block';
-    set_clickable(this.action[0].element, true);
 
   }
 
@@ -333,6 +298,50 @@ class Animation{
       }
     }
   
+  }
+
+  activate_function(){
+
+    // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
+    // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
+
+    if (!this.trigger.func) return true;
+
+    // var args = this.args;
+
+    // TODO need to check if function exists, or will throw error:
+    // TODO need to activate args
+    functions[this.name] = window['func_'+this.name];
+
+    log('activating function '+this.name);
+    this.trigger.element.addEventListener('click', functions[this.name].bind(null, 'fuckin-a')); 
+  }
+
+  make_visible(){
+
+    if (typeof this.action=='undefined') return true;
+
+    for (var x=0; x<this.action.length; x++){
+      if (this.action[x].opac_from == 0) continue;
+
+      if (typeof this.action[x].opac_from != 'undefined')
+        this.action[x].element.style.opacity = this.action[x].opac_from/100;
+      else this.action[x].element.style.opacity = 1;
+
+      this.action[x].element.style.display = 'block';
+      set_clickable(this.action[x].element, true);
+    }
+
+  }
+
+  delete_if_no_action(){
+  
+    if (typeof this.action == 'undefined' && !this.trigger.func && !this.trigger.link){
+      errlog('Trigger '+this.name+' deleted (no action, link or function).');
+      delete animations[this.name];
+      return true;
+    }
+    return false;
   }
 
   dump_flags(){
@@ -414,23 +423,6 @@ class Animation{
 
     if (key_len == 0) return flag;
     else return flag.substr(key_len);
-  }
-
-  activate_function(){
-
-    // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
-    // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
-
-    if (!this.trigger.func) return true;
-
-    // var args = this.args;
-
-    // TODO need to check if function exists, or will throw error:
-    // TODO need to activate args
-    functions[this.name] = window['func_'+this.name];
-
-    log('activating function '+this.name);
-    this.trigger.element.addEventListener('click', functions[this.name].bind(null, 'fuckin-a')); 
   }
 
   fix_rotation(flag){
@@ -560,9 +552,9 @@ actions.forEach(kind => {
 log('\n——— turning on "default on" elements & settings cursors ———');
 
 Object.keys(animations).forEach(name => {
-  animations[name].turn_on_if_on();
   animations[name].set_cursor();
   animations[name].activate_function();
+  animations[name].make_visible();
 })
 
 //———————————————————————————————————————— delete unused triggers
@@ -611,32 +603,34 @@ function activate_mouse(animation){
     return true;
   }
 
-  switch (animation.action[0].kind) {
-  case undefined: break; // if it's just a link or func
+  for (var x=0; x<animation.action.length; x++){
+    switch (animation.action[x].kind) {
+    case undefined: break; // if it's just a link or func
 
-  case 'click':
-    mouse_single(animation, 'pointerup');
-    break;
-  case 'press':
-    mouse_single(animation, 'pointerdown');
-    break;
-  case 'over':
-    mouse_single(animation, 'pointerover'); 
-    break;
-  case 'away':
-    mouse_single(animation, 'pointerout'); // or pointerleave
-    break;
+    case 'click':
+      mouse_single(animation, x, 'pointerup');
+      break;
+    case 'press':
+      mouse_single(animation, x, 'pointerdown');
+      break;
+    case 'over':
+      mouse_single(animation, x, 'pointerover'); 
+      break;
+    case 'away':
+      mouse_single(animation, x, 'pointerout'); // or pointerleave
+      break;
 
-  // special cases
-  case 'ovaway':
-    mouse_ovaway(animation);
-    break;
-  case 'toggle':
-    mouse_toggle(animation);
-    break;
+    // special cases
+    case 'ovaway':
+      mouse_ovaway(animation, x);
+      break;
+    case 'toggle':
+      mouse_toggle(animation, x);
+      break;
 
-  default:
-    log('⚠️ unimplemented mouse kind:'+animation.action[0].kind+'in animation '+animation.name);
+    default:
+      log('⚠️ unimplemented mouse kind:'+animation.action[0].kind+'in animation '+animation.name);
+    }
   }
 
   log('mouse animations activated');
@@ -685,17 +679,17 @@ function delay_timed(animation){
 
   delay  = animation.action[0].delay * 1000;
   params = gsap_params(animation.action[0]);
-  setTimeout(create_anim.bind(null, animation, params), delay);
+  setTimeout(create_anim.bind(null, animation.name+'0', animation.action[0], params), delay);
 
 }
 
 
 //———————————————————————————————————————— mouse_single (animation, type)
 
-function mouse_single(animation, type){
+function mouse_single(animation, x, type){
 
-  params = gsap_params(animation.action[0]);
-  animation.trigger.element.addEventListener(type, create_anim.bind(null, animation, params), false);
+  params = gsap_params(animation.action[x]);
+  animation.trigger.element.addEventListener(type, create_anim.bind(null, animation.name+x, animation.action[x], params), false);
 
 }
 
@@ -703,21 +697,23 @@ function mouse_single(animation, type){
 
 // rotation is not cumulative (rotating to 90° twice just turns to 90°)
 
-function mouse_ovaway(animation){
+function mouse_ovaway(animation, x){
 
-  params = gsap_params(animation.action[0]);
-
-  animation.trigger.element.addEventListener('pointerover',  create_anim.bind(null, animation, params), false);
-  animation.trigger.element.addEventListener('pointerout',  reverse_anim.bind(null, animation        ), false);
+  params = gsap_params(animation.action[x]);
+  if (animation.name == 'name1') log('——————————————————— params length '+animation.name+': '+Object.keys(params).length);
+  animation.trigger.element.addEventListener('pointerover',  create_anim.bind(null, animation.name+x, animation.action[x], params), false);
+  animation.trigger.element.addEventListener('pointerout',  reverse_anim.bind(null, animation.name+x                             ), false);
 
 }
 
-//———————————————————————————————————————— mouse_toggle(animation)
+//———————————————————————————————————————— mouse_toggle(animation, x)
 
-function mouse_toggle(animation){
+function mouse_toggle(animation, x){
+  if (animation.name == 'name3') log('——————————————————— name3 action length '+animation.action.length);
 
-  params = gsap_params(animation.action[0]);
-  animation.trigger.element.addEventListener('pointerup', create_toggle_anim.bind(null, animation, params), false);
+  params = gsap_params(animation.action[x]);
+  if (animation.name == 'name3') log('——————————————————— params length '+animation.name+x+': '+Object.keys(params).length);
+  animation.trigger.element.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.action[x], params), false);
 }
 
 
@@ -844,14 +840,41 @@ function create_scroll_anim1(animation, trig_top, trig_bot, params){
 
 }
 
-//———————————————————————————————————————— create_toggle_anim(obj, params)
+//———————————————————————————————————————— create_anim(obj, params)
+
+//nction create_anim(animation, params){
+function create_anim(name, action, params){
+
+  obj = action.element;
+
+  var funcName = name + '_timeline';
+
+  // create if it doesn't exist
+  if (typeof window[funcName] == 'undefined'){
+    window[funcName] = new gsap.timeline({paused:true});
+    window[funcName].to(obj, params);
+  }
+
+  // play if it's not playing
+  if (!window[funcName].isActive())
+//if (!window[funcName].isActive() && !window[funcName].reversed()) // apparently it's still reversed after the end
+    window[funcName].play();
+
+  // make unclickable to avoid layering conflicts
+  if (params.autoAlpha==0) set_clickable(obj, false);
+                      else set_clickable(obj, true );
+}
+
+//———————————————————————————————————————— execute_toggle(obj, params)
 
 // only called when clicked
 
-function create_toggle_anim(animation, params){
+//nction execute_toggle(animation, params){
+function execute_toggle(name, action, params){
+  log('———————— execute toggle: '+name+', '+action.id);
 
-  var obj      = animation.action[0].element;
-  var funcName = animation.name + '_timeline';
+  var obj      = action.element;
+  var funcName = name + '_timeline';
   var tline    = window[funcName];
 
   // create & play if doesn't exist
@@ -875,33 +898,10 @@ function create_toggle_anim(animation, params){
 
 //———————————————————————————————————————— reverse_anim(obj, params)
 
-function reverse_anim(animation){
-  var funcName = animation.name + '_timeline';
+//nction reverse_anim(animation){
+function reverse_anim(name){
+  var funcName = name + '_timeline';
   window[funcName].reverse();
-}
-
-//———————————————————————————————————————— create_anim(obj, params)
-
-function create_anim(animation, params){
-
-  obj = animation.action[0].element;
-
-  var funcName = animation.name + '_timeline';
-
-  // create if it doesn't exist
-  if (typeof window[funcName] == 'undefined'){
-    window[funcName] = new gsap.timeline({paused:true});
-    window[funcName].to(obj, params);
-  }
-
-  // play if it's not playing
-  if (!window[funcName].isActive())
-//if (!window[funcName].isActive() && !window[funcName].reversed()) // apparently it's still reversed after the end
-    window[funcName].play();
-
-  // make unclickable to avoid layering conflicts
-  if (params.autoAlpha==0) set_clickable(obj, false);
-                      else set_clickable(obj, true );
 }
 
 //———————————————————————————————————————— set_clickable(obj, clickable)
@@ -932,8 +932,8 @@ function gsap_params(action){
   params['duration'       ] = action.duration;
   params['transformOrigin'] = convert_transform(action.fixed);
 
-  if (typeof action.ease     == 'undefined') params['ease'     ] = Power1.easeInOut        ;
-                                           else params['ease'     ] = eases[action.ease]   ;
+  if (typeof action.ease     == 'undefined') params['ease'     ] = Power1.easeInOut     ;
+                                        else params['ease'     ] = eases[action.ease]   ;
 
   if (typeof action.delay    != 'undefined') params['delay'    ] = action.delay         ;
 
@@ -944,7 +944,7 @@ function gsap_params(action){
   if (typeof action.xscale   != 'undefined') params['scaleX'   ] = action.xscale   / 100;
   if (typeof action.yscale   != 'undefined') params['scaleY'   ] = action.yscale   / 100;
 
-  if (typeof action.opac_to != 'undefined') params['autoAlpha'] = action.opac_to / 100;
+  if (typeof action.opac_to  != 'undefined') params['autoAlpha'] = action.opac_to  / 100;
   if (typeof action.rotate   != 'undefined') params['rotation' ] = action.rotate        ;
 
   return params;
