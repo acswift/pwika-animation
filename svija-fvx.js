@@ -1,6 +1,18 @@
 
 //———————————————————————————————————————— svija-fvx.js
 
+/*
+
+		multiple objects with the same name look like this:
+
+		<path id="ovaway_x2F_name2_00000108990784386930675110000010966918876623013772_" class="st7" "/>
+		<path id="ovaway_x2F_name2" class="st7" />
+		<path id="ovaway_x2F_name1_00000120548986159519617020000014196769091662536361_" class="st7" />
+		<path id="ovaway_x2F_name1_00000018952208152505492020000014739121534903857057_" class="st7" />
+		<path id="ovaway_x2F_name1" class="st7" />
+
+*/
+
 /*———————————————————————————————————————— notes
 
   only make opacity 0 if there's not a physical transform
@@ -42,7 +54,7 @@ https://www.freecodecamp.org/news/how-javascript-implements-oop/
 
 const d1 = new Date();
 let start_time = d1.getTime();
-log("svija-fvx-1.0.5.js");
+log("svija-fvx.js");
 
 //———————————————————————————————————————— separator, types of triggers and actions
 
@@ -125,6 +137,7 @@ const flag_value_to_key_value = {
   'n'   : true
 }
 
+
 //———————————————————————————————————————— defaults
 
 const action_defaults = { 'duration': 0.5 }
@@ -160,7 +173,7 @@ class Animation{
 
     // action-specified
     this.action     = action;       // object reference
-    this.kind     = kind;       // string · kind of action                   click, over, down, away, ovaway, toggle, visible
+    this.kind       = kind;         // string · kind of action                   click, over, down, away, ovaway, toggle, visible
     this.delay      = delay;        // number · seconds before animation starts  33 (2nd number)
     this.handoff    = handoff;      // string · following animation
     this.handwait   = handwait;     // number · seconds before calling following animation
@@ -175,8 +188,8 @@ class Animation{
     this.scale      = scale;        // number · percentage to scale              %150
     this.xscale     = xscale;       // number · percentage to scale x            x%20
     this.yscale     = yscale;       // number · percentage to scale y            y%30
-    this.opac_to   = opac_to;     // number · percentage opac_to              o30
-    this.opac_from    = opac_from;      // number · opac_from/opac_to      programmatically
+    this.opac_to    = opac_to;      // number · percentage opac_to               o30
+    this.opac_from  = opac_from;    // number · opac_from/opac_to                programmatically
   }
 
   add_trigger(obj, kind, flags){
@@ -238,6 +251,7 @@ class Animation{
 //    ' args: '+this.args+
 //    ' link: '+this.link+
 //    ' blank: '+this.blank);
+
 
     this.trigger = zoopy
 
@@ -302,7 +316,8 @@ class Animation{
     if (typeof zoopy.opac_from == 'undefined' && typeof zoopy.opac_to != 'undefined') 
       zoopy.opac_from = 0;
 
-    this.action = zoopy;
+    if (typeof this.action == 'undefined') this.action = [];
+    this.action.push(zoopy);
 
   }
 
@@ -319,14 +334,14 @@ class Animation{
   turn_on_if_on(){
 
     if (typeof this.action=='undefined') return true;
-    if (this.action.opac_from == 0            ) return true;
+    if (this.action[0].opac_from == 0            ) return true;
 
-    if (typeof this.action.opac_from != 'undefined')
-      this.action.element.style.opacity = this.action.opac_from/100;
-    else this.action.element.style.opacity = 1;
+    if (typeof this.action[0].opac_from != 'undefined')
+      this.action[0].element.style.opacity = this.action[0].opac_from/100;
+    else this.action[0].element.style.opacity = 1;
 
-    this.action.element.style.display = 'block';
-    set_clickable(this.action.element, true);
+    this.action[0].element.style.display = 'block';
+    set_clickable(this.action[0].element, true);
 
   }
 
@@ -515,11 +530,9 @@ triggers.forEach(kind => {
     animations[name].add_trigger(obj, kind, flags);
   }
 
-
   // log results
   if (obj_array.length == 0) log('—› no '+kind+' triggers');
                         else log(obj_array.length+' '+ kind+' triggers registered');
-
 
 });
 
@@ -608,7 +621,7 @@ function activate_mouse(animation){
     return true;
   }
 
-  switch (animation.action.kind) {
+  switch (animation.action[0].kind) {
   case undefined: break; // if it's just a link or func
 
   case 'click':
@@ -633,7 +646,7 @@ function activate_mouse(animation){
     break;
 
   default:
-    log('⚠️ unimplemented mouse kind:'+animation.action.kind+'in animation '+animation.action.name);
+    log('⚠️ unimplemented mouse kind:'+animation.action[0].kind+'in animation '+animation.name);
   }
 
   log('mouse animations activated');
@@ -643,7 +656,7 @@ function activate_mouse(animation){
 
 function activate_delay(animation){
 
-  switch (animation.action.kind) {
+  switch (animation.action[0].kind) {
   case 'timed':
     delay_timed(animation);
     break;
@@ -660,7 +673,7 @@ function activate_delay(animation){
 
 function activate_scroll(animation){
 
-  switch (animation.action.kind) {
+  switch (animation.action[0].kind) {
   case 'zone':
     scroll_anim(animation);
     break;
@@ -680,8 +693,8 @@ function activate_scroll(animation){
 
 function delay_timed(animation){
 
-  delay  = animation.action.delay * 1000;
-  params = gsap_params(animation.action);
+  delay  = animation.action[0].delay * 1000;
+  params = gsap_params(animation.action[0]);
   setTimeout(create_anim.bind(null, animation, params), delay);
 
 }
@@ -691,7 +704,7 @@ function delay_timed(animation){
 
 function mouse_single(animation, type){
 
-  params = gsap_params(animation.action);
+  params = gsap_params(animation.action[0]);
   animation.trigger.element.addEventListener(type, create_anim.bind(null, animation, params), false);
 
 }
@@ -702,7 +715,7 @@ function mouse_single(animation, type){
 
 function mouse_ovaway(animation){
 
-  params = gsap_params(animation.action);
+  params = gsap_params(animation.action[0]);
 
   animation.trigger.element.addEventListener('pointerover',  create_anim.bind(null, animation, params), false);
   animation.trigger.element.addEventListener('pointerout',  reverse_anim.bind(null, animation        ), false);
@@ -713,7 +726,7 @@ function mouse_ovaway(animation){
 
 function mouse_toggle(animation){
 
-  params = gsap_params(animation.action);
+  params = gsap_params(animation.action[0]);
   animation.trigger.element.addEventListener('pointerup', create_toggle_anim.bind(null, animation, params), false);
 }
 
@@ -727,7 +740,7 @@ function scroll_anim(animation){
   var box = obj.getBBox();      // get bounding box of trigger
   var t = box['y'];             // top
   var b = t + box['height'];    // bottom
-  var params = gsap_params(animation.action);
+  var params = gsap_params(animation.action[0]);
 
   window.addEventListener('scroll', create_scroll_anim.bind(null, animation, t, b, params)); 
 }
@@ -755,7 +768,7 @@ function create_scroll_anim(animation, trig_top, trig_bot, params){
   var rem_top = page_top / illustrator_pixel;
   var rem_bot = page_bot / illustrator_pixel;
 
-  var obj      = animation.action.element;
+  var obj      = animation.action[0].element;
   var funcName = animation.name + '_timeline';
   var tline    = window[funcName];
 
@@ -811,7 +824,7 @@ function create_scroll_anim1(animation, trig_top, trig_bot, params){
   var rem_top = page_top / illustrator_pixel;
   var rem_bot = page_bot / illustrator_pixel;
 
-  var obj      = animation.action;
+  var obj      = animation.action[0];
   var funcName = animation.name + '_timeline';
   var tline    = window[funcName];
 
@@ -847,7 +860,7 @@ function create_scroll_anim1(animation, trig_top, trig_bot, params){
 
 function create_toggle_anim(animation, params){
 
-  var obj      = animation.action.element;
+  var obj      = animation.action[0].element;
   var funcName = animation.name + '_timeline';
   var tline    = window[funcName];
 
@@ -881,7 +894,7 @@ function reverse_anim(animation){
 
 function create_anim(animation, params){
 
-  obj = animation.action.element;
+  obj = animation.action[0].element;
 
   var funcName = animation.name + '_timeline';
 

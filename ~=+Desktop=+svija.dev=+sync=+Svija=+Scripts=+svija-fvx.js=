@@ -117,57 +117,63 @@ setlocal nowinfixwidth
 setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
-4,40fold
-41,46fold
-47,52fold
-53,127fold
-128,139fold
-152,181fold
-198,231fold
-182,245fold
-246,308fold
-309,318fold
-319,332fold
-333,352fold
-353,360fold
-361,409fold
-410,417fold
-418,434fold
-435,439fold
-143,442fold
-443,461fold
-462,492fold
-496,525fold
-526,554fold
-555,564fold
-565,572fold
-573,589fold
-590,596fold
-600,641fold
-642,658fold
-659,675fold
-679,688fold
-690,698fold
-699,711fold
-712,719fold
-721,734fold
-738,793fold
-794,843fold
-844,872fold
-873,879fold
-880,903fold
-904,912fold
-913,922fold
-923,949fold
-950,953fold
-954,965fold
-966,969fold
+16,52fold
+53,58fold
+59,64fold
+67,96fold
+97,117fold
+118,124fold
+125,131fold
+132,139fold
+65,140fold
+141,152fold
+165,194fold
+209,245fold
+246,254fold
+195,259fold
+260,323fold
+324,333fold
+334,347fold
+348,367fold
+368,375fold
+376,424fold
+425,432fold
+433,449fold
+450,454fold
+156,457fold
+458,476fold
+477,507fold
+511,538fold
+539,567fold
+568,577fold
+578,585fold
+586,602fold
+603,609fold
+613,654fold
+655,671fold
+672,688fold
+692,701fold
+703,711fold
+712,724fold
+725,732fold
+734,747fold
+751,806fold
+807,856fold
+857,885fold
+886,892fold
+893,916fold
+917,925fold
+926,935fold
+936,962fold
+963,966fold
+967,978fold
+979,982fold
 let &fdl = &fdl
-let s:l = 669 - ((668 * winheight(0) + 28) / 56)
+let s:l = 175 - ((159 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 669
+keepjumps 175
 normal! 01|
 let &g:so = s:so_save | let &g:siso = s:siso_save
 doautoall SessionLoadPost
