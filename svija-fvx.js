@@ -660,14 +660,16 @@ function activate_delay(animation){
 
 function activate_scroll(animation){
 
-  switch (animation.action[0].kind) {
-  case 'zone':
-    scroll_anim(animation);
-    break;
+  for (var x=0; x<animation.action.length; x++){
+    switch (animation.action[x].kind) {
+    case 'zone':
+      scroll_anim(animation, x);
+      break;
 
-  default:
-    if (typeof kind != 'undefined') errlog('unknown scroll kind: '+kind);
-    else errlog('missing action: '+animation.name);
+    default:
+      if (typeof animation.action[x].kind != 'undefined') errlog('unknown scroll kind: '+animation.action[x].kind);
+      else errlog('missing scroll action: '+animation.name);
+    }
   }
 
   log('scroll animations activated');
@@ -687,7 +689,7 @@ function delay_timed(animation, x){
 }
 
 
-//———————————————————————————————————————— mouse_single (animation, type)
+//———————————————————————————————————————— mouse_single (animation, x, type)
 
 function mouse_single(animation, x, type){
 
@@ -696,7 +698,7 @@ function mouse_single(animation, x, type){
 
 }
 
-//———————————————————————————————————————— mouse_ovaway(animation)
+//———————————————————————————————————————— mouse_ovaway(animation, x)
 
 // rotation is not cumulative (rotating to 90° twice just turns to 90°)
 
@@ -716,24 +718,24 @@ function mouse_toggle(animation, x){
 }
 
 
-//———————————————————————————————————————— scroll_anim(animation)
+//———————————————————————————————————————— scroll_anim(animation,x)
 
-function scroll_anim(animation){
+function scroll_anim(animation, x){
 
   var obj = animation.trigger.element;
 
   var box = obj.getBBox();      // get bounding box of trigger
   var t = box['y'];             // top
   var b = t + box['height'];    // bottom
-  var params = gsap_params(animation.action[0]);
+  var params = gsap_params(animation.action[x]);
 
-  window.addEventListener('scroll', create_scroll_anim.bind(null, animation, t, b, params)); 
+  window.addEventListener('scroll', execute_scroll.bind(null, animation, x, t, b, params)); 
 }
 
 
 //:::::::::::::::::::::::::::::::::::::::: ACTION-RELATED
 
-//———————————————————————————————————————— create_scroll_anim(animation, trig_top, trig_bot)
+//———————————————————————————————————————— execute_scroll(animation, x, trig_top, trig_bot)
 
 // https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
@@ -744,7 +746,7 @@ function scroll_anim(animation){
 
 // called every time a scroll action
 
-function create_scroll_anim(animation, trig_top, trig_bot, params){
+function execute_scroll(animation, x, trig_top, trig_bot, params){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -753,70 +755,15 @@ function create_scroll_anim(animation, trig_top, trig_bot, params){
   var rem_top = page_top / illustrator_pixel;
   var rem_bot = page_bot / illustrator_pixel;
 
-  var obj      = animation.action[0].element;
-  var funcName = animation.name + '_timeline';
+  var obj      = animation.action[x].element;
+  var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
 
-// WAS:
-// activated if top of trigger bar is not > bot of page
-//          and bot of trigger bar is not < top of page
-
-// IS:
-// goes on when trigger top scrolls up past top of page
-// goes off when trigger bottom < bottom of page
-
-// trigger is activated
+  // goes on when trigger top scrolls up past top of page
+  // goes off when trigger bottom < bottom of page
+  
+  // trigger is activated
   if (trig_top > rem_top && trig_bot < rem_bot){
-    if (typeof tline != 'undefined'){
-      if (tline.reversed()) tline.play();       //  if reversed play it
-    }
-    else{
-      //  doesn't exist: create & play it
-      window[funcName] = new gsap.timeline({paused:true});
-      var tline = window[funcName];
-      tline.to(obj, params);
-      tline.play();
-    }
-  }
-
-  // trigger is deactivated
-  else{
-    if (typeof tline == 'undefined') return true;                    //  doesn't exist: do nothing
-    if (!tline.isActive() && !tline.reversed()) tline.reverse();     //  paused not reversed (at end): reverse it
-    else if (tline.isActive() && tline.reversed()) tline.reverse();  //  playing not reversed: reverse it */
-    return true;
-  }
-
-}
-
-//———————————————————————————————————————— create_scroll_anim1(animation, trig_top, trig_bot) VERSION 1
-
-// https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
-
-/*    special cases:
- 
-      • top is visible to start with
-      • action opacity default is visible to start with */
-
-// called every time a scroll action
-
-function create_scroll_anim1(animation, trig_top, trig_bot, params){
-
-  var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
-  var pixel_height = window.innerHeight;
-  var page_bot     = page_top + pixel_height;
-
-  var rem_top = page_top / illustrator_pixel;
-  var rem_bot = page_bot / illustrator_pixel;
-
-  var obj      = animation.action[0];
-  var funcName = animation.name + '_timeline';
-  var tline    = window[funcName];
-
-// activated if top of trigger bar is not > bot of page
-//          and bot of trigger bar is not < top of page
-
-  if (trig_top < rem_bot && trig_bot > rem_top){
     if (typeof tline != 'undefined'){
       if (tline.reversed()) tline.play();       //  if reversed play it
     }
@@ -966,7 +913,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-var a = 'name7'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
+//var a = 'name8'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
 
 
 //———————————————————————————————————————— fin
