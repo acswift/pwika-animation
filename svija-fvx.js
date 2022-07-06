@@ -138,7 +138,7 @@ const trigger_defaults = {
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: MODEL DEFINITION
+//:::::::::::::::::::::::::::::::::::::::: MODEL DEFINITIONS
 
 //———————————————————————————————————————— class Animation
 
@@ -149,20 +149,14 @@ var functions  = [];   // list of mouse functions called by buttons
 
 class Animation{
 
-  constructor( name, trigger, t_kind, cursor, func, args, link, blank, action,
+  constructor( name, trigger, action,
                a_kind, delay, handoff, handwait, duration, ease, xmove, ymove,
                fixed, rotate, scale, xscale, yscale, opac_to, opac_from ){
 
     this.name       = name;         // 20-character string
 
     // trigger-specified
-    this.trigger    = trigger;      // object reference
-    this.t_kind     = t_kind;       // string · kind of trigger                  scroll, mouse, delay
-    this.cursor     = cursor;       // string · cursor on pointerover              a, h, t (arrow, hand, text)
-    this.func       = func;         // boolean · calls function of same name     onclick only 
-    this.args       = args;         // array · args passed to function           all flags following name
-    this.link       = link;         // boolean · is an SVG link                  programmatically
-    this.blank      = blank;        // boolean · link target is _blank           n
+    this.trigger    = trigger;      // trigger object
 
     // action-specified
     this.action     = action;       // object reference
@@ -195,12 +189,13 @@ class Animation{
 
     // initialize
 
-    this.trigger    = obj;
-    this.t_kind     = kind;
+    this.trigger         = new Trigger;
+    this.trigger.element = obj;
+    this.trigger.kind  = kind;
 
     // loop through flags (kind|name|parameters...)
 
-    for(var x=2; x<flags.length; x++){
+    for(var x=2; x<flags.length; x++){ //————————————————————————————————————-
 
       // determine flag key from value
       // entity conversion not necessary for triggers
@@ -212,29 +207,30 @@ class Animation{
 
       if (key != 'func'){
         var v = flag_value_to_key_value[val];
-        if (val == '') errlog('Trigger '+this.name+' has an extra slash.');
-        else if (typeof v == 'undefined') errlog('Trigger '+this.name+' has unknown flag: "'+val+'".');
+        if (val == '') errlog('Trigger '+this.trigger.name+' has an extra slash.');
+        else if (typeof v == 'undefined') errlog('Trigger '+this.trigger.name+' has unknown flag: "'+val+'".');
         this[key] = flag_value_to_key_value[val];
       }
 
       // if function, add arguments to "args"
       else {
-        this.func = true;
-        this.args = [];
+        this.trigger.func = true;
+        this.trigger.args = [];
         for (var y=x+1; y<flags.length; y++)
-          this.args.push(flags[y]);
+          this.trigger.args.push(flags[y]);
 
         x = 1000; // get out of loop — no other flags can follow func
       }
       
-    // set link & parent target
+      // set link & parent target
+  
+      this.trigger.link = obj.parentNode.hasAttribute('xlink:href'); // true false
+      if (this.trigger.link && this.trigger.blank)
+        this.trigger.element.parentNode.setAttribute("target", "_blank");
+  
+    } //—————————————————————————————————————————————————————————————————————-
 
-    this.link = obj.parentNode.hasAttribute('xlink:href'); // true false
-    if (this.link && this.blank)
-      this.trigger.parentNode.setAttribute("target", "_blank");
-
-
-    }
+    log('Trigger '+this.name+' added');
 
     // log trigger add results
 
@@ -253,6 +249,11 @@ class Animation{
     // set defaults
 
     this.duration = action_defaults.duration;
+
+    // if action doesn't exist, create it
+
+//  if (typeof this.action == 'undefined') alert('booby');
+//    this.action = [];
 
     // initialize
 
@@ -294,7 +295,7 @@ class Animation{
     }
 
     if (this.opac_to == 0 && typeof this.opac_from == 'undefined')
-		  this.opac_from = 100;
+      this.opac_from = 100;
 
     // set default duration
     if (this.a_kind=='timed' && typeof this.delay=='undefined'){
@@ -336,7 +337,7 @@ class Animation{
   set_cursor(){
   
     if (typeof this.cursor != 'undefined')
-      this.trigger.style.cursor = cursors[this.cursor];
+      this.trigger.element.style.cursor = cursors[this.cursor];
   
     else{
       var is_hand = false;
@@ -345,9 +346,9 @@ class Animation{
       if (this.trigger.func      ) is_hand = true;
       if (this.a_kind == 'click' ) is_hand = true;
       if (this.a_kind == 'toggle') is_hand = true;
-  
+
       if (is_hand){
-        this.trigger.style.cursor = cursors['default_link'];
+        this.trigger.element.style.cursor = cursors['default_link'];
       }
     }
   
@@ -432,7 +433,7 @@ class Animation{
     functions[this.name] = window['func_'+this.name];
 
     log('activating function '+this.name);
-    this.trigger.addEventListener('click', functions[this.name].bind(null, 'fuckin-a')); 
+    this.trigger.element.addEventListener('click', functions[this.name].bind(null, 'fuckin-a')); 
   }
 
   fix_rotation(flag){
@@ -441,6 +442,56 @@ class Animation{
   }
 
 
+}
+
+//———————————————————————————————————————— class Trigger
+
+class Trigger{
+
+  constructor( name, element, kind, cursor, func, args, link, blank ){
+
+    this.name       = name;         // 20-character string
+    this.element    = element;      // object reference
+    this.kind     = kind;       // string · kind of trigger                  scroll, mouse, delay
+
+    // flags
+    this.cursor     = cursor;       // string · cursor on pointerover              a, h, t (arrow, hand, text)
+    this.func       = func;         // boolean · calls function of same name     onclick only 
+    this.args       = args;         // array · args passed to function           all flags following name
+    this.link       = link;         // boolean · is an SVG link                  programmatically
+    this.blank      = blank;        // boolean · link target is _blank           n
+  }
+}
+
+//———————————————————————————————————————— class Action
+
+class Action{
+
+  constructor( name, element, a_kind, delay, handoff, handwait, duration, ease,
+               xmove, ymove, fixed, rotate, scale, xscale, yscale, opac_to, opac_from ){
+
+    this.name       = name;         // 20-character string
+    this.element    = element;      // object reference
+    this.a_kind     = a_kind;       // string · kind of action                   click, over, down, away, ovaway, toggle, visible
+
+    // flags
+    this.delay      = delay;        // number · seconds before animation starts  33 (2nd number)
+    this.handoff    = handoff;      // string · following animation
+    this.handwait   = handwait;     // number · seconds before calling following animation
+
+    // GSAP-related flags
+    this.duration   = duration;     // number · duration in seconds              34.5 (1st number)
+    this.ease       = ease;         // animation ease                            in, out, inout, noease
+    this.xmove      = xmove;        // x movement                                x-30
+    this.ymove      = ymove;        // y movement                                y25
+    this.fixed      = fixed;        // fixed point                               0f0 to 100f100
+    this.rotate     = rotate;       // number · rotation                         >20 or <45.5
+    this.scale      = scale;        // number · percentage to scale              %150
+    this.xscale     = xscale;       // number · percentage to scale x            x%20
+    this.yscale     = yscale;       // number · percentage to scale y            y%30
+    this.opac_to   = opac_to;     // number · percentage opac_to              o30
+    this.opac_from    = opac_from;      // number · opac_from/opac_to      programmatically
+  }
 }
 
 
@@ -530,13 +581,13 @@ log('\n——— activating animations ———');
 
 Object.keys(animations).forEach(name => {
 
-  if (animations[name].t_kind=='mouse') // 2ms
+  if (animations[name].trigger.kind=='mouse') // 2ms
     activate_mouse(animations[name]);  
 
-  if (animations[name].t_kind=='delay') // 2ms
+  if (animations[name].trigger.kind=='delay') // 2ms
     activate_delay(animations[name]);
 
-  if (animations[name].t_kind=='scroll') // 11ms
+  if (animations[name].trigger.kind=='scroll') // 11ms
     activate_scroll(animations[name]);
 
 })
@@ -641,7 +692,7 @@ function delay_timed(animation){
 function mouse_single(animation, type){
 
   params = gsap_params(animation);
-  animation.trigger.addEventListener(type, create_anim.bind(null, animation, params), false);
+  animation.trigger.element.addEventListener(type, create_anim.bind(null, animation, params), false);
 
 }
 
@@ -653,8 +704,8 @@ function mouse_ovaway(animation){
 
   params = gsap_params(animation);
 
-  animation.trigger.addEventListener('pointerover',  create_anim.bind(null, animation, params), false);
-  animation.trigger.addEventListener('pointerout',  reverse_anim.bind(null, animation        ), false);
+  animation.trigger.element.addEventListener('pointerover',  create_anim.bind(null, animation, params), false);
+  animation.trigger.element.addEventListener('pointerout',  reverse_anim.bind(null, animation        ), false);
 
 }
 
@@ -663,7 +714,7 @@ function mouse_ovaway(animation){
 function mouse_toggle(animation){
 
   params = gsap_params(animation);
-  animation.trigger.addEventListener('pointerup', create_toggle_anim.bind(null, animation, params), false);
+  animation.trigger.element.addEventListener('pointerup', create_toggle_anim.bind(null, animation, params), false);
 }
 
 
@@ -671,7 +722,7 @@ function mouse_toggle(animation){
 
 function scroll_anim(animation){
 
-  var obj = animation.trigger;
+  var obj = animation.trigger.element;
 
   var box = obj.getBBox();      // get bounding box of trigger
   var t = box['y'];             // top
