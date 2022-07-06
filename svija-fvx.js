@@ -150,7 +150,7 @@ var functions  = [];   // list of mouse functions called by buttons
 class Animation{
 
   constructor( name, trigger, action,
-               a_kind, delay, handoff, handwait, duration, ease, xmove, ymove,
+               kind, delay, handoff, handwait, duration, ease, xmove, ymove,
                fixed, rotate, scale, xscale, yscale, opac_to, opac_from ){
 
     this.name       = name;         // 20-character string
@@ -160,7 +160,7 @@ class Animation{
 
     // action-specified
     this.action     = action;       // object reference
-    this.a_kind     = a_kind;       // string · kind of action                   click, over, down, away, ovaway, toggle, visible
+    this.kind     = kind;       // string · kind of action                   click, over, down, away, ovaway, toggle, visible
     this.delay      = delay;        // number · seconds before animation starts  33 (2nd number)
     this.handoff    = handoff;      // string · following animation
     this.handwait   = handwait;     // number · seconds before calling following animation
@@ -189,9 +189,9 @@ class Animation{
 
     // initialize
 
-    this.trigger         = new Trigger;
-    this.trigger.element = obj;
-    this.trigger.kind  = kind;
+    var zoopy     = new Trigger;
+    zoopy.element = obj;
+    zoopy.kind    = kind;
 
     // loop through flags (kind|name|parameters...)
 
@@ -207,26 +207,26 @@ class Animation{
 
       if (key != 'func'){
         var v = flag_value_to_key_value[val];
-        if (val == '') errlog('Trigger '+this.trigger.name+' has an extra slash.');
-        else if (typeof v == 'undefined') errlog('Trigger '+this.trigger.name+' has unknown flag: "'+val+'".');
+        if (val == '') errlog('Trigger '+zoopy.name+' has an extra slash.');
+        else if (typeof v == 'undefined') errlog('Trigger '+zoopy.name+' has unknown flag: "'+val+'".');
         this[key] = flag_value_to_key_value[val];
       }
 
       // if function, add arguments to "args"
       else {
-        this.trigger.func = true;
-        this.trigger.args = [];
+        zoopy.func = true;
+        zoopy.args = [];
         for (var y=x+1; y<flags.length; y++)
-          this.trigger.args.push(flags[y]);
+          zoopy.args.push(flags[y]);
 
         x = 1000; // get out of loop — no other flags can follow func
       }
       
       // set link & parent target
   
-      this.trigger.link = obj.parentNode.hasAttribute('xlink:href'); // true false
-      if (this.trigger.link && this.trigger.blank)
-        this.trigger.element.parentNode.setAttribute("target", "_blank");
+      zoopy.link = obj.parentNode.hasAttribute('xlink:href'); // true false
+      if (zoopy.link && zoopy.blank)
+        zoopy.element.parentNode.setAttribute("target", "_blank");
   
     } //—————————————————————————————————————————————————————————————————————-
 
@@ -239,6 +239,7 @@ class Animation{
 //    ' link: '+this.link+
 //    ' blank: '+this.blank);
 
+    this.trigger = zoopy
 
   }
 
@@ -248,7 +249,7 @@ class Animation{
 
     var zoopy     = new Action;
     zoopy.element = obj;
-    zoopy.a_kind  = kind;
+    zoopy.kind  = kind;
 
     // set defaults
 
@@ -292,7 +293,7 @@ class Animation{
       zoopy.opac_from = 100;
 
     // set default duration
-    if (zoopy.a_kind=='timed' && typeof zoopy.delay=='undefined'){
+    if (zoopy.kind=='timed' && typeof zoopy.delay=='undefined'){
       zoopy.delay    = zoopy.duration;
       zoopy.duration = action_defaults.duration;
     }
@@ -339,8 +340,8 @@ class Animation{
   
       if (this.trigger.link      ) is_hand = true;
       if (this.trigger.func      ) is_hand = true;
-      if (this.a_kind == 'click' ) is_hand = true;
-      if (this.a_kind == 'toggle') is_hand = true;
+      if (this.kind == 'click' ) is_hand = true;
+      if (this.kind == 'toggle') is_hand = true;
 
       if (is_hand){
         this.trigger.element.style.cursor = cursors['default_link'];
@@ -462,12 +463,12 @@ class Trigger{
 
 class Action{
 
-  constructor( name, element, a_kind, delay, handoff, handwait, duration, ease,
+  constructor( name, element, kind, delay, handoff, handwait, duration, ease,
                xmove, ymove, fixed, rotate, scale, xscale, yscale, opac_to, opac_from ){
 
     this.name       = name;         // 20-character string
     this.element    = element;      // object reference
-    this.a_kind     = a_kind;       // string · kind of action                   click, over, down, away, ovaway, toggle, visible
+    this.kind     = kind;       // string · kind of action                   click, over, down, away, ovaway, toggle, visible
 
     // flags
     this.delay      = delay;        // number · seconds before animation starts  33 (2nd number)
@@ -607,7 +608,7 @@ function activate_mouse(animation){
     return true;
   }
 
-  switch (animation.action.a_kind) {
+  switch (animation.action.kind) {
   case undefined: break; // if it's just a link or func
 
   case 'click':
@@ -632,7 +633,7 @@ function activate_mouse(animation){
     break;
 
   default:
-    log('⚠️ unimplemented mouse a_kind:'+animation.action.a_kind+'in animation '+animation.action.name);
+    log('⚠️ unimplemented mouse kind:'+animation.action.kind+'in animation '+animation.action.name);
   }
 
   log('mouse animations activated');
@@ -642,13 +643,13 @@ function activate_mouse(animation){
 
 function activate_delay(animation){
 
-  switch (animation.action.a_kind) {
+  switch (animation.action.kind) {
   case 'timed':
     delay_timed(animation);
     break;
 
   default:
-    if (typeof a_kind != 'undefined') errlog('unknown delay a_kind: '+a_kind);
+    if (typeof kind != 'undefined') errlog('unknown delay kind: '+kind);
     else errlog('missing action: '+animation.name);
   }
 
@@ -659,13 +660,13 @@ function activate_delay(animation){
 
 function activate_scroll(animation){
 
-  switch (animation.action.a_kind) {
+  switch (animation.action.kind) {
   case 'zone':
     scroll_anim(animation);
     break;
 
   default:
-    if (typeof a_kind != 'undefined') errlog('unknown scroll a_kind: '+a_kind);
+    if (typeof kind != 'undefined') errlog('unknown scroll kind: '+kind);
     else errlog('missing action: '+animation.name);
   }
 
