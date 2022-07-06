@@ -162,49 +162,27 @@ var functions  = [];   // list of mouse functions called by buttons
 
 class Animation{
 
-  constructor( name, trigger, action,
-               kind, delay, handoff, handwait, duration, ease, xmove, ymove,
-               fixed, rotate, scale, xscale, yscale, opac_to, opac_from ){
+  constructor( name, trigger, action ){
 
     this.name       = name;         // 20-character string
-
-    // trigger-specified
-    this.trigger    = trigger;      // trigger object
-
-    // action-specified
-    this.action     = action;       // object reference
-    this.kind       = kind;         // string · kind of action                   click, over, down, away, ovaway, toggle, visible
-    this.delay      = delay;        // number · seconds before animation starts  33 (2nd number)
-    this.handoff    = handoff;      // string · following animation
-    this.handwait   = handwait;     // number · seconds before calling following animation
-
-    // GSAP-related
-    this.duration   = duration;     // number · duration in seconds              34.5 (1st number)
-    this.ease       = ease;         // animation ease                            in, out, inout, noease
-    this.xmove      = xmove;        // x movement                                x-30
-    this.ymove      = ymove;        // y movement                                y25
-    this.fixed      = fixed;        // fixed point                               0f0 to 100f100
-    this.rotate     = rotate;       // number · rotation                         >20 or <45.5
-    this.scale      = scale;        // number · percentage to scale              %150
-    this.xscale     = xscale;       // number · percentage to scale x            x%20
-    this.yscale     = yscale;       // number · percentage to scale y            y%30
-    this.opac_to    = opac_to;      // number · percentage opac_to               o30
-    this.opac_from  = opac_from;    // number · opac_from/opac_to                programmatically
+    this.trigger    = trigger;      // trigger
+    this.action     = action;       // array of actions
   }
 
   add_trigger(obj, kind, flags){
-
-    // set defaults
-
-    Object.keys(trigger_defaults).forEach(
-      key => { this[key] = trigger_defaults[key]; }
-    );
 
     // initialize
 
     var zoopy     = new Trigger;
     zoopy.element = obj;
     zoopy.kind    = kind;
+
+    // set defaults
+
+    Object.keys(trigger_defaults).forEach(
+      key => { zoopy[key] = trigger_defaults[key]; }
+    );
+
 
     // loop through flags (kind|name|parameters...)
 
@@ -242,15 +220,6 @@ class Animation{
         zoopy.element.parentNode.setAttribute("target", "_blank");
   
     } //—————————————————————————————————————————————————————————————————————-
-
-    // log trigger add results
-
-//  log('——— trigger '+this.name+' — '+
-//    ' cursor: '+this.cursor+
-//    ' func: '+this.func+
-//    ' args: '+this.args+
-//    ' link: '+this.link+
-//    ' blank: '+this.blank);
 
 
     this.trigger = zoopy
@@ -318,6 +287,7 @@ class Animation{
 
     if (typeof this.action == 'undefined') this.action = [];
     this.action.push(zoopy);
+    log('-———————————————————————————————————————————————————————- zoopy converted: '+this.name);
 
   }
 
@@ -366,8 +336,22 @@ class Animation{
   }
 
   dump_flags(){
+    log('::::: Object '+this.name);
     Object.keys(this).forEach(key => {
-      log(key+', '+typeof(this[key])+': '+this[key]);
+      if (typeof this[key] != 'undefined')
+        log(key+' ('+typeof(this[key])+') — '+this[key]);
+    });
+
+    log('\n::::: Triggers');
+    Object.keys(this.trigger).forEach(key => {
+      if (typeof this.trigger[key] != 'undefined')
+        log(key+' ('+typeof(this.trigger[key])+') — '+this.trigger[key]);
+    });
+    
+    log('\n::::: Actions');
+    Object.keys(this.action[0]).forEach(key => {
+      if (typeof this.action[0][key] != 'undefined')
+        log(key+' ('+typeof(this.action[0][key])+') — '+this.action[0][key]);
     });
     
     log('\n\n');
@@ -978,7 +962,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name2'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
+var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
 
 
 //———————————————————————————————————————— fin
