@@ -149,30 +149,30 @@ silent! normal! zE
 569,585fold
 586,592fold
 596,639fold
-640,656fold
-657,673fold
-677,686fold
-688,696fold
-697,708fold
-709,715fold
-717,730fold
-734,789fold
-790,839fold
-840,864fold
-865,894fold
-895,902fold
-903,911fold
-912,921fold
-922,948fold
-949,952fold
-953,964fold
-965,968fold
+640,658fold
+659,675fold
+679,688fold
+690,698fold
+699,710fold
+711,717fold
+719,732fold
+736,791fold
+792,841fold
+842,866fold
+867,896fold
+897,904fold
+905,913fold
+914,923fold
+924,950fold
+951,954fold
+955,966fold
+967,970fold
 let &fdl = &fdl
-let s:l = 704 - ((153 * winheight(0) + 23) / 47)
+let s:l = 685 - ((89 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 704
+keepjumps 685
 normal! 01|
 let &g:so = s:so_save | let &g:siso = s:siso_save
 doautoall SessionLoadPost

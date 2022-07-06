@@ -524,13 +524,13 @@ actions.forEach(kind => {
 
   // loop through adding actions
   for(var x=0; x<obj_array.length; x++){
-    var obj = obj_array[x];
 
-    var obj_id = obj.id;
+    var obj   = obj_array[x];
+    var flags = obj.id.split(separator);
+
     // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
-    if (obj_id.length > 50) obj_id = obj_id.slice(0, -52);
-
-    var flags = obj_id.split(separator);
+    if (flags[flags.length-1].length > 50)
+      flags[flags.length-1] = flags[flags.length-1].slice(0, -52);
 
     //  kind = flags[0];
     var name = flags[1];
@@ -538,7 +538,7 @@ actions.forEach(kind => {
     if (Object.keys(animations).includes(name))
       animations[name].add_action(obj, kind, flags)
     else
-      errlog('Action "'+name+'" has no trigger and was not registered.');
+      errlog('Action "'+name+'" has no trigger and was not registered (id='+obj_array[x].id+')');
 
   }
 
@@ -641,14 +641,16 @@ function activate_mouse(animation){
 
 function activate_delay(animation){
 
-  switch (animation.action[0].kind) {
-  case 'timed':
-    delay_timed(animation);
-    break;
+  for (var x=0; x<animation.action.length; x++){
+    switch (animation.action[x].kind) {
+    case 'timed':
+      delay_timed(animation, x);
+      break;
 
-  default:
-    if (typeof kind != 'undefined') errlog('unknown delay kind: '+kind);
-    else errlog('missing action: '+animation.name);
+    default:
+      if (typeof animation.action[x].kind != 'undefined') errlog('unknown delay kind: '+animation.action[x].kind);
+      else errlog('missing delay action: '+animation.name);
+    }
   }
 
   log('delay animations activated');
@@ -676,11 +678,11 @@ function activate_scroll(animation){
 
 //———————————————————————————————————————— delay_timed(animation)
 
-function delay_timed(animation){
+function delay_timed(animation, x){
 
-  delay  = animation.action[0].delay * 1000;
-  params = gsap_params(animation.action[0]);
-  setTimeout(create_anim.bind(null, animation.name+'0', animation.action[0], params), delay);
+  delay  = animation.action[x].delay * 1000;
+  params = gsap_params(animation.action[x]);
+  setTimeout(execute_anim.bind(null, animation.name+x, animation.action[x], params), delay);
 
 }
 
@@ -690,7 +692,7 @@ function delay_timed(animation){
 function mouse_single(animation, x, type){
 
   params = gsap_params(animation.action[x]);
-  animation.trigger.element.addEventListener(type, create_anim.bind(null, animation.name+x, animation.action[x], params), false);
+  animation.trigger.element.addEventListener(type, execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
 
 }
 
@@ -701,7 +703,7 @@ function mouse_single(animation, x, type){
 function mouse_ovaway(animation, x){
 
   params = gsap_params(animation.action[x]);
-  animation.trigger.element.addEventListener('pointerover',  create_anim.bind(null, animation.name+x, animation.action[x], params), false);
+  animation.trigger.element.addEventListener('pointerover',  execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
   animation.trigger.element.addEventListener('pointerout',  reverse_anim.bind(null, animation.name+x                             ), false);
 
 }
@@ -837,10 +839,10 @@ function create_scroll_anim1(animation, trig_top, trig_bot, params){
 
 }
 
-//———————————————————————————————————————— create_anim(obj, params)
+//———————————————————————————————————————— execute_anim(obj, params)
 
-//nction create_anim(animation, params){
-function create_anim(name, action, params){
+//nction execute_anim(animation, params){
+function execute_anim(name, action, params){
 
   obj = action.element;
 
@@ -964,7 +966,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-//r a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
+var a = 'name7'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
 
 
 //———————————————————————————————————————— fin
