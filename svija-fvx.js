@@ -347,12 +347,14 @@ class Animation{
       if (typeof this.trigger[key] != 'undefined')
         log(key+' ('+typeof(this.trigger[key])+') — '+this.trigger[key]);
     });
-    
-    log('\n::::: Actions');
-    Object.keys(this.action[0]).forEach(key => {
-      if (typeof this.action[0][key] != 'undefined')
-        log(key+' ('+typeof(this.action[0][key])+') — '+this.action[0][key]);
-    });
+
+    for (var x=0; x<this.action.length; x++){
+      log('\n::::: Action[' + x + ']');
+      Object.keys(this.action[x]).forEach(key => {
+        if (typeof this.action[x][key] != 'undefined')
+          log(key+' ('+typeof(this.action[x][key])+') — '+this.action[x][key]);
+      });
+    }
     
     log('\n\n');
   }
@@ -535,6 +537,10 @@ actions.forEach(kind => {
 
     //  kind = flags[0];
     var name = flags[1];
+
+    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
+    if (name.length > 50) 
+       name = name.slice(0, -52);
 
     if (Object.keys(animations).includes(name))
       animations[name].add_action(obj, kind, flags)
