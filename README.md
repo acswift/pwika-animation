@@ -6,6 +6,8 @@
 
 ### Svija FVX 1.0.5
 
+Added beta branch.
+
 This repository contains the development files for Svija Animation, which is included with each new Svija website.
 
 The files are developed at `svija.dev/sync/Svija/Scripts` (which also contains other files that are *not* part of this repository).
