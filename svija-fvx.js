@@ -864,7 +864,7 @@ function convert_transform(fixed){
   if (typeof fixed == 'undefined') return "50% 50%";
 
   var parts = fixed.split('_x2C_');
-  result = parts.join('% ') + '%';
+  var result = parts.join('% ') + '%';
   return result;
 }
 
@@ -913,7 +913,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'name8'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
+var a = 'name8'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
 
 
 //———————————————————————————————————————— fin
