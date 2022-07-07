@@ -251,19 +251,21 @@ class Animation{
 
   set_cursor(){
   
-    if (typeof this.trigger[0].cursor != 'undefined')
-      this.trigger[0].element.style.cursor = cursors[this.cursor];
+    for (var x=0; x<this.trigger.length; x++){
+      if (typeof this.trigger[x].cursor != 'undefined')
+        this.trigger[x].element.style.cursor = cursors[this.cursor];
   
-    else{
-      var is_hand = false;
+      else{
+        var is_hand = false;
   
-      if (this.trigger[0].link      ) is_hand = true;
-      if (this.trigger[0].func      ) is_hand = true;
-      if (this.kind == 'click' ) is_hand = true;
-      if (this.kind == 'toggle') is_hand = true;
+        if (this.trigger[x].link      ) is_hand = true;
+        if (this.trigger[x].func      ) is_hand = true;
+        if (this.kind == 'click' ) is_hand = true;
+        if (this.kind == 'toggle') is_hand = true;
 
-      if (is_hand){
-        this.trigger[0].element.style.cursor = cursors['default_link'];
+        if (is_hand){
+          this.trigger[x].element.style.cursor = cursors['default_link'];
+        }
       }
     }
   
@@ -274,16 +276,18 @@ class Animation{
     // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
     // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
 
-    if (!this.trigger[0].func) return true;
+    for (var x=0; x<this.trigger.length; x++){
+      if (!this.trigger[x].func) continue;
 
-    // var args = this.args;
+      // var args = this.args;
 
-    // TODO need to check if function exists, or will throw error:
-    // TODO need to activate args
-    functions[this.name] = window['func_'+this.name];
+      // TODO need to check if function exists, or will throw error:
+      // TODO need to activate args
+      functions[this.name+x] = window['func_'+this.name+x];
 
-    log('activating function '+this.name);
-    this.trigger[0].element.addEventListener('click', functions[this.name].bind(null, 'fuckin-a')); 
+      log('activating function '+this.name+x);
+      this.trigger[x].element.addEventListener('click', functions[this.name+x].bind(null, 'fuckin-a')); 
+    }
   }
 
   make_visible(){
@@ -305,12 +309,20 @@ class Animation{
 
   delete_if_no_action(){
   
-    if (typeof this.action == 'undefined' && !this.trigger[0].func && !this.trigger[0].link){
-      errlog('Trigger '+this.name+' deleted (no action, link or function).');
-      delete animations[this.name];
-      return true;
+    for (var x=0; x<this.trigger.length; x++){
+      if (typeof this.action == 'undefined')
+        if (!this.trigger[x].func && !this.trigger[x].link){
+          errlog('Trigger '+x+' for '+this.name+' deleted (no action, link or function).');
+          delete animations[this.name].trigger[x];
+        }
     }
-    return false;
+    
+    if (this.trigger.length == 0){
+      delete animations[this.name];
+      errlog('Animation '+this.name+' deleted (no triggers left).');
+    }
+
+    return true;
   }
 
   dump_flags(){
@@ -472,6 +484,10 @@ triggers.forEach(kind => {
 
     // doesn't have at least trigger and name
     if (flags.length<2) continue; 
+
+    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
+    if (flags[flags.length-1].length > 50)
+      flags[flags.length-1] = flags[flags.length-1].slice(0, -52);
 
     //  kind = flags[0];
     var name = flags[1];
