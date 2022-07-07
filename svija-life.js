@@ -744,6 +744,9 @@ function scroll_anim(animation, x){
     var params = gsap_params(animation.action[x]);
 
     window.addEventListener('scroll', execute_scroll.bind(null, animation, x, t, b, params)); 
+
+    // in case something should already be visible
+    execute_scroll(animation, x, t, b, params); 
   }
 }
 
