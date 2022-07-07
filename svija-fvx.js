@@ -152,13 +152,17 @@ class Animation{
       var val = flags[x];
       var key = flag_value_to_key[val];
 
+
+
+
+
       // if not function, set flag
 
       if (key != 'func'){
         var v = flag_value_to_key_value[val];
         if (val == '') errlog('Trigger '+zoopy.name+' has an extra slash.');
         else if (typeof v == 'undefined') errlog('Trigger '+zoopy.name+' has unknown flag: "'+val+'".');
-        this[key] = flag_value_to_key_value[val];
+        else zoopy[key] = v;
       }
 
       // if function, add arguments to "args"
@@ -279,14 +283,15 @@ class Animation{
     for (var x=0; x<this.trigger.length; x++){
       if (!this.trigger[x].func) continue;
 
-      // var args = this.args;
+      var args = this.trigger[x].args;
 
-      // TODO need to check if function exists, or will throw error:
-      // TODO need to activate args
-      functions[this.name+x] = window['func_'+this.name+x];
+      functions[this.name] = window['func_'+this.name];
 
-      log('activating function '+this.name+x);
-      this.trigger[x].element.addEventListener('click', functions[this.name+x].bind(null, 'fuckin-a')); 
+      log('activating function '+this.name);
+      if (typeof functions[this.name] != 'undefined')
+        this.trigger[x].element.addEventListener('click', functions[this.name].bind(null, ...args)); 
+      else
+        errlog('Function func_'+this.name+' does not exist.');
     }
   }
 
@@ -911,7 +916,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'name6'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
