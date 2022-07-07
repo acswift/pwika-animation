@@ -2,6 +2,10 @@
 
 *Updated 14 June, 2022*
 
+**where am I?** I fixed a scrolling bug and am now ready to add more scrolling functionality:
+- granular follow of page scrolling
+- point instead of zone
+
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
 ### Svija Life 1.0.5
