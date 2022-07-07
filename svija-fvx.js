@@ -251,20 +251,20 @@ class Animation{
 
   set_cursor(){
   
-    for (var x=0; x<this.trigger.length; x++){
-      if (typeof this.trigger[x].cursor != 'undefined')
-        this.trigger[x].element.style.cursor = cursors[this.cursor];
+    for (var t=0; t<this.trigger.length; t++){
+      if (typeof this.trigger[t].cursor != 'undefined')
+        this.trigger[t].element.style.cursor = cursors[this.cursor];
   
       else{
         var is_hand = false;
   
-        if (this.trigger[x].link      ) is_hand = true;
-        if (this.trigger[x].func      ) is_hand = true;
+        if (this.trigger[t].link      ) is_hand = true;
+        if (this.trigger[t].func      ) is_hand = true;
         if (this.kind == 'click' ) is_hand = true;
         if (this.kind == 'toggle') is_hand = true;
 
         if (is_hand){
-          this.trigger[x].element.style.cursor = cursors['default_link'];
+          this.trigger[t].element.style.cursor = cursors['default_link'];
         }
       }
     }
@@ -309,11 +309,11 @@ class Animation{
 
   delete_if_no_action(){
   
-    for (var x=0; x<this.trigger.length; x++){
+    for (var t=0; t<this.trigger.length; t++){
       if (typeof this.action == 'undefined')
-        if (!this.trigger[x].func && !this.trigger[x].link){
-          errlog('Trigger '+x+' for '+this.name+' deleted (no action, link or function).');
-          delete animations[this.name].trigger[x];
+        if (!this.trigger[t].func && !this.trigger[t].link){
+          errlog('Trigger '+t+' for '+this.name+' deleted (no action, link or function).');
+          delete animations[this.name].trigger[t];
         }
     }
     
@@ -332,16 +332,16 @@ class Animation{
         log(key+' ('+typeof(this[key])+') — '+this[key]);
     });
 
-    for (var x=0; x<this.action.length; x++){
-      log('\n::::: Triggers['+x+']');
-      Object.keys(this.trigger[0]).forEach(key => {
-        if (typeof this.trigger[0][key] != 'undefined')
-          log(key+' ('+typeof(this.trigger[0][key])+') — '+this.trigger[0][key]);
+    for (var t=0; t<this.trigger.length; t++){
+      log('\nTrigger['+t+']');
+      Object.keys(this.trigger[t]).forEach(key => {
+        if (typeof this.trigger[t][key] != 'undefined')
+          log(key+' ('+typeof(this.trigger[t][key])+') — '+this.trigger[t][key]);
       });
     }
 
     for (var x=0; x<this.action.length; x++){
-      log('\n::::: Action[' + x + ']');
+      log('\nAction[' + x + ']');
       Object.keys(this.action[x]).forEach(key => {
         if (typeof this.action[x][key] != 'undefined')
           log(key+' ('+typeof(this.action[x][key])+') — '+this.action[x][key]);
@@ -491,7 +491,8 @@ triggers.forEach(kind => {
 
     //  kind = flags[0];
     var name = flags[1];
-    animations[name] = new Animation(name);
+
+    if (typeof animations[name] == 'undefined') animations[name] = new Animation(name);
     animations[name].add_trigger(obj, kind, flags);
   }
 
@@ -684,8 +685,9 @@ function delay_timed(animation, x){
 function mouse_single(animation, x, type){
 
   params = gsap_params(animation.action[x]);
-  animation.trigger[0].element.addEventListener(type, execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
-
+  for (var t=0; t<animation.trigger.length; t++){
+    animation.trigger[t].element.addEventListener(type, execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
+  }
 }
 
 //———————————————————————————————————————— mouse_ovaway(animation, x)
@@ -695,8 +697,10 @@ function mouse_single(animation, x, type){
 function mouse_ovaway(animation, x){
 
   params = gsap_params(animation.action[x]);
-  animation.trigger[0].element.addEventListener('pointerover',  execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
-  animation.trigger[0].element.addEventListener('pointerout',  reverse_anim.bind(null, animation.name+x                             ), false);
+  for (var t=0; t<animation.trigger.length; t++){
+    animation.trigger[t].element.addEventListener('pointerover',  execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
+    animation.trigger[t].element.addEventListener('pointerout',   reverse_anim.bind(null, animation.name+x                             ), false);
+  }
 
 }
 
@@ -704,7 +708,9 @@ function mouse_ovaway(animation, x){
 
 function mouse_toggle(animation, x){
   params = gsap_params(animation.action[x]);
-  animation.trigger[0].element.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.action[x], params), false);
+  for (var t=0; t<animation.trigger.length; t++){
+    animation.trigger[t].element.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.action[x], params), false);
+  }
 }
 
 
@@ -712,8 +718,8 @@ function mouse_toggle(animation, x){
 
 function scroll_anim(animation, x){
 
-  for (var x=0; x<this.trigger.length; x++){
-    var obj = animation.trigger[x].element;
+  for (var t=0; t<animation.trigger.length; t++){
+    var obj = animation.trigger[t].element;
 
     var box = obj.getBBox();      // get bounding box of trigger
     var t = box['y'];             // top
@@ -905,7 +911,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
