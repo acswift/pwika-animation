@@ -2,9 +2,9 @@
 
 trigger | flag     | action | default | description
 -------:|----------|--------|---------|----------------------------
-mouse   | /n       | timed  | 0.5     | after given number of seconds
-mouse   | /flag    | timed  | 0.5     | after given number of seconds
-mouse   | /a /h /t | timed  | 0.5     | after given number of seconds
+mouse   | /n       | timed  | 0.5     | open link in new tab/window
+mouse   | /func    | timed  | 0.5     | call function "func_name()"
+mouse   | /a /h /t | timed  | 0.5     | set cursor to **A**row, **H**and or **T**ext
 
 ---
 ### mouse trigger actions
