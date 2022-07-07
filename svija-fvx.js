@@ -180,7 +180,8 @@ class Animation{
     } //—————————————————————————————————————————————————————————————————————-
 
 
-    this.trigger = zoopy
+    if (typeof this.trigger == 'undefined') this.trigger = [];
+    this.trigger.push(zoopy);
 
   }
 
@@ -250,19 +251,19 @@ class Animation{
 
   set_cursor(){
   
-    if (typeof this.trigger.cursor != 'undefined')
-      this.trigger.element.style.cursor = cursors[this.cursor];
+    if (typeof this.trigger[0].cursor != 'undefined')
+      this.trigger[0].element.style.cursor = cursors[this.cursor];
   
     else{
       var is_hand = false;
   
-      if (this.trigger.link      ) is_hand = true;
-      if (this.trigger.func      ) is_hand = true;
+      if (this.trigger[0].link      ) is_hand = true;
+      if (this.trigger[0].func      ) is_hand = true;
       if (this.kind == 'click' ) is_hand = true;
       if (this.kind == 'toggle') is_hand = true;
 
       if (is_hand){
-        this.trigger.element.style.cursor = cursors['default_link'];
+        this.trigger[0].element.style.cursor = cursors['default_link'];
       }
     }
   
@@ -273,7 +274,7 @@ class Animation{
     // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
     // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
 
-    if (!this.trigger.func) return true;
+    if (!this.trigger[0].func) return true;
 
     // var args = this.args;
 
@@ -282,7 +283,7 @@ class Animation{
     functions[this.name] = window['func_'+this.name];
 
     log('activating function '+this.name);
-    this.trigger.element.addEventListener('click', functions[this.name].bind(null, 'fuckin-a')); 
+    this.trigger[0].element.addEventListener('click', functions[this.name].bind(null, 'fuckin-a')); 
   }
 
   make_visible(){
@@ -304,7 +305,7 @@ class Animation{
 
   delete_if_no_action(){
   
-    if (typeof this.action == 'undefined' && !this.trigger.func && !this.trigger.link){
+    if (typeof this.action == 'undefined' && !this.trigger[0].func && !this.trigger[0].link){
       errlog('Trigger '+this.name+' deleted (no action, link or function).');
       delete animations[this.name];
       return true;
@@ -319,11 +320,13 @@ class Animation{
         log(key+' ('+typeof(this[key])+') — '+this[key]);
     });
 
-    log('\n::::: Triggers');
-    Object.keys(this.trigger).forEach(key => {
-      if (typeof this.trigger[key] != 'undefined')
-        log(key+' ('+typeof(this.trigger[key])+') — '+this.trigger[key]);
-    });
+    for (var x=0; x<this.action.length; x++){
+      log('\n::::: Triggers['+x+']');
+      Object.keys(this.trigger[0]).forEach(key => {
+        if (typeof this.trigger[0][key] != 'undefined')
+          log(key+' ('+typeof(this.trigger[0][key])+') — '+this.trigger[0][key]);
+      });
+    }
 
     for (var x=0; x<this.action.length; x++){
       log('\n::::: Action[' + x + ']');
@@ -540,13 +543,13 @@ log('\n——— activating animations ———');
 
 Object.keys(animations).forEach(name => {
 
-  if (animations[name].trigger.kind=='mouse') // 2ms
+  if (animations[name].trigger[0].kind=='mouse') // 2ms
     activate_mouse(animations[name]);  
 
-  if (animations[name].trigger.kind=='delay') // 2ms
+  if (animations[name].trigger[0].kind=='delay') // 2ms
     activate_delay(animations[name]);
 
-  if (animations[name].trigger.kind=='scroll') // 11ms
+  if (animations[name].trigger[0].kind=='scroll') // 11ms
     activate_scroll(animations[name]);
 
 })
@@ -662,7 +665,7 @@ function delay_timed(animation, x){
 function mouse_single(animation, x, type){
 
   params = gsap_params(animation.action[x]);
-  animation.trigger.element.addEventListener(type, execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
+  animation.trigger[0].element.addEventListener(type, execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
 
 }
 
@@ -673,8 +676,8 @@ function mouse_single(animation, x, type){
 function mouse_ovaway(animation, x){
 
   params = gsap_params(animation.action[x]);
-  animation.trigger.element.addEventListener('pointerover',  execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
-  animation.trigger.element.addEventListener('pointerout',  reverse_anim.bind(null, animation.name+x                             ), false);
+  animation.trigger[0].element.addEventListener('pointerover',  execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
+  animation.trigger[0].element.addEventListener('pointerout',  reverse_anim.bind(null, animation.name+x                             ), false);
 
 }
 
@@ -682,7 +685,7 @@ function mouse_ovaway(animation, x){
 
 function mouse_toggle(animation, x){
   params = gsap_params(animation.action[x]);
-  animation.trigger.element.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.action[x], params), false);
+  animation.trigger[0].element.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.action[x], params), false);
 }
 
 
@@ -690,7 +693,7 @@ function mouse_toggle(animation, x){
 
 function scroll_anim(animation, x){
 
-  var obj = animation.trigger.element;
+  var obj = animation.trigger[0].element;
 
   var box = obj.getBBox();      // get bounding box of trigger
   var t = box['y'];             // top
