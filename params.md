@@ -15,9 +15,9 @@ mouse   | over   | x       |passes over trigger
 mouse   | away   | x       |moves away from trigger
 mouse   | press  | x       |presses down on trigger (before release)
 mouse   | click  | x       |clicks on trigger (at release)
+mouse   | down   | x       |double: press & release
 mouse   | ovaway | x       |double: pass over & moves away
 mouse   | toggle | x       |double: click & click
-mouse   | down   | x       |double: press & release
 
 ---
 ### delay triggers

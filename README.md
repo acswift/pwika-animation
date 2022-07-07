@@ -4,7 +4,7 @@
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-### Svija FVX 1.0.5
+### Svija Life 1.0.5
 
 Added beta branch.
 
@@ -22,14 +22,14 @@ cp ~=* ~/.vim/view/
 ```
 To save folds before committing:
 ```
-cp ~/.vim/view/*svija-fvx* ./
+cp ~/.vim/view/*svija-life* ./
 ```
 ---
 ### Releasing a New Version
 
 Update the version numbers:
 ```
-vi -O svija-fvx.css svija-fvx.js
+vi -O svija-life.css svija-life.js
 ```
 
 <details><summary>completely unrelated</summary>
