@@ -1,43 +1,11 @@
 
 //———————————————————————————————————————— svija-fvx.js
 
-/* will need to remove 52 characters from end of flags */
-
 /*———————————————————————————————————————— notes
 
-  only make opacity 0 if there's not a physical transform
-  by default opacity goes 0-100
-  with one argument it's —› the argument from the opposite
-  o20-40 is range of opacities
-
-  move eases to end of list page
-
-  change scrolling so it's when bar gets to top of page? 
-
-  instead of null use undefined, don't bother setting values we don't use
-
-  triggers:
-    scroll
-    mouse 
-    delay
-
-  mouse actions:
-    click
-    over
-    away
-    press
-    ovaway
-    toggle
-
-  delay actions:
-    timed
-
-  scroll actions:
-    zone
-
-https://docs.google.com/spreadsheets/d/1_INTDgE9-XKC63PSlRClXJDoC7afz6V7FFB3hiN7bhE/edit#gid=1328156795
-https://docs.google.com/document/d/1nImxZ6IgWFqDx6cOtrN-s9yZu564oMAxRxPwx_9lXSs/edit
-https://www.freecodecamp.org/news/how-javascript-implements-oop/
+  github.com/svijalove/animation
+  
+  ©2022 Svija SAS, Cusset France
 
 ————————————————————————————————————————*/
 //———————————————————————————————————————— start timer
@@ -345,7 +313,7 @@ class Animation{
   }
 
   dump_flags(){
-    log('::::: Object '+this.name);
+    log('\n\nv debug output —————————————————————————— ⚠️\ '+this.name);
     Object.keys(this).forEach(key => {
       if (typeof this[key] != 'undefined')
         log(key+' ('+typeof(this[key])+') — '+this[key]);
@@ -365,7 +333,7 @@ class Animation{
       });
     }
     
-    log('\n\n');
+    log('^ end debug output —————————————————————————— ⚠️\n\n');
   }
 
   get_key(flag, is_duration){
@@ -913,7 +881,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-var a = 'name8'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  cannot dump flags for unknown animation "'+a+'"'); }
+var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
