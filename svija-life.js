@@ -17,8 +17,8 @@ log("svija-fvx.js");
 //———————————————————————————————————————— separator, types of triggers and actions
 
 const  separator = '_x2F_'; // regular slash
-const   triggers = [ 'mouse',                                               'delay', 'scroll' ];
-const    actions = [ 'click',  'over', 'away', 'ovaway', 'press', 'toggle', 'timed', 'zone'   ];
+const   triggers = [ 'mouse', 'delay', 'scroll' ];
+const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'timed', 'zone'   ];
 
 //———————————————————————————————————————— conversion dictionaries
 

@@ -167,11 +167,11 @@ silent! normal! zE
 905,916fold
 917,920fold
 let &fdl = &fdl
-let s:l = 808 - ((132 * winheight(0) + 35) / 70)
+let s:l = 21 - ((20 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 808
+keepjumps 21
 normal! 01|
 let &g:so = s:so_save | let &g:siso = s:siso_save
 doautoall SessionLoadPost
