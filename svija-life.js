@@ -262,9 +262,10 @@ class Animation{
       else{
         var is_hand = false;
   
-        if (this.trigger[t].link      ) is_hand = true;
-        if (this.trigger[t].func      ) is_hand = true;
+        if (this.trigger[t].link ) is_hand = true;
+        if (this.trigger[t].func ) is_hand = true;
         if (this.kind == 'click' ) is_hand = true;
+        if (this.kind == 'down'  ) is_hand = true;
         if (this.kind == 'toggle') is_hand = true;
 
         if (is_hand){
@@ -444,7 +445,7 @@ class Action{
 
     this.name       = name;         // 20-character string
     this.element    = element;      // object reference
-    this.kind     = kind;       // string · kind of action                   click, over, down, away, ovaway, toggle, visible
+    this.kind       = kind;       // string · kind of action                   click, over, down, away, ovaway, down, toggle, visible
 
     // flags
     this.delay      = delay;        // number · seconds before animation starts  33 (2nd number)
@@ -497,9 +498,8 @@ triggers.forEach(kind => {
   }
 
   // log results
-  if (obj_array.length == 0) log('—› no '+kind+' triggers');
-                        else log(obj_array.length+' '+ kind+' triggers registered');
-
+  if (obj_array.length != 0)log(obj_array.length+' '+ kind+' triggers registered');
+  //                   else log('—› no '+kind+' triggers');
 });
 
 //———————————————————————————————————————— register actions
@@ -531,8 +531,8 @@ actions.forEach(kind => {
   }
 
   // log results
-  if (obj_array.length == 0) log('—› no '+kind+' actions');
-                        else log(obj_array.length+' '+ kind+' actions registered');
+  if (obj_array.length != 0) log(obj_array.length+' '+ kind+' actions registered');
+  //                    else log('—› no '+kind+' actions');
 
 });
 
@@ -562,9 +562,6 @@ Object.keys(animations).forEach(name => {
 
   // not necessary to go through all triggers
   // the first one is enough to set up the action
-
-  log('————————————————————————————— '+name+' has trigger length '+animations[name].trigger.length);
-  // TypeError: undefined is not an object (evaluating 'animations[name4].trigger[0].kind')
 
   if (animations[name].trigger[0].kind=='mouse') // 2ms
     activate_mouse(animations[name]);  
@@ -618,6 +615,9 @@ function activate_mouse(animation){
     // special cases
     case 'ovaway':
       mouse_ovaway(animation, x);
+      break;
+    case 'down':
+      mouse_down(animation, x);
       break;
     case 'toggle':
       mouse_toggle(animation, x);
@@ -703,6 +703,20 @@ function mouse_ovaway(animation, x){
   for (var t=0; t<animation.trigger.length; t++){
     animation.trigger[t].element.addEventListener('pointerover',  execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
     animation.trigger[t].element.addEventListener('pointerout',   reverse_anim.bind(null, animation.name+x                             ), false);
+  }
+
+}
+
+//———————————————————————————————————————— mouse_down(animation, x)
+
+// rotation is not cumulative (rotating to 90° twice just turns to 90°)
+
+function mouse_down(animation, x){
+
+  params = gsap_params(animation.action[x]);
+  for (var t=0; t<animation.trigger.length; t++){
+    animation.trigger[t].element.addEventListener('pointerdown', execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
+    animation.trigger[t].element.addEventListener('pointerup',   reverse_anim.bind(null, animation.name+x                             ), false);
   }
 
 }
