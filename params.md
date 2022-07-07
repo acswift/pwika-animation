@@ -1,10 +1,10 @@
 ### mouse trigger flags
 
-trigger | flag  | action | default | description
--------:|-------|--------|---------|----------------------------
-mouse   | n     | timed  | 0.5     | after given number of seconds
-mouse   | flag  | timed  | 0.5     | after given number of seconds
-mouse   | a·h·t | timed  | 0.5     | after given number of seconds
+trigger | flag     | action | default | description
+-------:|----------|--------|---------|----------------------------
+mouse   | /n       | timed  | 0.5     | after given number of seconds
+mouse   | /flag    | timed  | 0.5     | after given number of seconds
+mouse   | /a /h /t | timed  | 0.5     | after given number of seconds
 
 ---
 ### mouse trigger actions
