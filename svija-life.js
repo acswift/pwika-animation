@@ -317,16 +317,11 @@ class Animation{
     for (var t=0; t<this.trigger.length; t++){
       if (typeof this.action == 'undefined')
         if (!this.trigger[t].func && !this.trigger[t].link){
-          errlog('Trigger '+t+' for '+this.name+' deleted (no action, link or function).');
-          delete animations[this.name].trigger[t];
+          delete animations[this.name];
+          errlog('Animation '+this.name+' deleted (no action, link or function).');
         }
     }
     
-    if (this.trigger.length == 0){
-      delete animations[this.name];
-      errlog('Animation '+this.name+' deleted (no triggers left).');
-    }
-
     return true;
   }
 
@@ -429,7 +424,7 @@ class Trigger{
 
     this.name       = name;         // 20-character string
     this.element    = element;      // object reference
-    this.kind     = kind;       // string · kind of trigger                  scroll, mouse, delay
+    this.kind       = kind;         // string · kind of trigger                  scroll, mouse, delay
 
     // flags
     this.cursor     = cursor;       // string · cursor on pointerover              a, h, t (arrow, hand, text)
@@ -568,6 +563,9 @@ Object.keys(animations).forEach(name => {
   // not necessary to go through all triggers
   // the first one is enough to set up the action
 
+  log('————————————————————————————— '+name+' has trigger length '+animations[name].trigger.length);
+  // TypeError: undefined is not an object (evaluating 'animations[name4].trigger[0].kind')
+
   if (animations[name].trigger[0].kind=='mouse') // 2ms
     activate_mouse(animations[name]);  
 
@@ -626,7 +624,7 @@ function activate_mouse(animation){
       break;
 
     default:
-      log('⚠️ unimplemented mouse kind:'+animation.action[0].kind+'in animation '+animation.name);
+      log('⚠️ unimplemented mouse action: "'+animation.action[0].kind+'" in animation "'+animation.name+'"');
     }
   }
 
