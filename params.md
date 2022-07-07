@@ -8,6 +8,6 @@ mouse   | press  | presses down on trigger (before release)
 mouse   | click  | clicks on trigger (at release)
 mouse   | ovaway | double: pass over & moves away
 mouse   | toggle | double: click & click
-mouse   | NEW    | double: press & release
+mouse   | down   | double: press & release
 
 
