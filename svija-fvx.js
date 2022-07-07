@@ -792,11 +792,11 @@ function execute_scroll(animation, x, trig_top, trig_bot, params){
 //———————————————————————————————————————— execute_anim(obj, params)
 
 //nction execute_anim(animation, params){
-function execute_anim(name, action, params){
+function execute_anim(namex, actionx, params){
 
-  obj = action.element;
+  obj = actionx.element;
 
-  var funcName = name + '_timeline';
+  var funcName = namex + '_timeline';
 
   // create if it doesn't exist
   if (typeof window[funcName] == 'undefined'){
@@ -804,10 +804,10 @@ function execute_anim(name, action, params){
     window[funcName].to(obj, params);
   }
 
-  // play if it's not playing
-  if (!window[funcName].isActive())
-//if (!window[funcName].isActive() && !window[funcName].reversed()) // apparently it's still reversed after the end
+  // play if it's not playing or if it's reversed
+  if (!window[funcName].isActive() || (window[funcName].isActive() && window[funcName].reversed())){
     window[funcName].play();
+  }
 
   // make unclickable to avoid layering conflicts
   if (params.autoAlpha==0) set_clickable(obj, false);
@@ -819,10 +819,10 @@ function execute_anim(name, action, params){
 // only called when clicked
 
 //nction execute_toggle(animation, params){
-function execute_toggle(name, action, params){
+function execute_toggle(namex, actionx, params){
 
-  var obj      = action.element;
-  var funcName = name + '_timeline';
+  var obj      = actionx.element;
+  var funcName = namex + '_timeline';
   var tline    = window[funcName];
 
   // create & play if doesn't exist
@@ -916,7 +916,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-var a = 'name6'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name6'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
