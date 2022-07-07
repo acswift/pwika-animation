@@ -559,6 +559,9 @@ log('\n——— activating animations ———');
 
 Object.keys(animations).forEach(name => {
 
+  // not necessary to go through all triggers
+  // the first one is enough to set up the action
+
   if (animations[name].trigger[0].kind=='mouse') // 2ms
     activate_mouse(animations[name]);  
 
@@ -709,14 +712,16 @@ function mouse_toggle(animation, x){
 
 function scroll_anim(animation, x){
 
-  var obj = animation.trigger[0].element;
+  for (var x=0; x<this.trigger.length; x++){
+    var obj = animation.trigger[x].element;
 
-  var box = obj.getBBox();      // get bounding box of trigger
-  var t = box['y'];             // top
-  var b = t + box['height'];    // bottom
-  var params = gsap_params(animation.action[x]);
+    var box = obj.getBBox();      // get bounding box of trigger
+    var t = box['y'];             // top
+    var b = t + box['height'];    // bottom
+    var params = gsap_params(animation.action[x]);
 
-  window.addEventListener('scroll', execute_scroll.bind(null, animation, x, t, b, params)); 
+    window.addEventListener('scroll', execute_scroll.bind(null, animation, x, t, b, params)); 
+  }
 }
 
 
