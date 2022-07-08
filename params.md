@@ -15,7 +15,7 @@ trigger | flag            | action | default | description
 -------:|-----------------|--------|---------|----------------------------
 mouse   | /n              | timed  | 0.5     | open link in new tab/window
 mouse   | /func/arg1/arg2 | timed  | 0.5     | call function "func_name()"
-mouse   | /a /h /t        | timed  | 0.5     | set cursor to **A**rrow, **H**and or **T**ext
+mouse   | /a /h /i        | timed  | 0.5     | set cursor to **A**rrow, **H**and or **I**-beam
 
 ---
 ### mouse trigger actions
