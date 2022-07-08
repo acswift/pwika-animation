@@ -214,7 +214,7 @@ class Animation{
       // assign value to flag
       key = this.get_action_key(flag);
 
-      if (typeof zoopy[key] != 'undefined') errlog(this.name +' action "'+kind+'" has duplicate "'+key+'" flags');
+      if (typeof zoopy[key] != 'undefined') errlog('Action "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
 
       zoopy[key] = this.get_val(key, flag);
 
@@ -381,8 +381,8 @@ class Animation{
 
       default:
         if (parseFloat(flag) != flag){
-          if (flag == '') errlog('Action '+this.name+' has an extra slash.');
-          else errlog('Action '+this.name+' has an unknown flag: "'+flag +'".');
+          if (flag == '') errlog('Action "'+this.name+'" has an extra slash.');
+          else errlog('Action "'+this.name+'" has an unknown flag: "'+flag +'".');
           return null;
         }
 
@@ -392,8 +392,8 @@ class Animation{
       return key;
     }
     catch (error) {
-      if (flag == '') errlog('Action '+this.name+' has an extra slash.');
-      else errlog('Action '+this.name+' has an unknown flag: "'+flag +'".');
+      if (flag == '') errlog('Action "'+this.name+'" has an extra slash.');
+      else errlog('Action "'+this.name+'" has an unknown flag: "'+flag +'".');
       return null;
     }
 
@@ -409,7 +409,7 @@ class Animation{
         flag = 'x' + flag.slice(6, flag.length);
       else if (flag.slice(1,2) != '-') {
         flag = 'x+0';
-        errlog('Please use a "+" for positive x move values ('+this.name+')');
+        errlog('Action "'+this.name+'" requires a "+" for positive x move values');
       }
 
     if (key == 'ymove') // correct for + being converted to _x2B_
@@ -417,7 +417,7 @@ class Animation{
         flag = 'y' + flag.slice(6, flag.length);
       else if (flag.slice(1,2) != '-') {
         flag = 'y+0';
-        errlog('Please use a "+" for positive y move values ('+this.name+')');
+        errlog('Action "'+this.name+'" requires a "+" for positive y move values');
       }
 
     if (flag_len == 0) return flag;
@@ -1087,7 +1087,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name35'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name8'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
