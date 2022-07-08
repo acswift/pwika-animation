@@ -203,10 +203,6 @@ class Animation{
     zoopy.element = obj;
     zoopy.kind    = kind;
 
-    // set defaults
-
-    zoopy.duration = action_defaults.duration;
-
     // loop through flags (kind|name|parameters...)
 
     for(var x=2; x<flags.length; x++){
@@ -217,13 +213,16 @@ class Animation{
 
       // assign value to flag
       key = this.get_action_key(flag);
+
+      if (typeof zoopy[key] != 'undefined') errlog(this.name +' action "'+kind+'" has duplicate "'+key+'" flags');
+
       zoopy[key] = this.get_val(key, flag);
 
       if (key == 'rotate') zoopy[key] = zoopy[key] * this.fix_rotation(flag);
 
     }
 
-    // special cases (so absence of flags behaves as expected)
+    // special cases (so absence of flags behaves as expected) ———————————————————————————————
 
     // set opacity 0 to 100
     if ( typeof zoopy.xmove    == 'undefined' &&
@@ -1048,7 +1047,7 @@ function gsap_params(action){
 
   var params = {};
 
-  params['duration'       ] = action.duration;
+  params['duration'       ] = action.duration==0 ? 0.001:action.duration
   params['transformOrigin'] = convert_transform(action.fixed);
 
   if (typeof action.ease     == 'undefined') params['ease'     ] = Power1.easeInOut     ;
@@ -1087,7 +1086,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
- var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name6'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
