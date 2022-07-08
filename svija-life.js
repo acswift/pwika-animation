@@ -372,7 +372,7 @@ class Animation{
         case 'f': if (flag=='func'           ) key = 'func'    ; else key = 'fixed'   ; break;
         case 'h': if (flag=='hard'           ) key = 'ease'    ; else key = 'cursor'  ; break;
         case 'x': if (flag.substr(2,3)=='x25') key = 'xscale'  ; else key = 'xmove'   ; break; // +: _x2B_ · %: _x25_
-        case 'y': if (flag.substr(1,1)=='_'  ) key = 'yscale'  ; else key = 'ymove'   ; break;
+        case 'y': if (flag.substr(2,3)=='x25' ) key = 'yscale'  ; else key = 'ymove'   ; break;
         case '_': key = flag_value_to_key[flag.substr(0,5)]    ; break;
 
       default:
@@ -406,9 +406,19 @@ class Animation{
     var flag_len = flag_length[key];
 
     if (key == 'xmove') // correct for + being converted to _x2B_
-      if (flag.slice(1,2) == '_'){
+      if (flag.slice(1,2) == '_')
         flag = 'x' + flag.slice(6, flag.length);
-        log('——————————————————————————————————————————-- found xmove: '+flag);
+      else if (flag.slice(1,2) != '-') {
+        flag = 'x+0';
+        errlog('Please use a "+" for positive x move values ('+this.name+')');
+      }
+
+    if (key == 'ymove') // correct for + being converted to _x2B_
+      if (flag.slice(1,2) == '_')
+        flag = 'y' + flag.slice(6, flag.length);
+      else if (flag.slice(1,2) != '-') {
+        flag = 'y+0';
+        errlog('Please use a "+" for positive y move values ('+this.name+')');
       }
 
     if (flag_len == 0) return flag;
