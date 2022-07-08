@@ -29,7 +29,9 @@ delay   | timed | 0.5 | after given number of seconds | 0.5
 ### scroll triggers
 
 trigger | action | default | description
--------:|--------|------------------------------|---------------
-scroll   | zone | 0.5 | after given number of seconds | 0.5
+-------:|--------|---------|---------------
+scroll  | zone   | 0.5     | on when trigger is entirely visible, off when partly hidden
+scroll  | point  | 0.5     | on when point is centered vertically
+scroll  | scrub  | 0.5     | t/c
 
 
