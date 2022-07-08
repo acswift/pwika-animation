@@ -166,7 +166,7 @@ class Animation{
 
       if (key != 'func'){
         var v = trigger_flag_value_to_key_value[val];
-        if (val == '') errlog('Trigger '+zoopy.name+' has an extra slash.');
+        if (val == '') errlog('Trigger "'+this.name+'" has an extra slash.');
         else if (typeof v == 'undefined') errlog('Trigger "'+this.name+'" has unknown flag: "'+val+'".');
         else zoopy[key] = v;
       }
@@ -494,7 +494,7 @@ triggers.forEach(kind => {
   var obj_array = Array.from(document.querySelectorAll(stem));
 
   // loop through adding triggers
-  for(var x=0; x<obj_array.length; x++){
+  for(var x=obj_array.length-1; x>-1; x--){ // reverse order to match layer palette order
     var obj = obj_array[x];
     var flags = obj.id.split(separator);
 
