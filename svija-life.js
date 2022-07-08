@@ -1,5 +1,5 @@
 
-//———————————————————————————————————————— svija-fvx.js
+//———————————————————————————————————————— svija-life.js
 
 /*———————————————————————————————————————— notes
 
@@ -52,7 +52,7 @@ const flag_value_to_key = {
   '_x2B_' : 'handoff'      // value follows
 }
 
-const key_length = { 
+const flag_length = { 
 
   // so we can get value from end of flag
   // # of characters, value follows
@@ -363,17 +363,17 @@ class Animation{
       // has to be rewritten when flags are modified
       // the point is to avoid a loop
       switch(first){
-        case 'a':                            key = 'cursor'  ; break;
-        case 'i':                            key = 'ease'    ; break;
-        case 't':                            key = 'cursor'  ; break;
-        case 'n':                            key = 'blank'   ; break;
-        case 's':                            key = 'ease'    ; break;
-        case 'o':                            key = 'opac_to'; break;
-        case 'f': if (flag=='func'         ) key = 'func'    ; else key = 'fixed'   ; break;
-        case 'h': if (flag=='hard'         ) key = 'ease'    ; else key = 'cursor'  ; break;
-        case 'x': if (flag.substr(1,1)=='_') key = 'xscale'  ; else key = 'xmove'   ; break;
-        case 'y': if (flag.substr(1,1)=='_') key = 'yscale'  ; else key = 'ymove'   ; break;
-        case '_': key = flag_value_to_key[flag.substr(0,5)]  ; break;
+        case 'a':                              key = 'cursor'  ; break;
+        case 'i':                              key = 'ease'    ; break;
+        case 't':                              key = 'cursor'  ; break;
+        case 'n':                              key = 'blank'   ; break;
+        case 's':                              key = 'ease'    ; break;
+        case 'o':                              key = 'opac_to' ; break;
+        case 'f': if (flag=='func'           ) key = 'func'    ; else key = 'fixed'   ; break;
+        case 'h': if (flag=='hard'           ) key = 'ease'    ; else key = 'cursor'  ; break;
+        case 'x': if (flag.substr(2,3)=='x25') key = 'xscale'  ; else key = 'xmove'   ; break; // +: _x2B_ · %: _x25_
+        case 'y': if (flag.substr(1,1)=='_'  ) key = 'yscale'  ; else key = 'ymove'   ; break;
+        case '_': key = flag_value_to_key[flag.substr(0,5)]    ; break;
 
       default:
         if (parseFloat(flag) != flag){
@@ -403,10 +403,16 @@ class Animation{
 
   get_val(key, flag){
 
-    var key_len = key_length[key];
+    var flag_len = flag_length[key];
 
-    if (key_len == 0) return flag;
-    else return flag.substr(key_len);
+    if (key == 'xmove') // correct for + being converted to _x2B_
+      if (flag.slice(1,2) == '_'){
+        flag = 'x' + flag.slice(6, flag.length);
+        log('——————————————————————————————————————————-- found xmove: '+flag);
+      }
+
+    if (flag_len == 0) return flag;
+    else return flag.substr(flag_len);
   }
 
   fix_rotation(flag){
@@ -456,7 +462,7 @@ class Action{
     this.duration   = duration;     // number · duration in seconds              34.5 (1st number)
     this.ease       = ease;         // animation ease                            in, out, inout, noease
     this.xmove      = xmove;        // x movement                                x-30
-    this.ymove      = ymove;        // y movement                                y25
+    this.ymove      = ymove;        // y movement                                y+25
     this.fixed      = fixed;        // fixed point                               0f0 to 100f100
     this.rotate     = rotate;       // number · rotation                         >20 or <45.5
     this.scale      = scale;        // number · percentage to scale              %150
@@ -878,7 +884,6 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
     pcent = Math.round(pcent * 10000)/10000; // percent + 2 decimals
     var new_time = tline.totalDuration() * pcent;
     tline.totalTime(new_time);
-    log(tline.totalDuration()+':'+pcent);
   
   }
 
@@ -1072,7 +1077,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name6'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+   var a = 'name4'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
