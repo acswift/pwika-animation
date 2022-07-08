@@ -744,13 +744,12 @@ function scroll_point(animation, x){
 
     var box = obj.getBBox();      // get bounding box of trigger
     var t = box['y'];             // top
-    var b = t + box['height'];    // bottom
-    var params = gsap_params(animation.action[x]);
 
-    window.addEventListener('scroll', execute_scroll.bind(null, animation, x, t, b, params)); 
+    var params = gsap_params(animation.action[x]);
+    window.addEventListener('scroll', execute_scroll_point.bind(null, animation, x, t, params)); 
 
     // in case something should already be visible
-    execute_scroll(animation, x, t, b, params); 
+    execute_scroll_point(animation, x, t, params); 
   }
 }
 
@@ -764,19 +763,19 @@ function scroll_zone(animation, x){
     var box = obj.getBBox();      // get bounding box of trigger
     var t = box['y'];             // top
     var b = t + box['height'];    // bottom
-    var params = gsap_params(animation.action[x]);
 
-    window.addEventListener('scroll', execute_scroll.bind(null, animation, x, t, b, params)); 
+    var params = gsap_params(animation.action[x]);
+    window.addEventListener('scroll', execute_scroll_zone.bind(null, animation, x, t, b, params)); 
 
     // in case something should already be visible
-    execute_scroll(animation, x, t, b, params); 
+    execute_scroll_zone(animation, x, t, b, params); 
   }
 }
 
 
 //:::::::::::::::::::::::::::::::::::::::: ACTION-RELATED
 
-//———————————————————————————————————————— execute_scroll(animation, x, trig_top, trig_bot)
+//———————————————————————————————————————— execute_scroll_point(animation, x, trig_top, params)
 
 // https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
@@ -787,7 +786,47 @@ function scroll_zone(animation, x){
 
 // called every time a scroll action
 
-function execute_scroll(animation, x, trig_top, trig_bot, params){
+function execute_scroll_point(animation, x, trig_top, params){
+
+  var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
+  var pixel_height = window.innerHeight;
+
+  var rem_top = page_top / illustrator_pixel;
+
+  var obj      = animation.action[x].element;
+  var funcName = animation.name + x + '_timeline';
+  var tline    = window[funcName];
+
+  // goes on when trigger top scrolls up past top of page
+  
+  // trigger is activated
+  if (trig_top < rem_top){
+    if (typeof tline != 'undefined'){
+      if (tline.reversed()) tline.play();       //  if reversed play it · not relevant but will be useful when reset flag is added
+    }
+    else{
+      //  doesn't exist: create & play it
+      window[funcName] = new gsap.timeline({paused:true});
+      var tline = window[funcName];
+      tline.to(obj, params);
+      tline.play();
+    }
+  }
+
+}
+
+//———————————————————————————————————————— execute_scroll_zone(animation, x, trig_top, trig_bot, params)
+
+// https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
+
+/*    special cases:
+ 
+      • top is visible to start with
+      • action opacity default is visible to start with */
+
+// called every time a scroll action
+
+function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
