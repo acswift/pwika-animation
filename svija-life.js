@@ -167,7 +167,7 @@ class Animation{
       if (key != 'func'){
         var v = trigger_flag_value_to_key_value[val];
         if (val == '') errlog('Trigger '+zoopy.name+' has an extra slash.');
-        else if (typeof v == 'undefined') errlog('Trigger '+zoopy.name+' has unknown flag: "'+val+'".');
+        else if (typeof v == 'undefined') errlog('Trigger "'+this.name+'" has unknown flag: "'+val+'".');
         else zoopy[key] = v;
       }
 
@@ -387,7 +387,7 @@ class Animation{
           return null;
         }
 
-        key = 'delay';
+        key = 'duration';
 
       }
       return key;
@@ -1087,7 +1087,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-   var a = 'name4'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+ var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
