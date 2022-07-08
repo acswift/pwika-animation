@@ -5,7 +5,8 @@ trigger | action | description
 -------:|--------|---------------
 scroll  | zone   | on when trigger is entirely visible, off when partly hidden
 scroll  | point  | on when point becomes visible
-scroll  | scrub  | t/c
+scroll  | scrub  | % of bar above top of window = % of timeline
+scroll  | dscrub | scrub to do, second to undo (they can't overlap!)
 
 ---
 ### mouse trigger flags
