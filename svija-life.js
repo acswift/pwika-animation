@@ -1009,6 +1009,7 @@ function execute_toggle(namex, actionx, params){
     else                  tline.reverse();
 
   }
+
 }
 
 
@@ -1086,7 +1087,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name6'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name35'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
