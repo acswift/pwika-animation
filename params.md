@@ -40,4 +40,15 @@ delay   | timed | 0.5 | after given number of seconds | 0.5
 ---
 ### mouse action flags
 
-d23 duration 23 seconds
+d23 delay 23 seconds
+
+number is duration, d24 is delay
+
+d23-45 is double delay
+```
+238     // set default duration                                                      
+239     if (zoopy.kind=='timed' && typeof zoopy.delay=='undefined'){                 
+240       zoopy.delay    = zoopy.duration;                                           
+241       zoopy.duration = action_defaults.duration;                                 
+242     }
+```
