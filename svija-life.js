@@ -22,7 +22,7 @@ const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'togg
 
 //———————————————————————————————————————— conversion dictionaries
 
-const flag_value_to_key = {
+const trigger_flag_value_to_key = {
 
   // name & kind are given
 
@@ -30,15 +30,21 @@ const flag_value_to_key = {
   'func'  : 'func'       , // no value
   'a'     : 'cursor'     , // no value
   'h'     : 'cursor'     , // no value
-  't'     : 'cursor'     , // no value
+  'i'     : 'cursor'     , // no value
   'n'     : 'blank'      , // no value
 
-  // GSAP-related flags
+}
+
+const action_flag_value_to_key = {
+
+  // name & kind are given
+
   'softin' : 'ease'       , // no value
   'softout': 'ease'       , // no value
   'soft'   : 'ease'       , // no value
   'hard '  : 'ease'       , // no value
 
+  'd'     : 'delay'      , // value follows
   'x'     : 'xmove'      , // value follows
   'y'     : 'ymove'      , // value follows
   'f'     : 'fixed'      , // value follows
@@ -58,7 +64,7 @@ const flag_length = {
   // # of characters, value follows
 
   'cursor'     : 0,
-  'duration'   : 0,
+  'delay'      : 1,
   'func'       : 0,
   'blank'      : 0,
   'handoff'    : 5,
@@ -88,7 +94,7 @@ const cursors = {
   'default_link': 'pointer'
 }
 
-const flag_value_to_key_value = {
+const trigger_flag_value_to_key_value = {
   'a'   : 'a',
   'h'   : 'h',
   'i'   : 'i',
@@ -99,13 +105,16 @@ const flag_value_to_key_value = {
 
 //———————————————————————————————————————— defaults
 
-const action_defaults = { 'duration': 0.5 }
+const action_defaults = {
+  'delay'   : 5.0, // only for timed anims
+  'duration': 0.5
+}
 
 const trigger_defaults = {
 
   'func'       : false,
   'link'       : false,
-  'blank'      : false,
+  'blank'      : false
 
 }
 
@@ -116,8 +125,8 @@ const trigger_defaults = {
 
 // https://www.w3schools.com/js/js_classes.asp
 
-var animations = {};   // list of Animation's
-var functions  = [];   // list of mouse functions called by buttons
+var animations = {};   // Animations
+var functions  = [];   // mouse functions called by func flag
 
 class Animation{
 
@@ -151,16 +160,12 @@ class Animation{
       // entity conversion not necessary for triggers
 
       var val = flags[x];
-      var key = flag_value_to_key[val];
-
-
-
-
+      var key = trigger_flag_value_to_key[val];
 
       // if not function, set flag
 
       if (key != 'func'){
-        var v = flag_value_to_key_value[val];
+        var v = trigger_flag_value_to_key_value[val];
         if (val == '') errlog('Trigger '+zoopy.name+' has an extra slash.');
         else if (typeof v == 'undefined') errlog('Trigger '+zoopy.name+' has unknown flag: "'+val+'".');
         else zoopy[key] = v;
@@ -196,7 +201,7 @@ class Animation{
 
     var zoopy     = new Action;
     zoopy.element = obj;
-    zoopy.kind  = kind;
+    zoopy.kind    = kind;
 
     // set defaults
 
@@ -211,7 +216,7 @@ class Animation{
       var flag = flags[x];
 
       // assign value to flag
-      key = this.get_key(flag);
+      key = this.get_action_key(flag);
       zoopy[key] = this.get_val(key, flag);
 
       if (key == 'rotate') zoopy[key] = zoopy[key] * this.fix_rotation(flag);
@@ -236,10 +241,12 @@ class Animation{
       zoopy.opac_from = 100;
 
     // set default duration
-    if (zoopy.kind=='timed' && typeof zoopy.delay=='undefined'){
-      zoopy.delay    = zoopy.duration;
-      zoopy.duration = action_defaults.duration;
-    }
+    if (typeof zoopy.duration=='undefined')
+      zoopy.duration= action_defaults.duration;
+
+    // set default delay
+    if (zoopy.kind=='timed' && typeof zoopy.delay=='undefined')
+      zoopy.delay= action_defaults.delay;
 
     // if destination opacity is not 0, default starting opacity is 0
     if (typeof zoopy.opac_from == 'undefined' && typeof zoopy.opac_to != 'undefined') 
@@ -253,8 +260,9 @@ class Animation{
   set_cursor(){
   
     for (var t=0; t<this.trigger.length; t++){
+
       if (typeof this.trigger[t].cursor != 'undefined')
-        this.trigger[t].element.style.cursor = cursors[this.cursor];
+        this.trigger[t].element.style.cursor = cursors[this.trigger[t].cursor];
   
       else{
         var is_hand = false;
@@ -349,7 +357,7 @@ class Animation{
     log('^ end debug output —————————————————————————— ⚠️\n\n');
   }
 
-  get_key(flag, is_duration){
+  get_action_key(flag, is_duration){
 
   // is programmed specifically to optimize key finding
   // needs to be updated when flags are modified
@@ -360,18 +368,17 @@ class Animation{
       // has to be rewritten when flags are modified
       // the point is to avoid a loop
       switch(first){
-        case 'a':                              key = 'cursor'  ; break;
-        case 'd':                              key = 'duration'; break;
-        case 'i':                              key = 'ease'    ; break;
-        case 't':                              key = 'cursor'  ; break;
+//      case 'a':                              key = 'cursor'  ; break;
+        case 'd':                              key = 'delay'   ; break;
+//      case 'i':                              key = 'cursor'  ; break;
         case 'n':                              key = 'blank'   ; break;
         case 's':                              key = 'ease'    ; break;
         case 'o':                              key = 'opac_to' ; break;
-        case 'f': if (flag=='func'           ) key = 'func'    ; else key = 'fixed'   ; break;
+//      case 'f': if (flag=='func'           ) key = 'func'    ; else key = 'fixed'   ; break;
         case 'h': if (flag=='hard'           ) key = 'ease'    ; else key = 'cursor'  ; break;
         case 'x': if (flag.substr(2,3)=='x25') key = 'xscale'  ; else key = 'xmove'   ; break; // +: _x2B_ · %: _x25_
         case 'y': if (flag.substr(2,3)=='x25') key = 'yscale'  ; else key = 'ymove'   ; break;
-        case '_': key = flag_value_to_key[flag.slice(0,5)]     ; break;
+        case '_': key = action_flag_value_to_key[flag.slice(0,5)]     ; break;
 
       default:
         if (parseFloat(flag) != flag){
@@ -1080,7 +1087,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-   var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+   var a = 'name4'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
