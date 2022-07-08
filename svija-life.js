@@ -373,7 +373,7 @@ class Animation{
         case 'n':                              key = 'blank'   ; break;
         case 's':                              key = 'ease'    ; break;
         case 'o':                              key = 'opac_to' ; break;
-//      case 'f': if (flag=='func'           ) key = 'func'    ; else key = 'fixed'   ; break;
+        case 'f':                              key = 'fixed'   ; break;
         case 'h': if (flag=='hard'           ) key = 'ease'    ; else key = 'cursor'  ; break;
         case 'x': if (flag.substr(2,3)=='x25') key = 'xscale'  ; else key = 'xmove'   ; break; // +: _x2B_ · %: _x25_
         case 'y': if (flag.substr(2,3)=='x25') key = 'yscale'  ; else key = 'ymove'   ; break;
