@@ -400,29 +400,66 @@ class Animation{
 
   }
 
-  get_val(key, flag){
+get_val(key, flag){
+
+  var flag_len = flag_length[key];
+
+  if (key == 'xmove'){ // correct for + being converted to _x2B_
+    if (flag.slice(1,2) == '_')      var val = flag.slice(6, flag.length);  // +30
+    else if (flag.slice(1,2) == '-') var val = flag.slice(1, flag.length);  // -60
+    else {                                                                  // neither
+      var val = 0;
+      errlog('Action "'+this.name+'" requires a "+" for positive x move values');
+    }
+    if (not_number(val)) errlog('Action "'+this.name+'" requires a numerical value (was '+val+')');
+    flag = 'x' + val;
+  }
+
+  if (key == 'ymove'){ // correct for + being converted to _x2B_
+    if (flag.slice(1,2) == '_')      var val = flag.slice(6, flag.length);  // +30
+    else if (flag.slice(1,2) == '-') var val = flag.slice(1, flag.length);  // -60
+    else {                                                                  // neither
+      var val = 0;
+      errlog('Action "'+this.name+'" requires a "+" for positive y move values');
+    }
+    if (not_number(val)) errlog('Action "'+this.name+'" requires a numerical value (was '+val+')');
+    flag = 'y' + val;
+  }
+
+  if (flag_len == 0) return flag;
+  else return flag.substr(flag_len);
+}
+
+/*get_val(key, flag){
 
     var flag_len = flag_length[key];
 
-    if (key == 'xmove') // correct for + being converted to _x2B_
-      if (flag.slice(1,2) == '_')
-        flag = 'x' + flag.slice(6, flag.length);
+    if (key == 'xmove'){ // correct for + being converted to _x2B_
+      if (flag.slice(1,2) == '_') var val = flag.slice(6, flag.length);
       else if (flag.slice(1,2) != '-') {
-        flag = 'x+0';
+        var val = 0;
         errlog('Action "'+this.name+'" requires a "+" for positive x move values');
       }
+      if (is_number(val)) flag = 'x' + val;
+      else {
+        errlog('Action "'+this.name+'" requires a numerical value (value: "x'+val+'")');
+        val = 0;
+      }
+    }
 
-    if (key == 'ymove') // correct for + being converted to _x2B_
-      if (flag.slice(1,2) == '_')
-        flag = 'y' + flag.slice(6, flag.length);
+    if (key == 'ymove'){ // correct for + being converted to _x2B_
+      if (flag.slice(1,2) == '_') var val = flag.slice(6, flag.length);
       else if (flag.slice(1,2) != '-') {
-        flag = 'y+0';
+        var val = 0;
         errlog('Action "'+this.name+'" requires a "+" for positive y move values');
       }
+      if (not_number(val)) errlog('Action "'+this.name+'" requires a numerical value (value: "y'+val+'")');
+      flag = 'y' + val;
+    }
 
     if (flag_len == 0) return flag;
     else return flag.substr(flag_len);
-  }
+  } */
 
   fix_rotation(flag){
     if (flag.substr(0,5) == '_x3C_') return -1;
@@ -1023,6 +1060,9 @@ function reverse_anim(name){
   window[funcName].reverse();
 }
 
+
+//:::::::::::::::::::::::::::::::::::::::: UTILITIES
+
 //———————————————————————————————————————— set_clickable(obj, clickable)
 
 function set_clickable(obj, clickable){
@@ -1085,9 +1125,15 @@ function errlog(arg){
   alert('⚠️  '+arg);
 }
 
+//———————————————————————————————————————— not_number(x)
+
+function not_number(x) {
+  return parseFloat(x) != x;
+};
+
 //———————————————————————————————————————— debugging
 
-// var a = 'name8'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name16'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
