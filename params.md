@@ -1,3 +1,13 @@
+---
+### scroll triggers
+
+trigger | action | default | description
+-------:|--------|---------|---------------
+scroll  | zone   | 0.5     | on when trigger is entirely visible, off when partly hidden
+scroll  | point  | 0.5     | on when point is centered vertically
+scroll  | scrub  | 0.5     | t/c
+
+---
 ### mouse trigger flags
 
 trigger | flag            | action | default | description
@@ -25,13 +35,5 @@ mouse   | toggle | x       |double: click & click
 trigger | action | default | description
 -------:|--------|------------------------------|---------------
 delay   | timed | 0.5 | after given number of seconds | 0.5
-
-### scroll triggers
-
-trigger | action | default | description
--------:|--------|---------|---------------
-scroll  | zone   | 0.5     | on when trigger is entirely visible, off when partly hidden
-scroll  | point  | 0.5     | on when point is centered vertically
-scroll  | scrub  | 0.5     | t/c
 
 
