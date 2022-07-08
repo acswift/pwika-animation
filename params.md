@@ -1,11 +1,11 @@
 ---
 ### scroll triggers
 
-trigger | action | default | description
--------:|--------|---------|---------------
-scroll  | zone   | 0.5     | on when trigger is entirely visible, off when partly hidden
-scroll  | point  | 0.5     | on when point is centered vertically
-scroll  | scrub  | 0.5     | t/c
+trigger | action | description
+-------:|--------|---------------
+scroll  | zone   | on when trigger is entirely visible, off when partly hidden
+scroll  | point  | on when point becomes visible
+scroll  | scrub  | t/c
 
 ---
 ### mouse trigger flags
