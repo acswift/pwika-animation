@@ -52,3 +52,5 @@ d23-45 is double delay
 241       zoopy.duration = action_defaults.duration;                                 
 242     }
 ```
+
+default delay for timed is 5 seconds
