@@ -18,7 +18,7 @@ log("svija-fvx.js");
 
 const  separator = '_x2F_'; // regular slash
 const   triggers = [ 'mouse', 'delay', 'scroll' ];
-const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'timed', 'zone', 'point' ];
+const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'timed', 'point', 'zone', 'scrub' ];
 
 //———————————————————————————————————————— conversion dictionaries
 
@@ -664,6 +664,10 @@ function activate_scroll(animation){
       scroll_zone(animation, x);
       break;
 
+    case 'scrub':
+      scroll_scrub(animation, x);
+      break;
+
     default:
       if (typeof animation.action[x].kind != 'undefined') errlog('unknown scroll kind: '+animation.action[x].kind);
       else errlog('missing scroll action: '+animation.name);
@@ -753,6 +757,25 @@ function scroll_point(animation, x){
   }
 }
 
+//———————————————————————————————————————— scroll_scrub(animation,x)
+
+function scroll_scrub(animation, x){
+
+  for (var t=0; t<animation.trigger.length; t++){
+    var obj = animation.trigger[t].element;
+
+    var box = obj.getBBox();      // get bounding box of trigger
+    var t = box['y'];             // top
+    var b = t + box['height'];    // bottom
+
+    var params = gsap_params(animation.action[x]);
+    window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params)); 
+
+    // in case something should already be visible
+    execute_scroll_scrub(animation, x, t, b, params); 
+  }
+}
+
 //———————————————————————————————————————— scroll_zone(animation,x)
 
 function scroll_zone(animation, x){
@@ -813,6 +836,62 @@ function execute_scroll_point(animation, x, trig_top, params){
     }
   }
 
+}
+
+/*———————————————————————————————————————— execute_scroll_scrub(animation, x, trig_top, trig_bot, params)
+
+    ways to get to correct position:
+    - seek(seconds) · allows relative jumps
+    - time(seconds) · doesn't include repeats & delays
+    - totalTime() · includes repeats & delays (what I want)
+
+    ways to get timeline length
+    - .totalDuration()
+
+    https://greensock.com/docs/v3/GSAP/Timeline/totalTime()
+    https://greensock.com/forums/topic/8287-most-efficient-way-of-setting-timeline-playhead/ */
+
+function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
+
+  var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
+  var pixel_height = window.innerHeight;
+
+  var rem_top = page_top / illustrator_pixel;
+
+  var obj      = animation.action[x].element;
+  var funcName = animation.name + x + '_timeline';
+  var tline    = window[funcName];
+
+  // % of bar above top of window = % of timeline
+  
+  // trigger is activated
+  if (trig_top < rem_top && trig_bot > rem_top){
+    if (typeof tline == 'undefined'){
+      window[funcName] = new gsap.timeline({paused:true});
+      var tline = window[funcName];
+      tline.to(obj, params);
+    }
+
+    var obj_height = trig_bot - trig_top;
+    var passed = rem_top - trig_top;
+    var pcent = passed/obj_height;
+    pcent = Math.round(pcent * 10000)/10000; // percent + 2 decimals
+    var new_time = tline.totalDuration() * pcent;
+    tline.totalTime(new_time);
+    log(tline.totalDuration()+':'+pcent);
+  
+  }
+
+  else {
+    if (typeof tline != 'undefined'){
+
+      // if trigger is below top of page, snap to 0
+      if (trig_top > rem_top) tline.totalTime(0);
+
+      // if trigger is above top of page, snap to 100
+      if (trig_bot < rem_top) tline.totalTime(tline.totalDuration());
+    }
+  }
 }
 
 //———————————————————————————————————————— execute_scroll_zone(animation, x, trig_top, trig_bot, params)
