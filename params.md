@@ -37,4 +37,7 @@ trigger | action | default | description
 -------:|--------|------------------------------|---------------
 delay   | timed | 0.5 | after given number of seconds | 0.5
 
+---
+### mouse action flags
 
+d23 duration 23 seconds
