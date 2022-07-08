@@ -952,9 +952,9 @@ function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
 
   // trigger is deactivated
   else{
-    if (typeof tline == 'undefined') return true;                    //  doesn't exist: do nothing
-    if (!tline.isActive() && !tline.reversed()) tline.reverse();     //  paused not reversed (at end): reverse it
-    else if (tline.isActive() && tline.reversed()) tline.reverse();  //  playing not reversed: reverse it */
+    if (typeof tline == 'undefined') return true;                      //  doesn't exist: do nothing
+    if (!tline.isActive() && !tline.reversed()) tline.reverse();       //  paused not reversed (at end): reverse it
+    else if (tline.isActive() && !tline.reversed()) tline.reverse();   //  playing not reversed: reverse it */
     return true;
   }
 
