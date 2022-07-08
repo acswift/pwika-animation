@@ -18,7 +18,7 @@ log("svija-fvx.js");
 
 const  separator = '_x2F_'; // regular slash
 const   triggers = [ 'mouse', 'delay', 'scroll' ];
-const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'timed', 'zone'   ];
+const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'timed', 'zone', 'point' ];
 
 //———————————————————————————————————————— conversion dictionaries
 
@@ -319,7 +319,7 @@ class Animation{
       if (typeof this.action == 'undefined')
         if (!this.trigger[t].func && !this.trigger[t].link){
           delete animations[this.name];
-          errlog('Animation '+this.name+' deleted (no action, link or function).');
+          errlog('Animation '+this.name+' deleted (no action, link or function). SVG NAME');
         }
     }
     
@@ -656,8 +656,12 @@ function activate_scroll(animation){
 
   for (var x=0; x<animation.action.length; x++){
     switch (animation.action[x].kind) {
+    case 'point':
+      scroll_point(animation, x);
+      break;
+
     case 'zone':
-      scroll_anim(animation, x);
+      scroll_zone(animation, x);
       break;
 
     default:
@@ -683,7 +687,7 @@ function delay_timed(animation, x){
 }
 
 
-//———————————————————————————————————————— mouse_single (animation, x, type)
+//———————————————————————————————————————— mouse_single(animation, x, type)
 
 function mouse_single(animation, x, type){
 
@@ -731,9 +735,28 @@ function mouse_toggle(animation, x){
 }
 
 
-//———————————————————————————————————————— scroll_anim(animation,x)
+//———————————————————————————————————————— scroll_point(animation,x)
 
-function scroll_anim(animation, x){
+function scroll_point(animation, x){
+
+  for (var t=0; t<animation.trigger.length; t++){
+    var obj = animation.trigger[t].element;
+
+    var box = obj.getBBox();      // get bounding box of trigger
+    var t = box['y'];             // top
+    var b = t + box['height'];    // bottom
+    var params = gsap_params(animation.action[x]);
+
+    window.addEventListener('scroll', execute_scroll.bind(null, animation, x, t, b, params)); 
+
+    // in case something should already be visible
+    execute_scroll(animation, x, t, b, params); 
+  }
+}
+
+//———————————————————————————————————————— scroll_zone(animation,x)
+
+function scroll_zone(animation, x){
 
   for (var t=0; t<animation.trigger.length; t++){
     var obj = animation.trigger[t].element;
