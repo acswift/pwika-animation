@@ -12,7 +12,7 @@
 
 const d1 = new Date();
 let start_time = d1.getTime();
-log("svija-fvx.js");
+log("——— svija-fvx.js ———");
 
 //———————————————————————————————————————— separator, types of triggers and actions
 
@@ -58,6 +58,7 @@ const flag_length = {
   // # of characters, value follows
 
   'cursor'     : 0,
+  'duration'   : 0,
   'func'       : 0,
   'blank'      : 0,
   'handoff'    : 5,
@@ -74,23 +75,23 @@ const flag_length = {
 }
 
 const eases = {
-  'softin'    : Power1.easeIn,
-  'softout'   : Power1.easeOut,
-  'soft' : Power1.easeInOut,
-  'hard': "none" 
+  'softin' : Power1.easeIn,
+  'softout': Power1.easeOut,
+  'soft'   : Power1.easeInOut,
+  'hard'   : "none" 
 }
 
 const cursors = {
   'a'           : 'default',
   'h'           : 'pointer',
-  't'           : 'text',
+  'i'           : 'text',
   'default_link': 'pointer'
 }
 
 const flag_value_to_key_value = {
   'a'   : 'a',
   'h'   : 'h',
-  't'   : 't',
+  'i'   : 'i',
   'func': true,
   'n'   : true
 }
@@ -203,19 +204,15 @@ class Animation{
 
     // loop through flags (kind|name|parameters...)
 
-    var is_duration = true;
-
     for(var x=2; x<flags.length; x++){
 
       // get key
       var key;
       var flag = flags[x];
 
-      [key, is_duration] = this.get_key(flag, is_duration);
-
       // assign value to flag
+      key = this.get_key(flag);
       zoopy[key] = this.get_val(key, flag);
-//    log(zoopy.name+': '+key+' = '+zoopy[key]);
 
       if (key == 'rotate') zoopy[key] = zoopy[key] * this.fix_rotation(flag);
 
@@ -364,6 +361,7 @@ class Animation{
       // the point is to avoid a loop
       switch(first){
         case 'a':                              key = 'cursor'  ; break;
+        case 'd':                              key = 'duration'; break;
         case 'i':                              key = 'ease'    ; break;
         case 't':                              key = 'cursor'  ; break;
         case 'n':                              key = 'blank'   ; break;
@@ -372,30 +370,25 @@ class Animation{
         case 'f': if (flag=='func'           ) key = 'func'    ; else key = 'fixed'   ; break;
         case 'h': if (flag=='hard'           ) key = 'ease'    ; else key = 'cursor'  ; break;
         case 'x': if (flag.substr(2,3)=='x25') key = 'xscale'  ; else key = 'xmove'   ; break; // +: _x2B_ · %: _x25_
-        case 'y': if (flag.substr(2,3)=='x25' ) key = 'yscale'  ; else key = 'ymove'   ; break;
-        case '_': key = flag_value_to_key[flag.substr(0,5)]    ; break;
+        case 'y': if (flag.substr(2,3)=='x25') key = 'yscale'  ; else key = 'ymove'   ; break;
+        case '_': key = flag_value_to_key[flag.slice(0,5)]     ; break;
 
       default:
         if (parseFloat(flag) != flag){
           if (flag == '') errlog('Action '+this.name+' has an extra slash.');
           else errlog('Action '+this.name+' has an unknown flag: "'+flag +'".');
-          return [null, false];
+          return null;
         }
 
-        // presume it's a number
-        if (is_duration){
-          key = 'duration';
-          is_duration = false;
-        }
-        else key = 'delay';
+        key = 'delay';
 
       }
-      return [key, is_duration];
+      return key;
     }
     catch (error) {
       if (flag == '') errlog('Action '+this.name+' has an extra slash.');
       else errlog('Action '+this.name+' has an unknown flag: "'+flag +'".');
-      return [null, false];
+      return null;
     }
 
 
@@ -488,7 +481,7 @@ class Action{
 
 //———————————————————————————————————————— register triggers
 
-log('\n——— registering triggers ———');
+log('\nregistering triggers…');
 
 triggers.forEach(kind => {
   var stem = "[id^='" + kind + separator + "']";
@@ -520,7 +513,7 @@ triggers.forEach(kind => {
 
 //———————————————————————————————————————— register actions
 
-log('\n——— registering actions ———');
+log('\nregistering actions…');
 
 actions.forEach(kind => {
   var stem = "[id^='" + kind + separator + "']";
@@ -554,7 +547,7 @@ actions.forEach(kind => {
 
 //———————————————————————————————————————— turn on "default on" elements, set cursors, and activate functions  · deactivated
 
-log('\n——— turning on "default on" elements & settings cursors ———');
+log('\nturning on "default on" elements & setting cursors…');
 
 Object.keys(animations).forEach(name => {
   animations[name].set_cursor();
@@ -564,7 +557,7 @@ Object.keys(animations).forEach(name => {
 
 //———————————————————————————————————————— delete unused triggers
 
-log('\n——— deleting actionless animations ———');
+log('deleting actionless animations…');
 
 Object.keys(animations).forEach(name =>
   animations[name].delete_if_no_action()
@@ -572,7 +565,7 @@ Object.keys(animations).forEach(name =>
 
 //———————————————————————————————————————— enable actions
 
-log('\n——— activating animations ———');
+log('\nactivating animations…');
 
 Object.keys(animations).forEach(name => {
 
@@ -1087,7 +1080,7 @@ function errlog(arg){
 
 //———————————————————————————————————————— debugging
 
-   var a = 'name4'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+   var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
