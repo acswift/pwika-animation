@@ -14,10 +14,12 @@ cp ~/.vim/view/*params.md* ./
 
 # Action Flags
 
+\### = number
+
 flag            | meaning | default | description | example
 ----------------|--------|---------|----------------------------|-----------
 number          | duration | 0.5     | duration of animation | over/name/4
-d###       | delay | 0 | delay at beginning of timeline | over/name/d
+d###       | delay | 0 | delay at beginning of timeline | over/name/d4
 x[sign]### | move | 0 | move along x-axis | over/name/x+20
 y[sign]### | move | 0 | move along y-axis | over/name/y-20
 %### | scale | 100 | scale to given percent | over/name/%150
