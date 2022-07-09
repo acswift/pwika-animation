@@ -27,9 +27,8 @@ x%### | scale | 100 | scale horizontally to given percent | over/name/y%150
 y%### | scale | 100 | scale vertically to given percent | over/name/x%150
 \<### | rotate | 0 | rotate counter-clockwise | over/name/\<30
 \>### | rotate | 0 | rotate clockwise | over/name/\>30
-f###,### |
-
-/func/arg1/arg2 | function|—     | call function **func_name(arg1, arg2)**
+f###,### | fixed point | 50,50 | point of rotation that doesn't move | over/name/<90/f0,100
+/func/arg1/arg2 | function|—     | call function **func_name(arg1, arg2)** | over/name/func/arg1/arg2
 
 ---
 # Scroll Animations
