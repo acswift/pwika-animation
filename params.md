@@ -34,24 +34,6 @@ softin          | ease     | soft    | soft start & hard stop              | ove
 softout         | ease     | soft    | hard start & soft stop              | over/name/x+20/softout
 
 ---
-# Scroll Animations
-
-Trigger: **scroll**. There are no scroll trigger flags.
-
----
-### Actions
-
-action | example         | description
--------|-----------------|---------------------------------------------
- zone  | zone/name/%150  | on when trigger is unhidden, off when partly hidden
- point | point/name/%150 | on when point becomes visible
- scrub | scrub/name/%150 | % of bar above top of window = % of timeline
-
-*Planned addition:*
-**dscrub**: one scrub to do, a second scrub to undo (they can't overlap).
-
----
-
 # Mouse Animations
 
 Trigger: **mouse**.
@@ -76,6 +58,24 @@ click  | click/name/%150  | clicks on trigger (at release)
 down   | down/name/%150   | double: press & release
 ovaway | ovaway/name/%150 | double: pass over & moves away
 toggle | toggle/name/%150 | double: click & click
+
+
+---
+# Scroll Animations
+
+Trigger: **scroll**. There are no scroll trigger flags.
+
+---
+### Actions
+
+action | example         | description
+-------|-----------------|---------------------------------------------
+ zone  | zone/name/%150  | on when trigger is unhidden, off when partly hidden
+ point | point/name/%150 | on when point becomes visible
+ scrub | scrub/name/%150 | % of bar above top of window = % of timeline
+
+*Planned addition:*
+**dscrub**: one scrub to do, a second scrub to undo (they can't overlap).
 
 
 ---
