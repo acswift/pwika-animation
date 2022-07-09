@@ -1,3 +1,17 @@
+<details><summary>Vim Folds</summary>
+
+---
+To restore Vim folds when starting work:
+```
+cp ~=*params.md* ~/.vim/view/
+```
+To add folds to repo at commit:
+```
+cp ~/.vim/view/*params.md* ./
+```
+---
+</details>
+
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
 *Updated 14 June, 2022*
