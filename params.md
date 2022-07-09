@@ -1,4 +1,5 @@
----
+# Scroll Animations
+
 ### scroll triggers
 
 trigger  | action | description
@@ -9,6 +10,8 @@ scroll   | scrub  | % of bar above top of window = % of timeline
 \*scroll | dscrub | scrub to do, second to undo (they can't overlap!)
 
 ---
+# Mouse Animations
+
 ### mouse trigger flags
 
 trigger | flag            | action | default | description
