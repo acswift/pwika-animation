@@ -14,12 +14,14 @@ y%[number] | scale | 100 | scale vertically to given percent | over/name/x%150
 
 /func/arg1/arg2 | function|—     | call function **func_name(arg1, arg2)**
 
+---
 # Scroll Animations
 
 Scroll trigger: **scroll**.
 
 There are no scroll trigger flags.
 
+---
 ### Actions
 
  action | description
@@ -30,6 +32,7 @@ There are no scroll trigger flags.
  \*dscrub | scrub to do, second to undo (they can't overlap!)
 
 ---
+
 # Mouse Animations
 
 Mouse trigger: **mouse**.
@@ -55,6 +58,7 @@ down   | x       |double: press & release
 ovaway | x       |double: pass over & moves away
 toggle | x       |double: click & click
 
+---
 ### Action Flags
 
 flag            | meaning | default | description
@@ -64,7 +68,8 @@ flag            | meaning | default | description
 /a /h /i        | timed  | 0.5     | set cursor to **A**rrow, **H**and or **I**-beam
 
 ---
-# Time Triggers
+
+# Time Animations
 
 Time trigger: **delay**.
 
@@ -89,3 +94,4 @@ d23-45 is double delay
 ```
 
 default delay for timed is 5 seconds
+
