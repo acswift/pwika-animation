@@ -43,12 +43,14 @@ There are no scroll trigger flags.
 ---
 ### Actions
 
- action | description
---------|---------------
- zone   | on when trigger is entirely visible, off when partly hidden
- point  | on when point becomes visible
- scrub  | % of bar above top of window = % of timeline
- \*dscrub | scrub to do, second to undo (they can't overlap!)
+action | example         | description
+-------|-----------------|---------------------------------------------
+ zone  | zone/name/%150  | on when trigger is unhidden, off when partly hidden
+ point | point/name/%150 | on when point becomes visible
+ scrub | scrub/name/%150 | % of bar above top of window = % of timeline
+
+*Planned addition:*
+**dscrub**: one scrub to do, a second scrub to undo (they can't overlap).
 
 ---
 
@@ -67,17 +69,16 @@ flag            | action | default | description
 ---
 ### Actions
 
-action | default | description
--------|---------|---------------------------------------------
-over   | x       |passes over trigger
-away   | x       |moves away from trigger
-press  | x       |presses down on trigger (before release)
-click  | x       |clicks on trigger (at release)
-down   | x       |double: press & release
-ovaway | x       |double: pass over & moves away
-toggle | x       |double: click & click
+action | example          | description
+-------|------------------|---------------------------------------------
+over   | over/name/%150   | passes over trigger
+away   | away/name/%150   | moves away from trigger
+press  | press/name/%150  | presses down on trigger (before release)
+click  | click/name/%150  | clicks on trigger (at release)
+down   | down/name/%150   | double: press & release
+ovaway | ovaway/name/%150 | double: pass over & moves away
+toggle | toggle/name/%150 | double: click & click
 
----
 
 ---
 # Time-based Animations
