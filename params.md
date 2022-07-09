@@ -14,6 +14,10 @@ cp ~/.vim/view/*params.md* ./
 
 # Action Flags
 
+Action flags can be used with any kind of trigger.
+
+It is possible to use multiple different triggers with multiple different actions.
+
 \### = number
 
 flag            | meaning  | default | description                         | example
