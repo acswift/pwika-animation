@@ -1,3 +1,15 @@
+<details><summary>Vim Folds</summary>
+
+To restore Vim folds when starting work:
+```
+cp ~=* ~/.vim/view/
+```
+To save folds before committing:
+```
+cp ~/.vim/view/*svija-life* ./
+```
+</details>
+
 # Action Flags
 
 flag            | meaning | default | description | example
