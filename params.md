@@ -1,10 +1,26 @@
+# Action Flags
+
+flag            | meaning | default | description
+----------------|--------|---------|----------------------------
+number          | duration | 0.5     | open link in new tab/window
+d[number]       | delay | 0 | delay at beginning of timeline
+x[sign][number] | move | 0 | move along x-axis
+y[sign][number] | move | 0 | move along y-axis
+%[number] | scale | 100 | scale to given percent
+x%[number] | scale | 100 | scale horizontally to given percent
+y%[number] | scale | 100 | scale vertically to given percent
+\<[number] | rotate | 0 | rotate counter-clockwise
+\>[number] | rotate | 0 | rotate clockwise
+
+/func/arg1/arg2 | function|—     | call function **func_name(arg1, arg2)**
+
 # Scroll Animations
 
 Scroll trigger: **scroll**.
 
 There are no scroll trigger flags.
 
-### scroll triggers
+### Actions
 
  action | description
 --------|---------------
@@ -27,7 +43,7 @@ flag            | action | default | description
 /a /h /i        | timed  | 0.5     | set cursor to **A**rrow, **H**and or **I**-beam
 
 ---
-### mouse trigger actions
+### Actions
 
 action | default | description
 -------|---------|---------------------------------------------
@@ -39,14 +55,22 @@ down   | x       |double: press & release
 ovaway | x       |double: pass over & moves away
 toggle | x       |double: click & click
 
+### Action Flags
+
+flag            | meaning | default | description
+----------------|--------|---------|----------------------------
+/d              | delay | 0.5     | delay added at beginning of timeline
+/func/arg1/arg2 | function | —     | call function "func_name()"
+/a /h /i        | timed  | 0.5     | set cursor to **A**rrow, **H**and or **I**-beam
+
 ---
-# delay triggers
+# Time Triggers
 
-Delay trigger: **delay**.
+Time trigger: **delay**.
 
-trigger | action | default | description
--------:|--------|------------------------------|---------------
-delay   | timed | 0.5 | after given number of seconds | 0.5
+action | default | description
+-------|------------------------------|---------------
+timed | 0.5 | after given number of seconds | 0.5
 
 ---
 ### mouse action flags
