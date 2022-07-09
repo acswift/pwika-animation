@@ -36,7 +36,7 @@ softout         | ease     | soft    | hard start & soft stop              | ove
 ---
 # Scroll Animations
 
-Scroll trigger: **scroll**. There are no scroll trigger flags.
+Trigger: **scroll**. There are no scroll trigger flags.
 
 ---
 ### Actions
@@ -54,7 +54,7 @@ action | example         | description
 
 # Mouse Animations
 
-Mouse trigger: **mouse**.
+Trigger: **mouse**.
 
 ### Trigger Flags
 
@@ -81,19 +81,13 @@ toggle | toggle/name/%150 | double: click & click
 ---
 # Time-based Animations
 
-Time trigger: **delay**.
+Trigger: **delay**. There are no time trigger flags.
 
----
-### Trigger Flags
-
-*None.*
-
----
 ### Actions
 
-flag            | meaning  | default | description                         | example
+action | example          | description
 -------|------------------------------|---------------
-timed | 5 | after given number of seconds | 0.5
+timed  | 5 | after given number of seconds | 0.5
 
 ---
 ### Action Flags
