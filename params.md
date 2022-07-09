@@ -17,18 +17,18 @@ cp ~/.vim/view/*params.md* ./
 \### = number
 
 flag            | meaning | default | description | example
-----------------|--------|---------|----------------------------|-----------
+---------------:|----------|---------|----------------------------|-----------
 number          | duration | 0.5     | duration of animation | over/name/4
-d###       | delay | 0 | delay at beginning of timeline | over/name/d4
-x[sign]### | move | 0 | move along x-axis | over/name/x+20
-y[sign]### | move | 0 | move along y-axis | over/name/y-20
-%### | scale | 100 | scale to given percent | over/name/%150
-x%### | scale | 100 | scale horizontally to given percent | over/name/y%150
-y%### | scale | 100 | scale vertically to given percent | over/name/x%150
-\<### | rotate | 0 | rotate counter-clockwise | over/name/\<30
-\>### | rotate | 0 | rotate clockwise | over/name/\>30
-f###,### | fixed point | 50,50 | point of rotation that doesn't move | over/name/<90/f0,100
-/func/arg1/arg2 | function|—     | call function **func_name(arg1, arg2)** | over/name/func/arg1/arg2
+d###            | delay    | 0       | delay at beginning of timeline | over/name/d4
+x[sign]###      | move     | 0       | move along x-axis | over/name/x+20
+y[sign]###      | move     | 0       | move along y-axis | over/name/y-20
+%###            | scale    | 100     | scale to given percent | over/name/%150
+x%###           | scale    | 100     | scale horizontally to given percent | over/name/y%150
+y%###           | scale    | 100     | scale vertically to given percent | over/name/x%150
+\<###           | rotate   | 0       | rotate counter-clockwise | over/name/\<30
+\>###           | rotate   | 0       | rotate clockwise | over/name/\>30
+f###,###        | fixed    | 50,50   | point of rotation that doesn't move | over/name/<90/f0,100
+/func/arg1/arg2 | function | —       | call JS **func_name(arg1, arg2)** | over/name/func/arg1/arg2
 
 ---
 # Scroll Animations
