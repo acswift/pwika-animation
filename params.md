@@ -27,7 +27,7 @@ x%###           | scale    | 100     | scale horizontally to given percent | ove
 y%###           | scale    | 100     | scale vertically to given percent   | over/name/x%150
 \<###           | rotate   | 0       | rotate counter-clockwise            | over/name/\<30
 \>###           | rotate   | 0       | rotate clockwise                    | over/name/\>30
-f###,###        | fixed    | 50,50   | point of rotation that doesn't move | over/name/<90/f0,100
+f###,###        | fixed    | 50,50   | center of rotation                  | over/name/<90/f0,100
 hard            | ease     | soft    | abrupt start & stop                 | over/name/x+20/hard
 soft            | ease     | soft    | soft start & stop                   | over/name/x+20/soft
 softin          | ease     | soft    | soft start & hard stop              | over/name/x+20/softin
