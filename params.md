@@ -5,7 +5,7 @@ To restore Vim folds when starting work:
 ```
 cp ~=*params.md* ~/.vim/view/
 ```
-To save folds before committing:
+To add folds to repo at commit:
 ```
 cp ~/.vim/view/*params.md* ./
 ```
