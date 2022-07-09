@@ -36,9 +36,7 @@ softout         | ease     | soft    | hard start & soft stop              | ove
 ---
 # Scroll Animations
 
-Scroll trigger: **scroll**.
-
-There are no scroll trigger flags.
+Scroll trigger: **scroll**. There are no scroll trigger flags.
 
 ---
 ### Actions
@@ -60,11 +58,11 @@ Mouse trigger: **mouse**.
 
 ### Trigger Flags
 
-flag            | action | default | description
-----------------|--------|---------|----------------------------
-/n              | timed  | 0.5     | open link in new tab/window
-/func/arg1/arg2 | timed  | 0.5     | call function "func_name()"
-/a /h /i        | timed  | 0.5     | set cursor to **A**rrow, **H**and or **I**-beam
+flag            | meaning  | default | description                       | example
+----------------|----------|---------|-----------------------------------|---------------------------
+/n              | target   | same    | open link in new tab/window       | over/name/n
+/func/arg1/arg2 | function | —       | call function "func_name()"       | over/name/func/arg1/arg2
+/a /h /i        | cursor   | a       | **A**rrow, **H**and or **I**-beam | over/name/h
 
 ---
 ### Actions
