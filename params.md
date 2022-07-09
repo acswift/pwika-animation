@@ -85,14 +85,9 @@ Trigger: **delay**. There are no time trigger flags.
 
 ### Actions
 
-action | example          | description
--------|------------------------------|---------------
-timed  | 5 | after given number of seconds | 0.5
+action | example    | description
+-------|------------|------------------------------------------
+timed  | timed/name | delay after page load (default 5 seconds)
 
 ---
-### Action Flags
-
-flag            | meaning  | default | description                         | example
--------|------------------------------|---------------
-d### | delay | 5 | after given number of seconds | timed/name/d10
 
