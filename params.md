@@ -3,12 +3,13 @@
 ---
 To restore Vim folds when starting work:
 ```
-cp ~=* ~/.vim/view/
+cp ~=*params.md* ~/.vim/view/
 ```
 To save folds before committing:
 ```
 cp ~/.vim/view/*params.md* ./
 ```
+    /Users/Main/.vim/view/~=+Desktop=+svija.dev=+sync=+Svija=+Scripts=+params.md=
 ---
 </details>
 
