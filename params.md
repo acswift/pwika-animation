@@ -9,6 +9,7 @@ To save folds before committing:
 ```
 cp ~/.vim/view/*svija-life* ./
 ```
+---
 </details>
 
 # Action Flags
