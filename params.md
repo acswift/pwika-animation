@@ -1,5 +1,6 @@
 <details><summary>Vim Folds</summary>
 
+---
 To restore Vim folds when starting work:
 ```
 cp ~=* ~/.vim/view/
