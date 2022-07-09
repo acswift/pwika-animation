@@ -7,7 +7,7 @@ cp ~=* ~/.vim/view/
 ```
 To save folds before committing:
 ```
-cp ~/.vim/view/*svija-life* ./
+cp ~/.vim/view/*params.md* ./
 ```
 ---
 </details>
