@@ -1,16 +1,16 @@
 # Action Flags
 
-flag            | meaning | default | description
-----------------|--------|---------|----------------------------
-number          | duration | 0.5     | open link in new tab/window
-d[number]       | delay | 0 | delay at beginning of timeline
-x[sign][number] | move | 0 | move along x-axis
-y[sign][number] | move | 0 | move along y-axis
-%[number] | scale | 100 | scale to given percent
-x%[number] | scale | 100 | scale horizontally to given percent
-y%[number] | scale | 100 | scale vertically to given percent
-\<[number] | rotate | 0 | rotate counter-clockwise
-\>[number] | rotate | 0 | rotate clockwise
+flag            | meaning | default | description | example
+----------------|--------|---------|----------------------------|-----------
+number          | duration | 0.5     | duration of animation | over/name/4
+d[number]       | delay | 0 | delay at beginning of timeline | over/name/d
+x[sign][number] | move | 0 | move along x-axis | over/name/x+20
+y[sign][number] | move | 0 | move along y-axis | over/name/y-20
+%[number] | scale | 100 | scale to given percent | over/name/%150
+x%[number] | scale | 100 | scale horizontally to given percent | over/name/y%150
+y%[number] | scale | 100 | scale vertically to given percent | over/name/x%150
+\<[number] | rotate | 0 | rotate counter-clockwise | over/name/\<30
+\>[number] | rotate | 0 | rotate clockwise | over/name/\>30
 
 /func/arg1/arg2 | function|—     | call function **func_name(arg1, arg2)**
 
