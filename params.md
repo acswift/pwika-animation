@@ -9,7 +9,6 @@ To add folds to repo at commit:
 ```
 cp ~/.vim/view/*params.md* ./
 ```
-    /Users/Main/.vim/view/~=+Desktop=+svija.dev=+sync=+Svija=+Scripts=+params.md=
 ---
 </details>
 
@@ -18,14 +17,15 @@ cp ~/.vim/view/*params.md* ./
 flag            | meaning | default | description | example
 ----------------|--------|---------|----------------------------|-----------
 number          | duration | 0.5     | duration of animation | over/name/4
-d[number]       | delay | 0 | delay at beginning of timeline | over/name/d
-x[sign][number] | move | 0 | move along x-axis | over/name/x+20
-y[sign][number] | move | 0 | move along y-axis | over/name/y-20
-%[number] | scale | 100 | scale to given percent | over/name/%150
-x%[number] | scale | 100 | scale horizontally to given percent | over/name/y%150
-y%[number] | scale | 100 | scale vertically to given percent | over/name/x%150
-\<[number] | rotate | 0 | rotate counter-clockwise | over/name/\<30
-\>[number] | rotate | 0 | rotate clockwise | over/name/\>30
+d###       | delay | 0 | delay at beginning of timeline | over/name/d
+x[sign]### | move | 0 | move along x-axis | over/name/x+20
+y[sign]### | move | 0 | move along y-axis | over/name/y-20
+%### | scale | 100 | scale to given percent | over/name/%150
+x%### | scale | 100 | scale horizontally to given percent | over/name/y%150
+y%### | scale | 100 | scale vertically to given percent | over/name/x%150
+\<### | rotate | 0 | rotate counter-clockwise | over/name/\<30
+\>### | rotate | 0 | rotate clockwise | over/name/\>30
+f###,### |
 
 /func/arg1/arg2 | function|—     | call function **func_name(arg1, arg2)**
 
