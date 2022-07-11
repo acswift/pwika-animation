@@ -341,7 +341,8 @@ class Animation{
       log('\nTrigger['+t+']');
       Object.keys(this.trigger[t]).forEach(key => {
         if (typeof this.trigger[t][key] != 'undefined')
-          log(key+' ('+typeof(this.trigger[t][key])+') — '+this.trigger[t][key]);
+          if(key=='element')log('element (object) — '+this.trigger[t][key].id);
+          else log(key+' ('+typeof(this.trigger[t][key])+') — '+this.trigger[t][key]);
       });
     }
 
@@ -349,7 +350,8 @@ class Animation{
       log('\nAction[' + x + ']');
       Object.keys(this.action[x]).forEach(key => {
         if (typeof this.action[x][key] != 'undefined')
-          log(key+' ('+typeof(this.action[x][key])+') — '+this.action[x][key]);
+          if(key=='element')log('element (object) — '+this.action[t][key].id);
+          else log(key+' ('+typeof(this.action[t][key])+') — '+this.action[t][key]);
       });
     }
     
@@ -1133,7 +1135,10 @@ function not_number(x) {
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name16'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+ var a = 'thisone'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
+
+// ovaway_x2F_thisone_x2F__x25_400_x2F_f50_x2C_50_x2F__x3C_10_x2F_5_00000124152882660309727270000008410099753351256997_
+// ovaway_x2F_thisone_x2F__x25_400_x2F_f50_x2C_50_x2F__x3C_10_x2F_5_00000124152882660309727270000008410099753351256997_
