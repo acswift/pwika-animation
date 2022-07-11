@@ -53,7 +53,7 @@ const action_flag_value_to_key = {
   '_x25_' : 'scale'      , // value follows
   'x_x25_': 'xscale'     , // value follows
   'y_x25_': 'yscale'     , // value follows
-  'o'     : 'opac_to'   , // value follows
+  't'     : 'transp_to'   , // value follows
 
   '_x2B_' : 'handoff'      // value follows
 }
@@ -76,7 +76,7 @@ const flag_length = {
   'scale'      : 5,
   'xscale'     : 6,
   'yscale'     : 6,
-  'opac_to'    : 1
+  'transp_to'    : 1
 
 }
 
@@ -224,20 +224,20 @@ class Animation{
 
     // special cases (so absence of flags behaves as expected) ———————————————————————————————
 
-    // set opacity 0 to 100
+    // set transparency 0 to 100
     if ( typeof zoopy.xmove    == 'undefined' &&
          typeof zoopy.ymove    == 'undefined' &&
          typeof zoopy.rotate   == 'undefined' &&
          typeof zoopy.scale    == 'undefined' &&
          typeof zoopy.xscale   == 'undefined' &&
          typeof zoopy.yscale   == 'undefined' &&
-         typeof zoopy.opac_to  == 'undefined' ){
-      zoopy.opac_from = 0;
-      zoopy.opac_to   = 100;
+         typeof zoopy.transp_to  == 'undefined' ){
+      zoopy.transp_from = 0;
+      zoopy.transp_to   = 100;
     }
 
-    if (zoopy.opac_to == 0 && typeof zoopy.opac_from == 'undefined')
-      zoopy.opac_from = 100;
+    if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
+      zoopy.transp_from = 100;
 
     // set default duration
     if (typeof zoopy.duration=='undefined')
@@ -247,9 +247,9 @@ class Animation{
     if (zoopy.kind=='timed' && typeof zoopy.delay=='undefined')
       zoopy.delay= action_defaults.delay;
 
-    // if destination opacity is not 0, default starting opacity is 0
-    if (typeof zoopy.opac_from == 'undefined' && typeof zoopy.opac_to != 'undefined') 
-      zoopy.opac_from = 0;
+    // if destination transparency is not 0, default starting transparency is 0
+    if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined') 
+      zoopy.transp_from = 0;
 
     if (typeof this.action == 'undefined') this.action = [];
     this.action.push(zoopy);
@@ -305,11 +305,11 @@ class Animation{
     if (typeof this.action=='undefined') return true;
 
     for (var x=0; x<this.action.length; x++){
-      if (this.action[x].opac_from == 0) continue;
+      if (this.action[x].transp_from == 0) continue;
 
-      if (typeof this.action[x].opac_from != 'undefined')
-        this.action[x].element.style.opacity = this.action[x].opac_from/100;
-      else this.action[x].element.style.opacity = 1;
+      if (typeof this.action[x].transp_from != 'undefined')
+        this.action[x].element.style.transparency = this.action[x].transp_from/100;
+      else this.action[x].element.style.transparency= 1;
 
       this.action[x].element.style.display = 'block';
       set_clickable(this.action[x].element, true);
@@ -369,12 +369,10 @@ class Animation{
       // has to be rewritten when flags are modified
       // the point is to avoid a loop
       switch(first){
-//      case 'a':                              key = 'cursor'  ; break;
         case 'd':                              key = 'delay'   ; break;
-//      case 'i':                              key = 'cursor'  ; break;
         case 'n':                              key = 'blank'   ; break;
         case 's':                              key = 'ease'    ; break;
-        case 'o':                              key = 'opac_to' ; break;
+        case 't':                              key = 'transp_to' ; break;
         case 'f':                              key = 'fixed'   ; break;
         case 'h': if (flag=='hard'           ) key = 'ease'    ; else key = 'cursor'  ; break;
         case 'x': if (flag.substr(2,3)=='x25') key = 'xscale'  ; else key = 'xmove'   ; break; // +: _x2B_ · %: _x25_
@@ -495,7 +493,7 @@ class Trigger{
 class Action{
 
   constructor( name, element, kind, delay, handoff, handwait, duration, ease,
-               xmove, ymove, fixed, rotate, scale, xscale, yscale, opac_to, opac_from ){
+               xmove, ymove, fixed, rotate, scale, xscale, yscale, transp_to, transp_from ){
 
     this.name       = name;         // 20-character string
     this.element    = element;      // object reference
@@ -516,8 +514,8 @@ class Action{
     this.scale      = scale;        // number · percentage to scale              %150
     this.xscale     = xscale;       // number · percentage to scale x            x%20
     this.yscale     = yscale;       // number · percentage to scale y            y%30
-    this.opac_to   = opac_to;     // number · percentage opac_to              o30
-    this.opac_from    = opac_from;      // number · opac_from/opac_to      programmatically
+    this.transp_to   = transp_to;     // number · percentage transp_to              o30
+    this.transp_from    = transp_from;      // number · transp_from/transp_to      programmatically
   }
 }
 
@@ -859,7 +857,7 @@ function scroll_zone(animation, x){
 /*    special cases:
  
       • top is visible to start with
-      • action opacity default is visible to start with */
+      • action transparency default is visible to start with */
 
 // called every time a scroll action
 
@@ -954,7 +952,7 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
 /*    special cases:
  
       • top is visible to start with
-      • action opacity default is visible to start with */
+      • action transparency default is visible to start with */
 
 // called every time a scroll action
 
@@ -1105,7 +1103,7 @@ function gsap_params(action){
   if (typeof action.xscale   != 'undefined') params['scaleX'   ] = action.xscale   / 100;
   if (typeof action.yscale   != 'undefined') params['scaleY'   ] = action.yscale   / 100;
 
-  if (typeof action.opac_to  != 'undefined') params['autoAlpha'] = action.opac_to  / 100;
+  if (typeof action.transp_to  != 'undefined') params['autoAlpha'] = action.transp_to  / 100;
   if (typeof action.rotate   != 'undefined') params['rotation' ] = action.rotate        ;
 
   return params;
@@ -1135,10 +1133,7 @@ function not_number(x) {
 
 //———————————————————————————————————————— debugging
 
- var a = 'thisone'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'thisone'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
-
-// ovaway_x2F_thisone_x2F__x25_400_x2F_f50_x2C_50_x2F__x3C_10_x2F_5_00000124152882660309727270000008410099753351256997_
-// ovaway_x2F_thisone_x2F__x25_400_x2F_f50_x2C_50_x2F__x3C_10_x2F_5_00000124152882660309727270000008410099753351256997_

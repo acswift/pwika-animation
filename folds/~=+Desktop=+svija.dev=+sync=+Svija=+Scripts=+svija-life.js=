@@ -136,48 +136,48 @@ silent! normal! zE
 303,319fold
 320,332fold
 333,360fold
-361,404fold
-435,465fold
-466,470fold
-124,473fold
-474,492fold
-493,523fold
-527,558fold
-559,592fold
-593,602fold
-603,610fold
-611,630fold
-631,637fold
-641,687fold
-688,706fold
-707,733fold
-737,746fold
-748,757fold
-758,771fold
-772,785fold
-786,794fold
-796,813fold
-814,832fold
-833,851fold
-855,894fold
-895,949fold
-950,1000fold
-1001,1025fold
-1026,1056fold
-1057,1064fold
-1068,1076fold
-1077,1086fold
-1087,1113fold
-1114,1117fold
-1118,1129fold
-1130,1135fold
-1136,1139fold
+361,402fold
+433,463fold
+464,468fold
+124,471fold
+472,490fold
+491,521fold
+525,556fold
+557,590fold
+591,600fold
+601,608fold
+609,628fold
+629,635fold
+639,685fold
+686,704fold
+705,731fold
+735,744fold
+746,755fold
+756,769fold
+770,783fold
+784,792fold
+794,811fold
+812,830fold
+831,849fold
+853,892fold
+893,947fold
+948,998fold
+999,1023fold
+1024,1054fold
+1055,1062fold
+1066,1074fold
+1075,1084fold
+1085,1111fold
+1112,1115fold
+1116,1127fold
+1128,1133fold
+1134,1137fold
 let &fdl = &fdl
-let s:l = 1143 - ((1132 * winheight(0) + 35) / 70)
+let s:l = 1139 - ((648 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1143
+keepjumps 1139
 normal! 0
 let &g:so = s:so_save | let &g:siso = s:siso_save
 doautoall SessionLoadPost
