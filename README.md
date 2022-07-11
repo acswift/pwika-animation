@@ -1,4 +1,4 @@
-<details><summary>*Updated 14 June, 2022 · Vim Folds*</summary>
+<details><summary>Vim Folds</summary>
 
 ---
 To restore Vim folds when starting work:
@@ -14,6 +14,7 @@ cp ~/.vim/view/*svija.dev=+sync=+Svija=+Scripts* ./folds/
 
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
+*Updated 14 June, 2022*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
