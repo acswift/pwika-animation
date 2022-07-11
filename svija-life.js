@@ -580,7 +580,7 @@ actions.forEach(kind => {
     if (Object.keys(animations).includes(name))
       animations[name].add_action(obj, kind, flags)
     else
-      errlog('Action "'+name+'" has no trigger and was not registered (id='+obj_array[x].id+')');
+      errlog('Action "'+name+'" has no trigger and was not registered (id='+obj_array[x].id+') SVG NAME');
 
   }
 
@@ -1135,7 +1135,7 @@ function not_number(x) {
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+ var a = 'name18'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
