@@ -21,21 +21,22 @@ It is possible to use multiple different triggers with multiple different action
 \### = number
 
 flag            | meaning  | default | description                         | example
----------------:|----------|---------|-------------------------------------|-----------
-\###            | duration | 0.5     | duration of animation               | over/name/4
-d###            | delay    | 0       | delay at beginning of timeline      | over/name/d4
-x[sign]###      | move     | 0       | move along x-axis                   | over/name/x+20
-y[sign]###      | move     | 0       | move along y-axis                   | over/name/y-20
-%###            | scale    | 100     | scale to given percent              | over/name/%150
-x%###           | scale    | 100     | scale horizontally to given percent | over/name/y%150
-y%###           | scale    | 100     | scale vertically to given percent   | over/name/x%150
-\<###           | rotate   | 0       | rotate counter-clockwise            | over/name/\<30
-\>###           | rotate   | 0       | rotate clockwise                    | over/name/\>30
-f###,###        | fixed    | 50,50   | center of rotation                  | over/name/<90/f0,100
-hard            | ease     | soft    | abrupt start & stop                 | over/name/x+20/hard
-soft            | ease     | soft    | soft start & stop                   | over/name/x+20/soft
-softin          | ease     | soft    | soft start & hard stop              | over/name/x+20/softin
-softout         | ease     | soft    | hard start & soft stop              | over/name/x+20/softout
+---------------:|--------------|---------|-------------------------------------|-----------
+\###            | duration     | 0.5     | duration of animation               | over/name/4
+d###            | delay        | 0       | delay at beginning of timeline      | over/name/d4
+x[sign]###      | move         | 0       | move along x-axis                   | over/name/x+20
+y[sign]###      | move         | 0       | move along y-axis                   | over/name/y-20
+o###            | transparency | —       | % transparent                       | over/name/o50
+%###            | scale        | 100     | scale to given percent              | over/name/%150
+x%###           | scale        | 100     | scale horizontally to given percent | over/name/y%150
+y%###           | scale        | 100     | scale vertically to given percent   | over/name/x%150
+\<###           | rotate       | 0       | rotate counter-clockwise            | over/name/\<30
+\>###           | rotate       | 0       | rotate clockwise                    | over/name/\>30
+f###,###        | fixed        | 50,50   | center of rotation                  | over/name/<90/f0,100
+hard            | ease         | soft    | abrupt start & stop                 | over/name/x+20/hard
+soft            | ease         | soft    | soft start & stop                   | over/name/x+20/soft
+softin          | ease         | soft    | soft start & hard stop              | over/name/x+20/softin
+softout         | ease         | soft    | hard start & soft stop              | over/name/x+20/softout
 
 ---
 # Mouse Animations
