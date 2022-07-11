@@ -3,11 +3,11 @@
 ---
 To restore Vim folds when starting work:
 ```
-cp folds/~=*params.md* ~/.vim/view/
+cp folds/*params.md* ~/.vim/view/
 ```
 To add folds to repo at commit:
 ```
-cp ~/.vim/view/*params.md* ./folds/
+cp ~/.vim/view/*Scripts=+README.md* ./folds/
 ```
 ---
 </details>
@@ -15,10 +15,6 @@ cp ~/.vim/view/*params.md* ./folds/
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
 *Updated 14 June, 2022*
-
-**where am I?** I fixed a scrolling bug and am now ready to add more scrolling functionality:
-- granular follow of page scrolling
-- point instead of zone
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
@@ -31,7 +27,6 @@ This repository contains the development files for Svija Animation, which is inc
 The files are developed at `svija.dev/sync/Svija/Scripts` (which also contains other files that are *not* part of this repository).
 
 ---
-
 ### Saving/Restoring Vim Folds
 
 To restore Vim folds when starting work:
