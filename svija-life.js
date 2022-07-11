@@ -121,7 +121,7 @@ const trigger_defaults = {
 
 //:::::::::::::::::::::::::::::::::::::::: MODEL DEFINITIONS
 
-//———————————————————————————————————————— class Animation
+//———————————————————————————————————————— class Animation & methods
 
 // https://www.w3schools.com/js/js_classes.asp
 
@@ -236,9 +236,6 @@ class Animation{
       zoopy.transp_to   = 100;
     }
 
-    if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
-      zoopy.transp_from = 100;
-
     // set default duration
     if (typeof zoopy.duration=='undefined')
       zoopy.duration= action_defaults.duration;
@@ -246,6 +243,9 @@ class Animation{
     // set default delay
     if (zoopy.kind=='timed' && typeof zoopy.delay=='undefined')
       zoopy.delay= action_defaults.delay;
+
+    if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
+      zoopy.transp_from = 100;
 
     // if destination transparency is not 0, default starting transparency is 0
     if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined') 
@@ -302,14 +302,16 @@ class Animation{
 
   make_visible(){
 
+
     if (typeof this.action=='undefined') return true;
 
     for (var x=0; x<this.action.length; x++){
+
       if (this.action[x].transp_from == 0) continue;
 
       if (typeof this.action[x].transp_from != 'undefined')
-        this.action[x].element.style.transparency = this.action[x].transp_from/100;
-      else this.action[x].element.style.transparency= 1;
+        this.action[x].element.style.opacity = this.action[x].transp_from/100;
+      else this.action[x].element.style.opacity = 1;
 
       this.action[x].element.style.display = 'block';
       set_clickable(this.action[x].element, true);
@@ -350,8 +352,8 @@ class Animation{
       log('\nAction[' + x + ']');
       Object.keys(this.action[x]).forEach(key => {
         if (typeof this.action[x][key] != 'undefined')
-          if(key=='element')log('element (object) — '+this.action[t][key].id);
-          else log(key+' ('+typeof(this.action[t][key])+') — '+this.action[t][key]);
+          if(key=='element')log('element (object) — '+this.action[x][key].id);
+          else log(key+' ('+typeof(this.action[x][key])+') — '+this.action[x][key]);
       });
     }
     
@@ -1133,7 +1135,7 @@ function not_number(x) {
 
 //———————————————————————————————————————— debugging
 
-// var a = 'thisone'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
