@@ -120,60 +120,65 @@ silent! normal! zE
 4,10fold
 11,16fold
 17,22fold
-25,54fold
-55,75fold
-76,82fold
+38,60fold
+61,82fold
 83,89fold
-90,97fold
-23,98fold
-99,110fold
-123,129fold
-145,185fold
-130,191fold
-192,255fold
-256,278fold
-279,298fold
-299,315fold
-316,328fold
-329,354fold
-355,403fold
-404,411fold
-412,416fold
-114,419fold
-420,438fold
-439,469fold
-473,504fold
-505,538fold
-539,548fold
-549,556fold
-557,576fold
-577,583fold
-587,633fold
-634,652fold
-653,671fold
-675,684fold
-686,695fold
-696,709fold
-710,723fold
-724,732fold
-734,752fold
-756,806fold
-807,831fold
-832,861fold
-862,869fold
-870,878fold
-879,888fold
-889,915fold
-916,919fold
-920,931fold
-932,935fold
+90,96fold
+97,104fold
+23,105fold
+106,120fold
+133,139fold
+155,191fold
+140,197fold
+198,258fold
+259,282fold
+283,302fold
+303,319fold
+320,332fold
+333,358fold
+359,402fold
+433,463fold
+464,468fold
+124,471fold
+472,490fold
+491,521fold
+525,556fold
+557,590fold
+591,600fold
+601,608fold
+609,628fold
+629,635fold
+639,685fold
+686,704fold
+705,731fold
+735,744fold
+746,755fold
+756,769fold
+770,783fold
+784,792fold
+794,811fold
+812,830fold
+831,849fold
+853,892fold
+893,947fold
+948,998fold
+999,1023fold
+1024,1054fold
+1055,1062fold
+1066,1074fold
+1075,1084fold
+1085,1111fold
+1112,1115fold
+1116,1127fold
+1128,1133fold
+1134,1137fold
 let &fdl = &fdl
-let s:l = 749 - ((96 * winheight(0) + 27) / 54)
+let s:l = 1136 - ((1125 * winheight(0) + 35) / 70)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 749
-normal! 01|
+keepjumps 1136
+normal! 0
 let &g:so = s:so_save | let &g:siso = s:siso_save
 nohlsearch
 doautoall SessionLoadPost
