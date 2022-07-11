@@ -1135,7 +1135,7 @@ function not_number(x) {
 
 //———————————————————————————————————————— debugging
 
- var a = 'name18'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name18'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
