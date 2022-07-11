@@ -3,11 +3,11 @@
 ---
 To restore Vim folds when starting work:
 ```
-cp folds/*params.md* ~/.vim/view/
+cp folds/*svija.dev=+sync=+Svija=+Scripts* ~/.vim/view/
 ```
 To add folds to repo at commit:
 ```
-cp ~/.vim/view/*Scripts=+README.md* ./folds/
+cp ~/.vim/view/*svija.dev=+sync=+Svija=+Scripts* ./folds/
 ```
 ---
 </details>
