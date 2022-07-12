@@ -43,9 +43,9 @@ cd ~/Desktop/svija.dev/sync/Svija/Scripts
 git status
 ```
 ---
-### 5. Merge to Master
+### 2. Merge to Master
 
-Check out the **destination branch** and merge ([list of commits](https://github.com/svijalove/admin/commits/beta)):
+Check out the **destination branch** and merge ([list of commits](https://github.com/svijalove/animation/commits/beta)):
 ```
 git checkout master
 git merge beta --no-ff
@@ -55,40 +55,20 @@ Push the new version:
 git push origin master
 ```
 ---
-### 6. Update the Documentation
+### 3. Update the Documentation
 
 Copy info from/to:
 
-- [github.com/svijalove/admin/commits/master](https://github.com/svijalove/admin/commits/master)    
-- [tech.svija.love/manual/changelog-admin](https://tech.svija.love/manual/changelog-admin)   
+- [github.com/svijalove/admin/commits/master](https://github.com/svijalove/animation/commits/master)    
+- [tech.svija.love/manual/changelog-life](https://tech.svija.love/manual/changelog-life)   
 
 ---
-### 7. Create an Installable Version
+### 4. Create Fixtures
 
-Create an **installable version** so that will be available in case of future compatibility problems:
+Need to learn how to do this!
 
-Run the tarball creation script:
-```
-cd /opt/Svija-Admin
-./save_tar.sh
-```
 ---
-### 8. Update the Svija Servers
-
-First, update the **server software**
-```
-apt-get update
-```
-```
-apt-get dist-upgrade
-```
-
-Run the Svija Admin **update script:**
-```
-admin-update/update.sh
-```
----
-### 9. Create A New Github Release
+### 5. Create A New Github Release
 
 On Github, create a [new release](https://github.com/svijalove/admin/releases) from the **master branch**.
 
@@ -99,7 +79,18 @@ On Github, create a [new release](https://github.com/svijalove/admin/releases) f
 - use the [commit list](https://github.com/svijalove/admin/commits/master) for the description
 
 ---
-### 10. Check Out the Beta Branch
+### 6. Update Existing Sites
+
+Open the two login spreadsheets to get a list of svija sites ([svija][ss1], [clients][ss2])
+
+[ss1]: https://docs.google.com/spreadsheets/d/1kZYUpenHkvHLGCyQgu5RaOrrRiOUIHVx4bQcugrhJQI/edit#gid=213266802
+[ss2]: https://docs.google.com/spreadsheets/d/1yz3OETWWM-lpTyubIba8ptQf7MJV6ft38_yTNd0MGcg/edit#gid=1287837631
+
+1. open all the admin sites and navigate to **Script Sets**
+2. replace the various script parts with the contents of the **master** branch
+
+---
+### 7. Check Out the Beta Branch
 
 Commit any changes, then check out the beta branch:
 ```
