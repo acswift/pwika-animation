@@ -45,31 +45,28 @@ Update the version numbers:
 vi -O svija-life.css svija-life.js
 ```
 
-<details><summary>completely unrelated</summary>
-
-
-Once development is finished, code is moved to the [tools][l1] repository.
-
-[l1]: https://github.com/svijalove/tools
-
 ---
-### Releasing a New Version
+### 4. Check for Migrations & Commit
 
----
-### Commit & Merge
-
-Check for any unsaved changes:
+Back on the **dev server**, do any final migrations:
 ```
-cd ~/Documents/scripts-presets
+cd /home/svija210901
+workon djangoEnv
+./manage.py makemigrations
+```
+If there are migrations, migrate:
+```
+./manage.py migrate
+```
+In Svija Admin, check for unsaved changes and commit:
+```
+cd /opt/Svija-Admin
 git status
 ```
-If there *are* unsaved changes, commit:
-```
-git commit -m "last commit before merge to master" -a && git push -u
-```
-Check out the destination branch and merge ([list of commits][l2]):
+---
+### 5. Merge to Master
 
-[l2]: https://github.com/svijalove/scripts-presets/commits/beta
+Check out the **destination branch** and merge ([list of commits](https://github.com/svijalove/admin/commits/beta)):
 ```
 git checkout master
 git merge beta --no-ff
@@ -79,37 +76,55 @@ Push the new version:
 git push origin master
 ```
 ---
-### Update the Documentation
+### 6. Update the Documentation
 
-Copy info from this repo to a new issue in the **tools repository**:
+Copy info from/to:
 
-- [commits to master branch][l3]
-- [new issue in tools repo][l4]
-
-[l3]: https://github.com/svijalove/scripts-presets/commits/master
-[l4]: https://github.com/svijalove/tools/issues/new/choose
+- [github.com/svijalove/admin/commits/master](https://github.com/svijalove/admin/commits/master)    
+- [tech.svija.love/manual/changelog-admin](https://tech.svija.love/manual/changelog-admin)   
 
 ---
-### Create A New Github Release
+### 7. Create an Installable Version
 
-On Github, create a [new release][l5] from the master branch.
+Create an **installable version** so that will be available in case of future compatibility problems:
 
-[l5]: https://github.com/svijalove/scripts-presets/releases/new
+Run the tarball creation script:
+```
+cd /opt/Svija-Admin
+./save_tar.sh
+```
+---
+### 8. Update the Svija Servers
 
-- use the current version number for the tag (1.0.3)
+First, update the **server software**
+```
+apt-get update
+```
+```
+apt-get dist-upgrade
+```
+
+Run the Svija Admin **update script:**
+```
+admin-update/update.sh
+```
+---
+### 9. Create A New Github Release
+
+On Github, create a [new release](https://github.com/svijalove/admin/releases) from the **master branch**.
+
+- use the current version number for the tag (2.2.7)
 - choose target **Master**
-- use the month & year for the title (october 2022 v1)
-- use the [commit list][l3] for the description
+- use the month & year for the title (October 2021)
+- if there is more than one release in a month, append -1, -2 etc. to all releases for the month
+- use the [commit list](https://github.com/svijalove/admin/commits/master) for the description
 
 ---
-### Check Out the Beta Branch
+### 10. Check Out the Beta Branch
 
 Commit any changes, then check out the beta branch:
 ```
 git status
-```
-If there are changes:
-```
 git commit -m "last commit before going back to beta" -a
 ```
 Commit any changes, then check out the beta branch:
@@ -119,21 +134,25 @@ git merge master --no-ff -m "starting new version"
 git push -u
 ```
 ---
-### Increment the Version Number
+### 11. Increment the Version Number
 
 Places to update the version number:
-
 ```
-cd /Documents/scripts-presets
-vi README.md
-```
-Then the individual scripts:
-```
-vi -O *.jsx
-# :windo %s/1.0.3/1.0.4/g
+cd /opt/Svija-Admin
+vi -O README.md setup.py save_tar.sh svija/views/__init__.py svija/templates/admin/base_site.html
+# :windo %s/2.2.6/2.2.7/g
 ```
 Then commit the version number change:
 ```
 git commit -m "updated version number" -a && git push -u  
 ```
-</details>
+---
+### 12. Update Websites
+
+Look at the [issues][li] for **⚠️ updates for version 2.2.17** (for example)
+
+Update websites accordingly.
+
+[li]: https://github.com/svijalove/admin-update/issues
+
+---
