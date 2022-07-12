@@ -57,7 +57,7 @@ const action_flag_value_to_key = {
   '_x2B_x' : 'xmove'       , // value follows +x
   '_x2B_y' : 'ymove'       , // value follows +y
   '_x3C_'  : 'rotate'      , // value follows
-  '_x3E_'  : 'rotate'      , // value follows
+  '_x3E_'  : 'rotate'      , // value precedes
   '_x25_'  : 'scale'       , // value follows
   'x_x25'  : 'xscale'      , // value follows
   'y_x25'  : 'yscale'      , // value follows
@@ -219,9 +219,10 @@ class Animation{
       var flag = flags[x];
 
       // convert entites to real characters
-      var char1  = flag.substr(0,1);
-      var char2  = flag.substr(1,1);
-			if (char1=='_' || char2=='_') flag = convert_entities(flag);
+      var char1 = flag.substr(0,1);
+      var char2 = flag.substr(1,1);
+      var charX = flag.slice(-1);
+			if (char1=='_' || char2=='_' || charX=='_') flag = convert_entities(flag);
 
       // assign value to flag
       key = this.get_action_key(flag);
@@ -390,17 +391,21 @@ class Animation{
         case 'y': key = 'yscale'   ; break;
         case '%': key = 'scale'    ; break;
         case '<': key = 'rotate'   ; break;
-        case '>': key = 'rotate'   ; break;
 
         case 'h': if (flag=='hard'        ) key = 'ease'     ; else key = 'cursor'  ; break;
         case '-': if (flag.slice(1,2)=='x') key = 'xmove'    ; else key = 'ymove'   ; break;
         case '+': if (flag.slice(1,2)=='x') key = 'xmove'    ; else key = 'ymove'   ; break;
 
         default:
-          if (parseFloat(flag) == flag) key = 'duration';
-          else{
-            if (flag != '') errlog('Action "'+this.name+'" has an unknown flag: "'+flag +'".');
-            else            errlog('Action "'+this.name+'" has an extra slash.');
+          var charx  = flag.slice(-1);
+          if (charx == '>')                  key = 'rotate';
+          else if (parseFloat(flag) == flag) key = 'duration';
+
+          if (key==''){
+            if (flag != '')
+  					  errlog('Action "'+this.name+'" has an unknown flag: "'+flag +'".');
+            else
+              errlog('Action "'+this.name+'" has an extra slash.');
             return null;
           }
 
@@ -425,8 +430,9 @@ get_val(key, flag){
   if ((key=='xmove' || key=='ymove') && flag.slice(0,1)=='-')
     return 0-flag.substr(flag_len);
 
-  if (key=='rotate' && flag.slice(0,1)=='<')
-    return 0-flag.substr(flag_len);
+  if (key=='rotate')
+    if (flag.slice(-1)=='>') return flag.slice(0, flag.length-1);
+    else return 0-flag.slice(1, flag.length);
 
   return flag.substr(flag_len);
 }
@@ -1117,7 +1123,7 @@ function convert_entities(str){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name7'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name3'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
