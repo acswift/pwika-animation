@@ -1,6 +1,6 @@
 let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-1 siso=-1
 argglobal
-setlocal noautoindent
+setlocal autoindent
 setlocal backupcopy=
 setlocal nobinary
 setlocal nobreakindent
@@ -28,9 +28,9 @@ setlocal dictionary=
 setlocal nodiff
 setlocal equalprg=
 setlocal errorformat=
-setlocal noexpandtab
-if &filetype != 'javascript'
-setlocal filetype=javascript
+setlocal expandtab
+if &filetype != 'css'
+setlocal filetype=css
 endif
 setlocal fixendofline
 setlocal foldcolumn=5
@@ -95,8 +95,8 @@ setlocal statusline=
 setlocal suffixesadd=
 setlocal swapfile
 setlocal synmaxcol=3000
-if &syntax != 'javascript'
-setlocal syntax=javascript
+if &syntax != 'css'
+setlocal syntax=css
 endif
 setlocal tabstop=2
 setlocal tagcase=
@@ -114,53 +114,20 @@ setlocal virtualedit=
 setlocal wincolor=
 setlocal nowinfixheight
 setlocal nowinfixwidth
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-4,40fold
-41,46fold
-47,52fold
-53,127fold
-128,139fold
-374,380fold
-356,384fold
-385,389fold
-401,417fold
-418,422fold
-143,445fold
-451,456fold
-449,479fold
-480,508fold
-509,518fold
-519,526fold
-527,543fold
-544,550fold
-554,590fold
-591,607fold
-608,624fold
-628,637fold
-639,647fold
-648,660fold
-661,668fold
-670,683fold
-687,742fold
-743,792fold
-793,821fold
-822,828fold
-829,857fold
-858,866fold
-867,876fold
-877,903fold
-904,907fold
-908,919fold
-920,923fold
+3,8fold
+9,31fold
+32,89fold
+90,93fold
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 35) / 70)
+let s:l = 90 - ((89 * winheight(0) + 34) / 69)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 0
+keepjumps 90
+normal! 01|
 let &g:so = s:so_save | let &g:siso = s:siso_save
 doautoall SessionLoadPost
 " vim: set ft=vim :

@@ -1,4 +1,4 @@
-/*———————————————————————————————————————— svija-fvx.css
+/*———————————————————————————————————————— svija-life.css
 
 /*———————————————————————————————————————— notes
 
@@ -8,12 +8,12 @@
 
 /*———————————————————————————————————————— triggers */
 
- circle[id^='delay_x2F_'],
-ellipse[id^='delay_x2F_'],
-      g[id^='delay_x2F_'],
-   path[id^='delay_x2F_'],
-polygon[id^='delay_x2F_'],
-   rect[id^='delay_x2F_'],
+ circle[id^='time_x2F_'],
+ellipse[id^='time_x2F_'],
+      g[id^='time_x2F_'],
+   path[id^='time_x2F_'],
+polygon[id^='time_x2F_'],
+   rect[id^='time_x2F_'],
 
  circle[id^='scroll_x2F_'],
 ellipse[id^='scroll_x2F_'],
@@ -73,12 +73,12 @@ ellipse[id^='toggle_x2F_'],
 polygon[id^='toggle_x2F_'],
    rect[id^='toggle_x2F_'],
 
- circle[id^='timed_x2F_'],
-ellipse[id^='timed_x2F_'],
-      g[id^='timed_x2F_'],
-   path[id^='timed_x2F_'],
-polygon[id^='timed_x2F_'],
-   rect[id^='timed_x2F_'],
+ circle[id^='delay_x2F_'],
+ellipse[id^='delay_x2F_'],
+      g[id^='delay_x2F_'],
+   path[id^='delay_x2F_'],
+polygon[id^='delay_x2F_'],
+   rect[id^='delay_x2F_'],
 
  circle[id^='zone_x2F_'],
 ellipse[id^='zone_x2F_'],
