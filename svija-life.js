@@ -71,20 +71,20 @@ const flag_length = {
   // so we can get value from end of flag
   // # of characters, value follows
 
+  'blank'      : 0,
   'cursor'     : 0,
   'delay'      : 1,
-  'func'       : 0,
-  'blank'      : 0,
-  'handoff'    : 5,
   'ease'       : 0,
-  'xmove'      : 1, // there are two lengths
-  'ymove'      : 1, // there are two lengths
+  'func'       : 0,
+  'handoff'    : 5,
   'origin'     : 1,
-  'rotate'     : 5,
-  'scale'      : 5,
-  'xscale'     : 6,
-  'yscale'     : 6,
-  'transp_to'  : 1
+  'rotate'     : 1,
+  'scale'      : 1,
+  'transp_to'  : 1,
+  'xmove'      : 2,
+  'xscale'     : 2,
+  'ymove'      : 2,
+  'yscale'     : 2,
 
 }
 
@@ -219,6 +219,11 @@ class Animation{
       var key;
       var flag = flags[x];
 
+      // convert entites to real characters
+      var char1  = flag.substr(0,1);
+      var char2  = flag.substr(1,1);
+			if (char1=='_' || char2=='_') flag = convert_entities(flag);
+
       // assign value to flag
       key = this.get_action_key(flag);
 
@@ -233,13 +238,13 @@ class Animation{
     // special cases (so absence of flags behaves as expected) ———————————————————————————————
 
     // set transparency 0 to 100
-    if ( typeof zoopy.xmove    == 'undefined' &&
-         typeof zoopy.ymove    == 'undefined' &&
-         typeof zoopy.rotate   == 'undefined' &&
-         typeof zoopy.scale    == 'undefined' &&
-         typeof zoopy.xscale   == 'undefined' &&
-         typeof zoopy.yscale   == 'undefined' &&
-         typeof zoopy.transp_to  == 'undefined' ){
+    if ( typeof zoopy.xmove     == 'undefined' &&
+         typeof zoopy.ymove     == 'undefined' &&
+         typeof zoopy.rotate    == 'undefined' &&
+         typeof zoopy.scale     == 'undefined' &&
+         typeof zoopy.xscale    == 'undefined' &&
+         typeof zoopy.yscale    == 'undefined' &&
+         typeof zoopy.transp_to == 'undefined' ){
       zoopy.transp_from = 0;
       zoopy.transp_to   = 100;
     }
@@ -373,43 +378,38 @@ class Animation{
   // is programmed specifically to optimize key finding
   // needs to be updated when flags are modified
 
+    var key = '';
+
     try {
-      var first = flag.substr(0,1);
+      var char1  = flag.substr(0,1);
 
-			if (first == '_'){
-        flag = convert_entities(flag);
-        first = flag.substr(0,1);
-      }
+      switch(char1){
+        case 'd': key = 'delay'    ; break;
+        case 'n': key = 'blank'    ; break;
+        case 'o': key = 'origin'   ; break;
+        case 's': key = 'ease'     ; break;
+        case 't': key = 'transp_to'; break;
+        case 'x': key = 'xscale'   ; break;
+        case 'y': key = 'yscale'   ; break;
+        case '%': key = 'scale'    ; break;
+        case '<': key = 'rotation' ; break;
+        case '>': key = 'rotation' ; break;
 
-      // has to be rewritten when flags are modified
-      // the point is to avoid a loop
+        case 'h': if (flag=='hard'        ) key = 'ease'     ; else key = 'cursor'  ; break;
+        case '-': if (flag.slice(1,2)=='x') key = 'xmove'    ; else key = 'ymove'   ; break;
+        case '+': if (flag.slice(1,2)=='x') key = 'xmove'    ; else key = 'ymove'   ; break;
 
-      switch(first){
-        case 'd':                              key = 'delay'          ; break;
-        case 'h': if (flag=='hard'           ) key = 'ease'           ; else key = 'cursor'  ; break;
-        case 'n':                              key = 'blank'          ; break;
-        case 'o':                              key = 'origin'         ; break;
-        case 's':                              key = 'ease'           ; break;
-        case 't':                              key = 'transp_to'      ; break;
-        case 'x':                              key = 'xscale'         ; break; // +: _x2B_ · %: _x25_
-        case 'y':                              key = 'yscale'         ; break;
-        case '-': if (flag.slice(1,1)=='x')    key = 'xmove'          ; else key = 'ymove'   ; break;
-
-        case '_':      if (flag.slice(5,6)=='x') key = 'xmove';
-                  else if (flag.slice(5,6)=='y') key = 'ymove';
-                  else     key = action_flag_value_to_key[flag.slice(0,5)];
-                  break;
-
-      default:
-        if (parseFloat(flag) != flag){
-          if (flag == '') errlog('Action "'+this.name+'" has an extra slash.');
-          else errlog('Action "'+this.name+'" has an unknown flag: "'+flag +'".');
-          return null;
-        }
-
-        key = 'duration';
+        default:
+          if (parseFloat(flag) == flag) key = 'duration';
+          else{
+            if (flag != '') errlog('Action "'+this.name+'" has an unknown flag: "'+flag +'".');
+            else            errlog('Action "'+this.name+'" has an extra slash.');
+            return null;
+          }
 
       }
+      
+      //log('🦚 '+key+' :: '+flag + '::::'+flag.slice(1,2));
       return key;
     }
     catch (error) {
@@ -422,68 +422,16 @@ class Animation{
   }
 
 get_val(key, flag){
-
   var flag_len = flag_length[key];
-
-  if (key == 'xmove'){ // correct for + being converted to _x2B_
-    if (flag.slice(1,2) == '_')      var val = flag.slice(6, flag.length);  // +30
-    else if (flag.slice(1,2) == '-') var val = flag.slice(1, flag.length);  // -60
-    else {                                                                  // neither
-      var val = 0;
-      errlog('Action "'+this.name+'" requires a "+" for positive x move values');
-    }
-    if (not_number(val)) errlog('Action "'+this.name+'" requires a numerical value (was '+val+')');
-    flag = 'x' + val;
-  }
-
-  if (key == 'ymove'){ // correct for + being converted to _x2B_
-    if (flag.slice(1,2) == '_')      var val = flag.slice(6, flag.length);  // +30
-    else if (flag.slice(1,2) == '-') var val = flag.slice(1, flag.length);  // -60
-    else {                                                                  // neither
-      var val = 0;
-      errlog('Action "'+this.name+'" requires a "+" for positive y move values');
-    }
-    if (not_number(val)) errlog('Action "'+this.name+'" requires a numerical value (was '+val+')');
-    flag = 'y' + val;
-  }
-
   if (flag_len == 0) return flag;
+
+  if ((key=='xmove' || key=='ymove') && flag.slice(0,1)==='-')
+    return 0-flag.substr(flag_len);
   else return flag.substr(flag_len);
 }
 
-/*get_val(key, flag){
-
-    var flag_len = flag_length[key];
-
-    if (key == 'xmove'){ // correct for + being converted to _x2B_
-      if (flag.slice(1,2) == '_') var val = flag.slice(6, flag.length);
-      else if (flag.slice(1,2) != '-') {
-        var val = 0;
-        errlog('Action "'+this.name+'" requires a "+" for positive x move values');
-      }
-      if (is_number(val)) flag = 'x' + val;
-      else {
-        errlog('Action "'+this.name+'" requires a numerical value (value: "x'+val+'")');
-        val = 0;
-      }
-    }
-
-    if (key == 'ymove'){ // correct for + being converted to _x2B_
-      if (flag.slice(1,2) == '_') var val = flag.slice(6, flag.length);
-      else if (flag.slice(1,2) != '-') {
-        var val = 0;
-        errlog('Action "'+this.name+'" requires a "+" for positive y move values');
-      }
-      if (not_number(val)) errlog('Action "'+this.name+'" requires a numerical value (value: "y'+val+'")');
-      flag = 'y' + val;
-    }
-
-    if (flag_len == 0) return flag;
-    else return flag.substr(flag_len);
-  } */
-
   fix_rotation(flag){
-    if (flag.substr(0,5) == '_x3C_') return -1;
+    if (flag.substr(0,5) == '<') return -1;
     else return 1;
   }
 
@@ -516,27 +464,27 @@ class Action{
   constructor( name, element, kind, delay, handoff, handwait, duration, ease,
                xmove, ymove, origin, rotate, scale, xscale, yscale, transp_to, transp_from ){
 
-    this.name       = name;         // 20-character string
-    this.element    = element;      // object reference
-    this.kind       = kind;       // string · kind of action                   click, over, down, away, ovaway, down, toggle, visible
+    this.name        = name;         // 20-character string
+    this.element     = element;      // object reference
+    this.kind        = kind;         // string · kind of action                  click, over, down, away, ovaway, down, toggle, visible
 
     // flags
-    this.delay      = delay;        // number · seconds before animation starts  33 (2nd number)
-    this.handoff    = handoff;      // string · following animation
-    this.handwait   = handwait;     // number · seconds before calling following animation
+    this.delay       = delay;        // number · seconds before animation starts
+    this.handoff     = handoff;      // string · following animation
+    this.handwait    = handwait;     // number · seconds before calling following animation
 
     // GSAP-related flags
-    this.duration   = duration;     // number · duration in seconds              34.5 (1st number)
-    this.ease       = ease;         // animation ease                            in, out, inout, noease
-    this.xmove      = xmove;        // x movement                                x-30
-    this.ymove      = ymove;        // y movement                                y+25
-    this.origin     = origin;       // origin point                              o0,0 to o100,100
-    this.rotate     = rotate;       // number · rotation                         >20 or <45.5
-    this.scale      = scale;        // number · percentage to scale              %150
-    this.xscale     = xscale;       // number · percentage to scale x            x%20
-    this.yscale     = yscale;       // number · percentage to scale y            y%30
-    this.transp_to   = transp_to;     // number · percentage transp_to              o30
-    this.transp_from    = transp_from;      // number · transp_from/transp_to      programmatically
+    this.duration    = duration;     // number · duration in seconds             34.5 (1st number)
+    this.ease        = ease;         // animation ease                           in, out, inout, noease
+    this.xmove       = xmove;        // x movement                               x-30
+    this.ymove       = ymove;        // y movement                               y+25
+    this.origin      = origin;       // origin point                             o0,0 to o100,100
+    this.rotate      = rotate;       // number · rotation                        >20 or <45.5
+    this.scale       = scale;        // number · percentage to scale             %150
+    this.xscale      = xscale;       // number · percentage to scale x           x%20
+    this.yscale      = yscale;       // number · percentage to scale y           y%30
+    this.transp_to   = transp_to;    // number · percentage transp_to            o30
+    this.transp_from = transp_from;  // number · transp_from/transp_to           programmatically
   }
 }
 
@@ -1160,9 +1108,9 @@ function convert_entities(str){
 
   var parts = str.split('_');
   
-  for (var x=1; x<parts.length; x=x+2){
-    try{ parts[x] = entity_conversion[parts[x]];}
-    catch(error){ log('—————————————————————————————— 😈 conversion error '+error);}
+  for (var x=1; x<parts.length; x+=1){
+    if (Object.keys(entity_conversion).includes(parts[x]))
+      parts[x] = entity_conversion[parts[x]];
   }
 
   str2= parts.join('');
@@ -1173,7 +1121,7 @@ function convert_entities(str){
 
 //———————————————————————————————————————— debugging
 
- var a = 'name14'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name15'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
