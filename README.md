@@ -43,9 +43,9 @@ cd ~/Desktop/svija.dev/sync/Svija/Scripts
 git status
 ```
 ---
-### 5. Merge to Master
+### 2. Merge to Master
 
-Check out the **destination branch** and merge ([list of commits](https://github.com/svijalove/admin/commits/beta)):
+Check out the **destination branch** and merge ([list of commits](https://github.com/svijalove/animation/commits/beta)):
 ```
 git checkout master
 git merge beta --no-ff
@@ -55,15 +55,15 @@ Push the new version:
 git push origin master
 ```
 ---
-### 6. Update the Documentation
+### 3. Update the Documentation
 
 Copy info from/to:
 
-- [github.com/svijalove/admin/commits/master](https://github.com/svijalove/admin/commits/master)    
+- [github.com/svijalove/admin/commits/master](https://github.com/svijalove/animation/commits/master)    
 - [tech.svija.love/manual/changelog-admin](https://tech.svija.love/manual/changelog-admin)   
 
 ---
-### 7. Create an Installable Version
+### 4. Create an Installable Version
 
 Create an **installable version** so that will be available in case of future compatibility problems:
 
