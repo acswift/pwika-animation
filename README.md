@@ -18,7 +18,7 @@ cp ~/.vim/view/*svija.dev=+sync=+Svija=+Scripts* ./folds/
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-### Svija Life 1.0.5
+### Svija Life 1.0.6
 
 Added beta branch.
 
@@ -104,13 +104,13 @@ git merge master --no-ff -m "starting new version"
 git push -u
 ```
 ---
-### 11. Increment the Version Number
+### 8. Increment the Version Number
 
 Places to update the version number:
 ```
-cd /opt/Svija-Admin
-vi -O README.md setup.py save_tar.sh svija/views/__init__.py svija/templates/admin/base_site.html
-# :windo %s/2.2.6/2.2.7/g
+cd ~/Desktop/svija.dev/sync/Svija/Scripts
+vi -O README.md params.md svija-life.js svija-life.css
+# :windo %s/1.0.5/1.0.6/g
 ```
 Then commit the version number change:
 ```
