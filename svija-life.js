@@ -1,5 +1,4 @@
 
-
 //———————————————————————————————————————— svija-life.js
 
 /*———————————————————————————————————————— notes
@@ -1118,7 +1117,7 @@ function convert_entities(str){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name6'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name7'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
