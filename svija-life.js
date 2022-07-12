@@ -1,4 +1,5 @@
 
+
 //———————————————————————————————————————— svija-life.js
 
 /*———————————————————————————————————————— notes
@@ -22,6 +23,13 @@ const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'togg
 
 //———————————————————————————————————————— conversion dictionaries
 
+const entity_conversion = {
+  'x2B'  : '+',
+  'x25'  : '%',
+  'x3C'  : '<',
+  'x3E'  : '>'
+};
+
 const trigger_flag_value_to_key = {
 
   // name & kind are given
@@ -39,23 +47,23 @@ const action_flag_value_to_key = {
 
   // name & kind are given
 
-  'softin' : 'ease'       , // no value
-  'softout': 'ease'       , // no value
-  'soft'   : 'ease'       , // no value
-  'hard '  : 'ease'       , // no value
+//'softin' : 'ease'       , // no value
+//'softout': 'ease'       , // no value
+//'soft'   : 'ease'       , // no value
+//'hard '  : 'ease'       , // no value
+//'d'      : 'delay'       , // value follows
+//'o'      : 'origin'      , // value follows
+//'t'      : 'transp_to'   , // value follows
 
-  'd'     : 'delay'       , // value follows
-  'x'     : 'xmove'       , // value follows
-  'y'     : 'ymove'       , // value follows
-  'o'     : 'origin'      , // value follows
-  '_x3C_' : 'rotate'      , // value follows
-  '_x3E_' : 'rotate'      , // value follows
-  '_x25_' : 'scale'       , // value follows
-  'x_x25_': 'xscale'      , // value follows
-  'y_x25_': 'yscale'      , // value follows
-  't'     : 'transp_to'   , // value follows
+  '_x2B_x' : 'xmove'       , // value follows +x
+  '_x2B_y' : 'ymove'       , // value follows +y
+  '_x3C_'  : 'rotate'      , // value follows
+  '_x3E_'  : 'rotate'      , // value follows
+  '_x25_'  : 'scale'       , // value follows
+  'x_x25'  : 'xscale'      , // value follows
+  'y_x25'  : 'yscale'      , // value follows
 
-  '_x2B_' : 'handoff'       // value follows
+  '_x2B_'  : 'handoff'       // value follows
 }
 
 const flag_length = { 
@@ -69,14 +77,14 @@ const flag_length = {
   'blank'      : 0,
   'handoff'    : 5,
   'ease'       : 0,
-  'xmove'      : 1,
-  'ymove'      : 1,
+  'xmove'      : 1, // there are two lengths
+  'ymove'      : 1, // there are two lengths
   'origin'     : 1,
   'rotate'     : 5,
   'scale'      : 5,
   'xscale'     : 6,
   'yscale'     : 6,
-  'transp_to'    : 1
+  'transp_to'  : 1
 
 }
 
@@ -105,17 +113,17 @@ const trigger_flag_value_to_key_value = {
 
 //———————————————————————————————————————— defaults
 
-const action_defaults = {
-  'delay'   : 5.0, // only for time/delay anims
-  'duration': 0.5
-}
-
 const trigger_defaults = {
 
   'func'       : false,
   'link'       : false,
   'blank'      : false
 
+}
+
+const action_defaults = {
+  'delay'   : 5.0, // only for time/delay anims
+  'duration': 0.5
 }
 
 
@@ -360,7 +368,7 @@ class Animation{
     log('^ end debug output —————————————————————————— ⚠️\n\n');
   }
 
-  get_action_key(flag, is_duration){
+  get_action_key(flag){
 
   // is programmed specifically to optimize key finding
   // needs to be updated when flags are modified
@@ -368,18 +376,29 @@ class Animation{
     try {
       var first = flag.substr(0,1);
 
+			if (first == '_'){
+        flag = convert_entities(flag);
+        first = flag.substr(0,1);
+      }
+
       // has to be rewritten when flags are modified
       // the point is to avoid a loop
+
       switch(first){
-        case 'd':                              key = 'delay'    ; break;
-        case 'n':                              key = 'blank'    ; break;
-        case 's':                              key = 'ease'     ; break;
-        case 't':                              key = 'transp_to'; break;
-        case 'o':                              key = 'origin'   ; break;
-        case 'h': if (flag=='hard'           ) key = 'ease'     ; else key = 'cursor'  ; break;
-        case 'x': if (flag.substr(2,3)=='x25') key = 'xscale'   ; else key = 'xmove'   ; break; // +: _x2B_ · %: _x25_
-        case 'y': if (flag.substr(2,3)=='x25') key = 'yscale'   ; else key = 'ymove'   ; break;
-        case '_': key = action_flag_value_to_key[flag.slice(0,5)]     ; break;
+        case 'd':                              key = 'delay'          ; break;
+        case 'h': if (flag=='hard'           ) key = 'ease'           ; else key = 'cursor'  ; break;
+        case 'n':                              key = 'blank'          ; break;
+        case 'o':                              key = 'origin'         ; break;
+        case 's':                              key = 'ease'           ; break;
+        case 't':                              key = 'transp_to'      ; break;
+        case 'x':                              key = 'xscale'         ; break; // +: _x2B_ · %: _x25_
+        case 'y':                              key = 'yscale'         ; break;
+        case '-': if (flag.slice(1,1)=='x')    key = 'xmove'          ; else key = 'ymove'   ; break;
+
+        case '_':      if (flag.slice(5,6)=='x') key = 'xmove';
+                  else if (flag.slice(5,6)=='y') key = 'ymove';
+                  else     key = action_flag_value_to_key[flag.slice(0,5)];
+                  break;
 
       default:
         if (parseFloat(flag) != flag){
@@ -1133,9 +1152,28 @@ function not_number(x) {
   return parseFloat(x) != x;
 };
 
+/*———————————————————————————————————————— convert_entities(in)
+
+    id="toggle_x2F_name15_x2F_-y10_x2F_x_x2B_30_x2F_t100" */
+
+function convert_entities(str){
+
+  var parts = str.split('_');
+  
+  for (var x=1; x<parts.length; x=x+2){
+    try{ parts[x] = entity_conversion[parts[x]];}
+    catch(error){ log('—————————————————————————————— 😈 conversion error '+error);}
+  }
+
+  str2= parts.join('');
+  log('—————————————————————————————— 😈 conversion from '+str+' to '+str2);
+  return str2;
+
+}
+
 //———————————————————————————————————————— debugging
 
-// var a = 'name4'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+ var a = 'name14'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
