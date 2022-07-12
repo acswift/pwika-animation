@@ -60,7 +60,7 @@ git push origin master
 Copy info from/to:
 
 - [github.com/svijalove/admin/commits/master](https://github.com/svijalove/animation/commits/master)    
-- [tech.svija.love/manual/changelog-admin](https://tech.svija.love/manual/changelog-admin)   
+- [tech.svija.love/manual/changelog-life](https://tech.svija.love/manual/changelog-life)   
 
 ---
 ### 4. Create an Installable Version
