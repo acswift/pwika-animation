@@ -27,17 +27,6 @@ This repository contains the development files for Svija Animation, which is inc
 The files are developed at `svija.dev/sync/Svija/Scripts` (which also contains other files that are *not* part of this repository).
 
 ---
-### Saving/Restoring Vim Folds
-
-To restore Vim folds when starting work:
-```
-cp ~=* ~/.vim/view/
-```
-To save folds before committing:
-```
-cp ~/.vim/view/*svija-life* ./
-```
----
 ### Releasing a New Version
 
 Update the version numbers:
@@ -46,21 +35,11 @@ vi -O svija-life.css svija-life.js
 ```
 
 ---
-### 4. Check for Migrations & Commit
+### 1. Commit the Beta Branch
 
-Back on the **dev server**, do any final migrations:
-```
-cd /home/svija210901
-workon djangoEnv
-./manage.py makemigrations
-```
-If there are migrations, migrate:
-```
-./manage.py migrate
-```
 In Svija Admin, check for unsaved changes and commit:
 ```
-cd /opt/Svija-Admin
+cd ~/Desktop/svija.dev/sync/Svija/Scripts
 git status
 ```
 ---
