@@ -17,8 +17,8 @@ log("——— svija-fvx.js ———");
 //———————————————————————————————————————— separator, types of triggers and actions
 
 const  separator = '_x2F_'; // regular slash
-const   triggers = [ 'mouse', 'delay', 'scroll' ];
-const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'timed', 'point', 'zone', 'scrub' ];
+const   triggers = [ 'mouse', 'time', 'scroll' ];
+const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ];
 
 //———————————————————————————————————————— conversion dictionaries
 
@@ -106,7 +106,7 @@ const trigger_flag_value_to_key_value = {
 //———————————————————————————————————————— defaults
 
 const action_defaults = {
-  'delay'   : 5.0, // only for timed anims
+  'delay'   : 5.0, // only for time/delay anims
   'duration': 0.5
 }
 
@@ -241,7 +241,7 @@ class Animation{
       zoopy.duration= action_defaults.duration;
 
     // set default delay
-    if (zoopy.kind=='timed' && typeof zoopy.delay=='undefined')
+    if (zoopy.kind=='delay' && typeof zoopy.delay=='undefined')
       zoopy.delay= action_defaults.delay;
 
     if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
@@ -479,7 +479,7 @@ class Trigger{
 
     this.name       = name;         // 20-character string
     this.element    = element;      // object reference
-    this.kind       = kind;         // string · kind of trigger                  scroll, mouse, delay
+    this.kind       = kind;         // string · kind of trigger                  scroll, mouse, time 
 
     // flags
     this.cursor     = cursor;       // string · cursor on pointerover              a, h, t (arrow, hand, text)
@@ -620,8 +620,8 @@ Object.keys(animations).forEach(name => {
   if (animations[name].trigger[0].kind=='mouse') // 2ms
     activate_mouse(animations[name]);  
 
-  if (animations[name].trigger[0].kind=='delay') // 2ms
-    activate_delay(animations[name]);
+  if (animations[name].trigger[0].kind=='time') // 2ms
+    activate_time(animations[name]);
 
   if (animations[name].trigger[0].kind=='scroll') // 11ms
     activate_scroll(animations[name]);
@@ -685,23 +685,23 @@ function activate_mouse(animation){
   log('mouse animations activated');
 }
 
-//———————————————————————————————————————— activate_delay(animation)
+//———————————————————————————————————————— activate_time(animation)
 
-function activate_delay(animation){
+function activate_time(animation){
 
   for (var x=0; x<animation.action.length; x++){
     switch (animation.action[x].kind) {
-    case 'timed':
-      delay_timed(animation, x);
+    case 'delay':
+      time_delay(animation, x);
       break;
 
     default:
-      if (typeof animation.action[x].kind != 'undefined') errlog('unknown delay kind: '+animation.action[x].kind);
-      else errlog('missing delay action: '+animation.name);
+      if (typeof animation.action[x].kind != 'undefined') errlog('unknown time kind: '+animation.action[x].kind);
+      else errlog('missing time action: '+animation.name);
     }
   }
 
-  log('delay animations activated');
+  log('time animations activated');
 }
 
 //———————————————————————————————————————— activate_scroll(animation)
@@ -734,9 +734,9 @@ function activate_scroll(animation){
 
 //:::::::::::::::::::::::::::::::::::::::: ACTIONS
 
-//———————————————————————————————————————— delay_timed(animation)
+//———————————————————————————————————————— time_delay(animation)
 
-function delay_timed(animation, x){
+function time_delay(animation, x){
 
   delay  = animation.action[x].delay * 1000;
   params = gsap_params(animation.action[x]);
@@ -1135,7 +1135,7 @@ function not_number(x) {
 
 //———————————————————————————————————————— debugging
 
- var a = 'name22'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name4'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
