@@ -44,18 +44,18 @@ const action_flag_value_to_key = {
   'soft'   : 'ease'       , // no value
   'hard '  : 'ease'       , // no value
 
-  'd'     : 'delay'      , // value follows
-  'x'     : 'xmove'      , // value follows
-  'y'     : 'ymove'      , // value follows
-  'f'     : 'fixed'      , // value follows
-  '_x3C_' : 'rotate'     , // value follows
-  '_x3E_' : 'rotate'     , // value follows
-  '_x25_' : 'scale'      , // value follows
-  'x_x25_': 'xscale'     , // value follows
-  'y_x25_': 'yscale'     , // value follows
+  'd'     : 'delay'       , // value follows
+  'x'     : 'xmove'       , // value follows
+  'y'     : 'ymove'       , // value follows
+  'o'     : 'origin'      , // value follows
+  '_x3C_' : 'rotate'      , // value follows
+  '_x3E_' : 'rotate'      , // value follows
+  '_x25_' : 'scale'       , // value follows
+  'x_x25_': 'xscale'      , // value follows
+  'y_x25_': 'yscale'      , // value follows
   't'     : 'transp_to'   , // value follows
 
-  '_x2B_' : 'handoff'      // value follows
+  '_x2B_' : 'handoff'       // value follows
 }
 
 const flag_length = { 
@@ -71,7 +71,7 @@ const flag_length = {
   'ease'       : 0,
   'xmove'      : 1,
   'ymove'      : 1,
-  'fixed'      : 1,
+  'origin'     : 1,
   'rotate'     : 5,
   'scale'      : 5,
   'xscale'     : 6,
@@ -371,14 +371,14 @@ class Animation{
       // has to be rewritten when flags are modified
       // the point is to avoid a loop
       switch(first){
-        case 'd':                              key = 'delay'   ; break;
-        case 'n':                              key = 'blank'   ; break;
-        case 's':                              key = 'ease'    ; break;
-        case 't':                              key = 'transp_to' ; break;
-        case 'f':                              key = 'fixed'   ; break;
-        case 'h': if (flag=='hard'           ) key = 'ease'    ; else key = 'cursor'  ; break;
-        case 'x': if (flag.substr(2,3)=='x25') key = 'xscale'  ; else key = 'xmove'   ; break; // +: _x2B_ · %: _x25_
-        case 'y': if (flag.substr(2,3)=='x25') key = 'yscale'  ; else key = 'ymove'   ; break;
+        case 'd':                              key = 'delay'    ; break;
+        case 'n':                              key = 'blank'    ; break;
+        case 's':                              key = 'ease'     ; break;
+        case 't':                              key = 'transp_to'; break;
+        case 'o':                              key = 'origin'   ; break;
+        case 'h': if (flag=='hard'           ) key = 'ease'     ; else key = 'cursor'  ; break;
+        case 'x': if (flag.substr(2,3)=='x25') key = 'xscale'   ; else key = 'xmove'   ; break; // +: _x2B_ · %: _x25_
+        case 'y': if (flag.substr(2,3)=='x25') key = 'yscale'   ; else key = 'ymove'   ; break;
         case '_': key = action_flag_value_to_key[flag.slice(0,5)]     ; break;
 
       default:
@@ -495,7 +495,7 @@ class Trigger{
 class Action{
 
   constructor( name, element, kind, delay, handoff, handwait, duration, ease,
-               xmove, ymove, fixed, rotate, scale, xscale, yscale, transp_to, transp_from ){
+               xmove, ymove, origin, rotate, scale, xscale, yscale, transp_to, transp_from ){
 
     this.name       = name;         // 20-character string
     this.element    = element;      // object reference
@@ -511,7 +511,7 @@ class Action{
     this.ease       = ease;         // animation ease                            in, out, inout, noease
     this.xmove      = xmove;        // x movement                                x-30
     this.ymove      = ymove;        // y movement                                y+25
-    this.fixed      = fixed;        // fixed point                               0f0 to 100f100
+    this.origin     = origin;       // origin point                              o0,0 to o100,100
     this.rotate     = rotate;       // number · rotation                         >20 or <45.5
     this.scale      = scale;        // number · percentage to scale              %150
     this.xscale     = xscale;       // number · percentage to scale x            x%20
@@ -1074,12 +1074,12 @@ function set_clickable(obj, clickable){
     obj.style.pointerEvents = 'none';
 }
 
-//———————————————————————————————————————— convert_transform(fixed)
+//———————————————————————————————————————— convert_transform(origin)
 
-function convert_transform(fixed){
-  if (typeof fixed == 'undefined') return "50% 50%";
+function convert_transform(origin){
+  if (typeof origin == 'undefined') return "50% 50%";
 
-  var parts = fixed.split('_x2C_');
+  var parts = origin.split('_x2C_');
   var result = parts.join('% ') + '%';
   return result;
 }
@@ -1091,7 +1091,7 @@ function gsap_params(action){
   var params = {};
 
   params['duration'       ] = action.duration==0 ? 0.001:action.duration
-  params['transformOrigin'] = convert_transform(action.fixed);
+  params['transformOrigin'] = convert_transform(action.origin);
 
   if (typeof action.ease     == 'undefined') params['ease'     ] = Power1.easeInOut     ;
                                         else params['ease'     ] = eases[action.ease]   ;
@@ -1135,7 +1135,7 @@ function not_number(x) {
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name18'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+ var a = 'name22'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
