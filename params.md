@@ -12,6 +12,17 @@ cp ~/.vim/view/*svija.dev=+sync=+Svija=+Scripts* ./folds/
 ---
 </details>
 
+[logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
+
+*Updated 14 June, 2022*
+
+![Svija: SVG-based websites built in Adobe Illustrator][logo]
+
+### Svija Life 1.0.6 Parameters
+
+All current triggers, actions and flags are listed below.
+
+---
 # Action Flags
 
 Action flags can be used with any kind of trigger.
@@ -31,7 +42,7 @@ t###            | transparency | —       | % transparent                      
 x%###           | scale        | 100     | scale horizontally to given percent | over/name/y%150
 y%###           | scale        | 100     | scale vertically to given percent   | over/name/x%150
 \<###           | rotate       | 0       | rotate counter-clockwise            | over/name/\<30
-\>###           | rotate       | 0       | rotate clockwise                    | over/name/\>30
+###\>           | rotate       | 0       | rotate clockwise                    | over/name/30\>
 o###,###        | origin       | 50,50   | center of rotation                  | over/name/<90/o0,100
 hard            | ease         | soft    | abrupt start & stop                 | over/name/+x20/hard
 soft            | ease         | soft    | soft start & stop                   | over/name/+x20/soft
@@ -90,9 +101,9 @@ Trigger: **time**. There are no time trigger flags.
 
 ### Actions
 
-action | example    | description
--------|------------|------------------------------------------
-delay  | delay/name | delay after page load (default 5 seconds)
+action | example       | description
+-------|---------------|------------------------------------------
+delay  | delay/name/d3 | delay after page load (default 5 seconds)
 
 ---
 

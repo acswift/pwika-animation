@@ -72,7 +72,7 @@ Need to learn how to do this!
 
 On Github, create a [new release](https://github.com/svijalove/admin/releases) from the **master branch**.
 
-- use the current version number for the tag (2.2.7)
+- use the current version number for the tag (1.0.6)
 - choose target **Master**
 - use the month & year for the title (October 2021)
 - if there is more than one release in a month, append -1, -2 etc. to all releases for the month

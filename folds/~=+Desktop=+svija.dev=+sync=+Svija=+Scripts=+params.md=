@@ -114,37 +114,28 @@ setlocal virtualedit=
 setlocal wincolor=
 setlocal nowinfixheight
 setlocal nowinfixwidth
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
 1,14fold
-15,41fold
-46,54fold
-55,66fold
-42,68fold
-74,84fold
-69,86fold
-91,97fold
-87,98fold
+15,20fold
+21,25fold
+26,52fold
+57,65fold
+66,77fold
+53,79fold
+85,95fold
+80,97fold
+102,108fold
+98,109fold
 let &fdl = &fdl
-42
-normal! zo
-42
-normal! zc
-69
-normal! zo
-69
-normal! zc
-87
-normal! zo
-87
-normal! zc
-let s:l = 95 - ((94 * winheight(0) + 35) / 70)
+let s:l = 104 - ((103 * winheight(0) + 34) / 68)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 95
+keepjumps 104
 normal! 01|
 let &g:so = s:so_save | let &g:siso = s:siso_save
+nohlsearch
 doautoall SessionLoadPost
 " vim: set ft=vim :
