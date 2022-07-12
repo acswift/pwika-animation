@@ -231,8 +231,6 @@ class Animation{
 
       zoopy[key] = this.get_val(key, flag);
 
-      if (key == 'rotate') zoopy[key] = zoopy[key] * this.fix_rotation(flag);
-
     }
 
     // special cases (so absence of flags behaves as expected) ———————————————————————————————
@@ -392,8 +390,8 @@ class Animation{
         case 'x': key = 'xscale'   ; break;
         case 'y': key = 'yscale'   ; break;
         case '%': key = 'scale'    ; break;
-        case '<': key = 'rotation' ; break;
-        case '>': key = 'rotation' ; break;
+        case '<': key = 'rotate'   ; break;
+        case '>': key = 'rotate'   ; break;
 
         case 'h': if (flag=='hard'        ) key = 'ease'     ; else key = 'cursor'  ; break;
         case '-': if (flag.slice(1,2)=='x') key = 'xmove'    ; else key = 'ymove'   ; break;
@@ -425,15 +423,14 @@ get_val(key, flag){
   var flag_len = flag_length[key];
   if (flag_len == 0) return flag;
 
-  if ((key=='xmove' || key=='ymove') && flag.slice(0,1)==='-')
+  if ((key=='xmove' || key=='ymove') && flag.slice(0,1)=='-')
     return 0-flag.substr(flag_len);
-  else return flag.substr(flag_len);
-}
 
-  fix_rotation(flag){
-    if (flag.substr(0,5) == '<') return -1;
-    else return 1;
-  }
+  if (key=='rotate' && flag.slice(0,1)=='<')
+    return 0-flag.substr(flag_len);
+
+  return flag.substr(flag_len);
+}
 
 
 }
@@ -1114,14 +1111,14 @@ function convert_entities(str){
   }
 
   str2= parts.join('');
-  log('—————————————————————————————— 😈 conversion from '+str+' to '+str2);
+//  log('—————————————————————————————— 😈 conversion from '+str+' to '+str2);
   return str2;
 
 }
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name15'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name6'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin

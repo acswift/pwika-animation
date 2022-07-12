@@ -132,54 +132,54 @@ silent! normal! zE
 141,147fold
 163,199fold
 148,205fold
-206,271fold
-272,295fold
-296,315fold
-316,334fold
-335,347fold
-348,375fold
-376,423fold
-433,437fold
-132,440fold
-441,459fold
-460,490fold
-494,525fold
-526,559fold
-560,569fold
-570,577fold
-578,597fold
-598,604fold
-608,654fold
-655,673fold
-674,700fold
-704,713fold
-715,724fold
-725,738fold
-739,752fold
-753,761fold
-763,780fold
-781,799fold
-800,818fold
-822,861fold
-862,916fold
-917,967fold
-968,992fold
-993,1023fold
-1024,1031fold
-1035,1043fold
-1044,1053fold
-1054,1080fold
-1081,1084fold
-1085,1096fold
-1097,1102fold
-1103,1121fold
-1122,1125fold
+206,269fold
+270,293fold
+294,313fold
+314,332fold
+333,345fold
+346,373fold
+374,421fold
+422,434fold
+132,437fold
+438,456fold
+457,487fold
+491,522fold
+523,556fold
+557,566fold
+567,574fold
+575,594fold
+595,601fold
+605,651fold
+652,670fold
+671,697fold
+701,710fold
+712,721fold
+722,735fold
+736,749fold
+750,758fold
+760,777fold
+778,796fold
+797,815fold
+819,858fold
+859,913fold
+914,964fold
+965,989fold
+990,1020fold
+1021,1028fold
+1032,1040fold
+1041,1050fold
+1051,1077fold
+1078,1081fold
+1082,1093fold
+1094,1099fold
+1100,1118fold
+1119,1122fold
 let &fdl = &fdl
-let s:l = 1124 - ((992 * winheight(0) + 35) / 70)
+let s:l = 1121 - ((989 * winheight(0) + 35) / 70)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1124
+keepjumps 1121
 normal! 01|
 let &g:so = s:so_save | let &g:siso = s:siso_save
 doautoall SessionLoadPost
