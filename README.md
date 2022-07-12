@@ -87,10 +87,10 @@ Open the two login spreadsheets to get a list of svija sites ([svija][ss1], [cli
 [ss2]: https://docs.google.com/spreadsheets/d/1yz3OETWWM-lpTyubIba8ptQf7MJV6ft38_yTNd0MGcg/edit#gid=1287837631
 
 1. open all the admin sites and navigate to **Script Sets**
-2. replace the various script parts with the contens of the new release
+2. replace the various script parts with the contents of the **master** branch
 
 ---
-### 10. Check Out the Beta Branch
+### 7. Check Out the Beta Branch
 
 Commit any changes, then check out the beta branch:
 ```
