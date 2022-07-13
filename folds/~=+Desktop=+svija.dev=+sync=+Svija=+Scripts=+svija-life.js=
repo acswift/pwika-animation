@@ -180,11 +180,11 @@ let &fdl = &fdl
 normal! zo
 136
 normal! zc
-let s:l = 1164 - ((1163 * winheight(0) + 35) / 70)
+let s:l = 13 - ((9 * winheight(0) + 34) / 69)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1164
+keepjumps 13
 normal! 0
 let &g:so = s:so_save | let &g:siso = s:siso_save
 doautoall SessionLoadPost

@@ -3,7 +3,7 @@
 
 /*———————————————————————————————————————— notes
 
-  Svija Life 1.0.6
+  Svija Life 1.0.6.1
 
   github.com/svijalove/animation
   
