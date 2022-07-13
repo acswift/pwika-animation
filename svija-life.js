@@ -516,6 +516,9 @@ for(var x=0; x<clip_paths.length; x++){
   clip_paths[x].id = new_id;
   clip_users[x].style.clipPath = 'url("#' + new_id + '")';
 
+  // fix illustrator bug
+  // reported at: https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain
+
   var parent_path = document.getElementById(new_id);
   var first_child = parent_path.innerHTML
   var correct_id = first_child.split('"')[1].slice(1);
