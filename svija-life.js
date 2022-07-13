@@ -25,6 +25,7 @@ const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'togg
 //———————————————————————————————————————— conversion dictionaries
 
 const entity_conversion = {
+  'x002D': '-',
   'x2F'  : '/',
   'x2B'  : '+',
   'x25'  : '%',
@@ -49,23 +50,24 @@ const action_flag_value_to_key = {
 
   // name & kind are given
 
-//'softin' : 'ease'       , // no value
-//'softout': 'ease'       , // no value
-//'soft'   : 'ease'       , // no value
-//'hard '  : 'ease'       , // no value
-//'d'      : 'delay'       , // value follows
-//'o'      : 'origin'      , // value follows
-//'t'      : 'transp_to'   , // value follows
+//'softin'  : 'ease'        , // no value
+//'softout' : 'ease'        , // no value
+//'soft'    : 'ease'        , // no value
+//'hard '   : 'ease'        , // no value
+//'d'       : 'delay'       , // value follows
+//'o'       : 'origin'      , // value follows
+//'t'       : 'transp_to'   , // value follows
 
-  '_x2B_x' : 'xmove'       , // value follows +x
-  '_x2B_y' : 'ymove'       , // value follows +y
-  '_x3C_'  : 'rotate'      , // value follows
-  '_x3E_'  : 'rotate'      , // value precedes
-  '_x25_'  : 'scale'       , // value follows
-  'x_x25'  : 'xscale'      , // value follows
-  'y_x25'  : 'yscale'      , // value follows
+  '_x002D_x': 'xmove'       , // value follows -x
+  '_x2B_x'  : 'xmove'       , // value follows +x
+  '_x2B_y'  : 'ymove'       , // value follows +y
+  '_x3C_'   : 'rotate'      , // value follows
+  '_x3E_'   : 'rotate'      , // value precedes
+  '_x25_'   : 'scale'       , // value follows
+  'x_x25'   : 'xscale'      , // value follows
+  'y_x25'   : 'yscale'      , // value follows
 
-  '_x2B_'  : 'handoff'       // value follows
+  '_x2B_'   : 'handoff'       // value follows
 }
 
 const flag_length = { 
@@ -231,7 +233,7 @@ class Animation{
       key = this.get_action_key(flag);
 
       if (typeof zoopy[key] != 'undefined') errlog('Action "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
-
+if(this.name=='name6') log('———————————————————————————————————————————— key:flag: '+key+':'+flag);
       zoopy[key] = this.get_val(key, flag);
 
     }
@@ -357,7 +359,7 @@ class Animation{
       log('\nTrigger['+t+']');
       Object.keys(this.trigger[t]).forEach(key => {
         if (typeof this.trigger[t][key] != 'undefined')
-          if(key=='element')log('element (object) — '+this.trigger[t][key].id);
+          if(key=='element')log('element (object) — '+convert_entities(this.trigger[t][key].id));
           else log(key+' ('+typeof(this.trigger[t][key])+') — '+this.trigger[t][key]);
       });
     }
@@ -366,7 +368,7 @@ class Animation{
       log('\nAction[' + x + ']');
       Object.keys(this.action[x]).forEach(key => {
         if (typeof this.action[x][key] != 'undefined')
-          if(key=='element')log('element (object) — '+this.action[x][key].id);
+          if(key=='element')log('element (object) — '+convert_entities(this.action[x][key].id));
           else log(key+' ('+typeof(this.action[x][key])+') — '+this.action[x][key]);
       });
     }
@@ -382,7 +384,8 @@ class Animation{
     var key = '';
 
     try {
-      var char1  = flag.substr(0,1);
+      var char1  = flag.slice(0,1);
+      var char2  = flag.slice(1,2);
 
       switch(char1){
         case 'd': key = 'delay'    ; break;
@@ -390,14 +393,14 @@ class Animation{
         case 'o': key = 'origin'   ; break;
         case 's': key = 'ease'     ; break;
         case 't': key = 'transp_to'; break;
-        case 'x': key = 'xscale'   ; break;
         case 'y': key = 'yscale'   ; break;
         case '%': key = 'scale'    ; break;
         case '<': key = 'rotate'   ; break;
 
-        case 'h': if (flag=='hard'        ) key = 'ease'     ; else key = 'cursor'  ; break;
-        case '-': if (flag.slice(1,2)=='x') key = 'xmove'    ; else key = 'ymove'   ; break;
-        case '+': if (flag.slice(1,2)=='x') key = 'xmove'    ; else key = 'ymove'   ; break;
+        case 'h': if (char2=='a') key = 'ease'     ; else key = 'cursor'  ; break;
+        case 'x': if (char2=='0') key = 'xmove'    ; else key = 'xscale'  ; break; // entity x002DX · see clipping masks
+        case '-': if (char2=='x') key = 'xmove'    ; else key = 'ymove'   ; break;
+        case '+': if (char2=='x') key = 'xmove'    ; else key = 'ymove'   ; break;
 
         default:
           var charx  = flag.slice(-1);
@@ -429,6 +432,9 @@ class Animation{
 get_val(key, flag){
   var flag_len = flag_length[key];
   if (flag_len == 0) return flag;
+
+  if (key=='xmove' && flag.slice(0,6)=='x002Dx')
+    return 0-flag.substr(6, flag.length-1);
 
   if ((key=='xmove' || key=='ymove') && flag.slice(0,1)=='-')
     return 0-flag.substr(flag_len);
@@ -507,7 +513,6 @@ class Action{
 const clip_paths = document.getElementsByTagName('clipPath');
 const clip_users = document.querySelectorAll("[style^='clip']")
 
-
 for(var x=0; x<clip_paths.length; x++){
   var id = clip_paths[x].id;
   var new_id = 'CP' + id;
@@ -521,14 +526,12 @@ for(var x=0; x<clip_paths.length; x++){
 
   var parent_path = document.getElementById(new_id);
   var first_child = parent_path.innerHTML
-  var correct_id = first_child.split('"')[1].slice(1);
-  var wrong_id   = correct_id.replace('_x002D_', '-');
+  var correct_id  = first_child.split('"')[1].slice(1);
+  var wrong_id    = correct_id.replace('_x002D_', '-');
   var path = document.getElementById(wrong_id);
-  path.id = correct_id;
+  path.id  = correct_id;
 
-  log('clip path old ID: '+convert_entities(id));
-  log('clip path new ID: '+convert_entities(new_id));
-  log(' ');
+  log('clip path fixed: '+convert_entities(id.slice(0,-52)));
 }
 
 //———————————————————————————————————————— register triggers
@@ -1154,14 +1157,15 @@ function convert_entities(str){
   }
 
   str2= parts.join('');
-//  log('—————————————————————————————— 😈 conversion from '+str+' to '+str2);
+
+  // log('—————————————————————————————— 😈 conversion from '+str+' to '+str2);
   return str2;
 
 }
 
 //———————————————————————————————————————— debugging
 
-var a = 'name3'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name6'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
