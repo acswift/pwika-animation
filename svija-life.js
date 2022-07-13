@@ -231,9 +231,8 @@ class Animation{
 
       // assign value to flag
       key = this.get_action_key(flag);
-
       if (typeof zoopy[key] != 'undefined') errlog('Action "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
-if(this.name=='name6') log('———————————————————————————————————————————— key:flag: '+key+':'+flag);
+
       zoopy[key] = this.get_val(key, flag);
 
     }
@@ -432,9 +431,6 @@ if(this.name=='name6') log('—————————————————�
 get_val(key, flag){
   var flag_len = flag_length[key];
   if (flag_len == 0) return flag;
-
-  if (key=='xmove' && flag.slice(0,6)=='x002Dx')
-    return 0-flag.substr(6, flag.length-1);
 
   if ((key=='xmove' || key=='ymove') && flag.slice(0,1)=='-')
     return 0-flag.substr(flag_len);
