@@ -495,6 +495,27 @@ class Action{
 
 //:::::::::::::::::::::::::::::::::::::::: PROGRAM
 
+/*———————————————————————————————————————— clipping masks
+
+    Illustrator's clipping masks use duplicate ID's
+    for the mask and the parent container
+
+    in order to animate the mask only, it's necessary
+    to change the container's id */  
+
+const clip_paths = document.getElementsByTagName('clipPath');
+const clip_users = document.querySelectorAll("[style^='clip']")
+
+//log(clip_paths.length +' clip paths found, '+clip_users.length+' clip users found');
+
+for(var x=0; x<clip_paths.length; x++){
+  var id = clip_paths[x].id;
+      id = 'CP' + id;
+
+  clip_paths[x].id = id;
+  clip_users[x].style.clipPath = 'url("#' + id + '")';
+}
+
 //———————————————————————————————————————— register triggers
 
 log('\nregistering triggers…');
