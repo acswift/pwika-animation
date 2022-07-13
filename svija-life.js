@@ -25,6 +25,7 @@ const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'togg
 //———————————————————————————————————————— conversion dictionaries
 
 const entity_conversion = {
+  'x2F'  : '/',
   'x2B'  : '+',
   'x25'  : '%',
   'x3C'  : '<',
@@ -495,7 +496,7 @@ class Action{
 
 //:::::::::::::::::::::::::::::::::::::::: PROGRAM
 
-/*———————————————————————————————————————— clipping masks
+/*———————————————————————————————————————— disambiguate clipping masks
 
     Illustrator's clipping masks use duplicate ID's
     for the mask and the parent container
@@ -506,14 +507,25 @@ class Action{
 const clip_paths = document.getElementsByTagName('clipPath');
 const clip_users = document.querySelectorAll("[style^='clip']")
 
-//log(clip_paths.length +' clip paths found, '+clip_users.length+' clip users found');
 
 for(var x=0; x<clip_paths.length; x++){
   var id = clip_paths[x].id;
-      id = 'CP' + id;
+  var new_id = 'CP' + id;
+  new_id = new_id.replace('-', 'x');
 
-  clip_paths[x].id = id;
-  clip_users[x].style.clipPath = 'url("#' + id + '")';
+  clip_paths[x].id = new_id;
+  clip_users[x].style.clipPath = 'url("#' + new_id + '")';
+
+  var parent_path = document.getElementById(new_id);
+  var first_child = parent_path.innerHTML
+  var correct_id = first_child.split('"')[1].slice(1);
+  var wrong_id   = correct_id.replace('_x002D_', '-');
+  var path = document.getElementById(wrong_id);
+  path.id = correct_id;
+
+  log('clip path old ID: '+convert_entities(id));
+  log('clip path new ID: '+convert_entities(new_id));
+  log(' ');
 }
 
 //———————————————————————————————————————— register triggers
@@ -1146,7 +1158,7 @@ function convert_entities(str){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name3'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'name3'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
