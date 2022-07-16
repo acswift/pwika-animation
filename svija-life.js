@@ -3,7 +3,7 @@
 
 /*———————————————————————————————————————— notes
 
-  Svija Life 1.0.6.1
+  Svija Life 1.0.6.2
 
   github.com/svijalove/animation
   
@@ -510,7 +510,13 @@ const clip_paths = document.getElementsByTagName('clipPath');
 const clip_users = document.querySelectorAll("[style^='clip']")
 
 for(var x=0; x<clip_paths.length; x++){
+
   var id = clip_paths[x].id;
+  if (id.slice(0,6)=='animat') { // should be 'SVGID_', or match parent SVG ID
+    // log('———————————————————————————————————————ignored:'+id.slice(0,6)+':'+convert_entities(id));
+    continue;
+  }
+
   var new_id = 'CP' + id;
   new_id = new_id.replace('-', 'x');
 
@@ -520,12 +526,15 @@ for(var x=0; x<clip_paths.length; x++){
   // fix illustrator bug
   // reported at: https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain
 
-  var parent_path = document.getElementById(new_id);
-  var first_child = parent_path.innerHTML
+  var first_child = clip_paths[x].innerHTML
   var correct_id  = first_child.split('"')[1].slice(1);
-  var wrong_id    = correct_id.replace('_x002D_', '-');
-  var path = document.getElementById(wrong_id);
-  path.id  = correct_id;
+
+  if (correct_id.indexOf('_x002D_') > 0){
+    var wrong_id = correct_id.replace('_x002D_', '-');
+    var path = document.getElementById(wrong_id);
+    path.id  = correct_id;
+    log('path.id with "-" corrected: '+path.id);
+  }
 
   log('clip path fixed: '+convert_entities(id.slice(0,-52)));
 }
@@ -1161,7 +1170,7 @@ function convert_entities(str){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name6'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin

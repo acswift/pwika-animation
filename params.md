@@ -18,7 +18,7 @@ cp ~/.vim/view/*svija.dev=+sync=+Svija=+Scripts* ./folds/
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-### Svija Life 1.0.6.1 Parameters
+### Svija Life 1.0.6.2 Parameters
 
 All current triggers, actions and flags are listed below.
 
