@@ -506,7 +506,6 @@ class Action{
     in order to animate the mask only, it's necessary
     to change the container's id 
 
-
   <defs>
     <rect id="this" x="81.5" y="122.5" width="134" height="134"/>
   </defs>
@@ -531,39 +530,7 @@ class Action{
   SEPARATELY
 
   if the rect ID contains a minus sign, we need to correct for an Illustrator bug
-  that converts it to an entity when called, but not when declared
-
-    <defs>
-      <rect id="down_x2F_name2_x2F_x_x25_120_x2F_y_x25_300_x2F__x2B_x30" x="737.929" y="802.377" width="246.567" height="33.524"/>
-    </defs>
-
-    <clipPath id="down_x2F_name2_x2F_x_x25_120_x2F_y_x25_300_x2F__x2B_x30_00000069372672569541734800000003423036614701708478_">
-      <use xlink:href="#down_x2F_name2_x2F_x_x25_120_x2F_y_x25_300_x2F__x2B_x30"  style="overflow:visible;"/>
-    </clipPath>
-    
-    <g style="clip-path:url(#down_x2F_name2_x2F_x_x25_120_x2F_y_x25_300_x2F__x2B_x30_00000069372672569541734800000003423036614701708478_);">
-
-    the problem is that "x" doesn't refer to the same thing — the arrays are not the same length.
-
-    so I need to climb the node tree to find the correct element.
-
-    if I want to identify theses parts:
-
-    1. rect id="down_x2F_name2
-    2. clipPath id="down_x2F
-    3. use xlink: (refers back to rect)
-    4. g style= (refers to ckp path
-
-
-    g style refers to clip path
-    clip path uses rect
-    
-
-    start with clip_users
-    get clip path
-    get rect
-
-*/
+  that converts it to an entity when called, but not when declared  */
 
 
 const clip_users = document.querySelectorAll("[style^='clip']")
@@ -572,39 +539,29 @@ for(var x=0; x<clip_users.length; x++){
 
   var path_url = clip_users[x].style.clipPath;
   if (path_url.slice(6,12)=='animat') continue; // should be 'SVGID_', or match parent SVG ID
-  path_url = path_url.slice(6, path_url.length-2);
-  console.log('————————————————————————— clipPath ID should be '+path_url);
-  var this_one = document.getElementById(path_url);
+  id = path_url.slice(6, path_url.length-2);
+
+  console.log('————————————————————————— clipPath ID should be '+id);
+  var new_id = 'CP' + id;
+  clip_path = document.getElementById(id);
+
+  clip_path.id = new_id;
+  clip_users[x].style.clipPath = 'url("#' + new_id + '")';
+
+  log('clip path fixed: '+convert_entities(id.slice(0,-52)));
+
+  // fix illustrator bug
+  // reported at: https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain
   
-    
-//  console.log('——————————————————————————— live one:'+clip_path.innerHTML+':');
-
-//  var id = clip_paths[x].id;
- // var new_id = 'CP' + id;
-
-
-
-
-//  clip_paths[x].id = new_id;
-//  clip_users[x].style.clipPath = 'url("#' + new_id + '")';
-
-//log('clip path fixed: '+convert_entities(id.slice(0,-52)));
-
-/*——————————————————————————————————————————————————————————-- add back in once bug fixed
-// fix illustrator bug
-// reported at: https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain
-
-var first_child = clip_paths[x].innerHTML
-var correct_id  = first_child.split('"')[1].slice(1);
-
-if (correct_id.indexOf('_x002D_') > 0){
-  var wrong_id = correct_id.replace('_x002D_', '-');
-  var path = document.getElementById(wrong_id);
-  path.id  = correct_id;
-  log('path.id with "-" corrected: '+path.id);
-}
-——————————————————————————————————————————————————————————-- add back in once bug fixed */
+  var first_child = clip_path.innerHTML
+  var correct_id  = first_child.split('"')[1].slice(1);
   
+  if (correct_id.indexOf('_x002D_') > 0){
+    var wrong_id = correct_id.replace('_x002D_', '-');
+    var path = document.getElementById(wrong_id);
+    path.id  = correct_id;
+    log('path.id with "-" corrected: '+path.id);
+  }
 }
 
 //———————————————————————————————————————— register triggers
