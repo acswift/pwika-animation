@@ -3,7 +3,7 @@
 ---
 To restore Vim folds when starting work:
 ```
-cp folds/*svija.dev=+sync=+Svija=+Scripts* ~/.vim/view/
+cp folds/* ~/.vim/view/
 ```
 To add folds to repo at commit:
 ```
