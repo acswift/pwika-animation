@@ -553,7 +553,7 @@ for(var x=0; x<clip_users.length; x++){
     if (r=fix_minus(clip_path)) var z = 0; // log('minus-sign bug corrected for '+convert_entities(r));
   }
   catch(msg){
-//  log('⚠️ object with ID '+convert_entities(id)+' could not be updated');
+//  log('⚠️  object with ID '+convert_entities(id)+' could not be updated');
   }
 }
 
