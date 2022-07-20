@@ -1124,20 +1124,20 @@ function gsap_params(action){
   params['duration'       ] = action.duration==0 ? 0.001:action.duration
   params['transformOrigin'] = convert_transform(action.origin);
 
-  if (typeof action.ease     == 'undefined') params['ease'     ] = Power1.easeInOut     ;
-                                        else params['ease'     ] = eases[action.ease]   ;
+  if (typeof action.ease      == 'undefined') params['ease'     ] = Power1.easeInOut      ;
+                                         else params['ease'     ] = eases[action.ease]    ;
 
-  if (typeof action.delay    != 'undefined') params['delay'    ] = action.delay         ;
+  if (typeof action.delay     != 'undefined') params['delay'    ] = action.delay          ;
 
-  if (typeof action.xmove    != 'undefined') params['x'        ] = '+=' + action.xmove  ;
-  if (typeof action.ymove    != 'undefined') params['y'        ] = '+=' + action.ymove  ;
+  if (typeof action.xmove     != 'undefined') params['x'        ] = '+=' + action.xmove   ;
+  if (typeof action.ymove     != 'undefined') params['y'        ] = '+=' + action.ymove   ;
 
-  if (typeof action.scale    != 'undefined') params['scale'    ] = action.scale    / 100;
-  if (typeof action.xscale   != 'undefined') params['scaleX'   ] = action.xscale   / 100;
-  if (typeof action.yscale   != 'undefined') params['scaleY'   ] = action.yscale   / 100;
+  if (typeof action.scale     != 'undefined') params['scale'    ] = action.scale     / 100;
+  if (typeof action.xscale    != 'undefined') params['scaleX'   ] = action.xscale    / 100;
+  if (typeof action.yscale    != 'undefined') params['scaleY'   ] = action.yscale    / 100;
 
-  if (typeof action.transp_to  != 'undefined') params['autoAlpha'] = action.transp_to  / 100;
-  if (typeof action.rotate   != 'undefined') params['rotation' ] = action.rotate        ;
+  if (typeof action.transp_to != 'undefined') params['autoAlpha'] = action.transp_to / 100;
+  if (typeof action.rotate    != 'undefined') params['rotation' ] = action.rotate         ;
 
   return params;
 }
@@ -1204,7 +1204,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'mainMenu'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
