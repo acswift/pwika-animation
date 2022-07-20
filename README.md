@@ -106,6 +106,7 @@ git push -u
 ---
 ### 8. Increment the Version Number
 
+**NOTE:** copy to websites *before* incrementing to new version.
 Places to update the version number:
 ```
 cd ~/Desktop/svija.dev/sync/Svija/Scripts
@@ -116,13 +117,4 @@ Then commit the version number change:
 ```
 git commit -m "updated version number" -a && git push -u  
 ```
----
-### 12. Update Websites
-
-Look at the [issues][li] for **⚠️ updates for version 2.2.17** (for example)
-
-Update websites accordingly.
-
-[li]: https://github.com/svijalove/admin-update/issues
-
 ---
