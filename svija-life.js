@@ -540,16 +540,19 @@ for(var x=0; x<clip_users.length; x++){
   var path_url = clip_users[x].style.clipPath;
   if (path_url.slice(6,12)=='animat') continue; // should be 'SVGID_', or match parent SVG ID
   id = path_url.slice(6, path_url.length-2);
-
   var new_id = 'CP' + id;
   clip_path = document.getElementById(id);
 
-  clip_path.id = new_id;
-  clip_users[x].style.clipPath = 'url("#' + new_id + '")';
+  try{
+    clip_path.id = new_id;
+    clip_users[x].style.clipPath = 'url("#' + new_id + '")';
+    log('clipping path disambiguated: '+convert_entities(id.slice(0,-52)));
 
-  log('clipping path disambiguated: '+convert_entities(id.slice(0,-52)));
-
-  if (r=fix_minus(clip_path)) log('minus-sign bug corrected for '+convert_entities(r));
+    if (r=fix_minus(clip_path)) log('minus-sign bug corrected for '+convert_entities(r));
+  }
+  catch(msg){
+    log('⚠️ object with ID '+convert_entities(id)+' could not be updated');
+  }
 }
 
 //———————————————————————————————————————— register triggers
