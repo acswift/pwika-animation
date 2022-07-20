@@ -535,13 +535,15 @@ class Action{
 
 const clip_users = document.querySelectorAll("[style^='clip']")
 
+log('verifying clipping paths…');
 for(var x=0; x<clip_users.length; x++){
 
   var path_url = clip_users[x].style.clipPath;
-  if (path_url.slice(6,12)=='animat') continue; // should be 'SVGID_', or match parent SVG ID
+  if (path_url.slice(6,12)=='SVGID_') continue; // should be 'SVGID_', or match parent SVG ID
   id = path_url.slice(6, path_url.length-2);
   var new_id = 'CP' + id;
   clip_path = document.getElementById(id);
+  log('clipping paths verified');
 
   try{
     clip_path.id = new_id;
@@ -633,7 +635,7 @@ Object.keys(animations).forEach(name => {
 
 //———————————————————————————————————————— delete unused triggers
 
-log('deleting actionless animations…');
+log('checking for actionless animations…');
 
 Object.keys(animations).forEach(name =>
   animations[name].delete_if_no_action()
