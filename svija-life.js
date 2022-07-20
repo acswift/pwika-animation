@@ -1181,10 +1181,6 @@ function convert_entities(str){
 
 }
 
-//———————————————————————————————————————— debugging
-
-//var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
-
 //———————————————————————————————————————— fix_minus(clip_path)
 
 function fix_minus(clip_path){
@@ -1202,6 +1198,10 @@ function fix_minus(clip_path){
   }
   return false;
 }
+
+//———————————————————————————————————————— debugging
+
+//var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
