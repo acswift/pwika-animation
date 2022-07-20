@@ -546,12 +546,12 @@ for(var x=0; x<clip_users.length; x++){
   try{
     clip_path.id = new_id;
     clip_users[x].style.clipPath = 'url("#' + new_id + '")';
-    log('clipping path disambiguated: '+convert_entities(id.slice(0,-52)));
+//  log('clipping path disambiguated: '+convert_entities(id.slice(0,-52)));
 
-    if (r=fix_minus(clip_path)) log('minus-sign bug corrected for '+convert_entities(r));
+//  if (r=fix_minus(clip_path)) log('minus-sign bug corrected for '+convert_entities(r));
   }
   catch(msg){
-    log('⚠️ object with ID '+convert_entities(id)+' could not be updated');
+//  log('⚠️ object with ID '+convert_entities(id)+' could not be updated');
   }
 }
 
