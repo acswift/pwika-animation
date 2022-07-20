@@ -949,15 +949,16 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
   var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
 
+  if (typeof tline == 'undefined'){
+    window[funcName] = new gsap.timeline({paused:true});
+    var tline = window[funcName];
+    tline.to(obj, params);
+  }
+
   // % of bar above top of window = % of timeline
   
   // trigger is activated
   if (trig_top < rem_top && trig_bot > rem_top){
-    if (typeof tline == 'undefined'){
-      window[funcName] = new gsap.timeline({paused:true});
-      var tline = window[funcName];
-      tline.to(obj, params);
-    }
 
     var obj_height = trig_bot - trig_top;
     var passed = rem_top - trig_top;
@@ -969,14 +970,11 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
   }
 
   else {
-    if (typeof tline != 'undefined'){
+    // if trigger is below top of page, snap to 0
+    if (trig_top > rem_top) tline.totalTime(0);
 
-      // if trigger is below top of page, snap to 0
-      if (trig_top > rem_top) tline.totalTime(0);
-
-      // if trigger is above top of page, snap to 100
-      if (trig_bot < rem_top) tline.totalTime(tline.totalDuration());
-    }
+    // if trigger is above top of page, snap to 100
+    if (trig_bot < rem_top) tline.totalTime(tline.totalDuration());
   }
 }
 
