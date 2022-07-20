@@ -14,7 +14,7 @@
 
 const d1 = new Date();
 let start_time = d1.getTime();
-log("——— svija-fvx.js ———");
+log("——— svija-life.js ———");
 
 //———————————————————————————————————————— separator, types of triggers and actions
 
@@ -541,27 +541,15 @@ for(var x=0; x<clip_users.length; x++){
   if (path_url.slice(6,12)=='animat') continue; // should be 'SVGID_', or match parent SVG ID
   id = path_url.slice(6, path_url.length-2);
 
-  console.log('————————————————————————— clipPath ID should be '+id);
   var new_id = 'CP' + id;
   clip_path = document.getElementById(id);
 
   clip_path.id = new_id;
   clip_users[x].style.clipPath = 'url("#' + new_id + '")';
 
-  log('clip path fixed: '+convert_entities(id.slice(0,-52)));
+  log('clipping path disambiguated: '+convert_entities(id.slice(0,-52)));
 
-  // fix illustrator bug
-  // reported at: https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain
-  
-  var first_child = clip_path.innerHTML
-  var correct_id  = first_child.split('"')[1].slice(1);
-  
-  if (correct_id.indexOf('_x002D_') > 0){
-    var wrong_id = correct_id.replace('_x002D_', '-');
-    var path = document.getElementById(wrong_id);
-    path.id  = correct_id;
-    log('path.id with "-" corrected: '+path.id);
-  }
+  if (r=fix_minus(clip_path)) log('minus-sign bug corrected for '+convert_entities(r));
 }
 
 //———————————————————————————————————————— register triggers
@@ -1196,6 +1184,24 @@ function convert_entities(str){
 //———————————————————————————————————————— debugging
 
 //var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+
+//———————————————————————————————————————— fix_minus(clip_path)
+
+function fix_minus(clip_path){
+  // fix illustrator bug
+  // reported at: https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain
+  
+  var first_child = clip_path.innerHTML
+  var correct_id  = first_child.split('"')[1].slice(1);
+  
+  if (correct_id.indexOf('_x002D_') > 0){
+    var wrong_id = correct_id.replace('_x002D_', '-');
+    var path = document.getElementById(wrong_id);
+    path.id  = correct_id;
+    return correct_id;
+  }
+  return false;
+}
 
 
 //———————————————————————————————————————— fin
