@@ -1204,7 +1204,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'mainMenu'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'submitButton'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
