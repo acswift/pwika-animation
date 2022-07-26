@@ -1,9 +1,12 @@
 
-//———————————————————————————————————————— svija-life.js
+//———————————————————————————————————————— svija-vibe.js
+
+// change trigger to event
+// change action to effect
 
 /*———————————————————————————————————————— notes
 
-  Svija Life 1.0.6.3
+  Svija Vibe 1.0.6.3
 
   github.com/svijalove/animation
   
@@ -14,7 +17,7 @@
 
 const d1 = new Date();
 let start_time = d1.getTime();
-log("——— svija-life.js ———");
+log("——— svija-vibe.js ———");
 
 //———————————————————————————————————————— separator, types of triggers and actions
 
@@ -125,6 +128,8 @@ const trigger_defaults = {
 
 }
 
+const time_event_default = 5.0;
+
 const action_defaults = {
   'delay'   : 5.0, // only for time/delay anims
   'duration': 0.5
@@ -149,7 +154,7 @@ class Animation{
     this.action     = action;       // array of actions
   }
 
-  add_trigger(obj, kind, flags){
+  add_trigger(obj, kind, flags){ //—————————————————————————————————————————————
 
     // initialize
 
@@ -162,37 +167,34 @@ class Animation{
     Object.keys(trigger_defaults).forEach(
       key => { zoopy[key] = trigger_defaults[key]; }
     );
+     
+    if (kind=='time') zoopy['delay'] = time_event_default;
 
-
-    // loop through flags (kind|name|parameters...)
-
-    for(var x=2; x<flags.length; x++){ //————————————————————————————————————-
+    for(var x=2; x<flags.length; x++){ //————————————————————————————— loop through flags (kind|name|parameters...)
 
       // determine flag key from value
       // entity conversion not necessary for triggers
 
+      // get correct key
       var val = flags[x];
-      var key = trigger_flag_value_to_key[val];
+      if (not_number(val)) var key = trigger_flag_value_to_key[val];
+      else if (kind == 'time') var key = 'delay';
 
-      // if not function, set flag
-
-      if (key != 'func'){
+      if (kind=='time' && key=='delay') zoopy[key] = 1 * val; 
+      else if (key=='func') {
+        zoopy.func = true;
+        zoopy.args = [];
+        for (var y=x+1; y<flags.length; y++)
+          zoopy.args.push(flags[y]);
+        x = 1000; // get out of loop — no other flags can follow func
+      }
+      else{
         var v = trigger_flag_value_to_key_value[val];
         if (val == '') errlog('Trigger "'+this.name+'" has an extra slash.');
         else if (typeof v == 'undefined') errlog('Trigger "'+this.name+'" has unknown flag: "'+val+'".');
         else zoopy[key] = v;
       }
 
-      // if function, add arguments to "args"
-      else {
-        zoopy.func = true;
-        zoopy.args = [];
-        for (var y=x+1; y<flags.length; y++)
-          zoopy.args.push(flags[y]);
-
-        x = 1000; // get out of loop — no other flags can follow func
-      }
-      
       // set link & parent target
   
       zoopy.link = obj.parentNode.hasAttribute('xlink:href'); // true false
@@ -428,19 +430,19 @@ class Animation{
 
   }
 
-get_val(key, flag){
-  var flag_len = flag_length[key];
-  if (flag_len == 0) return flag;
-
-  if ((key=='xmove' || key=='ymove') && flag.slice(0,1)=='-')
-    return 0-flag.substr(flag_len);
-
-  if (key=='rotate')
-    if (flag.slice(-1)=='>') return flag.slice(0, flag.length-1);
-    else return 0-flag.slice(1, flag.length);
-
-  return flag.substr(flag_len);
-}
+  get_val(key, flag){
+    var flag_len = flag_length[key];
+    if (flag_len == 0) return flag;
+  
+    if ((key=='xmove' || key=='ymove') && flag.slice(0,1)=='-')
+      return 0-flag.substr(flag_len);
+  
+    if (key=='rotate')
+      if (flag.slice(-1)=='>') return flag.slice(0, flag.length-1);
+      else return 0-flag.slice(1, flag.length);
+  
+    return flag.substr(flag_len);
+  }
 
 
 }
@@ -449,7 +451,7 @@ get_val(key, flag){
 
 class Trigger{
 
-  constructor( name, element, kind, cursor, func, args, link, blank ){
+  constructor( name, element, kind, cursor, func, args, link, blank, delay ){
 
     this.name       = name;         // 20-character string
     this.element    = element;      // object reference
@@ -461,6 +463,7 @@ class Trigger{
     this.args       = args;         // array · args passed to function           all flags following name
     this.link       = link;         // boolean · is an SVG link                  programmatically
     this.blank      = blank;        // boolean · link target is _blank           n
+    this.delay      = delay;        // number of seconds before activation (time event)
   }
 }
 
@@ -1204,7 +1207,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'submitButton'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+ var a = 'name9'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin

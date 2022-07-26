@@ -145,46 +145,46 @@ silent! normal! zE
 467,497fold
 509,519fold
 503,534fold
-501,554fold
-555,586fold
-587,620fold
-621,630fold
-631,638fold
-639,658fold
-659,665fold
-669,715fold
-716,734fold
-735,761fold
-765,774fold
-776,785fold
-786,799fold
-800,813fold
-814,822fold
-824,841fold
-842,860fold
-861,879fold
-883,922fold
-923,977fold
-978,1028fold
-1029,1053fold
-1054,1084fold
-1085,1092fold
-1096,1104fold
-1105,1114fold
-1115,1141fold
-1142,1145fold
-1146,1157fold
-1158,1163fold
-1164,1183fold
-1184,1187fold
-1188,1205fold
+501,559fold
+560,591fold
+592,625fold
+626,635fold
+636,643fold
+644,663fold
+664,670fold
+674,720fold
+721,739fold
+740,766fold
+770,779fold
+781,790fold
+791,804fold
+805,818fold
+819,827fold
+829,846fold
+847,865fold
+866,884fold
+888,927fold
+928,980fold
+981,1031fold
+1032,1056fold
+1057,1087fold
+1088,1095fold
+1099,1107fold
+1108,1117fold
+1118,1144fold
+1145,1148fold
+1149,1160fold
+1161,1166fold
+1167,1186fold
+1187,1204fold
+1205,1208fold
 let &fdl = &fdl
-let s:l = 537 - ((536 * winheight(0) + 35) / 70)
+let s:l = 17 - ((16 * winheight(0) + 35) / 70)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 537
-normal! 0
+keepjumps 17
+normal! 01|
 let &g:so = s:so_save | let &g:siso = s:siso_save
 doautoall SessionLoadPost
 " vim: set ft=vim :

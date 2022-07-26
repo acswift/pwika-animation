@@ -18,7 +18,7 @@ cp ~/.vim/view/*svija.dev=+sync=+Svija=+Scripts* ./folds/
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-### Svija Life 1.0.6.3
+### Svija Vibe 1.0.6.3
 
 Added beta branch.
 
@@ -31,7 +31,7 @@ The files are developed at `svija.dev/sync/Svija/Scripts` (which also contains o
 
 Update the version numbers:
 ```
-vi -O svija-life.css svija-life.js
+vi -O svija-vibe.css svija-vibe.js
 ```
 
 ---
@@ -60,7 +60,7 @@ git push origin master
 Copy info from/to:
 
 - [github.com/svijalove/admin/commits/master](https://github.com/svijalove/animation/commits/master)    
-- [tech.svija.love/manual/changelog-life](https://tech.svija.love/manual/changelog-life)   
+- [tech.svija.love/manual/changelog-vibe](https://tech.svija.love/manual/changelog-vibe)   
 
 ---
 ### 4. Create Fixtures
@@ -110,7 +110,7 @@ git push -u
 Places to update the version number:
 ```
 cd ~/Desktop/svija.dev/sync/Svija/Scripts
-vi -O README.md params.md svija-life.js svija-life.css
+vi -O README.md params.md svija-vibe.js svija-vibe.css
 # :windo %s/1.0.5/1.0.6.3/g
 ```
 Then commit the version number change:
