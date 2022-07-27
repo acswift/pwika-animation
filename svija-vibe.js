@@ -19,7 +19,7 @@ const d1 = new Date();
 let start_time = d1.getTime();
 log("——— svija-vibe.js ———");
 
-//———————————————————————————————————————— separator, types of triggers and actions
+//———————————————————————————————————————— separator, types of events and actions
 
 const  separator = '_x2F_'; // regular slash
 const   triggers = [ 'mouse', 'time', 'scroll' ];
@@ -36,11 +36,11 @@ const entity_conversion = {
   'x3E'  : '>'
 };
 
-const trigger_flag_value_to_key = {
+const event_flag_value_to_key = {
 
   // name & kind are given
 
-  // trigger flags
+  // event flags
   'func'  : 'func'       , // no value
   'a'     : 'cursor'     , // no value
   'h'     : 'cursor'     , // no value
@@ -109,7 +109,7 @@ const cursors = {
   'default_link': 'pointer'
 }
 
-const trigger_flag_value_to_key_value = {
+const event_flag_value_to_key_value = {
   'a'   : 'a',
   'h'   : 'h',
   'i'   : 'i',
@@ -120,7 +120,7 @@ const trigger_flag_value_to_key_value = {
 
 //———————————————————————————————————————— defaults
 
-const trigger_defaults = {
+const event_defaults = {
 
   'func'       : false,
   'link'       : false,
@@ -150,11 +150,11 @@ class Animation{
   constructor( name, trigger, action ){
 
     this.name       = name;         // 20-character string
-    this.trigger    = trigger;      // trigger
+    this.trigger    = trigger;      // event
     this.action     = action;       // array of actions
   }
 
-  add_trigger(obj, kind, flags){ //—————————————————————————————————————————————
+  add_event(obj, kind, flags){ //—————————————————————————————————————————————
 
     // initialize
 
@@ -164,8 +164,8 @@ class Animation{
 
     // set defaults
 
-    Object.keys(trigger_defaults).forEach(
-      key => { zoopy[key] = trigger_defaults[key]; }
+    Object.keys(event_defaults).forEach(
+      key => { zoopy[key] = event_defaults[key]; }
     );
      
     if (kind=='time') zoopy['delay'] = time_event_default;
@@ -173,11 +173,11 @@ class Animation{
     for(var x=2; x<flags.length; x++){ //————————————————————————————— loop through flags (kind|name|parameters...)
 
       // determine flag key from value
-      // entity conversion not necessary for triggers
+      // entity conversion not necessary for events
 
       // get correct key
       var val = flags[x];
-      if (not_number(val)) var key = trigger_flag_value_to_key[val];
+      if (not_number(val)) var key = event_flag_value_to_key[val];
       else if (kind == 'time') var key = 'delay';
 
       if (kind=='time' && key=='delay') zoopy[key] = 1 * val; 
@@ -189,7 +189,7 @@ class Animation{
         x = 1000; // get out of loop — no other flags can follow func
       }
       else{
-        var v = trigger_flag_value_to_key_value[val];
+        var v = event_flag_value_to_key_value[val];
         if (val == '') errlog('Trigger "'+this.name+'" has an extra slash.');
         else if (typeof v == 'undefined') errlog('Trigger "'+this.name+'" has unknown flag: "'+val+'".');
         else zoopy[key] = v;
@@ -455,7 +455,7 @@ class Trigger{
 
     this.name       = name;         // 20-character string
     this.element    = element;      // object reference
-    this.kind       = kind;         // string · kind of trigger                  scroll, mouse, time 
+    this.kind       = kind;         // string · kind of event                    scroll, mouse, time 
 
     // flags
     this.cursor     = cursor;       // string · cursor on pointerover              a, h, t (arrow, hand, text)
@@ -560,20 +560,20 @@ for(var x=0; x<clip_users.length; x++){
   }
 }
 
-//———————————————————————————————————————— register triggers
+//———————————————————————————————————————— register events
 
-log('\nregistering triggers…');
+log('\nregistering events…');
 
 triggers.forEach(kind => {
   var stem = "[id^='" + kind + separator + "']";
   var obj_array = Array.from(document.querySelectorAll(stem));
 
-  // loop through adding triggers
+  // loop through adding events
   for(var x=obj_array.length-1; x>-1; x--){ // reverse order to match layer palette order
     var obj = obj_array[x];
     var flags = obj.id.split(separator);
 
-    // doesn't have at least trigger and name
+    // doesn't have at least event and name
     if (flags.length<2) continue; 
 
     // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
@@ -584,12 +584,12 @@ triggers.forEach(kind => {
     var name = flags[1];
 
     if (typeof animations[name] == 'undefined') animations[name] = new Animation(name);
-    animations[name].add_trigger(obj, kind, flags);
+    animations[name].add_event(obj, kind, flags);
   }
 
   // log results
-  if (obj_array.length != 0)log(obj_array.length+' '+ kind+' triggers registered');
-  //                   else log('—› no '+kind+' triggers');
+  if (obj_array.length != 0)log(obj_array.length+' '+ kind+' events registered');
+  //                   else log('—› no '+kind+' events');
 });
 
 //———————————————————————————————————————— register actions
@@ -616,7 +616,7 @@ actions.forEach(kind => {
     if (Object.keys(animations).includes(name))
       animations[name].add_action(obj, kind, flags)
     else
-      errlog('Action "'+name+'" has no trigger and was not registered (id='+obj_array[x].id+') SVG NAME');
+      errlog('Action "'+name+'" has no event and was not registered (id='+obj_array[x].id+') SVG NAME');
 
   }
 
@@ -636,7 +636,7 @@ Object.keys(animations).forEach(name => {
   animations[name].make_visible();
 })
 
-//———————————————————————————————————————— delete unused triggers
+//———————————————————————————————————————— delete unused events
 
 log('checking for actionless animations…');
 
@@ -650,7 +650,7 @@ log('\nactivating animations…');
 
 Object.keys(animations).forEach(name => {
 
-  // not necessary to go through all triggers
+  // not necessary to go through all events
   // the first one is enough to set up the action
 
   if (animations[name].trigger[0].kind=='mouse') // 2ms
@@ -836,7 +836,7 @@ function scroll_point(animation, x){
   for (var t=0; t<animation.trigger.length; t++){
     var obj = animation.trigger[t].element;
 
-    var box = obj.getBBox();      // get bounding box of trigger
+    var box = obj.getBBox();      // get bounding box of event object
     var t = box['y'];             // top
 
     var params = gsap_params(animation.action[x]);
@@ -854,7 +854,7 @@ function scroll_scrub(animation, x){
   for (var t=0; t<animation.trigger.length; t++){
     var obj = animation.trigger[t].element;
 
-    var box = obj.getBBox();      // get bounding box of trigger
+    var box = obj.getBBox();      // get bounding box of event object
     var t = box['y'];             // top
     var b = t + box['height'];    // bottom
 
@@ -873,7 +873,7 @@ function scroll_zone(animation, x){
   for (var t=0; t<animation.trigger.length; t++){
     var obj = animation.trigger[t].element;
 
-    var box = obj.getBBox();      // get bounding box of trigger
+    var box = obj.getBBox();      // get bounding box of event object
     var t = box['y'];             // top
     var b = t + box['height'];    // bottom
 
@@ -910,9 +910,9 @@ function execute_scroll_point(animation, x, trig_top, params){
   var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
 
-  // goes on when trigger top scrolls up past top of page
+  // goes on when event object top scrolls up past top of page
   
-  // trigger is activated
+  // event is activated
   if (trig_top < rem_top){
     if (typeof tline != 'undefined'){
       if (tline.reversed()) tline.play();       //  if reversed play it · not relevant but will be useful when reset flag is added
@@ -960,7 +960,7 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
 
   // % of bar above top of window = % of timeline
   
-  // trigger is activated
+  // event is activated
   if (trig_top < rem_top && trig_bot > rem_top){
 
     var obj_height = trig_bot - trig_top;
@@ -973,10 +973,10 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
   }
 
   else {
-    // if trigger is below top of page, snap to 0
+    // if event object is below top of page, snap to 0
     if (trig_top > rem_top) tline.totalTime(0);
 
-    // if trigger is above top of page, snap to 100
+    // if event object is above top of page, snap to 100
     if (trig_bot < rem_top) tline.totalTime(tline.totalDuration());
   }
 }
@@ -1005,10 +1005,10 @@ function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
   var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
 
-  // goes on when trigger top scrolls up past top of page
-  // goes off when trigger bottom < bottom of page
+  // goes on when event top scrolls up past top of page
+  // goes off when event object bottom < bottom of page
   
-  // trigger is activated
+  // event is activated
   if (trig_top > rem_top && trig_bot < rem_bot){
     if (typeof tline != 'undefined'){
       if (tline.reversed()) tline.play();       //  if reversed play it
@@ -1022,7 +1022,7 @@ function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
     }
   }
 
-  // trigger is deactivated
+  // event is deactivated
   else{
     if (typeof tline == 'undefined') return true;                      //  doesn't exist: do nothing
     if (!tline.isActive() && !tline.reversed()) tline.reverse();       //  paused not reversed (at end): reverse it
