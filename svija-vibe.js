@@ -689,7 +689,32 @@ let end_time = d2.getTime();
 log('\n———————————————————— finished in '+(end_time-start_time)+'ms\n\n');
 
 
-//:::::::::::::::::::::::::::::::::::::::: BUILD EACH ACTION
+//:::::::::::::::::::::::::::::::::::::::: BUILD FUNCTIONS & EFFECTS
+
+//———————————————————————————————————————— activate_mouse_func(name, trigger, args)
+
+function activate_mouse_func(name, trigger, args){
+  trigger.element.addEventListener('click', functions[name].bind(null, ...args)); 
+}
+
+//———————————————————————————————————————— activate_time_func(name, trigger, args)
+
+function activate_time_func(name, trigger, args){
+  setTimeout(functions[name].bind(null, ...args), trigger.delay*1000);
+}
+
+//———————————————————————————————————————— activate_scroll_func(name, trigger, args)
+
+function activate_scroll_func(name, trigger, args){
+
+  var obj = trigger.element;
+
+  var box = obj.getBBox();      // get bounding box of event object
+  var event_top = box['y'];             // top
+
+  window.addEventListener('scroll', execute_scroll_func.bind(null, name, trigger, event_top, args)); 
+}
+
 
 //———————————————————————————————————————— activate_mouse(animation)
 
@@ -773,7 +798,7 @@ function activate_scroll(animation){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: ACTIONS
+//:::::::::::::::::::::::::::::::::::::::: EFFECTS
 
 //———————————————————————————————————————— time_delay(animation)
 
@@ -891,7 +916,44 @@ function scroll_zone(animation, x){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: ACTION-RELATED
+//:::::::::::::::::::::::::::::::::::::::: EFFECT-RELATED
+
+/*———————————————————————————————————————— execute_scroll_func(name, trigger, event_top, args)
+
+    this was not finished because it involves adding new variables and
+    making the trigger functionality more complex.
+
+    since most of that code will have to be rewritten when loop, reset and reverse
+    are added, I decided to hold off (nobody will be using this in the near future).
+
+    also: consider changing to "when trigger is entirely visible"
+    instead of "when top crosses top" */
+
+function execute_scroll_func(name, trigger, event_top, args){
+
+  var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
+  var pixel_height = window.innerHeight;
+
+  var rem_top = page_top / illustrator_pixel;
+/*
+
+    for this to execute:
+
+    1. scroll trigger has to be below top of page, then
+    2. scroll trigger has to be above top of page, and
+    3. function cannot already have been set off by the 1-2 transition
+
+    need a boolean variable specific to this trigger above/below (is_above), set on load
+    need a boolean variable specific to this trigger already done (is_done), initialized false on load
+
+*/
+
+  // event is activated
+  if (event_top < rem_top){
+    functions[name](...args); 
+  }
+
+}
 
 //———————————————————————————————————————— execute_scroll_point(animation, x, event_top, params)
 
@@ -1210,46 +1272,6 @@ function fix_minus(clip_path){
   return false;
 }
 
-
-//———————————————————————————————————————— activate mouse functions
-
-function activate_mouse_func(name, trigger, args){
-  trigger.element.addEventListener('click', functions[name].bind(null, ...args)); 
-}
-
-//———————————————————————————————————————— activate time functions
-
-function activate_time_func(name, trigger, args){
-  setTimeout(functions[name].bind(null, ...args), trigger.delay*1000);
-}
-
-//———————————————————————————————————————— activate scroll functions 1
-
-function activate_scroll_func(name, trigger, args){
-
-  var obj = trigger.element;
-
-  var box = obj.getBBox();      // get bounding box of event object
-  var event_top = box['y'];             // top
-
-  window.addEventListener('scroll', execute_scroll_func.bind(null, name, trigger, event_top, args)); 
-}
-
-//———————————————————————————————————————— execute scroll functions 2
-
-function execute_scroll_func(name, trigger, event_top, args){
-
-  var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
-  var pixel_height = window.innerHeight;
-
-  var rem_top = page_top / illustrator_pixel;
-
-  // event is activated
-  if (event_top < rem_top){
-    functions[name](...args); 
-  }
-
-}
 
 //———————————————————————————————————————— debugging
 
