@@ -14,7 +14,7 @@ cp ~/.vim/view/*svija.dev=+sync=+Svija=+Scripts* ./folds/
 
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
-*Updated 20 July, 2022*
+*Updated 27 July, 2022*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
