@@ -135,7 +135,7 @@ const effect_defaults = {
 
 //:::::::::::::::::::::::::::::::::::::::: MODEL DEFINITIONS
 
-//———————————————————————————————————————— class Animation & methods
+//———————————————————————————————————————— class Animation
 
 // https://www.w3schools.com/js/js_classes.asp
 
@@ -253,10 +253,6 @@ class Animation{
     // set default duration
     if (typeof zoopy.duration=='undefined')
       zoopy.duration= effect_defaults.duration;
-
-    // set default delay
-    if (zoopy.kind=='delay' && typeof zoopy.delay=='undefined')
-      zoopy.delay= effect_defaults.delay;
 
     if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
       zoopy.transp_from = 100;
@@ -623,7 +619,7 @@ effects.forEach(kind => {
 
 });
 
-//———————————————————————————————————————— turn on "default on" elements, set cursors, and activate functions  · deactivated
+//———————————————————————————————————————— turn on "default on" elements, set cursors, and activate functions
 
 log('\nturning on "default on" elements & setting cursors…');
 
@@ -771,7 +767,7 @@ function activate_scroll(animation){
 
 function time_delay(animation, x){
 
-  delay  = animation.action[x].delay * 1000;
+  delay  = animation.trigger[x].delay * 1000;
   params = gsap_params(animation.action[x]);
   setTimeout(execute_anim.bind(null, animation.name+x, animation.action[x], params), delay);
 
@@ -1204,7 +1200,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
- var a = 'name9'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
