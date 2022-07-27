@@ -1,9 +1,6 @@
 
 //———————————————————————————————————————— svija-vibe.js
 
-// change trigger to event
-// change action to effect
-
 /*———————————————————————————————————————— notes
 
   Svija Vibe 1.0.6.3
@@ -19,11 +16,11 @@ const d1 = new Date();
 let start_time = d1.getTime();
 log("——— svija-vibe.js ———");
 
-//———————————————————————————————————————— separator, types of events and actions
+//———————————————————————————————————————— separator, types of events and effects
 
-const  separator = '_x2F_'; // regular slash
-const   triggers = [ 'mouse', 'time', 'scroll' ];
-const    actions = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ];
+const separator = '_x2F_'; // regular slash
+const    events = [ 'mouse', 'time', 'scroll' ];
+const   effects = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ];
 
 //———————————————————————————————————————— conversion dictionaries
 
@@ -49,7 +46,7 @@ const event_flag_value_to_key = {
 
 }
 
-const action_flag_value_to_key = {
+const effect_flag_value_to_key = {
 
   // name & kind are given
 
@@ -130,7 +127,7 @@ const event_defaults = {
 
 const time_event_default = 5.0;
 
-const action_defaults = {
+const effect_defaults = {
   'delay'   : 5.0, // only for time/delay anims
   'duration': 0.5
 }
@@ -150,8 +147,8 @@ class Animation{
   constructor( name, trigger, action ){
 
     this.name       = name;         // 20-character string
-    this.trigger    = trigger;      // event
-    this.action     = action;       // array of actions
+    this.trigger    = trigger;      // array of events
+    this.action     = action;       // array of effects
   }
 
   add_event(obj, kind, flags){ //—————————————————————————————————————————————
@@ -209,7 +206,7 @@ class Animation{
 
   }
 
-  add_action(obj, kind, flags){
+  add_effect(obj, kind, flags){
 
     // initialize
 
@@ -233,7 +230,7 @@ class Animation{
 
       // assign value to flag
       key = this.get_action_key(flag);
-      if (typeof zoopy[key] != 'undefined') errlog('Action "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
+      if (typeof zoopy[key] != 'undefined') errlog('Effect "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
 
       zoopy[key] = this.get_val(key, flag);
 
@@ -255,11 +252,11 @@ class Animation{
 
     // set default duration
     if (typeof zoopy.duration=='undefined')
-      zoopy.duration= action_defaults.duration;
+      zoopy.duration= effect_defaults.duration;
 
     // set default delay
     if (zoopy.kind=='delay' && typeof zoopy.delay=='undefined')
-      zoopy.delay= action_defaults.delay;
+      zoopy.delay= effect_defaults.delay;
 
     if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
       zoopy.transp_from = 100;
@@ -336,7 +333,7 @@ class Animation{
 
   }
 
-  delete_if_no_action(){
+  delete_if_no_effect(){
   
     for (var t=0; t<this.trigger.length; t++){
       if (typeof this.action == 'undefined')
@@ -366,7 +363,7 @@ class Animation{
     }
 
     for (var x=0; x<this.action.length; x++){
-      log('\nAction[' + x + ']');
+      log('\nEffect[' + x + ']');
       Object.keys(this.action[x]).forEach(key => {
         if (typeof this.action[x][key] != 'undefined')
           if(key=='element')log('element (object) — '+convert_entities(this.action[x][key].id));
@@ -410,9 +407,9 @@ class Animation{
 
           if (key==''){
             if (flag != '')
-              errlog('Action "'+this.name+'" has an unknown flag: "'+flag +'".');
+              errlog('Effect "'+this.name+'" has an unknown flag: "'+flag +'".');
             else
-              errlog('Action "'+this.name+'" has an extra slash.');
+              errlog('Effect "'+this.name+'" has an extra slash.');
             return null;
           }
 
@@ -422,8 +419,8 @@ class Animation{
       return key;
     }
     catch (error) {
-      if (flag == '') errlog('Action "'+this.name+'" has an extra slash.');
-      else errlog('Action "'+this.name+'" has an unknown flag: "'+flag +'".');
+      if (flag == '') errlog('Effect "'+this.name+'" has an extra slash.');
+      else errlog('Effect "'+this.name+'" has an unknown flag: "'+flag +'".');
       return null;
     }
 
@@ -476,7 +473,7 @@ class Action{
 
     this.name        = name;         // 20-character string
     this.element     = element;      // object reference
-    this.kind        = kind;         // string · kind of action                  click, over, down, away, ovaway, down, toggle, visible
+    this.kind        = kind;         // string · kind of effect                  click, over, down, away, ovaway, down, toggle, visible
 
     // flags
     this.delay       = delay;        // number · seconds before animation starts
@@ -564,7 +561,7 @@ for(var x=0; x<clip_users.length; x++){
 
 log('\nregistering events…');
 
-triggers.forEach(kind => {
+events.forEach(kind => {
   var stem = "[id^='" + kind + separator + "']";
   var obj_array = Array.from(document.querySelectorAll(stem));
 
@@ -592,15 +589,15 @@ triggers.forEach(kind => {
   //                   else log('—› no '+kind+' events');
 });
 
-//———————————————————————————————————————— register actions
+//———————————————————————————————————————— register effects
 
-log('\nregistering actions…');
+log('\nregistering effects…');
 
-actions.forEach(kind => {
+effects.forEach(kind => {
   var stem = "[id^='" + kind + separator + "']";
   var obj_array = Array.from(document.querySelectorAll(stem));
 
-  // loop through adding actions
+  // loop through adding effects
   for(var x=0; x<obj_array.length; x++){
 
     var obj   = obj_array[x];
@@ -614,15 +611,15 @@ actions.forEach(kind => {
     var name = flags[1];
 
     if (Object.keys(animations).includes(name))
-      animations[name].add_action(obj, kind, flags)
+      animations[name].add_effect(obj, kind, flags)
     else
-      errlog('Action "'+name+'" has no event and was not registered (id='+obj_array[x].id+') SVG NAME');
+      errlog('Effect "'+name+'" has no event and was not registered (id='+obj_array[x].id+') SVG NAME');
 
   }
 
   // log results
-  if (obj_array.length != 0) log(obj_array.length+' '+ kind+' actions registered');
-  //                    else log('—› no '+kind+' actions');
+  if (obj_array.length != 0) log(obj_array.length+' '+ kind+' effects registered');
+  //                    else log('—› no '+kind+' effects');
 
 });
 
@@ -638,20 +635,20 @@ Object.keys(animations).forEach(name => {
 
 //———————————————————————————————————————— delete unused events
 
-log('checking for actionless animations…');
+log('checking for effectless animations…');
 
 Object.keys(animations).forEach(name =>
-  animations[name].delete_if_no_action()
+  animations[name].delete_if_no_effect()
 )
 
-//———————————————————————————————————————— enable actions
+//———————————————————————————————————————— enable effects
 
 log('\nactivating animations…');
 
 Object.keys(animations).forEach(name => {
 
   // not necessary to go through all events
-  // the first one is enough to set up the action
+  // the first one is enough to set up the effect
 
   if (animations[name].trigger[0].kind=='mouse') // 2ms
     activate_mouse(animations[name]);  
@@ -714,7 +711,7 @@ function activate_mouse(animation){
       break;
 
     default:
-      log('⚠️ unimplemented mouse action: "'+animation.action[0].kind+'" in animation "'+animation.name+'"');
+      log('⚠️ unimplemented mouse effect: "'+animation.action[0].kind+'" in animation "'+animation.name+'"');
     }
   }
 
@@ -733,7 +730,7 @@ function activate_time(animation){
 
     default:
       if (typeof animation.action[x].kind != 'undefined') errlog('unknown time kind: '+animation.action[x].kind);
-      else errlog('missing time action: '+animation.name);
+      else errlog('missing time effect: '+animation.name);
     }
   }
 
@@ -760,7 +757,7 @@ function activate_scroll(animation){
 
     default:
       if (typeof animation.action[x].kind != 'undefined') errlog('unknown scroll kind: '+animation.action[x].kind);
-      else errlog('missing scroll action: '+animation.name);
+      else errlog('missing scroll effect: '+animation.name);
     }
   }
 
@@ -895,9 +892,9 @@ function scroll_zone(animation, x){
 /*    special cases:
  
       • top is visible to start with
-      • action transparency default is visible to start with */
+      • effect transparency default is visible to start with */
 
-// called every time a scroll action
+// called every time a scroll effect
 
 function execute_scroll_point(animation, x, trig_top, params){
 
@@ -988,9 +985,9 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
 /*    special cases:
  
       • top is visible to start with
-      • action transparency default is visible to start with */
+      • effect transparency default is visible to start with */
 
-// called every time a scroll action
+// called every time a scroll effect
 
 function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
 
