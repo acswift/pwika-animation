@@ -10,7 +10,7 @@
 
 —————————————————————————————————————————— */
 
-/*———————————————————————————————————————— triggers */
+/*———————————————————————————————————————— events */
 
  circle[id^='time_x2F_'],
 ellipse[id^='time_x2F_'],
@@ -33,7 +33,9 @@ ellipse[id^='mouse_x2F_'],
 polygon[id^='mouse_x2F_'],
    rect[id^='mouse_x2F_'],
 
-/*———————————————————————————————————————— actions */
+#x{ opacity:0; }
+
+/*———————————————————————————————————————— effects */
 
  circle[id^='click_x2F_'],
 ellipse[id^='click_x2F_'],
@@ -91,9 +93,7 @@ ellipse[id^='zone_x2F_'],
 polygon[id^='zone_x2F_'],
    rect[id^='zone_x2F_'],
 
-/*———————————————————————————————————————— disappear */
-
-#x{ opacity:0; }
+#x{ opacity:0; pointer-events:none; }
 
 
 /*———————————————————————————————————————— fin */

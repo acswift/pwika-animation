@@ -327,7 +327,6 @@ class Animation{
 
   make_visible(){
 
-
     if (typeof this.action=='undefined') return true;
 
     for (var x=0; x<this.action.length; x++){
@@ -345,12 +344,11 @@ class Animation{
   }
 
   delete_if_no_effect(){
-  
     for (var t=0; t<this.trigger.length; t++){
       if (typeof this.action == 'undefined')
         if (!this.trigger[t].func && !this.trigger[t].link){
           delete animations[this.name];
-          errlog('Animation '+this.name+' deleted (no action, link or function). SVG NAME');
+          errlog('Event object '+this.name+' deleted (no action, link or function). SVG NAME');
         }
     }
     
@@ -373,13 +371,15 @@ class Animation{
       });
     }
 
-    for (var x=0; x<this.action.length; x++){
-      log('\nEffect[' + x + ']');
-      Object.keys(this.action[x]).forEach(key => {
-        if (typeof this.action[x][key] != 'undefined')
-          if(key=='element')log('element (object) — '+convert_entities(this.action[x][key].id));
-          else log(key+' ('+typeof(this.action[x][key])+') — '+this.action[x][key]);
-      });
+    if (typeof this.action != 'undefined'){
+      for (var x=0; x<this.action.length; x++){
+        log('\nEffect[' + x + ']');
+        Object.keys(this.action[x]).forEach(key => {
+          if (typeof this.action[x][key] != 'undefined')
+            if(key=='element')log('element (object) — '+convert_entities(this.action[x][key].id));
+            else log(key+' ('+typeof(this.action[x][key])+') — '+this.action[x][key]);
+        });
+      }
     }
     
     log('^ end debug output —————————————————————————— ⚠️\n\n');
@@ -1275,7 +1275,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'name7'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'twitterMB'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
