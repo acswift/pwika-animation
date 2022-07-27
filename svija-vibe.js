@@ -322,20 +322,6 @@ class Animation{
         default:
           log('⚠️ unimplemented event kind: "'+animations[name].trigger[0].kind+'" in animation "'+animation.name+'"');
       }
-
-//        this.trigger[x].element.addEventListener('click', functions[this.name].bind(null, ...args)); 
-
-
-
-
-
-
-
-
-
-
-
-
     }
   }
 
@@ -856,10 +842,10 @@ function scroll_point(animation, x){
     var obj = animation.trigger[t].element;
 
     var box = obj.getBBox();      // get bounding box of event object
-    var t = box['y'];             // top
+    var event_top = box['y'];             // top
 
     var params = gsap_params(animation.action[x]);
-    window.addEventListener('scroll', execute_scroll_point.bind(null, animation, x, t, params)); 
+    window.addEventListener('scroll', execute_scroll_point.bind(null, animation, x, event_top, params)); 
 
     // in case something should already be visible
     execute_scroll_point(animation, x, t, params); 
@@ -907,7 +893,7 @@ function scroll_zone(animation, x){
 
 //:::::::::::::::::::::::::::::::::::::::: ACTION-RELATED
 
-//———————————————————————————————————————— execute_scroll_point(animation, x, trig_top, params)
+//———————————————————————————————————————— execute_scroll_point(animation, x, event_top, params)
 
 // https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
@@ -918,7 +904,7 @@ function scroll_zone(animation, x){
 
 // called every time a scroll effect
 
-function execute_scroll_point(animation, x, trig_top, params){
+function execute_scroll_point(animation, x, event_top, params){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -932,7 +918,7 @@ function execute_scroll_point(animation, x, trig_top, params){
   // goes on when event object top scrolls up past top of page
   
   // event is activated
-  if (trig_top < rem_top){
+  if (event_top < rem_top){
     if (typeof tline != 'undefined'){
       if (tline.reversed()) tline.play();       //  if reversed play it · not relevant but will be useful when reset flag is added
     }
@@ -947,7 +933,7 @@ function execute_scroll_point(animation, x, trig_top, params){
 
 }
 
-/*———————————————————————————————————————— execute_scroll_scrub(animation, x, trig_top, trig_bot, params)
+/*———————————————————————————————————————— execute_scroll_scrub(animation, x, event_top, event_bot, params)
 
     ways to get to correct position:
     - seek(seconds) · allows relative jumps
@@ -960,7 +946,7 @@ function execute_scroll_point(animation, x, trig_top, params){
     https://greensock.com/docs/v3/GSAP/Timeline/totalTime()
     https://greensock.com/forums/topic/8287-most-efficient-way-of-setting-timeline-playhead/ */
 
-function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
+function execute_scroll_scrub(animation, x, event_top, event_bot, params){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -980,10 +966,10 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
   // % of bar above top of window = % of timeline
   
   // event is activated
-  if (trig_top < rem_top && trig_bot > rem_top){
+  if (event_top < rem_top && event_bot > rem_top){
 
-    var obj_height = trig_bot - trig_top;
-    var passed = rem_top - trig_top;
+    var obj_height = event_bot - event_top;
+    var passed = rem_top - event_top;
     var pcent = passed/obj_height;
     pcent = Math.round(pcent * 10000)/10000; // percent + 2 decimals
     var new_time = tline.totalDuration() * pcent;
@@ -993,14 +979,14 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
 
   else {
     // if event object is below top of page, snap to 0
-    if (trig_top > rem_top) tline.totalTime(0);
+    if (event_top > rem_top) tline.totalTime(0);
 
     // if event object is above top of page, snap to 100
-    if (trig_bot < rem_top) tline.totalTime(tline.totalDuration());
+    if (event_bot < rem_top) tline.totalTime(tline.totalDuration());
   }
 }
 
-//———————————————————————————————————————— execute_scroll_zone(animation, x, trig_top, trig_bot, params)
+//———————————————————————————————————————— execute_scroll_zone(animation, x, event_top, event_bot, params)
 
 // https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
@@ -1011,7 +997,7 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params){
 
 // called every time a scroll effect
 
-function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
+function execute_scroll_zone(animation, x, event_top, event_bot, params){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -1028,7 +1014,7 @@ function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
   // goes off when event object bottom < bottom of page
   
   // event is activated
-  if (trig_top > rem_top && trig_bot < rem_bot){
+  if (event_top > rem_top && event_bot < rem_bot){
     if (typeof tline != 'undefined'){
       if (tline.reversed()) tline.play();       //  if reversed play it
     }
@@ -1225,18 +1211,44 @@ function fix_minus(clip_path){
 }
 
 
-//———————————————————————————————————————— activate functions
+//———————————————————————————————————————— activate mouse functions
 
 function activate_mouse_func(name, trigger, args){
   trigger.element.addEventListener('click', functions[name].bind(null, ...args)); 
 }
 
+//———————————————————————————————————————— activate time functions
+
 function activate_time_func(name, trigger, args){
-  trigger.element.addEventListener('click', functions[name].bind(null, ...args)); 
+  setTimeout(functions[name].bind(null, ...args), trigger.delay*1000);
 }
 
+//———————————————————————————————————————— activate scroll functions 1
+
 function activate_scroll_func(name, trigger, args){
-  trigger.element.addEventListener('click', functions[name].bind(null, ...args)); 
+
+  var obj = trigger.element;
+
+  var box = obj.getBBox();      // get bounding box of event object
+  var event_top = box['y'];             // top
+
+  window.addEventListener('scroll', execute_scroll_func.bind(null, name, trigger, event_top, args)); 
+}
+
+//———————————————————————————————————————— execute scroll functions 2
+
+function execute_scroll_func(name, trigger, event_top, args){
+
+  var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
+  var pixel_height = window.innerHeight;
+
+  var rem_top = page_top / illustrator_pixel;
+
+  // event is activated
+  if (event_top < rem_top){
+    functions[name](...args); 
+  }
+
 }
 
 //———————————————————————————————————————— debugging
