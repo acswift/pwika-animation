@@ -311,11 +311,31 @@ class Animation{
 
       functions[this.name] = window['func_'+this.name];
 
-      log('activating function '+this.name);
-      if (typeof functions[this.name] != 'undefined')
-        this.trigger[x].element.addEventListener('click', functions[this.name].bind(null, ...args)); 
-      else
-        errlog('Function func_'+this.name+' does not exist.');
+      if (typeof functions[this.name] == 'undefined')
+        errlog('Function func_'+this.name+' not found.');
+
+      else switch (this.trigger[x].kind) {
+        case 'mouse' :  activate_mouse_func(this.name, this.trigger[x], args); break;
+        case 'time'  :   activate_time_func(this.name, this.trigger[x], args); break;
+        case 'scroll': activate_scroll_func(this.name, this.trigger[x], args); break;
+
+        default:
+          log('⚠️ unimplemented event kind: "'+animations[name].trigger[0].kind+'" in animation "'+animation.name+'"');
+      }
+
+//        this.trigger[x].element.addEventListener('click', functions[this.name].bind(null, ...args)); 
+
+
+
+
+
+
+
+
+
+
+
+
     }
   }
 
@@ -640,7 +660,7 @@ Object.keys(animations).forEach(name => {
 
 //———————————————————————————————————————— delete unused events
 
-log('checking for effectless animations…');
+log('checking for effectless events…');
 
 Object.keys(animations).forEach(name =>
   animations[name].delete_if_no_effect()
@@ -648,21 +668,30 @@ Object.keys(animations).forEach(name =>
 
 //———————————————————————————————————————— enable effects
 
-log('\nactivating animations…');
+log('activating effects…');
 
 Object.keys(animations).forEach(name => {
 
   // not necessary to go through all events
   // the first one is enough to set up the effect
 
-  if (animations[name].trigger[0].kind=='mouse') // 2ms
-    activate_mouse(animations[name]);  
+  switch (animations[name].trigger[0].kind) {
+    case 'mouse' :  activate_mouse(animations[name]); break;
+    case 'time'  :   activate_time(animations[name]); break;
+    case 'scroll': activate_scroll(animations[name]); break;
 
-  if (animations[name].trigger[0].kind=='time') // 2ms
-    activate_time(animations[name]);
+    default:
+      log('⚠️ unimplemented event kind: "'+animations[name].trigger[0].kind+'" in animation "'+animation.name+'"');
+  }
 
-  if (animations[name].trigger[0].kind=='scroll') // 11ms
-    activate_scroll(animations[name]);
+//if (animations[name].trigger[0].kind=='mouse') // 2ms
+//  activate_mouse(animations[name]);  
+
+//if (animations[name].trigger[0].kind=='time') // 2ms
+//  activate_time(animations[name]);
+
+//if (animations[name].trigger[0].kind=='scroll') // 11ms
+//  activate_scroll(animations[name]);
 
 })
 
@@ -678,54 +707,39 @@ log('\n———————————————————— finished in 
 
 //———————————————————————————————————————— activate_mouse(animation)
 
-// TODO make dict of function names for each type, with parameters
-
 function activate_mouse(animation){
 
-  if (typeof animation.action == 'undefined'){
-    // is link or function
-    return true;
-  }
+  if (typeof animation.action == 'undefined')
+    return true;  // is link or function
 
   for (var x=0; x<animation.action.length; x++){
     switch (animation.action[x].kind) {
     case undefined: break; // if it's just a link or func
 
-    case 'click':
-      mouse_single(animation, x, 'pointerup');
-      break;
-    case 'press':
-      mouse_single(animation, x, 'pointerdown');
-      break;
-    case 'over':
-      mouse_single(animation, x, 'pointerover'); 
-      break;
-    case 'away':
-      mouse_single(animation, x, 'pointerout'); // or pointerleave
-      break;
+    case 'click' : mouse_single(animation, x, 'pointerup'  ); break;
+    case 'press' : mouse_single(animation, x, 'pointerdown'); break;
+    case 'over'  : mouse_single(animation, x, 'pointerover'); break;
+    case 'away'  : mouse_single(animation, x, 'pointerout' ); break; // or pointerleave
 
     // special cases
-    case 'ovaway':
-      mouse_ovaway(animation, x);
-      break;
-    case 'down':
-      mouse_down(animation, x);
-      break;
-    case 'toggle':
-      mouse_toggle(animation, x);
-      break;
+    case 'ovaway': mouse_ovaway(animation, x); break;
+    case 'down'  :   mouse_down(animation, x); break;
+    case 'toggle': mouse_toggle(animation, x); break;
 
     default:
       log('⚠️ unimplemented mouse effect: "'+animation.action[0].kind+'" in animation "'+animation.name+'"');
     }
   }
 
-  log('mouse animations activated');
+  log('mouse events activated');
 }
 
 //———————————————————————————————————————— activate_time(animation)
 
 function activate_time(animation){
+
+  if (typeof animation.action == 'undefined')
+    return true;  // is link or function
 
   for (var x=0; x<animation.action.length; x++){
     switch (animation.action[x].kind) {
@@ -739,12 +753,15 @@ function activate_time(animation){
     }
   }
 
-  log('time animations activated');
+  log('time events activated');
 }
 
 //———————————————————————————————————————— activate_scroll(animation)
 
 function activate_scroll(animation){
+
+  if (typeof animation.action == 'undefined')
+    return true;  // is link or function
 
   for (var x=0; x<animation.action.length; x++){
     switch (animation.action[x].kind) {
@@ -766,7 +783,7 @@ function activate_scroll(animation){
     }
   }
 
-  log('scroll animations activated');
+  log('scroll effects activated');
 }
 
 
@@ -1207,9 +1224,24 @@ function fix_minus(clip_path){
   return false;
 }
 
+
+//———————————————————————————————————————— activate functions
+
+function activate_mouse_func(name, trigger, args){
+  trigger.element.addEventListener('click', functions[name].bind(null, ...args)); 
+}
+
+function activate_time_func(name, trigger, args){
+  trigger.element.addEventListener('click', functions[name].bind(null, ...args)); 
+}
+
+function activate_scroll_func(name, trigger, args){
+  trigger.element.addEventListener('click', functions[name].bind(null, ...args)); 
+}
+
 //———————————————————————————————————————— debugging
 
-var a = 'name7'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'name7'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
