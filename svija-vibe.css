@@ -96,4 +96,5 @@ polygon[id^='zone_x2F_'],
 #x{ opacity:0; pointer-events:none; }
 
 
+svg{pointer-events:none;}
 /*———————————————————————————————————————— fin */

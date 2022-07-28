@@ -159,6 +159,8 @@ class Animation{
     zoopy.obj = obj;
     zoopy.kind    = kind;
 
+    if (zoopy.kind == 'mouse') set_clickable(zoopy.obj, true);
+
     // set defaults
 
     Object.keys(event_defaults).forEach(
@@ -331,14 +333,22 @@ class Animation{
 
     for (var x=0; x<this.effect.length; x++){
 
-      if (this.effect[x].transp_from == 0) continue;
+      // hidden at load
+      if (this.effect[x].transp_from == 0){
+        set_clickable(this.effect[x].obj, false);
+        continue;
+      }
 
-      if (typeof this.effect[x].transp_from != 'undefined')
+      // if no transparency effects, make visible
+      if (typeof this.effect[x].transp_from == 'undefined')
+        this.effect[x].obj.style.opacity = 1;
+
+      // set specified transparency
+      else
         this.effect[x].obj.style.opacity = this.effect[x].transp_from/100;
-      else this.effect[x].obj.style.opacity = 1;
 
-      this.effect[x].obj.style.display = 'block';
       set_clickable(this.effect[x].obj, true);
+      this.effect[x].obj.style.display = 'block';
     }
 
   }
