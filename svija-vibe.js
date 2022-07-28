@@ -1209,6 +1209,18 @@ function gsap_params(action){
   if (typeof action.transp_to != 'undefined') params['autoAlpha'] = action.transp_to / 100;
   if (typeof action.rotate    != 'undefined') params['rotation' ] = action.rotate         ;
 
+  //————— make clickable if not 0 opacity
+
+  if (params['autoAlpha']==1){
+    params['onComplete'      ] = set_clickable;
+    params['onCompleteParams'] = [action.element, true];
+  }
+
+  if (params['autoAlpha']==0){
+    params['onComplete'      ] = set_clickable;
+    params['onCompleteParams'] = [action.element, false];
+  }
+
   return params;
 }
 
