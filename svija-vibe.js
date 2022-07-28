@@ -144,19 +144,19 @@ var functions  = [];   // mouse functions called by func flag
 
 class Animation{
 
-  constructor( name, trigger, action ){
+  constructor( name, euent, effect ){
 
     this.name       = name;         // 20-character string
-    this.trigger    = trigger;      // array of events
-    this.action     = action;       // array of effects
+    this.euent    = euent;      // array of events
+    this.effect     = effect;       // array of effects
   }
 
   add_event(obj, kind, flags){ //—————————————————————————————————————————————
 
     // initialize
 
-    var zoopy     = new Trigger;
-    zoopy.element = obj;
+    var zoopy     = new Euent;
+    zoopy.obj = obj;
     zoopy.kind    = kind;
 
     // set defaults
@@ -187,22 +187,22 @@ class Animation{
       }
       else{
         var v = event_flag_value_to_key_value[val];
-        if (val == '') errlog('Trigger "'+this.name+'" has an extra slash.');
-        else if (typeof v == 'undefined') errlog('Trigger "'+this.name+'" has unknown flag: "'+val+'".');
+        if (val == '') errlog('Euent "'+this.name+'" has an extra slash.');
+        else if (typeof v == 'undefined') errlog('Euent "'+this.name+'" has unknown flag: "'+val+'".');
         else zoopy[key] = v;
       }
 
-      // set link & parent target
-  
-      zoopy.link = obj.parentNode.hasAttribute('xlink:href'); // true false
-      if (zoopy.link && zoopy.blank)
-        zoopy.element.parentNode.setAttribute("target", "_blank");
-  
     } //—————————————————————————————————————————————————————————————————————-
 
+    // set link & parent target
+ 
+    zoopy.link = obj.parentNode.hasAttribute('xlink:href'); // true false
 
-    if (typeof this.trigger == 'undefined') this.trigger = [];
-    this.trigger.push(zoopy);
+    if (zoopy.link && zoopy.blank)
+      zoopy.obj.parentNode.setAttribute("target", "_blank");
+
+    if (typeof this.euent == 'undefined') this.euent = [];
+    this.euent.push(zoopy);
 
   }
 
@@ -210,8 +210,8 @@ class Animation{
 
     // initialize
 
-    var zoopy     = new Action;
-    zoopy.element = obj;
+    var zoopy     = new Effect;
+    zoopy.obj = obj;
     zoopy.kind    = kind;
 
     // loop through flags (kind|name|parameters...)
@@ -229,7 +229,7 @@ class Animation{
       if (char1=='_' || char2=='_' || charX=='_') flag = convert_entities(flag);
 
       // assign value to flag
-      key = this.get_action_key(flag);
+      key = this.get_effect_key(flag);
       if (typeof zoopy[key] != 'undefined') errlog('Effect "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
 
       zoopy[key] = this.get_val(key, flag);
@@ -270,29 +270,29 @@ class Animation{
     if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined') 
       zoopy.transp_from = 0;
 
-    if (typeof this.action == 'undefined') this.action = [];
-    this.action.push(zoopy);
+    if (typeof this.effect == 'undefined') this.effect = [];
+    this.effect.push(zoopy);
 
   }
 
   set_cursor(){
   
-    for (var t=0; t<this.trigger.length; t++){
+    for (var t=0; t<this.euent.length; t++){
 
-      if (typeof this.trigger[t].cursor != 'undefined')
-        this.trigger[t].element.style.cursor = cursors[this.trigger[t].cursor];
+      if (typeof this.euent[t].cursor != 'undefined')
+        this.euent[t].obj.style.cursor = cursors[this.euent[t].cursor];
   
       else{
         var is_hand = false;
   
-        if (this.trigger[t].link ) is_hand = true;
-        if (this.trigger[t].func ) is_hand = true;
+        if (this.euent[t].link ) is_hand = true;
+        if (this.euent[t].func ) is_hand = true;
         if (this.kind == 'click' ) is_hand = true;
         if (this.kind == 'down'  ) is_hand = true;
         if (this.kind == 'toggle') is_hand = true;
 
         if (is_hand){
-          this.trigger[t].element.style.cursor = cursors['default_link'];
+          this.euent[t].obj.style.cursor = cursors['default_link'];
         }
       }
     }
@@ -304,51 +304,51 @@ class Animation{
     // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
     // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
 
-    for (var x=0; x<this.trigger.length; x++){
-      if (!this.trigger[x].func) continue;
+    for (var x=0; x<this.euent.length; x++){
+      if (!this.euent[x].func) continue;
 
-      var args = this.trigger[x].args;
+      var args = this.euent[x].args;
 
       functions[this.name] = window['func_'+this.name];
 
       if (typeof functions[this.name] == 'undefined')
         errlog('Function func_'+this.name+' not found.');
 
-      else switch (this.trigger[x].kind) {
-        case 'mouse' :  activate_mouse_func(this.name, this.trigger[x], args); break;
-        case 'time'  :   activate_time_func(this.name, this.trigger[x], args); break;
-        case 'scroll': activate_scroll_func(this.name, this.trigger[x], args); break;
+      else switch (this.euent[x].kind) {
+        case 'mouse' :  activate_mouse_func(this.name, this.euent[x], args); break;
+        case 'time'  :   activate_time_func(this.name, this.euent[x], args); break;
+        case 'scroll': activate_scroll_func(this.name, this.euent[x], args); break;
 
         default:
-          log('⚠️ unimplemented event kind: "'+animations[name].trigger[0].kind+'" in animation "'+animation.name+'"');
+          log('⚠️ unimplemented event kind: "'+animations[name].euent[0].kind+'" in animation "'+animation.name+'"');
       }
     }
   }
 
   make_visible(){
 
-    if (typeof this.action=='undefined') return true;
+    if (typeof this.effect=='undefined') return true;
 
-    for (var x=0; x<this.action.length; x++){
+    for (var x=0; x<this.effect.length; x++){
 
-      if (this.action[x].transp_from == 0) continue;
+      if (this.effect[x].transp_from == 0) continue;
 
-      if (typeof this.action[x].transp_from != 'undefined')
-        this.action[x].element.style.opacity = this.action[x].transp_from/100;
-      else this.action[x].element.style.opacity = 1;
+      if (typeof this.effect[x].transp_from != 'undefined')
+        this.effect[x].obj.style.opacity = this.effect[x].transp_from/100;
+      else this.effect[x].obj.style.opacity = 1;
 
-      this.action[x].element.style.display = 'block';
-      set_clickable(this.action[x].element, true);
+      this.effect[x].obj.style.display = 'block';
+      set_clickable(this.effect[x].obj, true);
     }
 
   }
 
   delete_if_no_effect(){
-    for (var t=0; t<this.trigger.length; t++){
-      if (typeof this.action == 'undefined')
-        if (!this.trigger[t].func && !this.trigger[t].link){
+    for (var t=0; t<this.euent.length; t++){
+      if (typeof this.effect == 'undefined')
+        if (!this.euent[t].func && !this.euent[t].link){
           delete animations[this.name];
-          errlog('Event object '+this.name+' deleted (no action, link or function). SVG NAME');
+          errlog('Event object '+this.name+' deleted (no effect, link or function). SVG NAME');
         }
     }
     
@@ -362,22 +362,22 @@ class Animation{
         log(key+' ('+typeof(this[key])+') — '+this[key]);
     });
 
-    for (var t=0; t<this.trigger.length; t++){
-      log('\nTrigger['+t+']');
-      Object.keys(this.trigger[t]).forEach(key => {
-        if (typeof this.trigger[t][key] != 'undefined')
-          if(key=='element')log('element (object) — '+convert_entities(this.trigger[t][key].id));
-          else log(key+' ('+typeof(this.trigger[t][key])+') — '+this.trigger[t][key]);
+    for (var t=0; t<this.euent.length; t++){
+      log('\nEuent['+t+']');
+      Object.keys(this.euent[t]).forEach(key => {
+        if (typeof this.euent[t][key] != 'undefined')
+          if(key=='obj')log('obj (object) — '+convert_entities(this.euent[t][key].id));
+          else log(key+' ('+typeof(this.euent[t][key])+') — '+this.euent[t][key]);
       });
     }
 
-    if (typeof this.action != 'undefined'){
-      for (var x=0; x<this.action.length; x++){
+    if (typeof this.effect != 'undefined'){
+      for (var x=0; x<this.effect.length; x++){
         log('\nEffect[' + x + ']');
-        Object.keys(this.action[x]).forEach(key => {
-          if (typeof this.action[x][key] != 'undefined')
-            if(key=='element')log('element (object) — '+convert_entities(this.action[x][key].id));
-            else log(key+' ('+typeof(this.action[x][key])+') — '+this.action[x][key]);
+        Object.keys(this.effect[x]).forEach(key => {
+          if (typeof this.effect[x][key] != 'undefined')
+            if(key=='obj')log('obj (object) — '+convert_entities(this.effect[x][key].id));
+            else log(key+' ('+typeof(this.effect[x][key])+') — '+this.effect[x][key]);
         });
       }
     }
@@ -385,7 +385,7 @@ class Animation{
     log('^ end debug output —————————————————————————— ⚠️\n\n');
   }
 
-  get_action_key(flag){
+  get_effect_key(flag){
 
   // is programmed specifically to optimize key finding
   // needs to be updated when flags are modified
@@ -455,14 +455,14 @@ class Animation{
 
 }
 
-//———————————————————————————————————————— class Trigger
+//———————————————————————————————————————— class Euent
 
-class Trigger{
+class Euent{
 
-  constructor( name, element, kind, cursor, func, args, link, blank, delay ){
+  constructor( name, obj, kind, cursor, func, args, link, blank, delay ){
 
     this.name       = name;         // 20-character string
-    this.element    = element;      // object reference
+    this.obj    = obj;      // object reference
     this.kind       = kind;         // string · kind of event                    scroll, mouse, time 
 
     // flags
@@ -475,15 +475,15 @@ class Trigger{
   }
 }
 
-//———————————————————————————————————————— class Action
+//———————————————————————————————————————— class Effect
 
-class Action{
+class Effect{
 
-  constructor( name, element, kind, delay, handoff, handwait, duration, ease,
+  constructor( name, obj, kind, delay, handoff, handwait, duration, ease,
                xmove, ymove, origin, rotate, scale, xscale, yscale, transp_to, transp_from ){
 
     this.name        = name;         // 20-character string
-    this.element     = element;      // object reference
+    this.obj     = obj;      // object reference
     this.kind        = kind;         // string · kind of effect                  click, over, down, away, ovaway, down, toggle, visible
 
     // flags
@@ -634,9 +634,9 @@ effects.forEach(kind => {
 
 });
 
-//———————————————————————————————————————— turn on "default on" elements, set cursors, and activate functions
+//———————————————————————————————————————— turn on "default on" objs, set cursors, and activate functions
 
-log('\nturning on "default on" elements & setting cursors…');
+log('\nturning on "default on" objs & setting cursors…');
 
 Object.keys(animations).forEach(name => {
   animations[name].set_cursor();
@@ -661,22 +661,22 @@ Object.keys(animations).forEach(name => {
   // not necessary to go through all events
   // the first one is enough to set up the effect
 
-  switch (animations[name].trigger[0].kind) {
+  switch (animations[name].euent[0].kind) {
     case 'mouse' :  activate_mouse(animations[name]); break;
     case 'time'  :   activate_time(animations[name]); break;
     case 'scroll': activate_scroll(animations[name]); break;
 
     default:
-      log('⚠️ unimplemented event kind: "'+animations[name].trigger[0].kind+'" in animation "'+animation.name+'"');
+      log('⚠️ unimplemented event kind: "'+animations[name].euent[0].kind+'" in animation "'+animation.name+'"');
   }
 
-//if (animations[name].trigger[0].kind=='mouse') // 2ms
+//if (animations[name].euent[0].kind=='mouse') // 2ms
 //  activate_mouse(animations[name]);  
 
-//if (animations[name].trigger[0].kind=='time') // 2ms
+//if (animations[name].euent[0].kind=='time') // 2ms
 //  activate_time(animations[name]);
 
-//if (animations[name].trigger[0].kind=='scroll') // 11ms
+//if (animations[name].euent[0].kind=='scroll') // 11ms
 //  activate_scroll(animations[name]);
 
 })
@@ -691,28 +691,28 @@ log('\n———————————————————— finished in 
 
 //:::::::::::::::::::::::::::::::::::::::: BUILD FUNCTIONS & EFFECTS
 
-//———————————————————————————————————————— activate_mouse_func(name, trigger, args)
+//———————————————————————————————————————— activate_mouse_func(name, euent, args)
 
-function activate_mouse_func(name, trigger, args){
-  trigger.element.addEventListener('click', functions[name].bind(null, ...args)); 
+function activate_mouse_func(name, euent, args){
+  euent.obj.addEventListener('click', functions[name].bind(null, ...args)); 
 }
 
-//———————————————————————————————————————— activate_time_func(name, trigger, args)
+//———————————————————————————————————————— activate_time_func(name, euent, args)
 
-function activate_time_func(name, trigger, args){
-  setTimeout(functions[name].bind(null, ...args), trigger.delay*1000);
+function activate_time_func(name, euent, args){
+  setTimeout(functions[name].bind(null, ...args), euent.delay*1000);
 }
 
-//———————————————————————————————————————— activate_scroll_func(name, trigger, args)
+//———————————————————————————————————————— activate_scroll_func(name, euent, args)
 
-function activate_scroll_func(name, trigger, args){
+function activate_scroll_func(name, euent, args){
 
-  var obj = trigger.element;
+  var obj = euent.obj;
 
   var box = obj.getBBox();      // get bounding box of event object
   var event_top = box['y'];             // top
 
-  window.addEventListener('scroll', execute_scroll_func.bind(null, name, trigger, event_top, args)); 
+  window.addEventListener('scroll', execute_scroll_func.bind(null, name, euent, event_top, args)); 
 }
 
 
@@ -720,11 +720,11 @@ function activate_scroll_func(name, trigger, args){
 
 function activate_mouse(animation){
 
-  if (typeof animation.action == 'undefined')
+  if (typeof animation.effect == 'undefined')
     return true;  // is link or function
 
-  for (var x=0; x<animation.action.length; x++){
-    switch (animation.action[x].kind) {
+  for (var x=0; x<animation.effect.length; x++){
+    switch (animation.effect[x].kind) {
     case undefined: break; // if it's just a link or func
 
     case 'click' : mouse_single(animation, x, 'pointerup'  ); break;
@@ -738,7 +738,7 @@ function activate_mouse(animation){
     case 'toggle': mouse_toggle(animation, x); break;
 
     default:
-      log('⚠️ unimplemented mouse effect: "'+animation.action[0].kind+'" in animation "'+animation.name+'"');
+      log('⚠️ unimplemented mouse effect: "'+animation.effect[0].kind+'" in animation "'+animation.name+'"');
     }
   }
 
@@ -749,17 +749,17 @@ function activate_mouse(animation){
 
 function activate_time(animation){
 
-  if (typeof animation.action == 'undefined')
+  if (typeof animation.effect == 'undefined')
     return true;  // is link or function
 
-  for (var x=0; x<animation.action.length; x++){
-    switch (animation.action[x].kind) {
+  for (var x=0; x<animation.effect.length; x++){
+    switch (animation.effect[x].kind) {
     case 'delay':
       time_delay(animation, x);
       break;
 
     default:
-      if (typeof animation.action[x].kind != 'undefined') errlog('unknown time kind: '+animation.action[x].kind);
+      if (typeof animation.effect[x].kind != 'undefined') errlog('unknown time kind: '+animation.effect[x].kind);
       else errlog('missing time effect: '+animation.name);
     }
   }
@@ -771,11 +771,11 @@ function activate_time(animation){
 
 function activate_scroll(animation){
 
-  if (typeof animation.action == 'undefined')
+  if (typeof animation.effect == 'undefined')
     return true;  // is link or function
 
-  for (var x=0; x<animation.action.length; x++){
-    switch (animation.action[x].kind) {
+  for (var x=0; x<animation.effect.length; x++){
+    switch (animation.effect[x].kind) {
     case 'point':
       scroll_point(animation, x);
       break;
@@ -789,7 +789,7 @@ function activate_scroll(animation){
       break;
 
     default:
-      if (typeof animation.action[x].kind != 'undefined') errlog('unknown scroll kind: '+animation.action[x].kind);
+      if (typeof animation.effect[x].kind != 'undefined') errlog('unknown scroll kind: '+animation.effect[x].kind);
       else errlog('missing scroll effect: '+animation.name);
     }
   }
@@ -804,9 +804,9 @@ function activate_scroll(animation){
 
 function time_delay(animation, x){
 
-  delay  = animation.trigger[0].delay * 1000;
-  params = gsap_params(animation.action[x]);
-  setTimeout(execute_anim.bind(null, animation.name+x, animation.action[x], params), delay);
+  delay  = animation.euent[0].delay * 1000;
+  params = gsap_params(animation.effect[x]);
+  setTimeout(execute_anim.bind(null, animation.name+x, animation.effect[x], params), delay);
 
 }
 
@@ -815,9 +815,9 @@ function time_delay(animation, x){
 
 function mouse_single(animation, x, type){
 
-  params = gsap_params(animation.action[x]);
-  for (var t=0; t<animation.trigger.length; t++){
-    animation.trigger[t].element.addEventListener(type, execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
+  params = gsap_params(animation.effect[x]);
+  for (var t=0; t<animation.euent.length; t++){
+    animation.euent[t].obj.addEventListener(type, execute_anim.bind(null, animation.name+x, animation.effect[x], params), false);
   }
 }
 
@@ -827,10 +827,10 @@ function mouse_single(animation, x, type){
 
 function mouse_ovaway(animation, x){
 
-  params = gsap_params(animation.action[x]);
-  for (var t=0; t<animation.trigger.length; t++){
-    animation.trigger[t].element.addEventListener('pointerover',  execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
-    animation.trigger[t].element.addEventListener('pointerout',   reverse_anim.bind(null, animation.name+x                             ), false);
+  params = gsap_params(animation.effect[x]);
+  for (var t=0; t<animation.euent.length; t++){
+    animation.euent[t].obj.addEventListener('pointerover',  execute_anim.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.euent[t].obj.addEventListener('pointerout',   reverse_anim.bind(null, animation.name+x                             ), false);
   }
 
 }
@@ -841,10 +841,10 @@ function mouse_ovaway(animation, x){
 
 function mouse_down(animation, x){
 
-  params = gsap_params(animation.action[x]);
-  for (var t=0; t<animation.trigger.length; t++){
-    animation.trigger[t].element.addEventListener('pointerdown', execute_anim.bind(null, animation.name+x, animation.action[x], params), false);
-    animation.trigger[t].element.addEventListener('pointerup',   reverse_anim.bind(null, animation.name+x                             ), false);
+  params = gsap_params(animation.effect[x]);
+  for (var t=0; t<animation.euent.length; t++){
+    animation.euent[t].obj.addEventListener('pointerdown', execute_anim.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.euent[t].obj.addEventListener('pointerup',   reverse_anim.bind(null, animation.name+x                             ), false);
   }
 
 }
@@ -852,9 +852,9 @@ function mouse_down(animation, x){
 //———————————————————————————————————————— mouse_toggle(animation, x)
 
 function mouse_toggle(animation, x){
-  params = gsap_params(animation.action[x]);
-  for (var t=0; t<animation.trigger.length; t++){
-    animation.trigger[t].element.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.action[x], params), false);
+  params = gsap_params(animation.effect[x]);
+  for (var t=0; t<animation.euent.length; t++){
+    animation.euent[t].obj.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.effect[x], params), false);
   }
 }
 
@@ -863,13 +863,13 @@ function mouse_toggle(animation, x){
 
 function scroll_point(animation, x){
 
-  for (var t=0; t<animation.trigger.length; t++){
-    var obj = animation.trigger[t].element;
+  for (var t=0; t<animation.euent.length; t++){
+    var obj = animation.euent[t].obj;
 
     var box = obj.getBBox();      // get bounding box of event object
     var event_top = box['y'];             // top
 
-    var params = gsap_params(animation.action[x]);
+    var params = gsap_params(animation.effect[x]);
     window.addEventListener('scroll', execute_scroll_point.bind(null, animation, x, event_top, params)); 
 
     // in case something should already be visible
@@ -881,14 +881,14 @@ function scroll_point(animation, x){
 
 function scroll_scrub(animation, x){
 
-  for (var t=0; t<animation.trigger.length; t++){
-    var obj = animation.trigger[t].element;
+  for (var t=0; t<animation.euent.length; t++){
+    var obj = animation.euent[t].obj;
 
     var box = obj.getBBox();      // get bounding box of event object
     var t = box['y'];             // top
     var b = t + box['height'];    // bottom
 
-    var params = gsap_params(animation.action[x]);
+    var params = gsap_params(animation.effect[x]);
     window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params)); 
 
     // in case something should already be visible
@@ -900,14 +900,14 @@ function scroll_scrub(animation, x){
 
 function scroll_zone(animation, x){
 
-  for (var t=0; t<animation.trigger.length; t++){
-    var obj = animation.trigger[t].element;
+  for (var t=0; t<animation.euent.length; t++){
+    var obj = animation.euent[t].obj;
 
     var box = obj.getBBox();      // get bounding box of event object
     var t = box['y'];             // top
     var b = t + box['height'];    // bottom
 
-    var params = gsap_params(animation.action[x]);
+    var params = gsap_params(animation.effect[x]);
     window.addEventListener('scroll', execute_scroll_zone.bind(null, animation, x, t, b, params)); 
 
     // in case something should already be visible
@@ -918,18 +918,18 @@ function scroll_zone(animation, x){
 
 //:::::::::::::::::::::::::::::::::::::::: EFFECT-RELATED
 
-/*———————————————————————————————————————— execute_scroll_func(name, trigger, event_top, args)
+/*———————————————————————————————————————— execute_scroll_func(name, euent, event_top, args)
 
     this was not finished because it involves adding new variables and
-    making the trigger functionality more complex.
+    making the euent functionality more complex.
 
     since most of that code will have to be rewritten when loop, reset and reverse
     are added, I decided to hold off (nobody will be using this in the near future).
 
-    also: consider changing to "when trigger is entirely visible"
+    also: consider changing to "when euent is entirely visible"
     instead of "when top crosses top" */
 
-function execute_scroll_func(name, trigger, event_top, args){
+function execute_scroll_func(name, euent, event_top, args){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -939,12 +939,12 @@ function execute_scroll_func(name, trigger, event_top, args){
 
     for this to execute:
 
-    1. scroll trigger has to be below top of page, then
-    2. scroll trigger has to be above top of page, and
+    1. scroll euent has to be below top of page, then
+    2. scroll euent has to be above top of page, and
     3. function cannot already have been set off by the 1-2 transition
 
-    need a boolean variable specific to this trigger above/below (is_above), set on load
-    need a boolean variable specific to this trigger already done (is_done), initialized false on load
+    need a boolean variable specific to this euent above/below (is_above), set on load
+    need a boolean variable specific to this euent already done (is_done), initialized false on load
 
 */
 
@@ -973,7 +973,7 @@ function execute_scroll_point(animation, x, event_top, params){
 
   var rem_top = page_top / illustrator_pixel;
 
-  var obj      = animation.action[x].element;
+  var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
 
@@ -1015,7 +1015,7 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params){
 
   var rem_top = page_top / illustrator_pixel;
 
-  var obj      = animation.action[x].element;
+  var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
 
@@ -1068,7 +1068,7 @@ function execute_scroll_zone(animation, x, event_top, event_bot, params){
   var rem_top = page_top / illustrator_pixel;
   var rem_bot = page_bot / illustrator_pixel;
 
-  var obj      = animation.action[x].element;
+  var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
 
@@ -1102,9 +1102,9 @@ function execute_scroll_zone(animation, x, event_top, event_bot, params){
 //———————————————————————————————————————— execute_anim(obj, params)
 
 //nction execute_anim(animation, params){
-function execute_anim(namex, actionx, params){
+function execute_anim(namex, effectx, params){
 
-  obj = actionx.element;
+  obj = effectx.obj;
 
   var funcName = namex + '_timeline';
 
@@ -1129,9 +1129,9 @@ function execute_anim(namex, actionx, params){
 // only called when clicked
 
 //nction execute_toggle(animation, params){
-function execute_toggle(namex, actionx, params){
+function execute_toggle(namex, effectx, params){
 
-  var obj      = actionx.element;
+  var obj      = effectx.obj;
   var funcName = namex + '_timeline';
   var tline    = window[funcName];
 
@@ -1185,40 +1185,40 @@ function convert_transform(origin){
   return result;
 }
 
-//———————————————————————————————————————— gsap_params(action)
+//———————————————————————————————————————— gsap_params(effect)
 
-function gsap_params(action){
+function gsap_params(effect){
 
   var params = {};
 
-  params['duration'       ] = action.duration==0 ? 0.001:action.duration
-  params['transformOrigin'] = convert_transform(action.origin);
+  params['duration'       ] = effect.duration==0 ? 0.001:effect.duration
+  params['transformOrigin'] = convert_transform(effect.origin);
 
-  if (typeof action.ease      == 'undefined') params['ease'     ] = Power1.easeInOut      ;
-                                         else params['ease'     ] = eases[action.ease]    ;
+  if (typeof effect.ease      == 'undefined') params['ease'     ] = Power1.easeInOut      ;
+                                         else params['ease'     ] = eases[effect.ease]    ;
 
-  if (typeof action.delay     != 'undefined') params['delay'    ] = action.delay          ;
+  if (typeof effect.delay     != 'undefined') params['delay'    ] = effect.delay          ;
 
-  if (typeof action.xmove     != 'undefined') params['x'        ] = '+=' + action.xmove   ;
-  if (typeof action.ymove     != 'undefined') params['y'        ] = '+=' + action.ymove   ;
+  if (typeof effect.xmove     != 'undefined') params['x'        ] = '+=' + effect.xmove   ;
+  if (typeof effect.ymove     != 'undefined') params['y'        ] = '+=' + effect.ymove   ;
 
-  if (typeof action.scale     != 'undefined') params['scale'    ] = action.scale     / 100;
-  if (typeof action.xscale    != 'undefined') params['scaleX'   ] = action.xscale    / 100;
-  if (typeof action.yscale    != 'undefined') params['scaleY'   ] = action.yscale    / 100;
+  if (typeof effect.scale     != 'undefined') params['scale'    ] = effect.scale     / 100;
+  if (typeof effect.xscale    != 'undefined') params['scaleX'   ] = effect.xscale    / 100;
+  if (typeof effect.yscale    != 'undefined') params['scaleY'   ] = effect.yscale    / 100;
 
-  if (typeof action.transp_to != 'undefined') params['autoAlpha'] = action.transp_to / 100;
-  if (typeof action.rotate    != 'undefined') params['rotation' ] = action.rotate         ;
+  if (typeof effect.transp_to != 'undefined') params['autoAlpha'] = effect.transp_to / 100;
+  if (typeof effect.rotate    != 'undefined') params['rotation' ] = effect.rotate         ;
 
   //————— make clickable if not 0 opacity
 
   if (params['autoAlpha']==1){
     params['onComplete'      ] = set_clickable;
-    params['onCompleteParams'] = [action.element, true];
+    params['onCompleteParams'] = [effect.obj, true];
   }
 
   if (params['autoAlpha']==0){
     params['onComplete'      ] = set_clickable;
-    params['onCompleteParams'] = [action.element, false];
+    params['onCompleteParams'] = [effect.obj, false];
   }
 
   return params;
@@ -1287,7 +1287,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'twitterMB'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'contactFootMB'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
