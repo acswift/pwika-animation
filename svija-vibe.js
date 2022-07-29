@@ -807,7 +807,7 @@ function time_delay(animation, x){
 
   delay  = animation.euent[0].delay * 1000;
   params = gsap_params(animation.effect[x]);
-  setTimeout(create_timeline.bind(null, animation.name+x, animation.effect[x], params), delay);
+  setTimeout(play_tline.bind(null, animation.name+x, animation.effect[x], params), delay);
 
 }
 
@@ -818,7 +818,7 @@ function mouse_single(animation, x, type){
 
   params = gsap_params(animation.effect[x]);
   for (var t=0; t<animation.euent.length; t++){
-    animation.euent[t].obj.addEventListener(type, create_timeline.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.euent[t].obj.addEventListener(type, play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
   }
 }
 
@@ -830,8 +830,8 @@ function mouse_ovaway(animation, x){
 
   params = gsap_params(animation.effect[x]);
   for (var t=0; t<animation.euent.length; t++){
-    animation.euent[t].obj.addEventListener('pointerover',  create_timeline.bind(null, animation.name+x, animation.effect[x], params), false);
-    animation.euent[t].obj.addEventListener('pointerout',   reverse_anim.bind(null, animation.name+x                             ), false);
+    animation.euent[t].obj.addEventListener('pointerover',  play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.euent[t].obj.addEventListener('pointerout',   reverse_tline.bind(null, animation.name+x                             ), false);
   }
 
 }
@@ -844,8 +844,8 @@ function mouse_down(animation, x){
 
   params = gsap_params(animation.effect[x]);
   for (var t=0; t<animation.euent.length; t++){
-    animation.euent[t].obj.addEventListener('pointerdown', create_timeline.bind(null, animation.name+x, animation.effect[x], params), false);
-    animation.euent[t].obj.addEventListener('pointerup',   reverse_anim.bind(null, animation.name+x                             ), false);
+    animation.euent[t].obj.addEventListener('pointerdown', play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.euent[t].obj.addEventListener('pointerup',   reverse_tline.bind(null, animation.name+x                             ), false);
   }
 
 }
@@ -978,7 +978,6 @@ function execute_scroll_point(animation, x, event_top, params){
   var funcName = animation.name + x + '_timeline';
 
   var tline    = window[funcName];
-  tline.call( function(){ set_existence, [obj, true] });
 
   // goes on when event object top scrolls up past top of page
   
@@ -991,8 +990,8 @@ function execute_scroll_point(animation, x, event_top, params){
       //  doesn't exist: create & play it
       window[funcName] = new gsap.timeline({paused:true});
       var tline = window[funcName];
-      tline.call( function(){ set_existence, [obj, true] });
       tline.to(obj, params);
+      set_existence(obj, true);
       tline.play();
     }
   }
@@ -1022,12 +1021,10 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params){
   var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
-  tline.call( function(){ set_existence, [obj, true] });
 
   if (typeof tline == 'undefined'){
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
-    tline.call( function(){ set_existence, [obj, true] });
     tline.to(obj, params);
   }
 
@@ -1077,7 +1074,6 @@ function execute_scroll_zone(animation, x, event_top, event_bot, params){
   var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
-  tline.call( function(){ set_existence, [obj, true] });
 
   // goes on when event top scrolls up past top of page
   // goes off when event object bottom < bottom of page
@@ -1091,8 +1087,8 @@ function execute_scroll_zone(animation, x, event_top, event_bot, params){
       //  doesn't exist: create & play it
       window[funcName] = new gsap.timeline({paused:true});
       var tline = window[funcName];
-      tline.call( function(){ set_existence, [obj, true] });
       tline.to(obj, params);
+      set_existence(obj, true);
       tline.play();
     }
   }
@@ -1107,10 +1103,12 @@ function execute_scroll_zone(animation, x, event_top, event_bot, params){
 
 }
 
-//———————————————————————————————————————— create_timeline(obj, params)
+//———————————————————————————————————————— play_tline(obj, params)
 
-//nction create_timeline(animation, params){
-function create_timeline(namex, effectx, params){
+//nction play_tline(animation, params){
+function play_tline(namex, effectx, params){
+
+	log('::::::::::::::::::::::::::::::::::: play_tline: '+namex);
 
   obj = effectx.obj;
 
@@ -1120,13 +1118,14 @@ function create_timeline(namex, effectx, params){
   if (typeof tline == 'undefined'){
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
-    tline.call( function(){ set_existence, [obj, true] });
     tline.to(obj, params);
   }
 
   // play if it's not playing or if it's reversed
-  if (!tline.isActive() || (tline.isActive() && tline.reversed()))
+  if (!tline.isActive() || (tline.isActive() && tline.reversed())){
+    set_existence(obj, true);
     tline.play();
+  }
 
 //// make unexists to avoid layering conflicts                // now handled by timeline
 //if (params.autoAlpha==0) set_existence(obj, false);
@@ -1149,14 +1148,20 @@ function execute_toggle(namex, effectx, params){
 
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
-    tline.call( function(){ set_existence, [obj, true] });
     tline.to(obj, params);
+    set_existence(obj, true);
     tline.play();
 
   } else {
 
-    if (tline.reversed()) tline.play();
-    else                  tline.reverse();
+    if (tline.reversed()){
+      set_existence(obj, true);
+      tline.play();
+    }
+    else{
+      set_existence(obj, true);
+      tline.reverse();
+    }
 
   }
 
@@ -1165,10 +1170,10 @@ function execute_toggle(namex, effectx, params){
 
 //:::::::::::::::::::::::::::::::::::::::: GENERIC
 
-//———————————————————————————————————————— reverse_anim(obj, params)
+//———————————————————————————————————————— reverse_tline(obj, params)
 
-//nction reverse_anim(animation){
-function reverse_anim(name){
+//nction reverse_tline(animation){
+function reverse_tline(name){
   var funcName = name + '_timeline';
   window[funcName].reverse();
 }
@@ -1179,15 +1184,17 @@ function reverse_anim(name){
 //———————————————————————————————————————— set_existence(obj, exists)
 
 function set_existence(obj, exists){
+//log(convert_entities(obj.id)+' exists set to '+exists);
+
   if (exists){
     obj.style.pointerEvents = 'visiblePainted';
     obj.style.display       = 'block';
-    log(convert_entities(obj.id) + ' made clickable');
+//  log(convert_entities(obj.id) + ' made clickable');
   }
   else{
     obj.style.pointerEvents = 'none';
     obj.style.display       = 'none';
-    log(convert_entities(obj.id) + ' hidden');
+//  log(convert_entities(obj.id) + ' hidden');
   }
 }
 
@@ -1303,7 +1310,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'name33'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
