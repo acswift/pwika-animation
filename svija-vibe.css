@@ -51,6 +51,13 @@ ellipse[id^='press_x2F_'],
 polygon[id^='press_x2F_'],
    rect[id^='press_x2F_'],
 
+ circle[id^='down_x2F_'],
+ellipse[id^='down_x2F_'],
+      g[id^='down_x2F_'],
+   path[id^='down_x2F_'],
+polygon[id^='down_x2F_'],
+   rect[id^='down_x2F_'],
+
  circle[id^='over_x2F_'],
 ellipse[id^='over_x2F_'],
       g[id^='over_x2F_'],

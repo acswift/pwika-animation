@@ -369,15 +369,16 @@ class Animation{
     log('\n\nv debug output —————————————————————————— ⚠️\ '+this.name);
     Object.keys(this).forEach(key => {
       if (typeof this[key] != 'undefined')
-        log(key+' ('+typeof(this[key])+') — '+this[key]);
+        if (key=='name') log(key+' ('+typeof(this[key])+'): '+this[key]);
+        else log(key+' ('+typeof(this[key])+'): '+this[key].length+' objects');
     });
 
     for (var t=0; t<this.euent.length; t++){
       log('\nEuent['+t+']');
       Object.keys(this.euent[t]).forEach(key => {
         if (typeof this.euent[t][key] != 'undefined')
-          if(key=='obj')log('obj (object) — '+convert_entities(this.euent[t][key].id));
-          else log(key+' ('+typeof(this.euent[t][key])+') — '+this.euent[t][key]);
+          if(key=='obj')log('obj (object): '+convert_entities(this.euent[t][key].id));
+          else log(key+' ('+typeof(this.euent[t][key])+'): '+this.euent[t][key]);
       });
     }
 
@@ -386,8 +387,8 @@ class Animation{
         log('\nEffect[' + x + ']');
         Object.keys(this.effect[x]).forEach(key => {
           if (typeof this.effect[x][key] != 'undefined')
-            if(key=='obj')log('obj (object) — '+convert_entities(this.effect[x][key].id));
-            else log(key+' ('+typeof(this.effect[x][key])+') — '+this.effect[x][key]);
+            if(key=='obj')log('obj (object): '+convert_entities(this.effect[x][key].id));
+            else log(key+' ('+typeof(this.effect[x][key])+'): '+this.effect[x][key]);
         });
       }
     }
@@ -1297,7 +1298,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'contactFootMB'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'submitButtonM'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
