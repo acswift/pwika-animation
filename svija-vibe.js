@@ -159,7 +159,7 @@ class Animation{
     zoopy.obj = obj;
     zoopy.kind    = kind;
 
-    if (zoopy.kind == 'mouse') set_clickable(zoopy.obj, true);
+    if (zoopy.kind == 'mouse') set_existence(zoopy.obj, true);
 
     // set defaults
 
@@ -317,9 +317,9 @@ class Animation{
         errlog('Function func_'+this.name+' not found.');
 
       else switch (this.euent[x].kind) {
-        case 'mouse' :  activate_mouse_func(this.name, this.euent[x], args); break;
-        case 'time'  :   activate_time_func(this.name, this.euent[x], args); break;
-        case 'scroll': activate_scroll_func(this.name, this.euent[x], args); break;
+        case 'mouse' :  activate_mice_func(this.name, this.euent[x], args); break;
+        case 'time'  :   activate_times_func(this.name, this.euent[x], args); break;
+        case 'scroll': activate_scrolls_func(this.name, this.euent[x], args); break;
 
         default:
           log('⚠️ unimplemented event kind: "'+animations[name].euent[0].kind+'" in animation "'+animation.name+'"');
@@ -335,7 +335,7 @@ class Animation{
 
       // hidden at load
       if (this.effect[x].transp_from == 0){
-        set_clickable(this.effect[x].obj, false);
+        set_existence(this.effect[x].obj, false);
         continue;
       }
 
@@ -347,8 +347,7 @@ class Animation{
       else
         this.effect[x].obj.style.opacity = this.effect[x].transp_from/100;
 
-      set_clickable(this.effect[x].obj, true);
-      this.effect[x].obj.style.display = 'block';
+      set_existence(this.effect[x].obj, true);
     }
 
   }
@@ -357,8 +356,8 @@ class Animation{
     for (var t=0; t<this.euent.length; t++){
       if (typeof this.effect == 'undefined')
         if (!this.euent[t].func && !this.euent[t].link){
+          errlog('Event object "'+this.name+'" ('+this.euent[t].kind+') de-registered (no effect, link or function). SVG NAME');
           delete animations[this.name];
-          errlog('Event object '+this.name+' deleted (no effect, link or function). SVG NAME');
         }
     }
     
@@ -579,7 +578,7 @@ for(var x=0; x<clip_users.length; x++){
   }
 }
 
-//———————————————————————————————————————— register events
+//———————————————————————————————————————— add events
 
 log('\nregistering events…');
 
@@ -611,7 +610,7 @@ events.forEach(kind => {
   //                   else log('—› no '+kind+' events');
 });
 
-//———————————————————————————————————————— register effects
+//———————————————————————————————————————— add effects
 
 log('\nregistering effects…');
 
@@ -645,9 +644,9 @@ effects.forEach(kind => {
 
 });
 
-//———————————————————————————————————————— turn on "default on" objs, set cursors, and activate functions
+//———————————————————————————————————————— set cursors, and activate functions, turn on "default on" objs
 
-log('\nturning on "default on" objs & setting cursors…');
+log('\nsetting cursors, activating functions & making objects visible…');
 
 Object.keys(animations).forEach(name => {
   animations[name].set_cursor();
@@ -663,7 +662,7 @@ Object.keys(animations).forEach(name =>
   animations[name].delete_if_no_effect()
 )
 
-//———————————————————————————————————————— enable effects
+//———————————————————————————————————————— activate effects
 
 log('activating effects…');
 
@@ -673,22 +672,13 @@ Object.keys(animations).forEach(name => {
   // the first one is enough to set up the effect
 
   switch (animations[name].euent[0].kind) {
-    case 'mouse' :  activate_mouse(animations[name]); break;
-    case 'time'  :   activate_time(animations[name]); break;
-    case 'scroll': activate_scroll(animations[name]); break;
+    case 'mouse' :    activate_mice(animations[name]); break;
+    case 'time'  :   activate_times(animations[name]); break;
+    case 'scroll': activate_scrolls(animations[name]); break;
 
     default:
       log('⚠️ unimplemented event kind: "'+animations[name].euent[0].kind+'" in animation "'+animation.name+'"');
   }
-
-//if (animations[name].euent[0].kind=='mouse') // 2ms
-//  activate_mouse(animations[name]);  
-
-//if (animations[name].euent[0].kind=='time') // 2ms
-//  activate_time(animations[name]);
-
-//if (animations[name].euent[0].kind=='scroll') // 11ms
-//  activate_scroll(animations[name]);
 
 })
 
@@ -702,21 +692,21 @@ log('\n———————————————————— finished in 
 
 //:::::::::::::::::::::::::::::::::::::::: BUILD FUNCTIONS & EFFECTS
 
-//———————————————————————————————————————— activate_mouse_func(name, euent, args)
+//———————————————————————————————————————— activate_mice_func(name, euent, args)
 
-function activate_mouse_func(name, euent, args){
+function activate_mice_func(name, euent, args){
   euent.obj.addEventListener('click', functions[name].bind(null, ...args)); 
 }
 
-//———————————————————————————————————————— activate_time_func(name, euent, args)
+//———————————————————————————————————————— activate_times_func(name, euent, args)
 
-function activate_time_func(name, euent, args){
+function activate_times_func(name, euent, args){
   setTimeout(functions[name].bind(null, ...args), euent.delay*1000);
 }
 
-//———————————————————————————————————————— activate_scroll_func(name, euent, args)
+//———————————————————————————————————————— activate_scrolls_func(name, euent, args)
 
-function activate_scroll_func(name, euent, args){
+function activate_scrolls_func(name, euent, args){
 
   var obj = euent.obj;
 
@@ -727,9 +717,9 @@ function activate_scroll_func(name, euent, args){
 }
 
 
-//———————————————————————————————————————— activate_mouse(animation)
+//———————————————————————————————————————— activate_mice(animation)
 
-function activate_mouse(animation){
+function activate_mice(animation){
 
   if (typeof animation.effect == 'undefined')
     return true;  // is link or function
@@ -756,9 +746,9 @@ function activate_mouse(animation){
   log('mouse events activated');
 }
 
-//———————————————————————————————————————— activate_time(animation)
+//———————————————————————————————————————— activate_times(animation)
 
-function activate_time(animation){
+function activate_times(animation){
 
   if (typeof animation.effect == 'undefined')
     return true;  // is link or function
@@ -778,9 +768,9 @@ function activate_time(animation){
   log('time events activated');
 }
 
-//———————————————————————————————————————— activate_scroll(animation)
+//———————————————————————————————————————— activate_scrolls(animation)
 
-function activate_scroll(animation){
+function activate_scrolls(animation){
 
   if (typeof animation.effect == 'undefined')
     return true;  // is link or function
@@ -817,7 +807,7 @@ function time_delay(animation, x){
 
   delay  = animation.euent[0].delay * 1000;
   params = gsap_params(animation.effect[x]);
-  setTimeout(execute_anim.bind(null, animation.name+x, animation.effect[x], params), delay);
+  setTimeout(create_timeline.bind(null, animation.name+x, animation.effect[x], params), delay);
 
 }
 
@@ -828,7 +818,7 @@ function mouse_single(animation, x, type){
 
   params = gsap_params(animation.effect[x]);
   for (var t=0; t<animation.euent.length; t++){
-    animation.euent[t].obj.addEventListener(type, execute_anim.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.euent[t].obj.addEventListener(type, create_timeline.bind(null, animation.name+x, animation.effect[x], params), false);
   }
 }
 
@@ -840,7 +830,7 @@ function mouse_ovaway(animation, x){
 
   params = gsap_params(animation.effect[x]);
   for (var t=0; t<animation.euent.length; t++){
-    animation.euent[t].obj.addEventListener('pointerover',  execute_anim.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.euent[t].obj.addEventListener('pointerover',  create_timeline.bind(null, animation.name+x, animation.effect[x], params), false);
     animation.euent[t].obj.addEventListener('pointerout',   reverse_anim.bind(null, animation.name+x                             ), false);
   }
 
@@ -854,7 +844,7 @@ function mouse_down(animation, x){
 
   params = gsap_params(animation.effect[x]);
   for (var t=0; t<animation.euent.length; t++){
-    animation.euent[t].obj.addEventListener('pointerdown', execute_anim.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.euent[t].obj.addEventListener('pointerdown', create_timeline.bind(null, animation.name+x, animation.effect[x], params), false);
     animation.euent[t].obj.addEventListener('pointerup',   reverse_anim.bind(null, animation.name+x                             ), false);
   }
 
@@ -986,7 +976,9 @@ function execute_scroll_point(animation, x, event_top, params){
 
   var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
+
   var tline    = window[funcName];
+  tline.call( function(){ set_existence, [obj, true] });
 
   // goes on when event object top scrolls up past top of page
   
@@ -999,6 +991,7 @@ function execute_scroll_point(animation, x, event_top, params){
       //  doesn't exist: create & play it
       window[funcName] = new gsap.timeline({paused:true});
       var tline = window[funcName];
+      tline.call( function(){ set_existence, [obj, true] });
       tline.to(obj, params);
       tline.play();
     }
@@ -1029,10 +1022,12 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params){
   var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
+  tline.call( function(){ set_existence, [obj, true] });
 
   if (typeof tline == 'undefined'){
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
+    tline.call( function(){ set_existence, [obj, true] });
     tline.to(obj, params);
   }
 
@@ -1082,6 +1077,7 @@ function execute_scroll_zone(animation, x, event_top, event_bot, params){
   var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
   var tline    = window[funcName];
+  tline.call( function(){ set_existence, [obj, true] });
 
   // goes on when event top scrolls up past top of page
   // goes off when event object bottom < bottom of page
@@ -1095,6 +1091,7 @@ function execute_scroll_zone(animation, x, event_top, event_bot, params){
       //  doesn't exist: create & play it
       window[funcName] = new gsap.timeline({paused:true});
       var tline = window[funcName];
+      tline.call( function(){ set_existence, [obj, true] });
       tline.to(obj, params);
       tline.play();
     }
@@ -1110,29 +1107,30 @@ function execute_scroll_zone(animation, x, event_top, event_bot, params){
 
 }
 
-//———————————————————————————————————————— execute_anim(obj, params)
+//———————————————————————————————————————— create_timeline(obj, params)
 
-//nction execute_anim(animation, params){
-function execute_anim(namex, effectx, params){
+//nction create_timeline(animation, params){
+function create_timeline(namex, effectx, params){
 
   obj = effectx.obj;
 
   var funcName = namex + '_timeline';
+  var tline    = window[funcName];
 
-  // create if it doesn't exist
-  if (typeof window[funcName] == 'undefined'){
+  if (typeof tline == 'undefined'){
     window[funcName] = new gsap.timeline({paused:true});
-    window[funcName].to(obj, params);
+    var tline = window[funcName];
+    tline.call( function(){ set_existence, [obj, true] });
+    tline.to(obj, params);
   }
 
   // play if it's not playing or if it's reversed
-  if (!window[funcName].isActive() || (window[funcName].isActive() && window[funcName].reversed())){
-    window[funcName].play();
-  }
+  if (!tline.isActive() || (tline.isActive() && tline.reversed()))
+    tline.play();
 
-  // make unclickable to avoid layering conflicts
-  if (params.autoAlpha==0) set_clickable(obj, false);
-                      else set_clickable(obj, true );
+//// make unexists to avoid layering conflicts                // now handled by timeline
+//if (params.autoAlpha==0) set_existence(obj, false);
+//                    else set_existence(obj, true );
 }
 
 //———————————————————————————————————————— execute_toggle(obj, params)
@@ -1151,6 +1149,7 @@ function execute_toggle(namex, effectx, params){
 
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
+    tline.call( function(){ set_existence, [obj, true] });
     tline.to(obj, params);
     tline.play();
 
@@ -1177,13 +1176,19 @@ function reverse_anim(name){
 
 //:::::::::::::::::::::::::::::::::::::::: UTILITIES
 
-//———————————————————————————————————————— set_clickable(obj, clickable)
+//———————————————————————————————————————— set_existence(obj, exists)
 
-function set_clickable(obj, clickable){
-  if (clickable)
+function set_existence(obj, exists){
+  if (exists){
     obj.style.pointerEvents = 'visiblePainted';
-  else
+    obj.style.display       = 'block';
+    log(convert_entities(obj.id) + ' made clickable');
+  }
+  else{
     obj.style.pointerEvents = 'none';
+    obj.style.display       = 'none';
+    log(convert_entities(obj.id) + ' hidden');
+  }
 }
 
 //———————————————————————————————————————— convert_transform(origin)
@@ -1220,15 +1225,15 @@ function gsap_params(effect){
   if (typeof effect.transp_to != 'undefined') params['autoAlpha'] = effect.transp_to / 100;
   if (typeof effect.rotate    != 'undefined') params['rotation' ] = effect.rotate         ;
 
-  //————— make clickable if not 0 opacity
+  //————— make exists if not 0 opacity
 
-  if (params['autoAlpha']==1){
-    params['onComplete'      ] = set_clickable;
-    params['onCompleteParams'] = [effect.obj, true];
-  }
+//if (params['autoAlpha']==1){                          // this has to happen before anim is called
+//  params['onComplete'      ] = set_existence;
+//  params['onCompleteParams'] = [effect.obj, true];
+//}
 
   if (params['autoAlpha']==0){
-    params['onComplete'      ] = set_clickable;
+    params['onComplete'      ] = set_existence;
     params['onCompleteParams'] = [effect.obj, false];
   }
 
@@ -1298,7 +1303,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'submitButtonM'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
