@@ -1,17 +1,3 @@
-<details><summary>Vim Folds</summary>
-
----
-To restore Vim folds when starting work:
-```
-cp folds/* ~/.vim/view/
-```
-To add folds to repo at commit:
-```
-cp ~/.vim/view/*svija.dev=+sync=+Svija=+Scripts* ./folds/
-```
----
-</details>
-
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
 *Updated 27 July, 2022*
