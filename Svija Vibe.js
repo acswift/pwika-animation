@@ -452,6 +452,9 @@ class Animation{
     var flag_len = flag_length[key];
     if (flag_len == 0) return flag;
   
+    if (key=='origin')
+      return convert_transform(flag);
+
     if ((key=='xmove' || key=='ymove') && flag.slice(0,1)=='-')
       return 0-flag.substr(flag_len);
   
@@ -1211,7 +1214,8 @@ function convert_transform(origin){
 
   var parts = origin.split('_x2C_');
   var result = parts.join('% ') + '%';
-  return result;
+  log('——————————————————————————————————— '+origin+' converted to '+result);
+  return result.slice(1);
 }
 
 //———————————————————————————————————————— gsap_params(effect)
@@ -1221,12 +1225,12 @@ function gsap_params(effect){
   var params = {};
 
   params['duration'       ] = effect.duration==0 ? 0.001:effect.duration
-  params['transformOrigin'] = convert_transform(effect.origin);
 
   if (typeof effect.ease      == 'undefined') params['ease'     ] = Power1.easeInOut      ;
                                          else params['ease'     ] = eases[effect.ease]    ;
 
   if (typeof effect.delay     != 'undefined') params['delay'    ] = effect.delay          ;
+  if (typeof effect.origin    != 'undefined') params['transformOrigin' ] = effect.origin;
 
   if (typeof effect.xmove     != 'undefined') params['x'        ] = '+=' + effect.xmove   ;
   if (typeof effect.ymove     != 'undefined') params['y'        ] = '+=' + effect.ymove   ;
@@ -1316,7 +1320,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-var a = 'logoGroup'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'homeLogo'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
