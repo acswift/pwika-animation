@@ -4,7 +4,7 @@
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-### Svija Vibe 1.0.6.3
+### Svija Vibe 1.0.6.5
 
 Added beta branch.
 

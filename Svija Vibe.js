@@ -3,7 +3,7 @@
 
 /*———————————————————————————————————————— notes
 
-  Svija Vibe 1.0.6.4
+  Svija Vibe 1.0.6.5
 
   github.com/svijalove/animation
   
