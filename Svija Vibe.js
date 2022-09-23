@@ -1033,6 +1033,7 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params){
   // event is activated
   if (event_top < rem_top && event_bot > rem_top){
 
+    set_existence(obj, true); //—————————————————————————————————————————————————————————————————-- is this too much?
     var obj_height = event_bot - event_top;
     var passed = rem_top - event_top;
     var pcent = passed/obj_height;
@@ -1043,11 +1044,17 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params){
   }
 
   else {
+
     // if event object is below top of page, snap to 0
-    if (event_top > rem_top) tline.totalTime(0);
+    if (event_top > rem_top){
+      tline.totalTime(0);
+    }
 
     // if event object is above top of page, snap to 100
-    if (event_bot < rem_top) tline.totalTime(tline.totalDuration());
+    if (event_bot < rem_top){
+      tline.totalTime(tline.totalDuration());
+      if (params['autoAlpha'] == 0) set_existence(obj, false);
+    }
   }
 }
 
@@ -1309,7 +1316,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'logoGroup'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
