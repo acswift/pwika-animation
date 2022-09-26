@@ -10,7 +10,7 @@
 
 —————————————————————————————————————————— */
 
-/*———————————————————————————————————————— events */
+/*———————————————————————————————————————— triggers */
 
  circle[id^='time_x2F_'  ],  circle[id^='scroll_x2F_'],  circle[id^='mouse_x2F_' ],
 ellipse[id^='time_x2F_'  ], ellipse[id^='scroll_x2F_'], ellipse[id^='mouse_x2F_' ],
@@ -44,9 +44,9 @@ ellipse[id^='toggle_x2F_'], ellipse[id^='delay_x2F_' ], ellipse[id^='zone_x2F_' 
 polygon[id^='toggle_x2F_'], polygon[id^='delay_x2F_' ], polygon[id^='zone_x2F_'  ],
    rect[id^='toggle_x2F_'],    rect[id^='delay_x2F_' ],    rect[id^='zone_x2F_'  ],
 
-#x{ opacity:0; pointer-events:none; }
+#x{ opacity:0; pointer-triggers:none; }
 
 
-svg{pointer-events:none;}
+svg{pointer-triggers:none;}
 
 /*———————————————————————————————————————— fin */

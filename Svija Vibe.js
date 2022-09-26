@@ -145,10 +145,10 @@ var functions  = [];   // mouse functions called by func flag
 
 class Animation{
 
-  constructor( name, trigger, effect ){
+  constructor( name, cause, effect ){
 
     this.name     = name;       // 20-character string
-    this.trigger    = trigger;      // array of events
+    this.cause    = cause;      // array of events
     this.effect   = effect;     // array of effects
   }
 
@@ -204,8 +204,8 @@ class Animation{
     if (zoopy.link && zoopy.blank)
       zoopy.obj.parentNode.setAttribute("target", "_blank");
 
-    if (typeof this.trigger == 'undefined') this.trigger = [];
-    this.trigger.push(zoopy);
+    if (typeof this.cause == 'undefined') this.cause = [];
+    this.cause.push(zoopy);
 
   }
 
@@ -281,22 +281,22 @@ class Animation{
 
   set_cursor(){
   
-    for (var t=0; t<this.trigger.length; t++){
+    for (var t=0; t<this.cause.length; t++){
 
-      if (typeof this.trigger[t].cursor != 'undefined')
-        this.trigger[t].obj.style.cursor = cursors[this.trigger[t].cursor];
+      if (typeof this.cause[t].cursor != 'undefined')
+        this.cause[t].obj.style.cursor = cursors[this.cause[t].cursor];
   
       else{
         var is_hand = false;
   
-        if (this.trigger[t].link ) is_hand = true;
-        if (this.trigger[t].func ) is_hand = true;
+        if (this.cause[t].link ) is_hand = true;
+        if (this.cause[t].func ) is_hand = true;
         if (this.kind == 'click' ) is_hand = true;
         if (this.kind == 'down'  ) is_hand = true;
         if (this.kind == 'toggle') is_hand = true;
 
         if (is_hand){
-          this.trigger[t].obj.style.cursor = cursors['default_link'];
+          this.cause[t].obj.style.cursor = cursors['default_link'];
         }
       }
     }
@@ -308,23 +308,23 @@ class Animation{
     // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
     // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
 
-    for (var x=0; x<this.trigger.length; x++){
-      if (!this.trigger[x].func) continue;
+    for (var x=0; x<this.cause.length; x++){
+      if (!this.cause[x].func) continue;
 
-      var args = this.trigger[x].args;
+      var args = this.cause[x].args;
 
       functions[this.name] = window['func_'+this.name];
 
       if (typeof functions[this.name] == 'undefined')
         errlog('Function func_'+this.name+' not found.');
 
-      else switch (this.trigger[x].kind) {
-        case 'mouse' :  activate_mice_func(this.name, this.trigger[x], args); break;
-        case 'time'  :   activate_times_func(this.name, this.trigger[x], args); break;
-        case 'scroll': activate_scrolls_func(this.name, this.trigger[x], args); break;
+      else switch (this.cause[x].kind) {
+        case 'mouse' :  activate_mice_func(this.name, this.cause[x], args); break;
+        case 'time'  :   activate_times_func(this.name, this.cause[x], args); break;
+        case 'scroll': activate_scrolls_func(this.name, this.cause[x], args); break;
 
         default:
-          log('⚠️ unimplemented event kind: "'+animations[name].trigger[0].kind+'" in animation "'+animation.name+'"');
+          log('⚠️ unimplemented event kind: "'+animations[name].cause[0].kind+'" in animation "'+animation.name+'"');
       }
     }
   }
@@ -355,10 +355,10 @@ class Animation{
   }
 
   delete_if_no_effect(){
-    for (var t=0; t<this.trigger.length; t++){
+    for (var t=0; t<this.cause.length; t++){
       if (typeof this.effect == 'undefined')
-        if (!this.trigger[t].func && !this.trigger[t].link){
-          errlog('Event object "'+this.name+'" ('+this.trigger[t].kind+') de-registered (no effect, link or function). SVG NAME');
+        if (!this.cause[t].func && !this.cause[t].link){
+          errlog('Event object "'+this.name+'" ('+this.cause[t].kind+') de-registered (no effect, link or function). SVG NAME');
           delete animations[this.name];
         }
     }
@@ -374,12 +374,12 @@ class Animation{
         else log(key+' ('+typeof(this[key])+'): '+this[key].length+' objects');
     });
 
-    for (var t=0; t<this.trigger.length; t++){
+    for (var t=0; t<this.cause.length; t++){
       log('\nTrigger['+t+']');
-      Object.keys(this.trigger[t]).forEach(key => {
-        if (typeof this.trigger[t][key] != 'undefined')
-          if(key=='obj')log('obj (object): '+convert_entities(this.trigger[t][key].id));
-          else log(key+' ('+typeof(this.trigger[t][key])+'): '+this.trigger[t][key]);
+      Object.keys(this.cause[t]).forEach(key => {
+        if (typeof this.cause[t][key] != 'undefined')
+          if(key=='obj')log('obj (object): '+convert_entities(this.cause[t][key].id));
+          else log(key+' ('+typeof(this.cause[t][key])+'): '+this.cause[t][key]);
       });
     }
 
@@ -679,13 +679,13 @@ Object.keys(animations).forEach(name => {
   // not necessary to go through all events
   // the first one is enough to set up the effect
 
-  switch (animations[name].trigger[0].kind) {
+  switch (animations[name].cause[0].kind) {
     case 'mouse' :    activate_mice(animations[name]); break;
     case 'time'  :   activate_times(animations[name]); break;
     case 'scroll': activate_scrolls(animations[name]); break;
 
     default:
-      log('⚠️ unimplemented event kind: "'+animations[name].trigger[0].kind+'" in animation "'+animation.name+'"');
+      log('⚠️ unimplemented event kind: "'+animations[name].cause[0].kind+'" in animation "'+animation.name+'"');
   }
 
 })
@@ -697,31 +697,49 @@ let end_time = d2.getTime();
 
 log('\n———————————————————— finished in '+(end_time-start_time)+'ms\n\n');
 
+//———————————————————————————————————————— visible triggers
+
+// https://stackoverflow.com/a/1938465
+
+if (typeof triggers_visible != 'undefined'){
+  var arrMatches = getElementsByRegex('^time_x2F_.*');
+  for (var x=0; x<arrMatches.length; x++)
+    arrMatches[x].style.opacity = 0.3;
+
+  var arrMatches = getElementsByRegex('^scroll_x2F_.*');
+  for (var x=0; x<arrMatches.length; x++)
+    arrMatches[x].style.opacity = 0.3;
+
+  var arrMatches = getElementsByRegex('^mouse_x2F_.*');
+  for (var x=0; x<arrMatches.length; x++)
+    arrMatches[x].style.opacity = 0.3;
+}
+
 
 //:::::::::::::::::::::::::::::::::::::::: BUILD FUNCTIONS & EFFECTS
 
-//———————————————————————————————————————— activate_mice_func(name, trigger, args)
+//———————————————————————————————————————— activate_mice_func(name, cause, args)
 
-function activate_mice_func(name, trigger, args){
-  trigger.obj.addEventListener('click', functions[name].bind(null, ...args)); 
+function activate_mice_func(name, cause, args){
+  cause.obj.addEventListener('click', functions[name].bind(null, ...args)); 
 }
 
-//———————————————————————————————————————— activate_times_func(name, trigger, args)
+//———————————————————————————————————————— activate_times_func(name, cause, args)
 
-function activate_times_func(name, trigger, args){
-  setTimeout(functions[name].bind(null, ...args), trigger.delay*1000);
+function activate_times_func(name, cause, args){
+  setTimeout(functions[name].bind(null, ...args), cause.delay*1000);
 }
 
-//———————————————————————————————————————— activate_scrolls_func(name, trigger, args)
+//———————————————————————————————————————— activate_scrolls_func(name, cause, args)
 
-function activate_scrolls_func(name, trigger, args){
+function activate_scrolls_func(name, cause, args){
 
-  var obj = trigger.obj;
+  var obj = cause.obj;
 
   var box = obj.getBBox();      // get bounding box of event object
   var event_top = box['y'];             // top
 
-  window.addEventListener('scroll', execute_scroll_func.bind(null, name, trigger, event_top, args)); 
+  window.addEventListener('scroll', execute_scroll_func.bind(null, name, cause, event_top, args)); 
 }
 
 
@@ -813,7 +831,7 @@ function activate_scrolls(animation){
 
 function time_delay(animation, x){
 
-  delay  = animation.trigger[0].delay * 1000;
+  delay  = animation.cause[0].delay * 1000;
   params = gsap_params(animation.effect[x]);
   setTimeout(play_tline.bind(null, animation.name+x, animation.effect[x], params), delay);
 
@@ -825,8 +843,8 @@ function time_delay(animation, x){
 function mouse_single(animation, x, type){
 
   params = gsap_params(animation.effect[x]);
-  for (var t=0; t<animation.trigger.length; t++){
-    animation.trigger[t].obj.addEventListener(type, play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
+  for (var t=0; t<animation.cause.length; t++){
+    animation.cause[t].obj.addEventListener(type, play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
   }
 }
 
@@ -837,9 +855,9 @@ function mouse_single(animation, x, type){
 function mouse_ovaway(animation, x){
 
   params = gsap_params(animation.effect[x]);
-  for (var t=0; t<animation.trigger.length; t++){
-    animation.trigger[t].obj.addEventListener('pointerover',  play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
-    animation.trigger[t].obj.addEventListener('pointerout',   reverse_tline.bind(null, animation.name+x , animation.effect[x]                            ), false);
+  for (var t=0; t<animation.cause.length; t++){
+    animation.cause[t].obj.addEventListener('pointerover',  play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.cause[t].obj.addEventListener('pointerout',   reverse_tline.bind(null, animation.name+x , animation.effect[x]                            ), false);
   }
 
 }
@@ -851,9 +869,9 @@ function mouse_ovaway(animation, x){
 function mouse_down(animation, x){
 
   params = gsap_params(animation.effect[x]);
-  for (var t=0; t<animation.trigger.length; t++){
-    animation.trigger[t].obj.addEventListener('pointerdown', play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
-    animation.trigger[t].obj.addEventListener('pointerup',   reverse_tline.bind(null, animation.name+x , animation.effect[x]                         ), false);
+  for (var t=0; t<animation.cause.length; t++){
+    animation.cause[t].obj.addEventListener('pointerdown', play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.cause[t].obj.addEventListener('pointerup',   reverse_tline.bind(null, animation.name+x , animation.effect[x]                         ), false);
   }
 
 }
@@ -862,8 +880,8 @@ function mouse_down(animation, x){
 
 function mouse_toggle(animation, x){
   params = gsap_params(animation.effect[x]);
-  for (var t=0; t<animation.trigger.length; t++){
-    animation.trigger[t].obj.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.effect[x], params), false);
+  for (var t=0; t<animation.cause.length; t++){
+    animation.cause[t].obj.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.effect[x], params), false);
   }
 }
 
@@ -872,8 +890,8 @@ function mouse_toggle(animation, x){
 
 function scroll_point(animation, x){
 
-  for (var t=0; t<animation.trigger.length; t++){
-    var obj = animation.trigger[t].obj;
+  for (var t=0; t<animation.cause.length; t++){
+    var obj = animation.cause[t].obj;
 
     var box = obj.getBBox();      // get bounding box of event object
     var event_top = box['y'];             // top
@@ -890,8 +908,8 @@ function scroll_point(animation, x){
 
 function scroll_scrub(animation, x){
 
-  for (var t=0; t<animation.trigger.length; t++){
-    var obj = animation.trigger[t].obj;
+  for (var t=0; t<animation.cause.length; t++){
+    var obj = animation.cause[t].obj;
 
     var box = obj.getBBox();      // get bounding box of event object
     var t = box['y'];             // top
@@ -909,8 +927,8 @@ function scroll_scrub(animation, x){
 
 function scroll_zone(animation, x){
 
-  for (var t=0; t<animation.trigger.length; t++){
-    var obj = animation.trigger[t].obj;
+  for (var t=0; t<animation.cause.length; t++){
+    var obj = animation.cause[t].obj;
 
     var box = obj.getBBox();      // get bounding box of event object
     var t = box['y'];             // top
@@ -927,18 +945,18 @@ function scroll_zone(animation, x){
 
 //:::::::::::::::::::::::::::::::::::::::: EFFECT-RELATED
 
-/*———————————————————————————————————————— execute_scroll_func(name, trigger, event_top, args)
+/*———————————————————————————————————————— execute_scroll_func(name, cause, event_top, args)
 
     this was not finished because it involves adding new variables and
-    making the trigger functionality more complex.
+    making the cause functionality more complex.
 
     since most of that code will have to be rewritten when loop, reset and reverse
     are added, I decided to hold off (nobody will be using this in the near future).
 
-    also: consider changing to "when trigger is entirely visible"
+    also: consider changing to "when cause is entirely visible"
     instead of "when top crosses top" */
 
-function execute_scroll_func(name, trigger, event_top, args){
+function execute_scroll_func(name, cause, event_top, args){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -948,12 +966,12 @@ function execute_scroll_func(name, trigger, event_top, args){
 
     for this to execute:
 
-    1. scroll trigger has to be below top of page, then
-    2. scroll trigger has to be above top of page, and
+    1. scroll cause has to be below top of page, then
+    2. scroll cause has to be above top of page, and
     3. function cannot already have been set off by the 1-2 transition
 
-    need a boolean variable specific to this trigger above/below (is_above), set on load
-    need a boolean variable specific to this trigger already done (is_done), initialized false on load
+    need a boolean variable specific to this cause above/below (is_above), set on load
+    need a boolean variable specific to this cause already done (is_done), initialized false on load
 
 */
 
@@ -1323,6 +1341,25 @@ function fix_minus(clip_path){
   return false;
 }
 
+//———————————————————————————————————————— document['getElementsByRegex'] = function(pattern){
+
+// https://stackoverflow.com/a/1938465
+function getElementsByRegex(pattern){
+   var arrElements = [];   // to accumulate matching elements
+   var re = new RegExp(pattern);   // the regex to match with
+
+   function findRecursively(aNode) { // recursive function to traverse DOM
+      if (!aNode) 
+          return;
+      if (aNode.id !== undefined && aNode.id.search(re) != -1)
+          arrElements.push(aNode);  // FOUND ONE!
+      for (var idx in aNode.childNodes) // search children...
+          findRecursively(aNode.childNodes[idx]);
+   };
+
+   findRecursively(document); // initiate recursive matching
+   return arrElements; // return matching elements
+};
 
 //———————————————————————————————————————— debugging
 
