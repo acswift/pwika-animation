@@ -243,7 +243,7 @@ class Animation{
 
     // special cases (so absence of flags behaves as expected) ———————————————————————————————
 
-    // set transparency 0 to 100
+    // set transparency 0 to 1
     if ( typeof zoopy.xmove     == 'undefined' &&
          typeof zoopy.ymove     == 'undefined' &&
          typeof zoopy.rotate    == 'undefined' &&
@@ -252,7 +252,7 @@ class Animation{
          typeof zoopy.yscale    == 'undefined' &&
          typeof zoopy.transp_to == 'undefined' ){
       zoopy.transp_from = 0;
-      zoopy.transp_to   = 100;
+      zoopy.transp_to   = 1;
     }
 
     // set default duration
@@ -268,8 +268,9 @@ class Animation{
     if (typeof zoopy.delay!='undefined')
       zoopy.delay= 1 * zoopy.delay;
 
+    // if set to disappear, need starting transp of 1
     if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
-      zoopy.transp_from = 100;
+      zoopy.transp_from = 1;
 
     // if destination transparency is not 0, default starting transparency is 0
     if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined') 
@@ -279,6 +280,7 @@ class Animation{
     if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
       zoopy.ease = 'none';
 
+    // add to effect array
     if (typeof this.effect == 'undefined') this.effect = [];
     this.effect.push(zoopy);
 
@@ -352,7 +354,7 @@ class Animation{
 
       // set specified transparency
       else
-        this.effect[x].obj.style.opacity = this.effect[x].transp_from/100;
+        this.effect[x].obj.style.opacity = this.effect[x].transp_from;
 
       set_existence(this.effect[x].obj, true);
     }
@@ -468,7 +470,10 @@ class Animation{
       if (flag.slice(-1)=='>') return flag.slice(0, flag.length-1);
       else return 0-flag.slice(1, flag.length);
   
-// here we have problems
+    if (key=='transp_to'){
+       var v = flag.substr(flag_len)/100;
+       return v;
+    }
 
     if (key=='xmove' || key=='ymove')
       if (flag.slice(0,1)=='-')           // -x200
@@ -1270,19 +1275,19 @@ function gsap_params(effectx){
 
   if (typeof effectx.ease      != 'undefined') params['ease'           ] = effectx.ease; else params['ease'] = Power1.easeInOut ;
 
-  if (typeof effectx.delay     != 'undefined') params['delay'          ] = effectx.delay          ;
-  if (typeof effectx.origin    != 'undefined') params['transformOrigin'] = effectx.origin;
+  if (typeof effectx.delay     != 'undefined') params['delay'          ] = effectx.delay        ;
+  if (typeof effectx.origin    != 'undefined') params['transformOrigin'] = effectx.origin       ;
   else params['transformOrigin'] = '50% 50%';
 
-  if (typeof effectx.xmove     != 'undefined') params['x'              ] = '+=' + effectx.xmove   ;
-  if (typeof effectx.ymove     != 'undefined') params['y'              ] = '+=' + effectx.ymove   ;
+  if (typeof effectx.xmove     != 'undefined') params['x'              ] = '+=' + effectx.xmove ;
+  if (typeof effectx.ymove     != 'undefined') params['y'              ] = '+=' + effectx.ymove ;
 
-  if (typeof effectx.scale     != 'undefined') params['scale'          ] = '*=' + effectx.scale   ;
-  if (typeof effectx.xscale    != 'undefined') params['scaleX'         ] = '*=' + effectx.xscale         ;
-  if (typeof effectx.yscale    != 'undefined') params['scaleY'         ] = '*=' + effectx.yscale         ;
+  if (typeof effectx.scale     != 'undefined') params['scale'          ] = '*=' + effectx.scale ;
+  if (typeof effectx.xscale    != 'undefined') params['scaleX'         ] = '*=' + effectx.xscale;
+  if (typeof effectx.yscale    != 'undefined') params['scaleY'         ] = '*=' + effectx.yscale;
 
-  if (typeof effectx.transp_to != 'undefined') params['autoAlpha'      ] = effectx.transp_to / 100;
-  if (typeof effectx.rotate    != 'undefined') params['rotation'       ] = '+=' + effectx.rotate         ;
+  if (typeof effectx.transp_to != 'undefined') params['autoAlpha'      ] = effectx.transp_to    ;
+  if (typeof effectx.rotate    != 'undefined') params['rotation'       ] = '+=' + effectx.rotate;
 
   //————— make exists if not 0 opacity
 
@@ -1381,7 +1386,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'homeImg2'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'homeImg'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
