@@ -274,6 +274,10 @@ class Animation{
     if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined') 
       zoopy.transp_from = 0;
 
+		// scrub effects default to hard ease
+    if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
+      zoopy.ease = 'none';
+
     if (typeof this.effect == 'undefined') this.effect = [];
     this.effect.push(zoopy);
 
@@ -452,8 +456,11 @@ class Animation{
 
   get_flag_val(key, flag){
     var flag_len = flag_length[key];
-    if (flag_len == 0) return flag;
   
+    if (key=='ease') return eases[flag];
+
+    if (flag_len == 0) return flag;
+
     if (key=='origin')
       return convert_origin(flag);
 
@@ -1250,8 +1257,7 @@ function gsap_params(effectx){
 
   params['duration'       ] = effectx.duration==0 ? 0.001:effectx.duration
 
-  if (typeof effectx.ease      == 'undefined') params['ease'     ] = Power1.easeInOut       ;
-                                          else params['ease'     ] = eases[effectx.ease]    ;
+  if (typeof effectx.ease      != 'undefined') params['ease'     ] = effectx.ease; else Power1.easeInOut ;
 
   if (typeof effectx.delay     != 'undefined') params['delay'    ] = effectx.delay          ;
   if (typeof effectx.origin    != 'undefined') params['transformOrigin' ] = effectx.origin;
@@ -1363,7 +1369,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-var a = 'homeImg'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'homeText'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
