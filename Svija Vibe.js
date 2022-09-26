@@ -30,7 +30,8 @@ const entity_conversion = {
   'x2B'  : '+',
   'x25'  : '%',
   'x3C'  : '<',
-  'x3E'  : '>'
+  'x3E'  : '>',
+  'x2C'  : ','
 };
 
 const event_flag_value_to_key = {
@@ -144,18 +145,18 @@ var functions  = [];   // mouse functions called by func flag
 
 class Animation{
 
-  constructor( name, euent, effect ){
+  constructor( name, trigger, effect ){
 
-    this.name       = name;         // 20-character string
-    this.euent    = euent;      // array of events
-    this.effect     = effect;       // array of effects
+    this.name     = name;       // 20-character string
+    this.trigger    = trigger;      // array of events
+    this.effect   = effect;     // array of effects
   }
 
   add_event(obj, kind, flags){ //—————————————————————————————————————————————
 
     // initialize
 
-    var zoopy     = new Euent;
+    var zoopy     = new Trigger;
     zoopy.obj = obj;
     zoopy.kind    = kind;
 
@@ -189,8 +190,8 @@ class Animation{
       }
       else{
         var v = event_flag_value_to_key_value[val];
-        if (val == '') errlog('Euent "'+this.name+'" has an extra slash.');
-        else if (typeof v == 'undefined') errlog('Euent "'+this.name+'" has unknown flag: "'+val+'".');
+        if (val == '') errlog('Trigger "'+this.name+'" has an extra slash.');
+        else if (typeof v == 'undefined') errlog('Trigger "'+this.name+'" has unknown flag: "'+val+'".');
         else zoopy[key] = v;
       }
 
@@ -203,8 +204,8 @@ class Animation{
     if (zoopy.link && zoopy.blank)
       zoopy.obj.parentNode.setAttribute("target", "_blank");
 
-    if (typeof this.euent == 'undefined') this.euent = [];
-    this.euent.push(zoopy);
+    if (typeof this.trigger == 'undefined') this.trigger = [];
+    this.trigger.push(zoopy);
 
   }
 
@@ -213,8 +214,9 @@ class Animation{
     // initialize
 
     var zoopy     = new Effect;
-    zoopy.obj = obj;
+    zoopy.obj     = obj;
     zoopy.kind    = kind;
+    zoopy.name    = this.name;
 
     // loop through flags (kind|name|parameters...)
 
@@ -234,7 +236,7 @@ class Animation{
       key = this.get_effect_key(flag);
       if (typeof zoopy[key] != 'undefined') errlog('Effect "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
 
-      zoopy[key] = this.get_val(key, flag);
+      zoopy[key] = this.get_flag_val(key, flag);
 
     }
 
@@ -279,22 +281,22 @@ class Animation{
 
   set_cursor(){
   
-    for (var t=0; t<this.euent.length; t++){
+    for (var t=0; t<this.trigger.length; t++){
 
-      if (typeof this.euent[t].cursor != 'undefined')
-        this.euent[t].obj.style.cursor = cursors[this.euent[t].cursor];
+      if (typeof this.trigger[t].cursor != 'undefined')
+        this.trigger[t].obj.style.cursor = cursors[this.trigger[t].cursor];
   
       else{
         var is_hand = false;
   
-        if (this.euent[t].link ) is_hand = true;
-        if (this.euent[t].func ) is_hand = true;
+        if (this.trigger[t].link ) is_hand = true;
+        if (this.trigger[t].func ) is_hand = true;
         if (this.kind == 'click' ) is_hand = true;
         if (this.kind == 'down'  ) is_hand = true;
         if (this.kind == 'toggle') is_hand = true;
 
         if (is_hand){
-          this.euent[t].obj.style.cursor = cursors['default_link'];
+          this.trigger[t].obj.style.cursor = cursors['default_link'];
         }
       }
     }
@@ -306,23 +308,23 @@ class Animation{
     // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
     // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
 
-    for (var x=0; x<this.euent.length; x++){
-      if (!this.euent[x].func) continue;
+    for (var x=0; x<this.trigger.length; x++){
+      if (!this.trigger[x].func) continue;
 
-      var args = this.euent[x].args;
+      var args = this.trigger[x].args;
 
       functions[this.name] = window['func_'+this.name];
 
       if (typeof functions[this.name] == 'undefined')
         errlog('Function func_'+this.name+' not found.');
 
-      else switch (this.euent[x].kind) {
-        case 'mouse' :  activate_mice_func(this.name, this.euent[x], args); break;
-        case 'time'  :   activate_times_func(this.name, this.euent[x], args); break;
-        case 'scroll': activate_scrolls_func(this.name, this.euent[x], args); break;
+      else switch (this.trigger[x].kind) {
+        case 'mouse' :  activate_mice_func(this.name, this.trigger[x], args); break;
+        case 'time'  :   activate_times_func(this.name, this.trigger[x], args); break;
+        case 'scroll': activate_scrolls_func(this.name, this.trigger[x], args); break;
 
         default:
-          log('⚠️ unimplemented event kind: "'+animations[name].euent[0].kind+'" in animation "'+animation.name+'"');
+          log('⚠️ unimplemented event kind: "'+animations[name].trigger[0].kind+'" in animation "'+animation.name+'"');
       }
     }
   }
@@ -353,10 +355,10 @@ class Animation{
   }
 
   delete_if_no_effect(){
-    for (var t=0; t<this.euent.length; t++){
+    for (var t=0; t<this.trigger.length; t++){
       if (typeof this.effect == 'undefined')
-        if (!this.euent[t].func && !this.euent[t].link){
-          errlog('Event object "'+this.name+'" ('+this.euent[t].kind+') de-registered (no effect, link or function). SVG NAME');
+        if (!this.trigger[t].func && !this.trigger[t].link){
+          errlog('Event object "'+this.name+'" ('+this.trigger[t].kind+') de-registered (no effect, link or function). SVG NAME');
           delete animations[this.name];
         }
     }
@@ -372,12 +374,12 @@ class Animation{
         else log(key+' ('+typeof(this[key])+'): '+this[key].length+' objects');
     });
 
-    for (var t=0; t<this.euent.length; t++){
-      log('\nEuent['+t+']');
-      Object.keys(this.euent[t]).forEach(key => {
-        if (typeof this.euent[t][key] != 'undefined')
-          if(key=='obj')log('obj (object): '+convert_entities(this.euent[t][key].id));
-          else log(key+' ('+typeof(this.euent[t][key])+'): '+this.euent[t][key]);
+    for (var t=0; t<this.trigger.length; t++){
+      log('\nTrigger['+t+']');
+      Object.keys(this.trigger[t]).forEach(key => {
+        if (typeof this.trigger[t][key] != 'undefined')
+          if(key=='obj')log('obj (object): '+convert_entities(this.trigger[t][key].id));
+          else log(key+' ('+typeof(this.trigger[t][key])+'): '+this.trigger[t][key]);
       });
     }
 
@@ -448,16 +450,19 @@ class Animation{
 
   }
 
-  get_val(key, flag){
+  get_flag_val(key, flag){
     var flag_len = flag_length[key];
     if (flag_len == 0) return flag;
   
     if (key=='origin')
-      return convert_transform(flag);
+      return convert_origin(flag);
 
     if ((key=='xmove' || key=='ymove') && flag.slice(0,1)=='-')
       return 0-flag.substr(flag_len);
   
+    if (key=='scale' || key=='xscale' || key=='yscale')
+      return flag.substr(flag_len)/100;
+
     if (key=='rotate')
       if (flag.slice(-1)=='>') return flag.slice(0, flag.length-1);
       else return 0-flag.slice(1, flag.length);
@@ -468,9 +473,9 @@ class Animation{
 
 }
 
-//———————————————————————————————————————— class Euent
+//———————————————————————————————————————— class Trigger
 
-class Euent{
+class Trigger{
 
   constructor( name, obj, kind, cursor, func, args, link, blank, delay ){
 
@@ -496,7 +501,7 @@ class Effect{
                xmove, ymove, origin, rotate, scale, xscale, yscale, transp_to, transp_from ){
 
     this.name        = name;         // 20-character string
-    this.obj     = obj;      // object reference
+    this.obj         = obj;          // object reference
     this.kind        = kind;         // string · kind of effect                  click, over, down, away, ovaway, down, toggle, visible
 
     // flags
@@ -674,13 +679,13 @@ Object.keys(animations).forEach(name => {
   // not necessary to go through all events
   // the first one is enough to set up the effect
 
-  switch (animations[name].euent[0].kind) {
+  switch (animations[name].trigger[0].kind) {
     case 'mouse' :    activate_mice(animations[name]); break;
     case 'time'  :   activate_times(animations[name]); break;
     case 'scroll': activate_scrolls(animations[name]); break;
 
     default:
-      log('⚠️ unimplemented event kind: "'+animations[name].euent[0].kind+'" in animation "'+animation.name+'"');
+      log('⚠️ unimplemented event kind: "'+animations[name].trigger[0].kind+'" in animation "'+animation.name+'"');
   }
 
 })
@@ -695,28 +700,28 @@ log('\n———————————————————— finished in 
 
 //:::::::::::::::::::::::::::::::::::::::: BUILD FUNCTIONS & EFFECTS
 
-//———————————————————————————————————————— activate_mice_func(name, euent, args)
+//———————————————————————————————————————— activate_mice_func(name, trigger, args)
 
-function activate_mice_func(name, euent, args){
-  euent.obj.addEventListener('click', functions[name].bind(null, ...args)); 
+function activate_mice_func(name, trigger, args){
+  trigger.obj.addEventListener('click', functions[name].bind(null, ...args)); 
 }
 
-//———————————————————————————————————————— activate_times_func(name, euent, args)
+//———————————————————————————————————————— activate_times_func(name, trigger, args)
 
-function activate_times_func(name, euent, args){
-  setTimeout(functions[name].bind(null, ...args), euent.delay*1000);
+function activate_times_func(name, trigger, args){
+  setTimeout(functions[name].bind(null, ...args), trigger.delay*1000);
 }
 
-//———————————————————————————————————————— activate_scrolls_func(name, euent, args)
+//———————————————————————————————————————— activate_scrolls_func(name, trigger, args)
 
-function activate_scrolls_func(name, euent, args){
+function activate_scrolls_func(name, trigger, args){
 
-  var obj = euent.obj;
+  var obj = trigger.obj;
 
   var box = obj.getBBox();      // get bounding box of event object
   var event_top = box['y'];             // top
 
-  window.addEventListener('scroll', execute_scroll_func.bind(null, name, euent, event_top, args)); 
+  window.addEventListener('scroll', execute_scroll_func.bind(null, name, trigger, event_top, args)); 
 }
 
 
@@ -808,7 +813,7 @@ function activate_scrolls(animation){
 
 function time_delay(animation, x){
 
-  delay  = animation.euent[0].delay * 1000;
+  delay  = animation.trigger[0].delay * 1000;
   params = gsap_params(animation.effect[x]);
   setTimeout(play_tline.bind(null, animation.name+x, animation.effect[x], params), delay);
 
@@ -820,8 +825,8 @@ function time_delay(animation, x){
 function mouse_single(animation, x, type){
 
   params = gsap_params(animation.effect[x]);
-  for (var t=0; t<animation.euent.length; t++){
-    animation.euent[t].obj.addEventListener(type, play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
+  for (var t=0; t<animation.trigger.length; t++){
+    animation.trigger[t].obj.addEventListener(type, play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
   }
 }
 
@@ -832,9 +837,9 @@ function mouse_single(animation, x, type){
 function mouse_ovaway(animation, x){
 
   params = gsap_params(animation.effect[x]);
-  for (var t=0; t<animation.euent.length; t++){
-    animation.euent[t].obj.addEventListener('pointerover',  play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
-    animation.euent[t].obj.addEventListener('pointerout',   reverse_tline.bind(null, animation.name+x , animation.effect[x]                            ), false);
+  for (var t=0; t<animation.trigger.length; t++){
+    animation.trigger[t].obj.addEventListener('pointerover',  play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.trigger[t].obj.addEventListener('pointerout',   reverse_tline.bind(null, animation.name+x , animation.effect[x]                            ), false);
   }
 
 }
@@ -846,9 +851,9 @@ function mouse_ovaway(animation, x){
 function mouse_down(animation, x){
 
   params = gsap_params(animation.effect[x]);
-  for (var t=0; t<animation.euent.length; t++){
-    animation.euent[t].obj.addEventListener('pointerdown', play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
-    animation.euent[t].obj.addEventListener('pointerup',   reverse_tline.bind(null, animation.name+x , animation.effect[x]                         ), false);
+  for (var t=0; t<animation.trigger.length; t++){
+    animation.trigger[t].obj.addEventListener('pointerdown', play_tline.bind(null, animation.name+x, animation.effect[x], params), false);
+    animation.trigger[t].obj.addEventListener('pointerup',   reverse_tline.bind(null, animation.name+x , animation.effect[x]                         ), false);
   }
 
 }
@@ -857,8 +862,8 @@ function mouse_down(animation, x){
 
 function mouse_toggle(animation, x){
   params = gsap_params(animation.effect[x]);
-  for (var t=0; t<animation.euent.length; t++){
-    animation.euent[t].obj.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.effect[x], params), false);
+  for (var t=0; t<animation.trigger.length; t++){
+    animation.trigger[t].obj.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.effect[x], params), false);
   }
 }
 
@@ -867,8 +872,8 @@ function mouse_toggle(animation, x){
 
 function scroll_point(animation, x){
 
-  for (var t=0; t<animation.euent.length; t++){
-    var obj = animation.euent[t].obj;
+  for (var t=0; t<animation.trigger.length; t++){
+    var obj = animation.trigger[t].obj;
 
     var box = obj.getBBox();      // get bounding box of event object
     var event_top = box['y'];             // top
@@ -885,8 +890,8 @@ function scroll_point(animation, x){
 
 function scroll_scrub(animation, x){
 
-  for (var t=0; t<animation.euent.length; t++){
-    var obj = animation.euent[t].obj;
+  for (var t=0; t<animation.trigger.length; t++){
+    var obj = animation.trigger[t].obj;
 
     var box = obj.getBBox();      // get bounding box of event object
     var t = box['y'];             // top
@@ -904,8 +909,8 @@ function scroll_scrub(animation, x){
 
 function scroll_zone(animation, x){
 
-  for (var t=0; t<animation.euent.length; t++){
-    var obj = animation.euent[t].obj;
+  for (var t=0; t<animation.trigger.length; t++){
+    var obj = animation.trigger[t].obj;
 
     var box = obj.getBBox();      // get bounding box of event object
     var t = box['y'];             // top
@@ -922,18 +927,18 @@ function scroll_zone(animation, x){
 
 //:::::::::::::::::::::::::::::::::::::::: EFFECT-RELATED
 
-/*———————————————————————————————————————— execute_scroll_func(name, euent, event_top, args)
+/*———————————————————————————————————————— execute_scroll_func(name, trigger, event_top, args)
 
     this was not finished because it involves adding new variables and
-    making the euent functionality more complex.
+    making the trigger functionality more complex.
 
     since most of that code will have to be rewritten when loop, reset and reverse
     are added, I decided to hold off (nobody will be using this in the near future).
 
-    also: consider changing to "when euent is entirely visible"
+    also: consider changing to "when trigger is entirely visible"
     instead of "when top crosses top" */
 
-function execute_scroll_func(name, euent, event_top, args){
+function execute_scroll_func(name, trigger, event_top, args){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -943,12 +948,12 @@ function execute_scroll_func(name, euent, event_top, args){
 
     for this to execute:
 
-    1. scroll euent has to be below top of page, then
-    2. scroll euent has to be above top of page, and
+    1. scroll trigger has to be below top of page, then
+    2. scroll trigger has to be above top of page, and
     3. function cannot already have been set off by the 1-2 transition
 
-    need a boolean variable specific to this euent above/below (is_above), set on load
-    need a boolean variable specific to this euent already done (is_done), initialized false on load
+    need a boolean variable specific to this trigger above/below (is_above), set on load
+    need a boolean variable specific to this trigger already done (is_done), initialized false on load
 
 */
 
@@ -1118,8 +1123,6 @@ function execute_scroll_zone(animation, x, event_top, event_bot, params){
 //nction play_tline(animation, params){
 function play_tline(namex, effectx, params){
 
-	log('::::::::::::::::::::::::::::::::::: play_tline: '+namex);
-
   obj = effectx.obj;
 
   var funcName = namex + '_timeline';
@@ -1207,51 +1210,54 @@ function set_existence(obj, exists){
   }
 }
 
-//———————————————————————————————————————— convert_transform(origin)
+//———————————————————————————————————————— convert_origin(origin)
 
-function convert_transform(origin){
+/*  the _x2C_ is not converted when the flags are read because
+    flags are only converted if they have entities in first
+    three characters */
+
+function convert_origin(origin){
   if (typeof origin == 'undefined') return "50% 50%";
 
   var parts = origin.split('_x2C_');
   var result = parts.join('% ') + '%';
-  log('——————————————————————————————————— '+origin+' converted to '+result);
   return result.slice(1);
 }
 
 //———————————————————————————————————————— gsap_params(effect)
 
-function gsap_params(effect){
+function gsap_params(effectx){
 
   var params = {};
 
-  params['duration'       ] = effect.duration==0 ? 0.001:effect.duration
+  params['duration'       ] = effectx.duration==0 ? 0.001:effectx.duration
 
-  if (typeof effect.ease      == 'undefined') params['ease'     ] = Power1.easeInOut      ;
-                                         else params['ease'     ] = eases[effect.ease]    ;
+  if (typeof effectx.ease      == 'undefined') params['ease'     ] = Power1.easeInOut       ;
+                                          else params['ease'     ] = eases[effectx.ease]    ;
 
-  if (typeof effect.delay     != 'undefined') params['delay'    ] = effect.delay          ;
-  if (typeof effect.origin    != 'undefined') params['transformOrigin' ] = effect.origin;
+  if (typeof effectx.delay     != 'undefined') params['delay'    ] = effectx.delay          ;
+  if (typeof effectx.origin    != 'undefined') params['transformOrigin' ] = effectx.origin;
 
-  if (typeof effect.xmove     != 'undefined') params['x'        ] = '+=' + effect.xmove   ;
-  if (typeof effect.ymove     != 'undefined') params['y'        ] = '+=' + effect.ymove   ;
+  if (typeof effectx.xmove     != 'undefined') params['x'        ] = '+=' + effectx.xmove   ;
+  if (typeof effectx.ymove     != 'undefined') params['y'        ] = '+=' + effectx.ymove   ;
 
-  if (typeof effect.scale     != 'undefined') params['scale'    ] = effect.scale     / 100;
-  if (typeof effect.xscale    != 'undefined') params['scaleX'   ] = effect.xscale    / 100;
-  if (typeof effect.yscale    != 'undefined') params['scaleY'   ] = effect.yscale    / 100;
+  if (typeof effectx.scale     != 'undefined') params['scale'    ] = effectx.scale          ;
+  if (typeof effectx.xscale    != 'undefined') params['scaleX'   ] = effectx.xscale         ;
+  if (typeof effectx.yscale    != 'undefined') params['scaleY'   ] = effectx.yscale         ;
 
-  if (typeof effect.transp_to != 'undefined') params['autoAlpha'] = effect.transp_to / 100;
-  if (typeof effect.rotate    != 'undefined') params['rotation' ] = effect.rotate         ;
+  if (typeof effectx.transp_to != 'undefined') params['autoAlpha'] = effectx.transp_to / 100;
+  if (typeof effectx.rotate    != 'undefined') params['rotation' ] = effectx.rotate         ;
 
   //————— make exists if not 0 opacity
 
 //if (params['autoAlpha']==1){                          // this has to happen before anim is called
 //  params['onComplete'      ] = set_existence;
-//  params['onCompleteParams'] = [effect.obj, true];
+//  params['onCompleteParams'] = [effectx.obj, true];
 //}
 
   if (params['autoAlpha']==0){
     params['onComplete'      ] = set_existence;
-    params['onCompleteParams'] = [effect.obj, false];
+    params['onCompleteParams'] = [effectx.obj, false];
   }
 
   return params;
@@ -1320,7 +1326,7 @@ function fix_minus(clip_path){
 
 //———————————————————————————————————————— debugging
 
-var a = 'homeLogo'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'homeImg'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
