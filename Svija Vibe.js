@@ -1268,7 +1268,7 @@ function gsap_params(effectx){
 
   params['duration'       ] = effectx.duration==0 ? 0.001:effectx.duration
 
-  if (typeof effectx.ease      != 'undefined') params['ease'           ] = effectx.ease; else Power1.easeInOut ;
+  if (typeof effectx.ease      != 'undefined') params['ease'           ] = effectx.ease; else params['ease'] = Power1.easeInOut ;
 
   if (typeof effectx.delay     != 'undefined') params['delay'          ] = effectx.delay          ;
   if (typeof effectx.origin    != 'undefined') params['transformOrigin'] = effectx.origin;
