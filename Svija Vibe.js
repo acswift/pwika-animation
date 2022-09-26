@@ -136,7 +136,358 @@ const effect_defaults = {
 
 //:::::::::::::::::::::::::::::::::::::::: MODEL DEFINITIONS
 
+//———————————————————————————————————————— class Animation
 
+// https://www.w3schools.com/js/js_classes.asp
+
+var animations = {};   // Animations
+var functions  = [];   // mouse functions called by func flag
+
+class Animation{
+
+  constructor( name, cause, effect ){
+
+    this.name     = name;       // 20-character string
+    this.cause    = cause;      // array of events
+    this.effect   = effect;     // array of effects
+  }
+
+  add_event(obj, kind, flags){ //—————————————————————————————————————————————
+
+    // initialize
+
+    var zoopy     = new Trigger;
+    zoopy.obj = obj;
+    zoopy.kind    = kind;
+
+    if (zoopy.kind == 'mouse') set_existence(zoopy.obj, true);
+
+    // set defaults
+
+    Object.keys(event_defaults).forEach(
+      key => { zoopy[key] = event_defaults[key]; }
+    );
+     
+    if (kind=='time') zoopy['delay'] = time_event_default;
+
+    for(var x=2; x<flags.length; x++){ //————————————————————————————— loop through flags (kind|name|parameters...)
+
+      // determine flag key from value
+      // entity conversion not necessary for events
+
+      // get correct key
+      var val = flags[x];
+      if (not_number(val)) var key = event_flag_value_to_key[val];
+      else if (kind == 'time') var key = 'delay';
+
+      if (kind=='time' && key=='delay') zoopy[key] = 1 * val; 
+      else if (key=='func') {
+        zoopy.func = true;
+        zoopy.args = [];
+        for (var y=x+1; y<flags.length; y++)
+          zoopy.args.push(flags[y]);
+        x = 1000; // get out of loop — no other flags can follow func
+      }
+      else{
+        var v = event_flag_value_to_key_value[val];
+        if (val == '') errlog('Trigger "'+this.name+'" has an extra slash.');
+        else if (typeof v == 'undefined') errlog('Trigger "'+this.name+'" has unknown flag: "'+val+'".');
+        else zoopy[key] = v;
+      }
+
+    } //—————————————————————————————————————————————————————————————————————-
+
+    // set link & parent target
+ 
+    zoopy.link = obj.parentNode.hasAttribute('xlink:href'); // true false
+
+    if (zoopy.link && zoopy.blank)
+      zoopy.obj.parentNode.setAttribute("target", "_blank");
+
+    if (typeof this.cause == 'undefined') this.cause = [];
+    this.cause.push(zoopy);
+
+  }
+
+  add_effect(obj, kind, flags){
+
+    // initialize
+
+    var zoopy     = new Effect;
+    zoopy.obj     = obj;
+    zoopy.kind    = kind;
+    zoopy.name    = this.name;
+
+    // loop through flags (kind|name|parameters...)
+
+    for(var x=2; x<flags.length; x++){
+
+      // get key
+      var key;
+      var flag = flags[x];
+
+      // convert entites to real characters
+      var char1 = flag.substr(0,1);
+      var char2 = flag.substr(1,1);
+      var char3 = flag.substr(2,1);
+      var charX = flag.slice(-1);
+      if (char1=='_' || char2=='_' || char3=='_' || charX=='_') flag = convert_entities(flag);
+
+      // assign value to flag
+      key = this.effect_key_from_flag(flag);
+      if (typeof zoopy[key] != 'undefined') errlog('Effect "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
+
+      zoopy[key] = this.get_flag_val(key, flag);
+
+    }
+
+    // special cases (so absence of flags behaves as expected) ———————————————————————————————
+
+    // set transparency 0 to 100
+    if ( typeof zoopy.xmove     == 'undefined' &&
+         typeof zoopy.ymove     == 'undefined' &&
+         typeof zoopy.rotate    == 'undefined' &&
+         typeof zoopy.scale     == 'undefined' &&
+         typeof zoopy.xscale    == 'undefined' &&
+         typeof zoopy.yscale    == 'undefined' &&
+         typeof zoopy.transp_to == 'undefined' ){
+      zoopy.transp_from = 0;
+      zoopy.transp_to   = 100;
+    }
+
+    // set default duration
+    if (typeof zoopy.duration=='undefined')
+      zoopy.duration= effect_defaults.duration;
+    else zoopy.duration = 1 * zoopy.duration;
+
+    // convert rotation to number
+    if (typeof zoopy.rotation!='undefined')
+      zoopy.rotation = 1 * zoopy.rotation;
+
+    // convert delay to number
+    if (typeof zoopy.delay!='undefined')
+      zoopy.delay= 1 * zoopy.delay;
+
+    if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
+      zoopy.transp_from = 100;
+
+    // if destination transparency is not 0, default starting transparency is 0
+    if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined') 
+      zoopy.transp_from = 0;
+
+		// scrub effects default to hard ease
+    if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
+      zoopy.ease = 'none';
+
+    if (typeof this.effect == 'undefined') this.effect = [];
+    this.effect.push(zoopy);
+
+  }
+
+  set_cursor(){
+  
+    for (var t=0; t<this.cause.length; t++){
+
+      if (typeof this.cause[t].cursor != 'undefined')
+        this.cause[t].obj.style.cursor = cursors[this.cause[t].cursor];
+  
+      else{
+        var is_hand = false;
+  
+        if (this.cause[t].link ) is_hand = true;
+        if (this.cause[t].func ) is_hand = true;
+        if (this.kind == 'click' ) is_hand = true;
+        if (this.kind == 'down'  ) is_hand = true;
+        if (this.kind == 'toggle') is_hand = true;
+
+        if (is_hand){
+          this.cause[t].obj.style.cursor = cursors['default_link'];
+        }
+      }
+    }
+  
+  }
+
+  activate_function(){
+
+    // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
+    // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
+
+    for (var x=0; x<this.cause.length; x++){
+      if (!this.cause[x].func) continue;
+
+      var args = this.cause[x].args;
+
+      functions[this.name] = window['func_'+this.name];
+
+      if (typeof functions[this.name] == 'undefined')
+        errlog('Function func_'+this.name+' not found.');
+
+      else switch (this.cause[x].kind) {
+        case 'mouse' :  activate_mice_func(this.name, this.cause[x], args); break;
+        case 'time'  :   activate_times_func(this.name, this.cause[x], args); break;
+        case 'scroll': activate_scrolls_func(this.name, this.cause[x], args); break;
+
+        default:
+          log('⚠️ unimplemented event kind: "'+animations[name].cause[0].kind+'" in animation "'+animation.name+'"');
+      }
+    }
+  }
+
+  make_visible(){
+
+    if (typeof this.effect=='undefined') return true;
+
+    for (var x=0; x<this.effect.length; x++){
+
+      // hidden at load
+      if (this.effect[x].transp_from == 0){
+        set_existence(this.effect[x].obj, false);
+        continue;
+      }
+
+      // if no transparency effects, make visible
+      if (typeof this.effect[x].transp_from == 'undefined')
+        this.effect[x].obj.style.opacity = 1;
+
+      // set specified transparency
+      else
+        this.effect[x].obj.style.opacity = this.effect[x].transp_from/100;
+
+      set_existence(this.effect[x].obj, true);
+    }
+
+  }
+
+  delete_if_no_effect(){
+    for (var t=0; t<this.cause.length; t++){
+      if (typeof this.effect == 'undefined')
+        if (!this.cause[t].func && !this.cause[t].link){
+          errlog('Event object "'+this.name+'" ('+this.cause[t].kind+') de-registered (no effect, link or function). SVG NAME');
+          delete animations[this.name];
+        }
+    }
+    
+    return true;
+  }
+
+  dump_flags(){
+    log('\n\nv debug output —————————————————————————— ⚠️\ '+this.name);
+    Object.keys(this).forEach(key => {
+      if (typeof this[key] != 'undefined')
+        if (key=='name') log(key+' ('+typeof(this[key])+'): '+this[key]);
+        else log(key+' ('+typeof(this[key])+'): '+this[key].length+' objects');
+    });
+
+    for (var t=0; t<this.cause.length; t++){
+      log('\nTrigger['+t+']');
+      Object.keys(this.cause[t]).forEach(key => {
+        if (typeof this.cause[t][key] != 'undefined')
+          if(key=='obj')log('obj (object): '+convert_entities(this.cause[t][key].id));
+          else log(key+' ('+typeof(this.cause[t][key])+'): '+this.cause[t][key]);
+      });
+    }
+
+    if (typeof this.effect != 'undefined'){
+      for (var x=0; x<this.effect.length; x++){
+        log('\nEffect[' + x + ']');
+        Object.keys(this.effect[x]).forEach(key => {
+          if (typeof this.effect[x][key] != 'undefined')
+            if(key=='obj')log('obj (object): '+convert_entities(this.effect[x][key].id));
+            else log(key+' ('+typeof(this.effect[x][key])+'): '+this.effect[x][key]);
+        });
+      }
+    }
+    
+    log('^ end debug output —————————————————————————— ⚠️\n\n');
+  }
+
+  effect_key_from_flag(flag){
+
+/*   should return key & flag w/o key
+     rename to split_key_flag
+     https://stackoverflow.com/a/2917186  for how to do it
+
+     is programmed specifically to optimize key finding
+     needs to be updated when flags are modified  */
+
+    switch(flag){
+      case 'softout': return 'ease'   ; break; // whole flag
+      case 'softin' : return 'ease'   ; break;
+      case 'soft'   : return 'ease'   ; break;
+      case 'hard'   : return 'ease'   ; break;
+    }
+
+    switch(flag.slice(0,3)){
+      case '+x%'   : return 'xscale'  ; break; // first 3 chars
+      case '-x%'   : return 'xscale'  ; break;
+      case '+y%'   : return 'yscale'  ; break;
+      case '-y%'   : return 'yscale'  ; break;
+    }
+
+    switch(flag.slice(0,2)){
+      case '+x'    : return 'xmove'   ; break; // first 2 chars
+      case '-x'    : return 'xmove'   ; break;
+      case '+y'    : return 'ymove'   ; break;
+      case '-y'    : return 'ymove'   ; break;
+      case 'x%'    : return 'xscale'  ; break;
+      case 'y%'    : return 'yscale'  ; break;
+      case '+%'    : return 'scale'   ; break;
+      case '-%'    : return 'scale'   ; break;
+    }
+
+    switch(flag.slice(0,1)){
+      case '%'    : return 'scale'    ; break; // first 1 char
+      case '<'    : return 'rotate'   ; break;
+      case 'd'    : return 'delay'    ; break;
+      case 'o'    : return 'origin'   ; break;
+      case 't'    : return 'transp_to'; break;
+      case 'x'    : return 'xmove'    ; break;
+      case 'y'    : return 'ymove'    ; break;
+    }
+
+    if (flag.slice(-1) == '>')    return 'rotate';   // /130> rotation clockwise
+    if (parseFloat(flag) == flag) return 'duration'; // integer means duration
+
+    if (flag != '')
+      errlog('Effect "'+this.name+'" has an unknown flag: "'+flag +'".');
+    else
+      errlog('Effect "'+this.name+'" has an extra slash.');
+
+    return null;
+  }
+
+  get_flag_val(key, flag){
+    var flag_len = flag_length[key];
+  
+    if (key=='ease')   return eases[flag];
+    if (flag_len == 0) return flag;
+    if (key=='origin') return convert_origin(flag);
+
+    if (key=='rotate')
+      if (flag.slice(-1)=='>') return flag.slice(0, flag.length-1);
+      else return 0-flag.slice(1, flag.length);
+  
+// here we have problems
+
+    if (key=='xmove' || key=='ymove')
+      if (flag.slice(0,1)=='-')           // -x200
+        return 0-1*flag.substr(flag_len+1);
+      else if (flag.slice(0,1)=='+')      // +x200
+        return flag.substr(flag_len+1);
+      else return flag.substr(flag_len);  //  x200
+  
+    if (key=='scale' || key=='xscale' || key=='yscale')
+      if (flag.slice(0,1)=='-')                 // -%200
+        return (0-flag.substr(flag_len+1))/100;
+      else if (flag.slice(0,1)=='+')            // +%200
+        return (flag.substr(flag_len+1)/100);
+      else return (flag.substr(flag_len)/100);  //  %200
+
+    return flag.substr(flag_len);
+  }
+
+}
 
 //———————————————————————————————————————— class Trigger
 
@@ -915,20 +1266,21 @@ function gsap_params(effectx){
 
   params['duration'       ] = effectx.duration==0 ? 0.001:effectx.duration
 
-  if (typeof effectx.ease      != 'undefined') params['ease'     ] = effectx.ease; else Power1.easeInOut ;
+  if (typeof effectx.ease      != 'undefined') params['ease'           ] = effectx.ease; else Power1.easeInOut ;
 
-  if (typeof effectx.delay     != 'undefined') params['delay'    ] = effectx.delay          ;
-  if (typeof effectx.origin    != 'undefined') params['transformOrigin' ] = effectx.origin;
+  if (typeof effectx.delay     != 'undefined') params['delay'          ] = effectx.delay          ;
+  if (typeof effectx.origin    != 'undefined') params['transformOrigin'] = effectx.origin;
+  else params['transformOrigin'] = '50% 50%';
 
-  if (typeof effectx.xmove     != 'undefined') params['x'        ] = '+=' + effectx.xmove   ;
-  if (typeof effectx.ymove     != 'undefined') params['y'        ] = '+=' + effectx.ymove   ;
+  if (typeof effectx.xmove     != 'undefined') params['x'              ] = '+=' + effectx.xmove   ;
+  if (typeof effectx.ymove     != 'undefined') params['y'              ] = '+=' + effectx.ymove   ;
 
-  if (typeof effectx.scale     != 'undefined') params['scale'    ] = effectx.scale          ;
-  if (typeof effectx.xscale    != 'undefined') params['scaleX'   ] = effectx.xscale         ;
-  if (typeof effectx.yscale    != 'undefined') params['scaleY'   ] = effectx.yscale         ;
+  if (typeof effectx.scale     != 'undefined') params['scale'          ] = '*=' + effectx.scale   ;
+  if (typeof effectx.xscale    != 'undefined') params['scaleX'         ] = '*=' + effectx.xscale         ;
+  if (typeof effectx.yscale    != 'undefined') params['scaleY'         ] = '*=' + effectx.yscale         ;
 
-  if (typeof effectx.transp_to != 'undefined') params['autoAlpha'] = effectx.transp_to / 100;
-  if (typeof effectx.rotate    != 'undefined') params['rotation' ] = effectx.rotate         ;
+  if (typeof effectx.transp_to != 'undefined') params['autoAlpha'      ] = effectx.transp_to / 100;
+  if (typeof effectx.rotate    != 'undefined') params['rotation'       ] = '+=' + effectx.rotate         ;
 
   //————— make exists if not 0 opacity
 
@@ -938,8 +1290,8 @@ function gsap_params(effectx){
 //}
 
   if (params['autoAlpha']==0){
-    params['onComplete'      ] = set_existence;
-    params['onCompleteParams'] = [effectx.obj, false];
+      params['onComplete'      ] = set_existence;
+      params['onCompleteParams'] = [effectx.obj, false];
   }
 
   return params;
@@ -1027,7 +1379,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-var a = 'homeTransparency'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'homeImg2'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
