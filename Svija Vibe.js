@@ -1253,6 +1253,8 @@ function set_existence(obj, exists){
 function convert_origin(origin){
   if (typeof origin == 'undefined') return "50% 50%";
 
+  origin = origin.slice(0);
+
   var parts = origin.split('_x2C_');
   var result = parts.join('% ') + '%';
   return result.slice(1);
