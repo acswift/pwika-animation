@@ -378,7 +378,7 @@ class Animation{
     Object.keys(this).forEach(key => {
       if (typeof this[key] != 'undefined')
         if (key=='name') log(key+' ('+typeof(this[key])+'): '+this[key]);
-        else log(key+' ('+typeof(this[key])+'): '+this[key].length+' objects');
+        else log(key+' ('+typeof(this[key])+'): '+this[key].length+' object(s)');
     });
 
     for (var t=0; t<this.cause.length; t++){
@@ -1386,7 +1386,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-var a = 'homeImg'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'homeTrans'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
