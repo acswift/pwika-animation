@@ -45,6 +45,7 @@ polygon[id^='toggle_x2F_'], polygon[id^='delay_x2F_' ], polygon[id^='zone_x2F_' 
    rect[id^='toggle_x2F_'],    rect[id^='delay_x2F_' ],    rect[id^='zone_x2F_'  ],
 
 #x{ opacity:0; pointer-triggers:none; }
+/*#x{ display:none; pointer-triggers:none; } */
 
 
 svg{pointer-triggers:none;}

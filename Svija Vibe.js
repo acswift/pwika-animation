@@ -1114,9 +1114,11 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params){
 
 //———————————————————————————————————————— execute_scroll_zone(animation, x, event_top, event_bot, params)
 
-// https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
+/*    called on load then on each scroll event
 
-/*    special cases:
+   https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
+
+      special cases:
  
       • top is visible to start with
       • effect transparency default is visible to start with */
@@ -1393,7 +1395,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-var a = 'homeTrans'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'homeScrl'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
