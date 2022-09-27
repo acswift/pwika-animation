@@ -273,8 +273,10 @@ class Animation{
       zoopy.transp_from = 1;
 
     // if destination transparency is not 0, default starting transparency is 0
-    if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined') 
+    if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined'){ 
       zoopy.transp_from = 0;
+      zoopy.obj.style.opacity = 0;
+    }
 
 		// scrub effects default to hard ease
     if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
@@ -1047,6 +1049,9 @@ function execute_scroll_point(animation, x, event_top, params){
 
 /*———————————————————————————————————————— execute_scroll_scrub(animation, x, event_top, event_bot, params)
 
+    executed for the first time the first time on load
+    and thereafter each time the window is scrolled
+
     ways to get to correct position:
     - seek(seconds) · allows relative jumps
     - time(seconds) · doesn't include repeats & delays
@@ -1070,9 +1075,11 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params){
   var tline    = window[funcName];
 
   if (typeof tline == 'undefined'){
+    log('———————————————————————————- '+funcName+' created');
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
     tline.to(obj, params);
+//    set_existence(obj, true);
   }
 
   // % of bar above top of window = % of timeline
