@@ -19,7 +19,16 @@ ellipse[id^='time_x2F_'  ], ellipse[id^='scroll_x2F_'], ellipse[id^='mouse_x2F_'
 polygon[id^='time_x2F_'  ], polygon[id^='scroll_x2F_'], polygon[id^='mouse_x2F_' ],
    rect[id^='time_x2F_'  ],    rect[id^='scroll_x2F_'],    rect[id^='mouse_x2F_' ],
 
-#x{ opacity:0; }
+#x{
+  opacity:0;
+
+/* https://www.arungudelli.com/tutorial/css/disable-text-selection-in-html-using-user-select-css-property/ */
+          user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+}
 
 /*———————————————————————————————————————— effects */
 
