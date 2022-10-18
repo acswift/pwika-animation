@@ -939,10 +939,12 @@ function scroll_scrub(animation, x){
     var b = t + box['height'];    // bottom
 
     var params = gsap_params(animation.effect[x]);
-    window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params)); 
+//  window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params)); 
+
+    window.addEventListener('scroll', listener_scroll_scrub.bind(null, animation, x, t, b, params)); 
 
     // in case something should already be visible
-    execute_scroll_scrub(animation, x, t, b, params); 
+    interrupt_scroll_scrub(animation, x, t, b, params); 
   }
 }
 
@@ -1047,7 +1049,7 @@ function execute_scroll_point(animation, x, event_top, params){
 
 }
 
-/*———————————————————————————————————————— execute_scroll_scrub(animation, x, event_top, event_bot, params)
+/*———————————————————————————————————————— execute_scroll_scrub_prev(animation, x, event_top, event_bot, params)
 
     executed for the first time the first time on load
     and thereafter each time the window is scrolled
@@ -1063,7 +1065,133 @@ function execute_scroll_point(animation, x, event_top, params){
     https://greensock.com/docs/v3/GSAP/Timeline/totalTime()
     https://greensock.com/forums/topic/8287-most-efficient-way-of-setting-timeline-playhead/ */
 
-function execute_scroll_scrub(animation, x, event_top, event_bot, params){
+function execute_scroll_scrub_prev(animation, x, event_top, event_bot, params){
+
+  var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
+  var pixel_height = window.innerHeight;
+
+  var rem_top = page_top / illustrator_pixel;
+
+  var obj      = animation.effect[x].obj;
+  var funcName = animation.name + x + '_timeline';
+  var tline    = window[funcName];
+
+  if (typeof tline == 'undefined'){
+    log('———————————————————————————- '+funcName+' created');
+    window[funcName] = new gsap.timeline({paused:true});
+    var tline = window[funcName];
+    tline.to(obj, params);
+//    set_existence(obj, true);
+  }
+
+  // % of bar above top of window = % of timeline
+  
+  // event is activated
+  if (event_top < rem_top && event_bot > rem_top){
+
+    set_existence(obj, true); //—————————————————————————————————————————————————————————————————-- is this too much?
+    var obj_height = event_bot - event_top;
+    var passed = rem_top - event_top;
+    var pcent = passed/obj_height;
+    pcent = Math.round(pcent * 10000)/10000; // percent + 2 decimals
+    var new_time = tline.totalDuration() * pcent;
+    tline.totalTime(new_time);
+  
+  }
+
+  else {
+
+    // if event object is below top of page, snap to 0
+    if (event_top > rem_top){
+      tline.totalTime(0);
+    }
+
+    // if event object is above top of page, snap to 100
+    if (event_bot < rem_top){
+      tline.totalTime(tline.totalDuration());
+      if (params['autoAlpha'] == 0) set_existence(obj, false);
+    }
+  }
+}
+
+/*———————————————————————————————————————— listener_scroll_scrub(animation, x, event_top, event_bot, params)
+
+    executed for the first time the first time on load
+    and thereafter each time the window is scrolled
+
+    ways to get to correct position:
+    - seek(seconds) · allows relative jumps
+    - time(seconds) · doesn't include repeats & delays
+    - totalTime() · includes repeats & delays (what I want)
+
+    ways to get timeline length
+    - .totalDuration()
+
+    https://greensock.com/docs/v3/GSAP/Timeline/totalTime()
+    https://greensock.com/forums/topic/8287-most-efficient-way-of-setting-timeline-playhead/ */
+
+
+/*  new functionality:
+
+    there will be an interval called animation.name + x + '_interval'
+
+    a scroll event will just check if the interval is needed
+    1. if needed and doesn't exist, create it
+    2. if not needed and exists, delete it
+    3. or do nothing
+
+    the interval will take over the main functioning (8ms = 120 FPS, 17ms = 60 FPS)
+    lock animation to scroll position
+
+	  so new functions:
+       listener_scroll_scrub
+       interrupt_scroll_scrub
+
+    called from same function that calls execute_scroll_scrub
+*/
+
+/*  setInterval(func, delay, arg0, arg1)
+    clearInterval(intervalID) */
+
+function listener_scroll_scrub(animation, x, event_top, event_bot, params){
+
+  var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
+  var pixel_height = window.innerHeight;
+
+  var rem_top = page_top / illustrator_pixel;
+
+  var obj      = animation.effect[x].obj;
+  var intName  = animation.name + x + '_interval';
+
+  // % of bar above top of window = % of timeline
+  
+  // event is activated
+  if (event_top < rem_top && event_bot > rem_top){
+    if (typeof window[intName] == 'undefined'){
+      window[intName] = setInterval(interrupt_scroll_scrub, 500, intName, params);
+      log(intName+' created: #'+window[intName]);
+    }
+  }
+
+  // event is deactivated
+  else{
+    if (typeof window[intName] != 'undefined'){
+      log(intName +' cleared: #'+ window[intName]);
+      clearInterval(window[intName]);
+      window[intName] = undefined;
+    }
+  }
+}
+
+function interrupt_scroll_scrub(obj, params){
+  var d2 = new Date();
+  let end_time = d2.getTime();
+//log('interrupt: '+obj+' : '+end_time);
+}
+
+/*———————————————————————————————————————— execute_scroll_scrub(animation, x, event_top, event_bot, params) */
+
+function XXXinterrupt_scroll_scrub(animation, x, event_top, event_bot, params){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -1395,7 +1523,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-var a = 'homeScrl'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'homeScrl'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
