@@ -939,10 +939,10 @@ function scroll_scrub(animation, x){
     var b = t + box['height'];    // bottom
 
     var params = gsap_params(animation.effect[x]);
-    window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params, 0)); 
+    window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params, true)); 
 
     // in case something should already be visible
-    execute_scroll_scrub(animation, x, t, b, params, 0); 
+    execute_scroll_scrub(animation, x, t, b, params, true); 
   }
 }
 
@@ -1047,7 +1047,7 @@ function execute_scroll_point(animation, x, event_top, params){
 
 }
 
-/*———————————————————————————————————————— execute_scroll_scrub(animation, x, event_top, event_bot, params)
+/*———————————————————————————————————————— execute_scroll_scrub(animation, x, event_top, event_bot, params, scrolled)
 
     executed for the first time the first time on load
     and thereafter each time the window is scrolled
@@ -1068,12 +1068,10 @@ function execute_scroll_point(animation, x, event_top, params){
     because the experience on mobile was bad bad bad
 */
 
-var scrub_foix =  5; // how many extra calls are made compared to scroll events
-var scrub_rate = 15; // how many ms between extra calls
+var scrub_rate = 8;    // how many ms between extra calls
+var parallel   = 0;
 
-var outside_fois = 0; // how many times has been run since called by scroll event
-
-function execute_scroll_scrub(animation, x, event_top, event_bot, params, fois){
+function execute_scroll_scrub(animation, x, event_top, event_bot, params, scrolled){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -1088,67 +1086,54 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params, fois){
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
     tline.to(obj, params);
-//    set_existence(obj, true);
+//  set_existence(obj, true);
   }
 
-  // % of bar above top of window = % of timeline
+  // ————————————————————————  % of bar above top of window = % of timeline
 
-  var active = false;
-  
-  // event is activated
-  if (event_top < rem_top && event_bot > rem_top){
-    active = true;
+  // if event object is below top of page, snap to 0
+  if (event_top > rem_top){
+    tline.totalTime(0);
+    parallel = 0;
+  }
 
-    set_existence(obj, true); //—————————————————————————————————————————————————————————————————-- is this too much?
+  // if event object is above top of page, snap to 100
+  else if (event_bot < rem_top){
+    tline.totalTime(tline.totalDuration());
+    if (params['autoAlpha'] == 0) set_existence(obj, false);
+    parallel = 0;
+  }
+
+  // event is activated – advance timeline
+  else{
+
     var obj_height = event_bot - event_top;
     var passed = rem_top - event_top;
+
     var pcent = passed/obj_height;
     pcent = Math.round(pcent * 10000)/10000; // percent + 2 decimals
-    var new_time = tline.totalDuration() * pcent;
 
+    set_existence(obj, true);                // is this too much?
+    var new_time = tline.totalDuration() * pcent;
     tline.totalTime(new_time);
   
+    // iterate more often than just scroll events, to make it smoother
+    if (scrolled) parallel += 1;
+
+    if (parallel > 1) parallel = 1;
+    else 
+      setTimeout(execute_scroll_scrub, scrub_rate, animation, x, event_top, event_bot, params, false);
   }
-
-  else {
-
-    // if event object is below top of page, snap to 0
-    if (event_top > rem_top){
-      tline.totalTime(0);
-    }
-
-    // if event object is above top of page, snap to 100
-    if (event_bot < rem_top){
-      tline.totalTime(tline.totalDuration());
-      if (params['autoAlpha'] == 0) set_existence(obj, false);
-    }
-  }
-
-  // re-request same function to double frequency
-
-  if (active && fois < scrub_foix)
-    setTimeout(execute_scroll_scrub, scrub_rate, animation, x, event_top, event_bot, params, fois+1);
-
-/*if(funcName == 'topLogo10_timeline'){
-  var d1 = new Date();
-  var this_time = d1.getTime();
-  log(funcName + " —————— " +(this_time-start_time));
-  start_time = this_time;
-
-  // desktop is usually 16-ish
-  // mobile, when jumpy, is 70-is (but also usually 16-ish)
-} */
-
-/* new logic:
-
-calling this function will (if it is still active) cause it to be called scrub_rate ms later
-until a flag from scrollEvent tells us that the reiteration is no longer necessary
-need a flag "start_over" that is set to true when called by scrollEvent
-start_over==true, causes the elemnt that is calling itself not to call itself
-but the elemnt that has beeen called by scrlollEvent DOES call itself (restarting the cycle) */
-
-
 }
+
+/*
+
+this works, but only for one animation!
+
+it doesn't take into account that there can be 2-20 scrubs running at the same time
+need to add value to parent objectX to keep track of parallels
+
+*/
 
 //———————————————————————————————————————— execute_scroll_zone(animation, x, event_top, event_bot, params)
 
