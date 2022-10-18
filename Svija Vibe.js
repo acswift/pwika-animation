@@ -1068,8 +1068,10 @@ function execute_scroll_point(animation, x, event_top, params){
     because the experience on mobile was bad bad bad
 */
 
-var scrub_foix = 9; // how many extra calls are made compared to scroll events
-var scrub_rate = 3; // how many ms between extra calls
+var scrub_foix =  5; // how many extra calls are made compared to scroll events
+var scrub_rate = 15; // how many ms between extra calls
+
+var outside_fois = 0; // how many times has been run since called by scroll event
 
 function execute_scroll_scrub(animation, x, event_top, event_bot, params, fois){
 
@@ -1083,7 +1085,6 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params, fois){
   var tline    = window[funcName];
 
   if (typeof tline == 'undefined'){
-    log('———————————————————————————- '+funcName+' created');
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
     tline.to(obj, params);
@@ -1127,6 +1128,26 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params, fois){
 
   if (active && fois < scrub_foix)
     setTimeout(execute_scroll_scrub, scrub_rate, animation, x, event_top, event_bot, params, fois+1);
+
+/*if(funcName == 'topLogo10_timeline'){
+  var d1 = new Date();
+  var this_time = d1.getTime();
+  log(funcName + " —————— " +(this_time-start_time));
+  start_time = this_time;
+
+  // desktop is usually 16-ish
+  // mobile, when jumpy, is 70-is (but also usually 16-ish)
+} */
+
+/* new logic:
+
+calling this function will (if it is still active) cause it to be called scrub_rate ms later
+until a flag from scrollEvent tells us that the reiteration is no longer necessary
+need a flag "start_over" that is set to true when called by scrollEvent
+start_over==true, causes the elemnt that is calling itself not to call itself
+but the elemnt that has beeen called by scrlollEvent DOES call itself (restarting the cycle) */
+
+
 }
 
 //———————————————————————————————————————— execute_scroll_zone(animation, x, event_top, event_bot, params)
