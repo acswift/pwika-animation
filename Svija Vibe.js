@@ -939,10 +939,10 @@ function scroll_scrub(animation, x){
     var b = t + box['height'];    // bottom
 
     var params = gsap_params(animation.effect[x]);
-    window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params)); 
+    window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params, 0)); 
 
     // in case something should already be visible
-    execute_scroll_scrub(animation, x, t, b, params); 
+    execute_scroll_scrub(animation, x, t, b, params, 0); 
   }
 }
 
@@ -1061,9 +1061,17 @@ function execute_scroll_point(animation, x, event_top, params){
     - .totalDuration()
 
     https://greensock.com/docs/v3/GSAP/Timeline/totalTime()
-    https://greensock.com/forums/topic/8287-most-efficient-way-of-setting-timeline-playhead/ */
+    https://greensock.com/forums/topic/8287-most-efficient-way-of-setting-timeline-playhead/
 
-function execute_scroll_scrub(animation, x, event_top, event_bot, params){
+    "first" is used to know if it was requestd from outside the function, or recursively
+    this has been added to double the frequency of checking for scroll events
+    because the experience on mobile was bad bad bad
+*/
+
+var scrub_foix = 9; // how many extra calls are made compared to scroll events
+var scrub_rate = 3; // how many ms between extra calls
+
+function execute_scroll_scrub(animation, x, event_top, event_bot, params, fois){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -1083,9 +1091,12 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params){
   }
 
   // % of bar above top of window = % of timeline
+
+  var active = false;
   
   // event is activated
   if (event_top < rem_top && event_bot > rem_top){
+    active = true;
 
     set_existence(obj, true); //—————————————————————————————————————————————————————————————————-- is this too much?
     var obj_height = event_bot - event_top;
@@ -1093,6 +1104,7 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params){
     var pcent = passed/obj_height;
     pcent = Math.round(pcent * 10000)/10000; // percent + 2 decimals
     var new_time = tline.totalDuration() * pcent;
+
     tline.totalTime(new_time);
   
   }
@@ -1110,6 +1122,11 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params){
       if (params['autoAlpha'] == 0) set_existence(obj, false);
     }
   }
+
+  // re-request same function to double frequency
+
+  if (active && fois < scrub_foix)
+    setTimeout(execute_scroll_scrub, scrub_rate, animation, x, event_top, event_bot, params, fois+1);
 }
 
 //———————————————————————————————————————— execute_scroll_zone(animation, x, event_top, event_bot, params)
@@ -1395,7 +1412,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-var a = 'homeScrl'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'homeScrl'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
