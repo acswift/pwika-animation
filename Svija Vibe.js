@@ -1068,8 +1068,8 @@ function execute_scroll_point(animation, x, event_top, params){
     because the experience on mobile was bad bad bad
 */
 
-var scrub_foix = 9; // how many extra calls are made compared to scroll events
-var scrub_rate = 3; // how many ms between extra calls
+var scrub_foix = 8; // how many extra calls are made compared to scroll events
+var scrub_rate = 10; // how many ms between extra calls
 
 function execute_scroll_scrub(animation, x, event_top, event_bot, params, fois){
 
