@@ -939,10 +939,10 @@ function scroll_scrub(animation, x){
     var b = t + box['height'];    // bottom
 
     var params = gsap_params(animation.effect[x]);
-    window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params, true)); 
+    window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params)); 
 
     // in case something should already be visible
-    execute_scroll_scrub(animation, x, t, b, params, true); 
+    execute_scroll_scrub(animation, x, t, b, params); 
   }
 }
 
@@ -1047,7 +1047,7 @@ function execute_scroll_point(animation, x, event_top, params){
 
 }
 
-/*———————————————————————————————————————— execute_scroll_scrub(animation, x, event_top, event_bot, params, scrolled)
+/*———————————————————————————————————————— execute_scroll_scrub(animation, x, event_top, event_bot, params)
 
     executed for the first time the first time on load
     and thereafter each time the window is scrolled
@@ -1061,17 +1061,9 @@ function execute_scroll_point(animation, x, event_top, params){
     - .totalDuration()
 
     https://greensock.com/docs/v3/GSAP/Timeline/totalTime()
-    https://greensock.com/forums/topic/8287-most-efficient-way-of-setting-timeline-playhead/
+    https://greensock.com/forums/topic/8287-most-efficient-way-of-setting-timeline-playhead/ */
 
-    "first" is used to know if it was requestd from outside the function, or recursively
-    this has been added to double the frequency of checking for scroll events
-    because the experience on mobile was bad bad bad
-*/
-
-var scrub_rate = 8;    // how many ms between extra calls
-var parallel   = 0;
-
-function execute_scroll_scrub(animation, x, event_top, event_bot, params, scrolled){
+function execute_scroll_scrub(animation, x, event_top, event_bot, params){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
@@ -1083,57 +1075,42 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params, scroll
   var tline    = window[funcName];
 
   if (typeof tline == 'undefined'){
+    log('———————————————————————————- '+funcName+' created');
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
     tline.to(obj, params);
-//  set_existence(obj, true);
+//    set_existence(obj, true);
   }
 
-  // ————————————————————————  % of bar above top of window = % of timeline
+  // % of bar above top of window = % of timeline
+  
+  // event is activated
+  if (event_top < rem_top && event_bot > rem_top){
 
-  // if event object is below top of page, snap to 0
-  if (event_top > rem_top){
-    tline.totalTime(0);
-    parallel = 0;
-  }
-
-  // if event object is above top of page, snap to 100
-  else if (event_bot < rem_top){
-    tline.totalTime(tline.totalDuration());
-    if (params['autoAlpha'] == 0) set_existence(obj, false);
-    parallel = 0;
-  }
-
-  // event is activated – advance timeline
-  else{
-
+    set_existence(obj, true); //—————————————————————————————————————————————————————————————————-- is this too much?
     var obj_height = event_bot - event_top;
     var passed = rem_top - event_top;
-
     var pcent = passed/obj_height;
     pcent = Math.round(pcent * 10000)/10000; // percent + 2 decimals
-
-    set_existence(obj, true);                // is this too much?
     var new_time = tline.totalDuration() * pcent;
     tline.totalTime(new_time);
   
-    // iterate more often than just scroll events, to make it smoother
-    if (scrolled) parallel += 1;
+  }
 
-    if (parallel > 1) parallel = 1;
-    else 
-      setTimeout(execute_scroll_scrub, scrub_rate, animation, x, event_top, event_bot, params, false);
+  else {
+
+    // if event object is below top of page, snap to 0
+    if (event_top > rem_top){
+      tline.totalTime(0);
+    }
+
+    // if event object is above top of page, snap to 100
+    if (event_bot < rem_top){
+      tline.totalTime(tline.totalDuration());
+      if (params['autoAlpha'] == 0) set_existence(obj, false);
+    }
   }
 }
-
-/*
-
-this works, but only for one animation!
-
-it doesn't take into account that there can be 2-20 scrubs running at the same time
-need to add value to parent objectX to keep track of parallels
-
-*/
 
 //———————————————————————————————————————— execute_scroll_zone(animation, x, event_top, event_bot, params)
 
@@ -1418,7 +1395,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'homeScrl'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'homeScrl'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //———————————————————————————————————————— fin
