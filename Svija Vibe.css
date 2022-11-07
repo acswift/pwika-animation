@@ -39,6 +39,7 @@ ellipse[id^='click_x2F_' ], ellipse[id^='press_x2F_' ], ellipse[id^='down_x2F_' 
 polygon[id^='click_x2F_' ], polygon[id^='press_x2F_' ], polygon[id^='down_x2F_'  ],
    rect[id^='click_x2F_' ],    rect[id^='press_x2F_' ],    rect[id^='down_x2F_'  ],
   image[id^='click_x2F_' ],   image[id^='press_x2F_' ],   image[id^='down_x2F_'  ],
+   text[id^='click_x2F_' ],    text[id^='press_x2F_' ],    text[id^='down_x2F_'  ],
 
  circle[id^='over_x2F_'  ],  circle[id^='away_x2F_'  ],  circle[id^='ovaway_x2F_'],
 ellipse[id^='over_x2F_'  ], ellipse[id^='away_x2F_'  ], ellipse[id^='ovaway_x2F_'],
@@ -47,6 +48,7 @@ ellipse[id^='over_x2F_'  ], ellipse[id^='away_x2F_'  ], ellipse[id^='ovaway_x2F_
 polygon[id^='over_x2F_'  ], polygon[id^='away_x2F_'  ], polygon[id^='ovaway_x2F_'],
    rect[id^='over_x2F_'  ],    rect[id^='away_x2F_'  ],    rect[id^='ovaway_x2F_'],
   image[id^='over_x2F_'  ],   image[id^='away_x2F_'  ],   image[id^='ovaway_x2F_'],
+   text[id^='over_x2F_'  ],    text[id^='away_x2F_'  ],    text[id^='ovaway_x2F_'],
 
  circle[id^='toggle_x2F_'],  circle[id^='delay_x2F_' ],  circle[id^='zone_x2F_'  ],
 ellipse[id^='toggle_x2F_'], ellipse[id^='delay_x2F_' ], ellipse[id^='zone_x2F_'  ],
@@ -55,6 +57,7 @@ ellipse[id^='toggle_x2F_'], ellipse[id^='delay_x2F_' ], ellipse[id^='zone_x2F_' 
 polygon[id^='toggle_x2F_'], polygon[id^='delay_x2F_' ], polygon[id^='zone_x2F_'  ],
    rect[id^='toggle_x2F_'],    rect[id^='delay_x2F_' ],    rect[id^='zone_x2F_'  ],
   image[id^='toggle_x2F_'],   image[id^='delay_x2F_' ],   image[id^='zone_x2F_'  ],
+   text[id^='toggle_x2F_'],    text[id^='delay_x2F_' ],    text[id^='zone_x2F_'  ],
 
 #x{ opacity:0; pointer-triggers:none; }
 /*#x{ display:none; pointer-triggers:none; } */
