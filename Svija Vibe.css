@@ -59,10 +59,10 @@ polygon[id^='toggle_x2F_'], polygon[id^='delay_x2F_' ], polygon[id^='zone_x2F_' 
   image[id^='toggle_x2F_'],   image[id^='delay_x2F_' ],   image[id^='zone_x2F_'  ],
    text[id^='toggle_x2F_'],    text[id^='delay_x2F_' ],    text[id^='zone_x2F_'  ],
 
-#x{ opacity:0; pointer-triggers:none; }
-/*#x{ display:none; pointer-triggers:none; } */
+#x{ opacity:0; pointer-events:none; }
+/*#x{ display:none; pointer-events:none; } */
 
 
-svg{pointer-triggers:none;}
+svg{pointer-events:none;}
 
 /*———————————————————————————————————————— fin */
