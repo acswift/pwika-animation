@@ -4,7 +4,7 @@
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-### Svija Vibe 1.0.8
+### Svija Vibe 1.0.10
 
 Added beta branch.
 
@@ -58,7 +58,7 @@ Need to learn how to do this!
 
 On Github, create a [new release](https://github.com/svijalove/admin/releases) from the **master branch**.
 
-- use the current version number for the tag (1.0.6.3)
+- use the current version number for the tag (1.0.10)
 - choose target **Master**
 - use the month & year for the title (October 2021)
 - if there is more than one release in a month, append -1, -2 etc. to all releases for the month
@@ -97,7 +97,7 @@ Places to update the version number:
 ```
 cd ~/Desktop/svija.dev/sync/Svija/Scripts
 vi -O README.md params.md svija-vibe.js svija-vibe.css
-# :windo %s/1.0.5/1.0.6.3/g
+# :windo %s/1.0.10/1.0.11/g
 ```
 Then commit the version number change:
 ```

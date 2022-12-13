@@ -3,7 +3,7 @@
 
 /*———————————————————————————————————————— notes
 
-  Svija Vibe 1.0.9
+  Svija Vibe 1.0.10
 
   github.com/svijalove/animation
   
@@ -984,7 +984,7 @@ function execute_scroll_func(name, cause, event_top, args){
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
 
-  var rem_top = page_top / illustrator_pixel;
+  var rem_top = page_top / aiPixel;
 /*
 
     for this to execute:
@@ -1021,7 +1021,7 @@ function execute_scroll_point(animation, x, event_top, params){
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
 
-  var rem_top = page_top / illustrator_pixel;
+  var rem_top = page_top / aiPixel;
 
   var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
@@ -1076,7 +1076,7 @@ function execute_scroll_scrub(animation, x, event_top, event_bot, params, fois){
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
   var pixel_height = window.innerHeight;
 
-  var rem_top = page_top / illustrator_pixel;
+  var rem_top = page_top / aiPixel;
 
   var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
@@ -1148,8 +1148,8 @@ function execute_scroll_zone(animation, x, event_top, event_bot, params){
   var pixel_height = window.innerHeight;
   var page_bot     = page_top + pixel_height;
 
-  var rem_top = page_top / illustrator_pixel;
-  var rem_bot = page_bot / illustrator_pixel;
+  var rem_top = page_top / aiPixel;
+  var rem_bot = page_bot / aiPixel;
 
   var obj      = animation.effect[x].obj;
   var funcName = animation.name + x + '_timeline';
