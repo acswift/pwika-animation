@@ -265,6 +265,8 @@ class Animation{
       // assign value to flag
       key = this.event_key_from_flag(flag);
 
+log(this.name + ' key found: '+key);
+
 
 
       if (typeof zoopy[key] != 'undefined') errlog('Evnt "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
@@ -408,7 +410,7 @@ class Animation{
   }
 
   dump_flags(){
-    console.group('⚠️\ '+this.name + ' flag dump');
+    console.group(this.name + ' flag dump');
 
     Object.keys(this).forEach(key => {
       if (typeof this[key] != 'undefined')
@@ -449,38 +451,41 @@ class Animation{
      needs to be updated when flags are modified  */
 
     switch(flag){
-      case 'softout': return 'ease'   ; break; // whole flag
-      case 'softin' : return 'ease'   ; break;
-      case 'soft'   : return 'ease'   ; break;
-      case 'hard'   : return 'ease'   ; break;
+      case 'softout': return 'ease'   ; // whole flag
+      case 'softin' : return 'ease'   ;
+      case 'soft'   : return 'ease'   ;
+      case 'hard'   : return 'ease'   ;
+      case '>'      : return 'fromto' ;
+      case '<'      : return 'fromto' ;
+    
     }
 
     switch(flag.slice(0,3)){
-      case '+x%'   : return 'xscale'  ; break; // first 3 chars
-      case '-x%'   : return 'xscale'  ; break;
-      case '+y%'   : return 'yscale'  ; break;
-      case '-y%'   : return 'yscale'  ; break;
+      case '+x%'   : return 'xscale'  ; // first 3 chars
+      case '-x%'   : return 'xscale'  ;
+      case '+y%'   : return 'yscale'  ;
+      case '-y%'   : return 'yscale'  ;
     }
 
     switch(flag.slice(0,2)){
-      case '+x'    : return 'xmove'   ; break; // first 2 chars
-      case '-x'    : return 'xmove'   ; break;
-      case '+y'    : return 'ymove'   ; break;
-      case '-y'    : return 'ymove'   ; break;
-      case 'x%'    : return 'xscale'  ; break;
-      case 'y%'    : return 'yscale'  ; break;
-      case '+%'    : return 'scale'   ; break;
-      case '-%'    : return 'scale'   ; break;
+      case '+x'    : return 'xmove'   ; // first 2 chars
+      case '-x'    : return 'xmove'   ;
+      case '+y'    : return 'ymove'   ;
+      case '-y'    : return 'ymove'   ;
+      case 'x%'    : return 'xscale'  ;
+      case 'y%'    : return 'yscale'  ;
+      case '+%'    : return 'scale'   ;
+      case '-%'    : return 'scale'   ;
     }
 
     switch(flag.slice(0,1)){
-      case '%'    : return 'scale'    ; break; // first 1 char
-      case '<'    : return 'rotate'   ; break;
-      case 'd'    : return 'delay'    ; break;
-      case 'o'    : return 'origin'   ; break;
-      case 't'    : return 'transp_to'; break;
-      case 'x'    : return 'xmove'    ; break;
-      case 'y'    : return 'ymove'    ; break;
+      case '%'    : return 'scale'    ; // first 1 char
+      case '<'    : return 'rotate'   ;
+      case 'd'    : return 'delay'    ;
+      case 'o'    : return 'origin'   ;
+      case 't'    : return 'transp_to';
+      case 'x'    : return 'xmove'    ;
+      case 'y'    : return 'ymove'    ;
     }
 
     if (flag.slice(-1) == '>')    return 'rotate';   // /130> rotation clockwise
@@ -642,9 +647,9 @@ for(var x=0; x<clip_users.length; x++){
   }
 }
 
-//———————————————————————————————————————— add trigger_types
+//———————————————————————————————————————— load triggers by type
 
-log('\nregistering triggers…');
+console.group('registering triggers…');
 
 trigger_types.forEach(kind => {
   var stem = "[id^='" + kind + separator + "']";
@@ -674,9 +679,11 @@ trigger_types.forEach(kind => {
   //                   else log('—› no '+kind+' trigger_types');
 });
 
-//———————————————————————————————————————— add event_types
+console.groupEnd();
 
-log('\nregistering events…');
+//———————————————————————————————————————— add events by type
+
+console.group('registering events…');
 
 event_types.forEach(kind => {
   var stem = "[id^='" + kind + separator + "']";
@@ -708,9 +715,11 @@ event_types.forEach(kind => {
 
 });
 
+console.groupEnd();
+
 //———————————————————————————————————————— set cursors, and activate functions, turn on "default on" objs
 
-log('\nsetting cursors, activating functions & making objects visible…');
+log('setting cursors, activating functions & making objects visible…');
 
 Object.keys(animations).forEach(name => {
   animations[name].set_cursor();
@@ -751,7 +760,7 @@ Object.keys(animations).forEach(name => {
 const d2 = new Date();
 let end_time = d2.getTime();
 
-log('\n———————————————————— finished in '+(end_time-start_time)+'ms\n\n');
+log((end_time-start_time)+'ms elapsed');
 
 //———————————————————————————————————————— visible triggers
 
@@ -1120,7 +1129,7 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
   var tline    = window[funcName];
 
   if (typeof tline == 'undefined'){
-    log('———————————————————————————- '+funcName+' created');
+    log(funcName+' created');
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
     tline.to(obj, params);
@@ -1487,7 +1496,7 @@ function decode_entities(arg){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
