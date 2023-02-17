@@ -1,5 +1,5 @@
 
-//:::::::::::::::::::::::::::::::::::::::: svija-vibe.js
+//:::::::::::::::::::::::::::::::::::::::: Svija Vibe.js
 
 /*———————————————————————————————————————— notes
 
@@ -40,7 +40,7 @@
 
 const d1 = new Date();
 let start_time = d1.getTime();
-log("——— svija-vibe.js ———");
+console.group('Svija Vibe');
 
 //———————————————————————————————————————— separator · types of triggers and events
 
@@ -173,18 +173,18 @@ class Animation{
 
   constructor( name, triggers, evnt ){
 
-    this.name   = name;     // 20-character string
-    this.triggers  = triggers;    // array of trigger_types
-    this.evnt   = evnt;     // array of event_types
+    this.name     = name;     // 20-character string
+    this.triggers = triggers; // array of trigger_types
+    this.evnt     = evnt;     // array of event_types
   }
 
-  add_trig(obj, kind, flags){ //—————————————————————————————————————————————
+  add_trigger(obj, kind, flags){ //—————————————————————————————————————————————
 
     // initialize
 
-    var zoopy     = new Trigger;
-    zoopy.obj = obj;
-    zoopy.kind    = kind;
+    var zoopy  = new Trigger;
+    zoopy.obj  = obj;
+    zoopy.kind = kind;
 
     if (zoopy.kind == 'mouse') set_existence(zoopy.obj, true);
 
@@ -203,7 +203,9 @@ class Animation{
 
       // get correct key
       var val = flags[x];
-      if (not_number(val)) var key = trigger_flag_value_to_key[val];
+
+      if (not_number(val))
+        var key = trigger_flag_value_to_key[val];
       else if (kind == 'time') var key = 'delay';
 
       if (kind=='time' && key=='delay') zoopy[key] = 1 * val; 
@@ -246,6 +248,9 @@ class Animation{
 
     // loop through flags (kind|name|parameters...)
 
+log('💥 trigger '+zoopy.name+' flags.length = '+flags.length);
+
+
     for(var x=2; x<flags.length; x++){
 
       // get key
@@ -261,7 +266,7 @@ class Animation{
       if (flag.indexOf('_') > 0) flag = convert_entities(flag);
 
       // assign value to flag
-      key = this.evnt_key_from_flag(flag);
+      key = this.event_key_from_flag(flag);
       if (typeof zoopy[key] != 'undefined') errlog('Evnt "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
 
       zoopy[key] = this.get_flag_val(key, flag);
@@ -403,7 +408,8 @@ class Animation{
   }
 
   dump_flags(){
-    log('\n\nv debug output —————————————————————————— ⚠️\ '+this.name);
+    console.group('⚠️\ '+this.name + ' flag dump');
+
     Object.keys(this).forEach(key => {
       if (typeof this[key] != 'undefined')
         if (key=='name') log(key+' ('+typeof(this[key])+'): '+this[key]);
@@ -430,10 +436,10 @@ class Animation{
       }
     }
     
-    log('^ end debug output —————————————————————————— ⚠️\n\n');
+    console.groupEnd();
   }
 
-  evnt_key_from_flag(flag){
+  event_key_from_flag(flag){
 
 /*   should return key & flag w/o key
      rename to split_key_flag
@@ -481,7 +487,7 @@ class Animation{
     if (parseFloat(flag) == flag) return 'duration'; // integer means duration
 
     if (flag != '')
-      errlog('Evnt "'+this.name+'" has an unknown flag: "'+flag +'".');
+      errlog('Event "'+this.name+'" has an unknown flag: "'+flag +'".');
     else
       errlog('Evnt "'+this.name+'" has an extra slash.');
 
@@ -578,7 +584,7 @@ class Evnt{
 
 //:::::::::::::::::::::::::::::::::::::::: program
 
-/*———————————————————————————————————————— disambiguate clipping masks
+/*———————————————————————————————————————— ▼ disambiguate clipping masks
 
     Illustrator's clipping masks use duplicate ID's
     for the mask and the parent container
@@ -639,7 +645,7 @@ for(var x=0; x<clip_users.length; x++){
 
 //———————————————————————————————————————— add trigger_types
 
-log('\nregistering trigger_types…');
+log('\nregistering triggers…');
 
 trigger_types.forEach(kind => {
   var stem = "[id^='" + kind + separator + "']";
@@ -661,11 +667,11 @@ trigger_types.forEach(kind => {
     var name = flags[1];
 
     if (typeof animations[name] == 'undefined') animations[name] = new Animation(name);
-    animations[name].add_trig(obj, kind, flags);
+    animations[name].add_trigger(obj, kind, flags);
   }
 
   // log results
-  if (obj_array.length != 0)log(obj_array.length+' '+ kind+' trigger_types registered');
+  if (obj_array.length != 0)log(obj_array.length+' '+ kind+' triggers registered');
   //                   else log('—› no '+kind+' trigger_types');
 });
 
@@ -765,6 +771,10 @@ if (typeof triggers_visible != 'undefined'){
   for (var x=0; x<arrMatches.length; x++)
     arrMatches[x].style.opacity = 0.3;
 }
+
+//———————————————————————————————————————— ▲ end console group
+
+console.groupEnd();
 
 
 //:::::::::::::::::::::::::::::::::::::::: build functions & event_types
@@ -1451,7 +1461,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
