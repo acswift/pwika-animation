@@ -1,5 +1,5 @@
 
-//———————————————————————————————————————— svija-vibe.js
+//:::::::::::::::::::::::::::::::::::::::: svija-vibe.js
 
 /*———————————————————————————————————————— notes
 
@@ -134,7 +134,7 @@ const effect_defaults = {
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: MODEL DEFINITIONS
+//:::::::::::::::::::::::::::::::::::::::: model definitions
 
 //———————————————————————————————————————— class Animation
 
@@ -548,7 +548,7 @@ class Effect{
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: PROGRAM
+//:::::::::::::::::::::::::::::::::::::::: program
 
 /*———————————————————————————————————————— disambiguate clipping masks
 
@@ -739,7 +739,7 @@ if (typeof triggers_visible != 'undefined'){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: BUILD FUNCTIONS & EFFECTS
+//:::::::::::::::::::::::::::::::::::::::: build functions & effects
 
 //———————————————————————————————————————— activate_mice_func(name, cause, args)
 
@@ -848,7 +848,7 @@ function activate_scrolls(animation){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: EFFECTS
+//:::::::::::::::::::::::::::::::::::::::: effect functions
 
 //———————————————————————————————————————— time_delay(animation)
 
@@ -966,7 +966,7 @@ function scroll_zone(animation, x){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: EFFECT-RELATED
+//:::::::::::::::::::::::::::::::::::::::: effect-related functions
 
 /*———————————————————————————————————————— execute_scroll_func(name, cause, event_top, args)
 
@@ -1256,7 +1256,7 @@ function execute_toggle(namex, effectx, params){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: UTILITIES
+//:::::::::::::::::::::::::::::::::::::::: utility functions
 
 //———————————————————————————————————————— set_existence(obj, exists)
 
@@ -1277,18 +1277,15 @@ function set_existence(obj, exists){
 
 //———————————————————————————————————————— convert_origin(origin)
 
-/*  the _x2C_ is not converted when the flags are read because
-    flags are only converted if they have entities in first
-    three characters */
-
 function convert_origin(origin){
   if (typeof origin == 'undefined') return "50% 50%";
 
-  origin = origin.slice(0);
+  origin = origin.slice(1);
 
-  var parts = origin.split('_x2C_');
+  var parts = origin.split(',');
   var result = parts.join('% ') + '%';
-  return result.slice(1);
+
+  return result;
 }
 
 //———————————————————————————————————————— gsap_params(effect)
@@ -1332,7 +1329,9 @@ function gsap_params(effectx){
 
 //———————————————————————————————————————— log(arg)
 
-function log(arg){ console.log(arg) }
+function log(arg){
+  console.log(arg)
+}
 
 //———————————————————————————————————————— errlog(arg)
 
@@ -1390,7 +1389,7 @@ function fix_minus(clip_path){
   return false;
 }
 
-//———————————————————————————————————————— document['getElementsByRegex'] = function(pattern){
+//———————————————————————————————————————— getElementsByRegex(pattern)
 
 // https://stackoverflow.com/a/1938465
 function getElementsByRegex(pattern){
@@ -1412,7 +1411,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'homeScrl'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+ var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
-//———————————————————————————————————————— fin
+//:::::::::::::::::::::::::::::::::::::::: fin
