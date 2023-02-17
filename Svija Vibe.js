@@ -757,7 +757,7 @@ log('\n———————————————————— finished in 
 
 // https://stackoverflow.com/a/1938465
 
-if (typeof triggers_visible != 'undefined'){
+if (typeof debug != 'undefined'){
   var arrMatches = getElementsByRegex('^time_x2F_.*');
   for (var x=0; x<arrMatches.length; x++)
     arrMatches[x].style.opacity = 0.3;
@@ -1383,11 +1383,9 @@ function log(arg){
 //———————————————————————————————————————— errlog(arg)
 
 function errlog(arg){
-  log('⚠️  '+arg);
-  var do_alert = true;
 
-  if (typeof anim_debug == 'undefined') return true;
-  if (anim_debug == false ) return true;
+  log('⚠️  '+arg);
+  if (typeof debug == 'undefined') return true;
 
   alert('⚠️  '+arg);
 }
