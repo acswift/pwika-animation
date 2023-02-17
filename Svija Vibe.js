@@ -213,7 +213,7 @@ class Animation{
         zoopy.func = true;
         zoopy.args = [];
         for (var y=x+1; y<flags.length; y++)
-          zoopy.args.push(flags[y]);
+          zoopy.args.push(decode_entities(flags[y]));
         x = 1000; // get out of loop — no other flags can follow func
       }
       else{
@@ -885,7 +885,7 @@ function activate_scrolls(animation){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: evnt functions
+//:::::::::::::::::::::::::::::::::::::::: event functions
 
 //———————————————————————————————————————— time_delay(animation)
 
@@ -1003,7 +1003,7 @@ function scroll_zone(animation, x){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: evnt-related functions
+//:::::::::::::::::::::::::::::::::::::::: event-related functions
 
 /*———————————————————————————————————————— execute_scroll_func(name, triggers, trig_top, args)
 
@@ -1456,9 +1456,41 @@ function getElementsByRegex(pattern){
    return arrElements; // return matching elements
 };
 
+/*———————————————————————————————————————— decode_entities(arg)
+
+		used for args passed to func trigger flag
+
+		converts illustrator style entites to html entites
+    _x22_ to &#x22; to get normal entity
+
+		then converts those to regular text
+    &#x22; to ! */
+
+function decode_entities(arg){
+
+  const regex = /_x([0-9A-Z]{2})_/g;
+
+  var html = arg.replace(regex, function($1){
+    var x = $1.toLowerCase(); 
+        x = x.replaceAll('_x','&#x')
+        return x.replaceAll('_', ';');
+  })
+
+  html = html.replaceAll('_', ' ');
+
+  var tmpObject = document.createElement('textarea');
+
+  tmpObject.innerHTML = html;
+  var val = tmpObject.value;
+  tmpObject.remove();
+
+  return val;
+}
+
 //———————————————————————————————————————— debugging
 
 //var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
+
