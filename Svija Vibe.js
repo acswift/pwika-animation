@@ -1112,8 +1112,8 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
     log(funcName+' created');
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
-log('💥 1116 replace to ' + animation.evnt[x].fromto);
-    tline.to(obj, params);
+//log('💥 1116 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto);
+    tline[animation.evnt[x].fromto](obj, params);
 //    set_existence(obj, true);
   }
 
@@ -1194,8 +1194,11 @@ function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
       //  doesn't exist: create & play it
       window[funcName] = new gsap.timeline({paused:true});
       var tline = window[funcName];
-log('💥 1116 replace to');
-      tline.to(obj, params);
+
+log('💥 1198 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto);
+      tline[animation.evnt[x].fromto](obj, params);
+//    tline.to(obj, params);
+
       set_existence(obj, true);
       tline.play();
     }
@@ -1224,8 +1227,10 @@ function play_tline(namex, evntx, params){
   if (typeof tline == 'undefined'){
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
-log('💥 1116 replace to');
-    tline.to(obj, params);
+
+log('💥 1231 '+evntx.name+' fromto is ' + evnt[x].fromto);
+    tline[evnt[x].fromto](obj, params);
+//  tline.to(obj, params);
   }
 
   // play if it's not playing or if it's reversed
@@ -1265,8 +1270,11 @@ function execute_toggle(namex, evntx, params){
 
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
-log('💥 1116 replace to');
-    tline.to(obj, params);
+
+log('💥 1274 '+evntx.name+' fromto is ' + evntx.fromto);
+    tline[evntx.fromto](obj, params);
+//  tline.to(obj, params);
+
     set_existence(obj, true);
     tline.play();
 
