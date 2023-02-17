@@ -74,28 +74,19 @@ const trigger_flag_value_to_key = {
 
 }
 
-const evnt_flag_value_to_key = {
+const cursors = {
+  'a'           : 'default',
+  'h'           : 'pointer',
+  'i'           : 'text',
+  'default_link': 'pointer'
+}
 
-  // name & kind are given
-
-//'softin'  : 'ease'        , // no value
-//'softout' : 'ease'        , // no value
-//'soft'    : 'ease'        , // no value
-//'hard '   : 'ease'        , // no value
-//'d'       : 'delay'       , // value follows
-//'o'       : 'origin'      , // value follows
-//'t'       : 'transp_to'   , // value follows
-
-  '_x002D_x': 'xmove'       , // value follows -x
-  '_x2B_x'  : 'xmove'       , // value follows +x
-  '_x2B_y'  : 'ymove'       , // value follows +y
-  '_x3C_'   : 'rotate'      , // value follows
-  '_x3E_'   : 'rotate'      , // value precedes
-  '_x25_'   : 'scale'       , // value follows
-  'x_x25'   : 'xscale'      , // value follows
-  'y_x25'   : 'yscale'      , // value follows
-
-  '_x2B_'   : 'handoff'       // value follows
+const trigger_flag_value_to_key_value = {
+  'a'   : 'a',
+  'h'   : 'h',
+  'i'   : 'i',
+  'func': true,
+  'n'   : true
 }
 
 const flag_length = { 
@@ -109,6 +100,7 @@ const flag_length = {
   'ease'       : 0,
   'func'       : 0,
   'handoff'    : 5,
+  'order'      : 0,
   'origin'     : 1,
   'rotate'     : 1,
   'transp_to'  : 1,
@@ -127,19 +119,9 @@ const eases = {
   'hard'   : 'none' 
 }
 
-const cursors = {
-  'a'           : 'default',
-  'h'           : 'pointer',
-  'i'           : 'text',
-  'default_link': 'pointer'
-}
-
-const trigger_flag_value_to_key_value = {
-  'a'   : 'a',
-  'h'   : 'h',
-  'i'   : 'i',
-  'func': true,
-  'n'   : true
+const fromtos = {
+  '>' : 'to',
+  '<' : 'from'
 }
 
 //———————————————————————————————————————— defaults
@@ -156,7 +138,8 @@ const time_trigger_default = 5.0;
 
 const event_defaults = {
   'delay'   : 5.0, // only for time/delay anims
-  'duration': 0.5
+  'duration': 0.5,
+  'fromto'  : 'to' 
 }
 
 
@@ -255,19 +238,10 @@ class Animation{
       var flag = flags[x];
 
       // convert entites to real characters
-      var char1 = flag.substr(0,1);
-      var char2 = flag.substr(1,1);
-      var char3 = flag.substr(2,1);
-      var charX = flag.slice(-1);
-
       if (flag.indexOf('_') > -1) flag = convert_entities(flag);
 
       // assign value to flag
       key = this.event_key_from_flag(flag);
-
-log(this.name + ' key found: '+key);
-
-
 
       if (typeof zoopy[key] != 'undefined') errlog('Evnt "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
 
@@ -289,13 +263,17 @@ log(this.name + ' key found: '+key);
       zoopy.transp_to   = 1;
     }
 
+    // set default fromto
+    if (typeof zoopy.fromto=='undefined')
+      zoopy.fromto= event_defaults.fromto;
+
     // set default duration
     if (typeof zoopy.duration=='undefined')
       zoopy.duration= event_defaults.duration;
     else zoopy.duration = 1 * zoopy.duration;
 
     // convert rotation to number
-    if (typeof zoopy.rotation!='undefined')
+    if (typeof zoopy.rotation != 'undefined')
       zoopy.rotation = 1 * zoopy.rotation;
 
     // convert delay to number
@@ -503,6 +481,7 @@ log(this.name + ' key found: '+key);
     var flag_len = flag_length[key];
   
     if (key=='ease')   return eases[flag];
+    if (key=='fromto') return fromtos[flag];
     if (flag_len == 0) return flag;
     if (key=='origin') return convert_origin(flag);
 
@@ -1085,6 +1064,7 @@ function execute_scroll_point(animation, x, trig_top, params){
       //  doesn't exist: create & play it
       window[funcName] = new gsap.timeline({paused:true});
       var tline = window[funcName];
+log('💥 1068 replace to');
       tline.to(obj, params);
       set_existence(obj, true);
       tline.play();
@@ -1132,6 +1112,7 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
     log(funcName+' created');
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
+log('💥 1116 replace to ' + animation.evnt[x].fromto);
     tline.to(obj, params);
 //    set_existence(obj, true);
   }
@@ -1213,6 +1194,7 @@ function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
       //  doesn't exist: create & play it
       window[funcName] = new gsap.timeline({paused:true});
       var tline = window[funcName];
+log('💥 1116 replace to');
       tline.to(obj, params);
       set_existence(obj, true);
       tline.play();
@@ -1242,6 +1224,7 @@ function play_tline(namex, evntx, params){
   if (typeof tline == 'undefined'){
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
+log('💥 1116 replace to');
     tline.to(obj, params);
   }
 
@@ -1282,6 +1265,7 @@ function execute_toggle(namex, evntx, params){
 
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
+log('💥 1116 replace to');
     tline.to(obj, params);
     set_existence(obj, true);
     tline.play();
@@ -1350,7 +1334,7 @@ function gsap_params(evntx){
 
   var params = {};
 
-  params['duration'       ] = evntx.duration==0 ? 0.001:evntx.duration
+  params['duration']          = evntx.duration==0 ? 0.001:evntx.duration;
 
   if (typeof evntx.ease      != 'undefined') params['ease'           ] = evntx.ease; else params['ease'] = Power1.easeInOut ;
 
