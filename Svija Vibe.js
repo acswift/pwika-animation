@@ -1277,15 +1277,26 @@ function set_existence(obj, exists){
 
 //———————————————————————————————————————— convert_origin(origin)
 
+/*  the _x2C_ is not converted when the flags are read because
+    flags are only converted if they have entities in first
+    three characters */
+
+// bug is because when , is in first three characters it's converted, otherwise not
+
 function convert_origin(origin){
   if (typeof origin == 'undefined') return "50% 50%";
 
   origin = origin.slice(1);
 
-  var parts = origin.split(',');
-  var result = parts.join('% ') + '%';
 
-  return result;
+  if (origin.indexOf(',') > 0)
+    var parts = origin.split(',');
+  else
+    var parts = origin.split('_x2C_');
+
+  log('💥 ——————————————————— converted to '+parts.join('% ') + '%');
+
+  return parts.join('% ') + '%';
 }
 
 //———————————————————————————————————————— gsap_params(effect)
@@ -1411,7 +1422,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
- var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
