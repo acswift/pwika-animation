@@ -248,9 +248,6 @@ class Animation{
 
     // loop through flags (kind|name|parameters...)
 
-log('💥 trigger '+zoopy.name+' flags.length = '+flags.length);
-
-
     for(var x=2; x<flags.length; x++){
 
       // get key
@@ -262,11 +259,14 @@ log('💥 trigger '+zoopy.name+' flags.length = '+flags.length);
       var char2 = flag.substr(1,1);
       var char3 = flag.substr(2,1);
       var charX = flag.slice(-1);
-//    if (char1=='_' || char2=='_' || char3=='_' || charX=='_') flag = convert_entities(flag);
-      if (flag.indexOf('_') > 0) flag = convert_entities(flag);
+
+      if (flag.indexOf('_') > -1) flag = convert_entities(flag);
 
       // assign value to flag
       key = this.event_key_from_flag(flag);
+
+
+
       if (typeof zoopy[key] != 'undefined') errlog('Evnt "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
 
       zoopy[key] = this.get_flag_val(key, flag);
@@ -617,7 +617,6 @@ class Evnt{
 
   if the rect ID contains a minus sign, we need to correct for an Illustrator bug
   that converts it to an entity when called, but not when declared  */
-
 
 const clip_users = document.querySelectorAll("[style^='clip']")
 
@@ -1333,8 +1332,6 @@ function convert_origin(origin){
 //else
 //  var parts = origin.split('_x2C_');
 
-  log('💥 ——————————————————— converted to '+parts.join('% ') + '%');
-
   return parts.join('% ') + '%';
 }
 
@@ -1461,7 +1458,7 @@ function getElementsByRegex(pattern){
 
 //———————————————————————————————————————— debugging
 
-var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'name1'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
