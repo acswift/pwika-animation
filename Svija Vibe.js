@@ -243,7 +243,7 @@ class Animation{
       // assign value to flag
       key = this.event_key_from_flag(flag);
 
-      if (typeof zoopy[key] != 'undefined') errlog('Evnt "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
+      if (typeof zoopy[key] != 'undefined') errlog('Event "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
 
       zoopy[key] = this.get_flag_val(key, flag);
 
@@ -382,7 +382,7 @@ class Animation{
     for (var t=0; t<this.triggers.length; t++){
       if (typeof this.evnt == 'undefined')
         if (!this.triggers[t].func && !this.triggers[t].link){
-          errlog('Event object "'+this.name+'" ('+this.triggers[t].kind+') de-registered (no evnt, link or function). SVG NAME');
+          errlog('Event object "'+this.name+'" ('+this.triggers[t].kind+') de-registered (no event, link or function). SVG NAME');
           delete animations[this.name];
         }
     }
@@ -475,7 +475,7 @@ class Animation{
     if (flag != '')
       errlog('Event "'+this.name+'" has an unknown flag: "'+flag +'".');
     else
-      errlog('Evnt "'+this.name+'" has an extra slash.');
+      errlog('Event "'+this.name+'" has an extra slash.');
 
     return null;
   }
@@ -687,7 +687,7 @@ event_types.forEach(kind => {
     if (Object.keys(animations).includes(name))
       animations[name].add_event(obj, kind, flags)
     else
-      errlog('Evnt "'+name+'" has no trig and was not registered (id='+obj_array[x].id+') SVG NAME');
+      errlog('Event "'+name+'" has no trigger and was not registered (id='+obj_array[x].id+') SVG NAME');
 
   }
 
@@ -805,24 +805,24 @@ function activate_mouse_events(animation){
 
   for (var x=0; x<animation.evnt.length; x++){
     switch (animation.evnt[x].kind) {
-    case undefined: break; // if it's just a link or func
-
-    case 'click' : mouse_single(animation, x, 'pointerup'  ); break;
-    case 'press' : mouse_single(animation, x, 'pointerdown'); break;
-    case 'over'  : mouse_single(animation, x, 'pointerover'); break;
-    case 'away'  : mouse_single(animation, x, 'pointerout' ); break; // or pointerleave
-
-    // special cases
-    case 'ovaway': mouse_ovaway(animation, x); break;
-    case 'down'  :   mouse_down(animation, x); break;
-    case 'toggle': mouse_toggle(animation, x); break;
-
-    default:
-      log('⚠️ unimplemented mouse evnt: "'+animation.evnt[0].kind+'" in animation "'+animation.name+'"');
+      case undefined: break; // if it's just a link or func
+  
+      case 'click' : mouse_single(animation, x, 'pointerup'  ); break;
+      case 'press' : mouse_single(animation, x, 'pointerdown'); break;
+      case 'over'  : mouse_single(animation, x, 'pointerover'); break;
+      case 'away'  : mouse_single(animation, x, 'pointerout' ); break; // or pointerleave
+  
+      // special cases
+      case 'ovaway': mouse_ovaway(animation, x); break;
+      case 'down'  :   mouse_down(animation, x); break;
+      case 'toggle': mouse_toggle(animation, x); break;
+  
+      default:
+        log('⚠️ unimplemented mouse event: "'+animation.evnt[0].kind+'" in animation "'+animation.name+'"');
     }
   }
 
-  log('mouse trigger_types activated');
+  log('mouse events activated');
 }
 
 //———————————————————————————————————————— activate_time_events(animation)
@@ -844,7 +844,7 @@ function activate_time_events(animation){
     }
   }
 
-  log('time trigger_types activated');
+  log('time events activated');
 }
 
 //———————————————————————————————————————— activate_scroll_events(animation)
@@ -874,7 +874,7 @@ function activate_scroll_events(animation){
     }
   }
 
-  log('scroll event_types activated');
+  log('scroll events activated');
 }
 
 
@@ -896,8 +896,12 @@ function time_delay(animation, x){
 function mouse_single(animation, x, type){
 
   params = gsap_params(animation.evnt[x]);
+
   for (var t=0; t<animation.triggers.length; t++){
-    animation.triggers[t].obj.addEventListener(type, play_tline.bind(null, animation.name+x, animation.evnt[x], params), false);
+
+    create_tline(animation.name+x, animation.evnt[x], params);
+
+    animation.triggers[t].obj.addEventListener(type, play_tline.bind(null, animation.name+x, animation.evnt[x]), false);
   }
 }
 
@@ -908,9 +912,11 @@ function mouse_single(animation, x, type){
 function mouse_ovaway(animation, x){
 
   params = gsap_params(animation.evnt[x]);
+
   for (var t=0; t<animation.triggers.length; t++){
-    animation.triggers[t].obj.addEventListener('pointerover',  play_tline.bind(null, animation.name+x, animation.evnt[x], params), false);
-    animation.triggers[t].obj.addEventListener('pointerout',   reverse_tline.bind(null, animation.name+x , animation.evnt[x]                            ), false);
+    create_tline(animation.name+x, animation.evnt[x], params);
+    animation.triggers[t].obj.addEventListener('pointerover',  play_tline.bind(null, animation.name+x, animation.evnt[x]   ), false);
+    animation.triggers[t].obj.addEventListener('pointerout',   reverse_tline.bind(null, animation.name+x , animation.evnt[x]), false);
   }
 
 }
@@ -922,8 +928,13 @@ function mouse_ovaway(animation, x){
 function mouse_down(animation, x){
 
   params = gsap_params(animation.evnt[x]);
+
   for (var t=0; t<animation.triggers.length; t++){
-    animation.triggers[t].obj.addEventListener('pointerdown', play_tline.bind(null, animation.name+x, animation.evnt[x], params), false);
+
+    create_tline(animation.name+x, animation.evnt[x], params);
+
+    animation.triggers[t].obj.addEventListener('pointerdown', play_tline.bind(null, animation.name+x, animation.evnt[x]), false);
+
     animation.triggers[t].obj.addEventListener('pointerup',   reverse_tline.bind(null, animation.name+x , animation.evnt[x]                         ), false);
   }
 
@@ -932,9 +943,11 @@ function mouse_down(animation, x){
 //———————————————————————————————————————— mouse_toggle(animation, x)
 
 function mouse_toggle(animation, x){
+
   params = gsap_params(animation.evnt[x]);
   for (var t=0; t<animation.triggers.length; t++){
-    animation.triggers[t].obj.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.evnt[x], params), false);
+    create_tline(animation.name+x, animation.evnt[x], params);
+    animation.triggers[t].obj.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.evnt[x]), false);
   }
 }
 
@@ -950,10 +963,11 @@ function scroll_point(animation, x){
     var trig_top = box['y'];             // top
 
     var params = gsap_params(animation.evnt[x]);
-    window.addEventListener('scroll', execute_scroll_point.bind(null, animation, x, trig_top, params)); 
+    create_tline(animation.name+x, animation.evnt[x], params);
+    window.addEventListener('scroll', execute_scroll_point.bind(null, animation, x, trig_top)); 
 
     // in case something should already be visible
-    execute_scroll_point(animation, x, t, params); 
+    execute_scroll_point(animation, x, t); 
   }
 }
 
@@ -969,7 +983,9 @@ function scroll_scrub(animation, x){
     var b = t + box['height'];    // bottom
 
     var params = gsap_params(animation.evnt[x]);
-    window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, params, 0)); 
+
+    create_tline(animation.name+x, animation.evnt[x], params);
+    window.addEventListener('scroll', execute_scroll_scrub.bind(null, animation, x, t, b, 0)); 
 
     // in case something should already be visible
     execute_scroll_scrub(animation, x, t, b, params, 0); 
@@ -988,10 +1004,12 @@ function scroll_zone(animation, x){
     var b = t + box['height'];    // bottom
 
     var params = gsap_params(animation.evnt[x]);
-    window.addEventListener('scroll', execute_scroll_zone.bind(null, animation, x, t, b, params)); 
+
+    create_tline(animation.name+x, animation.evnt[x], params);
+    window.addEventListener('scroll', execute_scroll_zone.bind(null, animation, x, t, b)); 
 
     // in case something should already be visible
-    execute_scroll_zone(animation, x, t, b, params); 
+    execute_scroll_zone(animation, x, t, b); 
   }
 }
 
@@ -1219,12 +1237,34 @@ log('💥 1198 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto);
 
 }
 
-//———————————————————————————————————————— play_tline(obj, params)
+//———————————————————————————————————————— create_tline(obj, params)
 
-//nction play_tline(animation, params){
-function play_tline(namex, evntx, params){
+//nction create_tline(animation, params){
+function create_tline(namex, evntx, params){
 
   obj = evntx.obj;
+
+  var funcName = namex + '_timeline';
+
+  var tline    = window[funcName];
+
+  if (typeof tline == 'undefined'){
+
+    window[funcName] = new gsap.timeline({paused:true});
+
+    var tline = window[funcName];
+
+    tline[evntx.fromto](obj, params);
+
+  }
+}
+
+//———————————————————————————————————————— play_tline_prev(namex, effectx, params)
+
+//nction play_tline(animation, params){
+function play_tline_prev(namex, effectx, params){
+
+  obj = effectx.obj;
 
   var funcName = namex + '_timeline';
   var tline    = window[funcName];
@@ -1232,11 +1272,29 @@ function play_tline(namex, evntx, params){
   if (typeof tline == 'undefined'){
     window[funcName] = new gsap.timeline({paused:true});
     var tline = window[funcName];
-
-log('💥 1231 '+evntx.name+' fromto is ' + evnt[x].fromto);
-    tline[evnt[x].fromto](obj, params);
-//  tline.to(obj, params);
+    tline.to(obj, params);
   }
+
+  // play if it's not playing or if it's reversed
+  if (!tline.isActive() || (tline.isActive() && tline.reversed())){
+    set_existence(obj, true);
+    tline.play();
+  }
+
+//// make unexists to avoid layering conflicts                // now handled by timeline
+//if (params.autoAlpha==0) set_existence(obj, false);
+//                    else set_existence(obj, true );
+}
+
+//———————————————————————————————————————— play_tline(obj, params)
+
+//nction play_tline(animation, params){
+function play_tline(namex, evntx){
+
+  obj = evntx.obj;
+
+  var funcName = namex + '_timeline';
+  var tline    = window[funcName];
 
   // play if it's not playing or if it's reversed
   if (!tline.isActive() || (tline.isActive() && tline.reversed())){
