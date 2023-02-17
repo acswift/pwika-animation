@@ -324,7 +324,7 @@ class Animation{
   
   }
 
-  activate_function(){
+  activate_func_flag(){
 
     // https://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
     // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
@@ -336,13 +336,16 @@ class Animation{
 
       functions[this.name] = window['func_'+this.name];
 
+      /* only create if necessary (could have been created on previous pass if
+         a single trigger calls several events */
+
       if (typeof functions[this.name] == 'undefined')
         errlog('Function func_'+this.name+' not found.');
 
       else switch (this.triggers[x].kind) {
-        case 'mouse' :  activate_mice_func(this.name, this.triggers[x], args); break;
-        case 'time'  :   activate_times_func(this.name, this.triggers[x], args); break;
-        case 'scroll': activate_scrolls_func(this.name, this.triggers[x], args); break;
+        case 'mouse' :    activate_mouse_trigger_func(this.name, this.triggers[x], args); break;
+        case 'time'  :   activate_time_trigger_func(this.name, this.triggers[x], args); break;
+        case 'scroll': activate_scroll_triggers_func(this.name, this.triggers[x], args); break;
 
         default:
           log('⚠️ unimplemented trig kind: "'+animations[name].triggers[0].kind+'" in animation "'+animation.name+'"');
@@ -375,7 +378,7 @@ class Animation{
 
   }
 
-  delete_if_no_evnt(){
+  delete_if_no_event(){
     for (var t=0; t<this.triggers.length; t++){
       if (typeof this.evnt == 'undefined')
         if (!this.triggers[t].func && !this.triggers[t].link){
@@ -660,7 +663,7 @@ trigger_types.forEach(kind => {
 
 console.groupEnd();
 
-//———————————————————————————————————————— add events by type
+//———————————————————————————————————————— load events by type
 
 console.group('registering events…');
 
@@ -696,37 +699,37 @@ event_types.forEach(kind => {
 
 console.groupEnd();
 
-//———————————————————————————————————————— set cursors, and activate functions, turn on "default on" objs
+//———————————————————————————————————————— set cursors, and activate "func" flags, turn on "default on" objs
 
 log('setting cursors, activating functions & making objects visible…');
 
 Object.keys(animations).forEach(name => {
   animations[name].set_cursor();
-  animations[name].activate_function();
+  animations[name].activate_func_flag(); // method of Animation class, line 327
   animations[name].make_visible();
 })
 
 //———————————————————————————————————————— delete unused trigger_types
 
-log('checking for evntless trigger_types…');
+log('checking for eventless triggers…');
 
 Object.keys(animations).forEach(name =>
-  animations[name].delete_if_no_evnt()
+  animations[name].delete_if_no_event()
 )
 
-//———————————————————————————————————————— activate event_types
+//———————————————————————————————————————— activate events by type
 
 log('activating events…');
 
 Object.keys(animations).forEach(name => {
 
   // not necessary to go through all trigger_types
-  // the first one is enough to set up the evnt
+  // the first one is enough to set up the event
 
   switch (animations[name].triggers[0].kind) {
-    case 'mouse' :    activate_mice(animations[name]); break;
-    case 'time'  :   activate_times(animations[name]); break;
-    case 'scroll': activate_scrolls(animations[name]); break;
+    case 'mouse' :  activate_mouse_events(animations[name]); break;
+    case 'time'  :   activate_time_events(animations[name]); break;
+    case 'scroll': activate_scroll_events(animations[name]); break;
 
     default:
       log('⚠️ unimplemented trigger kind: "'+animations[name].triggers[0].kind+'" in animation "'+animation.name+'"');
@@ -764,23 +767,23 @@ if (typeof debug != 'undefined'){
 console.groupEnd();
 
 
-//:::::::::::::::::::::::::::::::::::::::: build functions & event_types
+//:::::::::::::::::::::::::::::::::::::::: activate trigger "func" functions
 
-//———————————————————————————————————————— activate_mice_func(name, triggers, args)
+//———————————————————————————————————————— activate_mouse_trigger_func(name, triggers, args)
 
-function activate_mice_func(name, triggers, args){
+function activate_mouse_trigger_func(name, triggers, args){
   triggers.obj.addEventListener('click', functions[name].bind(null, ...args)); 
 }
 
-//———————————————————————————————————————— activate_times_func(name, triggers, args)
+//———————————————————————————————————————— activate_time_trigger_func(name, triggers, args)
 
-function activate_times_func(name, triggers, args){
+function activate_time_trigger_func(name, triggers, args){
   setTimeout(functions[name].bind(null, ...args), triggers.delay*1000);
 }
 
-//———————————————————————————————————————— activate_scrolls_func(name, triggers, args)
+//———————————————————————————————————————— activate_scroll_triggers_func(name, triggers, args)
 
-function activate_scrolls_func(name, triggers, args){
+function activate_scroll_triggers_func(name, triggers, args){
 
   var obj = triggers.obj;
 
@@ -791,9 +794,11 @@ function activate_scrolls_func(name, triggers, args){
 }
 
 
-//———————————————————————————————————————— activate_mice(animation)
+//:::::::::::::::::::::::::::::::::::::::: activate events
 
-function activate_mice(animation){
+//———————————————————————————————————————— activate_mouse_events(animation)
+
+function activate_mouse_events(animation){
 
   if (typeof animation.evnt == 'undefined')
     return true;  // is link or function
@@ -820,9 +825,9 @@ function activate_mice(animation){
   log('mouse trigger_types activated');
 }
 
-//———————————————————————————————————————— activate_times(animation)
+//———————————————————————————————————————— activate_time_events(animation)
 
-function activate_times(animation){
+function activate_time_events(animation){
 
   if (typeof animation.evnt == 'undefined')
     return true;  // is link or function
@@ -842,9 +847,9 @@ function activate_times(animation){
   log('time trigger_types activated');
 }
 
-//———————————————————————————————————————— activate_scrolls(animation)
+//———————————————————————————————————————— activate_scroll_events(animation)
 
-function activate_scrolls(animation){
+function activate_scroll_events(animation){
 
   if (typeof animation.evnt == 'undefined')
     return true;  // is link or function
@@ -1488,7 +1493,7 @@ function decode_entities(arg){
 
 //———————————————————————————————————————— debugging
 
-var a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
