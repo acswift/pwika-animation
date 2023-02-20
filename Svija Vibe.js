@@ -796,7 +796,7 @@ function scroll_triggers_funcs(name, triggers, args){
   var box = obj.getBBox()      // get bounding box of trig object
   var trig_top = box['y']             // top
 
-  window.addEventListener('scroll', scroll_func_listener.bind(null, name, triggers, trig_top, args)) 
+  window.addEventListener('scroll', list_scroll_func.bind(null, name, triggers, trig_top, args)) 
 }
 
 
@@ -893,7 +893,7 @@ function add_time_delay(animation, x){
   params = gsap_params(animation.evnt[x])
 
   create_tline(animation.name+x, animation.evnt[x], params)
-  setTimeout(play_listener, delay, animation.name+x, animation.evnt[x])
+  setTimeout(list_play, delay, animation.name+x, animation.evnt[x])
 
 }
 
@@ -907,7 +907,7 @@ function add_mouse_single(animation, x, type){
 
     create_tline(animation.name+x, animation.evnt[x], params)
 
-    animation.triggers[t].obj.addEventListener(type, play_listener.bind(null, animation.name+x, animation.evnt[x]), false)
+    animation.triggers[t].obj.addEventListener(type, list_play.bind(null, animation.name+x, animation.evnt[x]), false)
   }
 }
 
@@ -921,8 +921,8 @@ function add_mouse_ovaway(animation, x){
 
   for (var t=0; t<animation.triggers.length; t++){
     create_tline(animation.name+x, animation.evnt[x], params);
-    animation.triggers[t].obj.addEventListener('pointerover',  play_listener.bind(null, animation.name+x, animation.evnt[x]   ), false);
-    animation.triggers[t].obj.addEventListener('pointerout',   reverse_listener.bind(null, animation.name+x , animation.evnt[x]), false);
+    animation.triggers[t].obj.addEventListener('pointerover',  list_play.bind(null, animation.name+x, animation.evnt[x]   ), false);
+    animation.triggers[t].obj.addEventListener('pointerout',   list_reverse.bind(null, animation.name+x , animation.evnt[x]), false);
   }
 
 }
@@ -939,9 +939,9 @@ function add_mouse_down(animation, x){
 
     create_tline(animation.name+x, animation.evnt[x], params);
 
-    animation.triggers[t].obj.addEventListener('pointerdown', play_listener.bind(null, animation.name+x, animation.evnt[x]), false);
+    animation.triggers[t].obj.addEventListener('pointerdown', list_play.bind(null, animation.name+x, animation.evnt[x]), false);
 
-    animation.triggers[t].obj.addEventListener('pointerup',   reverse_listener.bind(null, animation.name+x , animation.evnt[x]                         ), false);
+    animation.triggers[t].obj.addEventListener('pointerup',   list_reverse.bind(null, animation.name+x , animation.evnt[x]                         ), false);
   }
 
 }
@@ -954,7 +954,7 @@ function add_mouse_toggle(animation, x){
 
   for (var t=0; t<animation.triggers.length; t++){
     create_tline(animation.name+x, animation.evnt[x], params);
-    animation.triggers[t].obj.addEventListener('pointerup', toggle_listener.bind(null, animation.name+x, animation.evnt[x]), false);
+    animation.triggers[t].obj.addEventListener('pointerup', list_mouse_toggle.bind(null, animation.name+x, animation.evnt[x]), false);
   }
 }
 
@@ -976,7 +976,7 @@ function add_scroll_point(animation, which_event){
     var params = gsap_params(animation.evnt[which_event])
     create_tline(animation.name+which_event, animation.evnt[which_event], params)
 
-    window.addEventListener('scroll', scroll_point_listener.bind(null, animation, which_event, trigger_top)) 
+    window.addEventListener('scroll', list_scroll_point.bind(null, animation, which_event, trigger_top)) 
 
   }
 }
@@ -995,10 +995,10 @@ function add_scroll_scrub(animation, x){
     var params = gsap_params(animation.evnt[x]);
 
     create_tline(animation.name+x, animation.evnt[x], params);
-    window.addEventListener('scroll', scroll_scrub_listener.bind(null, animation, x, t, b, 0)); 
+    window.addEventListener('scroll', list_scroll_scrub.bind(null, animation, x, t, b, 0)); 
 
     // in case something should already be visible
-    scroll_scrub_listener(animation, x, t, b, params, 0); 
+    list_scroll_scrub(animation, x, t, b, params, 0); 
   }
 }
 
@@ -1016,17 +1016,17 @@ function add_scroll_zone(animation, x){
     var params = gsap_params(animation.evnt[x]);
 
     create_tline(animation.name+x, animation.evnt[x], params);
-    window.addEventListener('scroll', scroll_zone_listener.bind(null, animation, x, t, b)); 
+    window.addEventListener('scroll', list_scroll_zone.bind(null, animation, x, t, b)); 
 
     // in case something should already be visible
-    scroll_zone_listener(animation, x, t, b); 
+    list_scroll_zone(animation, x, t, b); 
   }
 }
 
 
 //:::::::::::::::::::::::::::::::::::::::: functions called by events
 
-/*———————————————————————————————————————— scroll_func_listener(name, triggers, trig_top, args)
+/*———————————————————————————————————————— list_scroll_func(name, triggers, trig_top, args)
 
     this was not finished betriggers it involves adding new variables and
     making the triggers functionality more complex.
@@ -1037,7 +1037,7 @@ function add_scroll_zone(animation, x){
     also: consider changing to "when triggers is entirely visible"
     instead of "when top crosses top" */
 
-function scroll_func_listener(name, triggers, trig_top, args){
+function list_scroll_func(name, triggers, trig_top, args){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop
   var pixel_height = window.innerHeight
@@ -1063,7 +1063,7 @@ function scroll_func_listener(name, triggers, trig_top, args){
 
 }
 
-//———————————————————————————————————————— scroll_point_listener(animation, x, trig_top, params)
+//———————————————————————————————————————— list_scroll_point(animation, x, trig_top, params)
 
 // https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
@@ -1080,7 +1080,7 @@ function scroll_func_listener(name, triggers, trig_top, args){
   // goes on when trig object top scrolls up past top of page
   
 
-function scroll_point_listener(animation, which_event, trig_top){
+function list_scroll_point(animation, which_event, trig_top){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop
   var pixel_height = window.innerHeight
@@ -1095,7 +1095,7 @@ function scroll_point_listener(animation, which_event, trig_top){
 
 }
 
-/*———————————————————————————————————————— scroll_scrub_listener(animation, x, trig_top, trig_bot, params)
+/*———————————————————————————————————————— list_scroll_scrub(animation, x, trig_top, trig_bot, params)
 
     executed for the first time the first time on load
     and thereafter each time the window is scrolled
@@ -1119,7 +1119,7 @@ function scroll_point_listener(animation, which_event, trig_top){
 var scrub_foix = 8 // how many extra calls are made compared to scroll trigger_types
 var scrub_rate = 10 // how many ms between extra calls
 
-function scroll_scrub_listener(animation, x, trig_top, trig_bot, params, fois){
+function list_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop
   var pixel_height = window.innerHeight
@@ -1175,10 +1175,10 @@ function scroll_scrub_listener(animation, x, trig_top, trig_bot, params, fois){
   // re-request same function to double frequency
 
   if (active && fois < scrub_foix)
-    setTimeout(scroll_scrub_listener, scrub_rate, animation, x, trig_top, trig_bot, params, fois+1)
+    setTimeout(list_scroll_scrub, scrub_rate, animation, x, trig_top, trig_bot, params, fois+1)
 }
 
-//———————————————————————————————————————— scroll_zone_listener(animation, x, trig_top, trig_bot, params)
+//———————————————————————————————————————— list_scroll_zone(animation, x, trig_top, trig_bot, params)
 
 /*    called on load then on each scroll trig
 
@@ -1191,7 +1191,7 @@ function scroll_scrub_listener(animation, x, trig_top, trig_bot, params, fois){
 
 // called every time a scroll evnt
 
-function scroll_zone_listener(animation, x, trig_top, trig_bot, params){
+function list_scroll_zone(animation, x, trig_top, trig_bot, params){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop
   var pixel_height = window.innerHeight
@@ -1236,9 +1236,9 @@ log('💥 1198 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto)
 
 }
 
-//———————————————————————————————————————— toggle_listener(obj, params)
+//———————————————————————————————————————— list_mouse_toggle(obj, params)
 
-function toggle_listener(namex, evntx, params){
+function list_mouse_toggle(namex, evntx, params){
 
   var obj      = evntx.obj
   var funcName = namex + '_timeline'
@@ -1260,37 +1260,10 @@ function toggle_listener(namex, evntx, params){
 
 }
 
-//———————————————————————————————————————— play_listener_prev(namex, effectx, params)
+//———————————————————————————————————————— list_play(obj, params)
 
-//nction play_listener(animation, params){
-function play_listener_prev(namex, effectx, params){
-
-  obj = effectx.obj;
-
-  var funcName = namex + '_timeline';
-  var tline    = window[funcName];
-
-  if (typeof tline == 'undefined'){
-    window[funcName] = new gsap.timeline({paused:true});
-    var tline = window[funcName];
-    tline.to(obj, params);
-  }
-
-  // play if it's not playing or if it's reversed
-  if (!tline.isActive() || (tline.isActive() && tline.reversed())){
-    set_existence(obj, true);
-    tline.play();
-  }
-
-//// make unexists to avoid layering conflicts                // now handled by timeline
-//if (params.autoAlpha==0) set_existence(obj, false);
-//                    else set_existence(obj, true );
-}
-
-//———————————————————————————————————————— play_listener(obj, params)
-
-//nction play_listener(animation, params){
-function play_listener(namex, evntx){
+//nction list_play(animation, params){
+function list_play(namex, evntx){
 
   obj = evntx.obj
 
@@ -1308,10 +1281,10 @@ function play_listener(namex, evntx){
 //                    else set_existence(obj, true );
 }
 
-//———————————————————————————————————————— reverse_listener(obj, params)
+//———————————————————————————————————————— list_reverse(obj, params)
 
-//nction reverse_listener(animation){
-function reverse_listener(namex, evntx){
+//nction list_reverse(animation){
+function list_reverse(namex, evntx){
 // NEED TO MAKE OBJECT VISIBLE IF IT WAS MADE NON-EXISTANT
   var funcName = namex + '_timeline';
   set_existence(evntx.obj, true);
