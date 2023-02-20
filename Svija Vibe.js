@@ -794,7 +794,7 @@ function activate_scroll_triggers_func(name, triggers, args){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: activate events
+//:::::::::::::::::::::::::::::::::::::::: set up events
 
 //———————————————————————————————————————— activate_mouse_events(animation)
 
@@ -878,7 +878,7 @@ function activate_scroll_events(animation){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: event functions
+//:::::::::::::::::::::::::::::::::::::::: addEventListener type functions
 
 //———————————————————————————————————————— time_delay(animation)
 
@@ -887,15 +887,10 @@ function time_delay(animation, x){
   delay  = animation.triggers[0].delay * 1000
   params = gsap_params(animation.evnt[x])
 
-log(891)
-
   create_tline(animation.name+x, animation.evnt[x], params)
-log(893)
   setTimeout(play_tline, delay, animation.name+x, animation.evnt[x])
 
-log(896)
 }
-
 
 //———————————————————————————————————————— mouse_single(animation, x, type)
 
@@ -957,7 +952,6 @@ function mouse_toggle(animation, x){
     animation.triggers[t].obj.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.evnt[x]), false);
   }
 }
-
 
 //———————————————————————————————————————— scroll_point(animation,x)
 
@@ -1021,7 +1015,7 @@ function scroll_zone(animation, x){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: linked to events
+//:::::::::::::::::::::::::::::::::::::::: functions called by events
 
 /*———————————————————————————————————————— execute_scroll_func(name, triggers, trig_top, args)
 
@@ -1124,45 +1118,45 @@ log('💥 1068 replace to');
     betriggers the experience on mobile was bad bad bad
 */
 
-var scrub_foix = 8; // how many extra calls are made compared to scroll trigger_types
-var scrub_rate = 10; // how many ms between extra calls
+var scrub_foix = 8 // how many extra calls are made compared to scroll trigger_types
+var scrub_rate = 10 // how many ms between extra calls
 
 function execute_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
 
-  var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
-  var pixel_height = window.innerHeight;
+  var page_top     = document.documentElement.scrollTop || document.body.scrollTop
+  var pixel_height = window.innerHeight
 
-  var rem_top = page_top / aiPixel;
+  var rem_top = page_top / aiPixel
 
-  var obj      = animation.evnt[x].obj;
-  var funcName = animation.name + x + '_timeline';
-  var tline    = window[funcName];
+  var obj      = animation.evnt[x].obj
+  var funcName = animation.name + x + '_timeline'
+  var tline    = window[funcName]
 
   if (typeof tline == 'undefined'){
-    log(funcName+' created');
-    window[funcName] = new gsap.timeline({paused:true});
-    var tline = window[funcName];
-//log('💥 1116 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto);
-    tline[animation.evnt[x].fromto](obj, params);
-//    set_existence(obj, true);
+    log(funcName+' created')
+    window[funcName] = new gsap.timeline({paused:true})
+    var tline = window[funcName]
+//log('💥 1116 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto)
+    tline[animation.evnt[x].fromto](obj, params)
+//    set_existence(obj, true)
   }
 
   // % of bar above top of window = % of timeline
 
-  var active = false;
+  var active = false
   
   // trig is activated
   if (trig_top < rem_top && trig_bot > rem_top){
-    active = true;
+    active = true
 
-    set_existence(obj, true); //—————————————————————————————————————————————————————————————————-- is this too much?
-    var obj_height = trig_bot - trig_top;
-    var passed = rem_top - trig_top;
-    var pcent = passed/obj_height;
-    pcent = Math.round(pcent * 10000)/10000; // percent + 2 decimals
-    var new_time = tline.totalDuration() * pcent;
+    set_existence(obj, true) //—————————————————————————————————————————————————————————————————-- is this too much?
+    var obj_height = trig_bot - trig_top
+    var passed = rem_top - trig_top
+    var pcent = passed/obj_height
+    pcent = Math.round(pcent * 10000)/10000 // percent + 2 decimals
+    var new_time = tline.totalDuration() * pcent
 
-    tline.totalTime(new_time);
+    tline.totalTime(new_time)
   
   }
 
@@ -1170,20 +1164,20 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
 
     // if trig object is below top of page, snap to 0
     if (trig_top > rem_top){
-      tline.totalTime(0);
+      tline.totalTime(0)
     }
 
     // if trig object is above top of page, snap to 100
     if (trig_bot < rem_top){
-      tline.totalTime(tline.totalDuration());
-      if (params['autoAlpha'] == 0) set_existence(obj, false);
+      tline.totalTime(tline.totalDuration())
+      if (params['autoAlpha'] == 0) set_existence(obj, false)
     }
   }
 
   // re-request same function to double frequency
 
   if (active && fois < scrub_foix)
-    setTimeout(execute_scroll_scrub, scrub_rate, animation, x, trig_top, trig_bot, params, fois+1);
+    setTimeout(execute_scroll_scrub, scrub_rate, animation, x, trig_top, trig_bot, params, fois+1)
 }
 
 //———————————————————————————————————————— execute_scroll_zone(animation, x, trig_top, trig_bot, params)
@@ -1201,16 +1195,16 @@ function execute_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
 
 function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
 
-  var page_top     = document.documentElement.scrollTop || document.body.scrollTop;
-  var pixel_height = window.innerHeight;
-  var page_bot     = page_top + pixel_height;
+  var page_top     = document.documentElement.scrollTop || document.body.scrollTop
+  var pixel_height = window.innerHeight
+  var page_bot     = page_top + pixel_height
 
-  var rem_top = page_top / aiPixel;
-  var rem_bot = page_bot / aiPixel;
+  var rem_top = page_top / aiPixel
+  var rem_bot = page_bot / aiPixel
 
-  var obj      = animation.evnt[x].obj;
-  var funcName = animation.name + x + '_timeline';
-  var tline    = window[funcName];
+  var obj      = animation.evnt[x].obj
+  var funcName = animation.name + x + '_timeline'
+  var tline    = window[funcName]
 
   // goes on when trig top scrolls up past top of page
   // goes off when trig object bottom < bottom of page
@@ -1218,28 +1212,57 @@ function execute_scroll_zone(animation, x, trig_top, trig_bot, params){
   // trig is activated
   if (trig_top > rem_top && trig_bot < rem_bot){
     if (typeof tline != 'undefined'){
-      if (tline.reversed()) tline.play();       //  if reversed play it
+      if (tline.reversed()) tline.play()       //  if reversed play it
     }
     else{
       //  doesn't exist: create & play it
-      window[funcName] = new gsap.timeline({paused:true});
-      var tline = window[funcName];
+      window[funcName] = new gsap.timeline({paused:true})
+      var tline = window[funcName]
 
-log('💥 1198 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto);
-      tline[animation.evnt[x].fromto](obj, params);
-//    tline.to(obj, params);
+log('💥 1198 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto)
+      tline[animation.evnt[x].fromto](obj, params)
+//    tline.to(obj, params)
 
-      set_existence(obj, true);
-      tline.play();
+      set_existence(obj, true)
+      tline.play()
     }
   }
 
   // trig is deactivated
   else{
-    if (typeof tline == 'undefined') return true;                      //  doesn't exist: do nothing
-    if (!tline.isActive() && !tline.reversed()) tline.reverse();       //  paused not reversed (at end): reverse it
-    else if (tline.isActive() && !tline.reversed()) tline.reverse();   //  playing not reversed: reverse it */
-    return true;
+    if (typeof tline == 'undefined') return true                      //  doesn't exist: do nothing
+    if (!tline.isActive() && !tline.reversed()) tline.reverse()       //  paused not reversed (at end): reverse it
+    else if (tline.isActive() && !tline.reversed()) tline.reverse()   //  playing not reversed: reverse it */
+    return true
+  }
+
+}
+
+//———————————————————————————————————————— execute_toggle(obj, params)
+      // tline.totalTime(0);
+      // tline.totalTime(tline.totalDuration());
+
+// only called when clicked
+
+//nction execute_toggle(animation, params){
+function execute_toggle(namex, evntx, params){
+
+  var obj      = evntx.obj
+  var funcName = namex + '_timeline'
+  var tline    = window[funcName]
+
+  if (tline.isActive())
+    if (tline.reversed()) tline.play() // was playing backwards: play forwards
+    else tline.reverse()               // was playing forwards: play backwards
+  else{
+    if (tline.totalTime() == 0){       // was stopped at beginning
+      set_existence(obj, true)         // play forwards
+      tline.play()
+    }
+    else{                              // was stopped at end
+      set_existence(obj, true)         // play backwards
+      tline.reverse()
+    }
   }
 
 }
@@ -1281,15 +1304,11 @@ function play_tline(namex, evntx){
   var funcName = namex + '_timeline'
   var tline    = window[funcName]
 
-log(funcName +' if you dont see "done" just below, line 1281 failed')
-
   // play if it's not playing or if it's reversed
   if (!tline.isActive() || (tline.isActive() && tline.reversed())){
     set_existence(obj, true)
     tline.play()
   }
-
-log('done')
 
 //// make unexists to avoid layering conflicts                // now handled by timeline
 //if (params.autoAlpha==0) set_existence(obj, false);
@@ -1304,45 +1323,6 @@ function reverse_tline(namex, evntx){
   var funcName = namex + '_timeline';
   set_existence(evntx.obj, true);
   window[funcName].reverse();
-}
-
-//———————————————————————————————————————— execute_toggle(obj, params)
-
-// only called when clicked
-
-//nction execute_toggle(animation, params){
-function execute_toggle(namex, evntx, params){
-
-  var obj      = evntx.obj;
-  var funcName = namex + '_timeline';
-  var tline    = window[funcName];
-
-  // create & play if doesn't exist
-  if (typeof tline == 'undefined'){
-
-    window[funcName] = new gsap.timeline({paused:true});
-    var tline = window[funcName];
-
-log('💥 1274 '+evntx.name+' fromto is ' + evntx.fromto);
-    tline[evntx.fromto](obj, params);
-//  tline.to(obj, params);
-
-    set_existence(obj, true);
-    tline.play();
-
-  } else {
-
-    if (tline.reversed()){
-      set_existence(obj, true);
-      tline.play();
-    }
-    else{
-      set_existence(obj, true);
-      tline.reverse();
-    }
-
-  }
-
 }
 
 
