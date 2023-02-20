@@ -830,21 +830,21 @@ function activate_mouse_events(animation){
 function activate_time_events(animation){
 
   if (typeof animation.evnt == 'undefined')
-    return true;  // is link or function
+    return true  // is link or function
 
   for (var x=0; x<animation.evnt.length; x++){
     switch (animation.evnt[x].kind) {
     case 'delay':
-      time_delay(animation, x);
-      break;
+      time_delay(animation, x)
+      break
 
     default:
-      if (typeof animation.evnt[x].kind != 'undefined') errlog('unknown time kind: '+animation.evnt[x].kind);
-      else errlog('missing time evnt: '+animation.name);
+      if (typeof animation.evnt[x].kind != 'undefined') errlog('unknown time kind: '+animation.evnt[x].kind)
+      else errlog('missing time evnt: '+animation.name)
     }
   }
 
-  log('time events activated');
+  log('time events activated')
 }
 
 //———————————————————————————————————————— activate_scroll_events(animation)
@@ -884,10 +884,16 @@ function activate_scroll_events(animation){
 
 function time_delay(animation, x){
 
-  delay  = animation.triggers[0].delay * 1000;
-  params = gsap_params(animation.evnt[x]);
-  setTimeout(play_tline.bind(null, animation.name+x, animation.evnt[x], params), delay);
+  delay  = animation.triggers[0].delay * 1000
+  params = gsap_params(animation.evnt[x])
 
+log(891)
+
+  create_tline(animation.name+x, animation.evnt[x], params)
+log(893)
+  setTimeout(play_tline, delay, animation.name+x, animation.evnt[x])
+
+log(896)
 }
 
 
@@ -895,13 +901,13 @@ function time_delay(animation, x){
 
 function mouse_single(animation, x, type){
 
-  params = gsap_params(animation.evnt[x]);
+  params = gsap_params(animation.evnt[x])
 
   for (var t=0; t<animation.triggers.length; t++){
 
-    create_tline(animation.name+x, animation.evnt[x], params);
+    create_tline(animation.name+x, animation.evnt[x], params)
 
-    animation.triggers[t].obj.addEventListener(type, play_tline.bind(null, animation.name+x, animation.evnt[x]), false);
+    animation.triggers[t].obj.addEventListener(type, play_tline.bind(null, animation.name+x, animation.evnt[x]), false)
   }
 }
 
@@ -1555,7 +1561,7 @@ function create_tline(namex, evntx, params){
 
     tline[evntx.fromto](obj, params);
 
-    log('timeline '+funcName + '.'+evntx.fromto+' created');
+//  log('timeline '+funcName + '.'+evntx.fromto+' created');
 
   }
 }
