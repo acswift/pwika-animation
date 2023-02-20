@@ -31,7 +31,7 @@
     out of or in connection with the software or the use or other dealings in
     the software.
 
-  	svija.com · hello@svija.com*/
+    svija.com · hello@svija.com*/
 
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
@@ -289,7 +289,7 @@ class Animation{
       zoopy.obj.style.opacity = 0;
     }
 
-		// scrub event_types default to hard ease
+    // scrub event_types default to hard ease
     if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
       zoopy.ease = 'none';
 
@@ -796,7 +796,7 @@ function scroll_triggers_funcs(name, triggers, args){
   var box = obj.getBBox()      // get bounding box of trig object
   var trig_top = box['y']             // top
 
-  window.addEventListener('scroll', list_scroll_func.bind(null, name, triggers, trig_top, args)) 
+  window.addEventListener('scroll', lstn_scroll_func.bind(null, name, triggers, trig_top, args)) 
 }
 
 
@@ -893,7 +893,7 @@ function add_time_delay(animation, x){
   params = gsap_params(animation.evnt[x])
 
   create_tline(animation.name+x, animation.evnt[x], params)
-  setTimeout(list_play, delay, animation.name+x, animation.evnt[x])
+  setTimeout(lstn_play, delay, animation.name+x, animation.evnt[x])
 
 }
 
@@ -907,7 +907,7 @@ function add_mouse_single(animation, x, type){
 
     create_tline(animation.name+x, animation.evnt[x], params)
 
-    animation.triggers[t].obj.addEventListener(type, list_play.bind(null, animation.name+x, animation.evnt[x]), false)
+    animation.triggers[t].obj.addEventListener(type, lstn_play.bind(null, animation.name+x, animation.evnt[x]), false)
   }
 }
 
@@ -921,8 +921,8 @@ function add_mouse_ovaway(animation, x){
 
   for (var t=0; t<animation.triggers.length; t++){
     create_tline(animation.name+x, animation.evnt[x], params);
-    animation.triggers[t].obj.addEventListener('pointerover',  list_play.bind(null, animation.name+x, animation.evnt[x]   ), false);
-    animation.triggers[t].obj.addEventListener('pointerout',   list_reverse.bind(null, animation.name+x , animation.evnt[x]), false);
+    animation.triggers[t].obj.addEventListener('pointerover',  lstn_play.bind(null, animation.name+x, animation.evnt[x]   ), false);
+    animation.triggers[t].obj.addEventListener('pointerout',   lstn_reverse.bind(null, animation.name+x , animation.evnt[x]), false);
   }
 
 }
@@ -939,9 +939,9 @@ function add_mouse_down(animation, x){
 
     create_tline(animation.name+x, animation.evnt[x], params);
 
-    animation.triggers[t].obj.addEventListener('pointerdown', list_play.bind(null, animation.name+x, animation.evnt[x]), false);
+    animation.triggers[t].obj.addEventListener('pointerdown', lstn_play.bind(null, animation.name+x, animation.evnt[x]), false);
 
-    animation.triggers[t].obj.addEventListener('pointerup',   list_reverse.bind(null, animation.name+x , animation.evnt[x]                         ), false);
+    animation.triggers[t].obj.addEventListener('pointerup',   lstn_reverse.bind(null, animation.name+x , animation.evnt[x]                         ), false);
   }
 
 }
@@ -954,13 +954,13 @@ function add_mouse_toggle(animation, x){
 
   for (var t=0; t<animation.triggers.length; t++){
     create_tline(animation.name+x, animation.evnt[x], params);
-    animation.triggers[t].obj.addEventListener('pointerup', list_mouse_toggle.bind(null, animation.name+x, animation.evnt[x]), false);
+    animation.triggers[t].obj.addEventListener('pointerup', lstn_mouse_toggle.bind(null, animation.name+x, animation.evnt[x]), false);
   }
 }
 
 /*———————————————————————————————————————— add_scroll_point(animation,x)
 
-		can have multiple triggers that set off the animation
+    can have multiple triggers that set off the animation
 
     it is the fact that the "point" crosses the top border of the window
     that triggers the animation — not if it's visible already or not */
@@ -976,7 +976,7 @@ function add_scroll_point(animation, which_event){
     var params = gsap_params(animation.evnt[which_event])
     create_tline(animation.name+which_event, animation.evnt[which_event], params)
 
-    window.addEventListener('scroll', list_scroll_point.bind(null, animation, which_event, trigger_top)) 
+    window.addEventListener('scroll', lstn_scroll_point.bind(null, animation, which_event, trigger_top)) 
 
   }
 }
@@ -995,10 +995,10 @@ function add_scroll_scrub(animation, x){
     var params = gsap_params(animation.evnt[x]);
 
     create_tline(animation.name+x, animation.evnt[x], params);
-    window.addEventListener('scroll', list_scroll_scrub.bind(null, animation, x, t, b, 0)); 
+    window.addEventListener('scroll', lstn_scroll_scrub.bind(null, animation, x, t, b, 0)); 
 
     // in case something should already be visible
-    list_scroll_scrub(animation, x, t, b, params, 0); 
+    lstn_scroll_scrub(animation, x, t, b, params, 0); 
   }
 }
 
@@ -1016,17 +1016,17 @@ function add_scroll_zone(animation, x){
     var params = gsap_params(animation.evnt[x]);
 
     create_tline(animation.name+x, animation.evnt[x], params);
-    window.addEventListener('scroll', list_scroll_zone.bind(null, animation, x, t, b)); 
+    window.addEventListener('scroll', lstn_scroll_zone.bind(null, animation, x, t, b)); 
 
     // in case something should already be visible
-    list_scroll_zone(animation, x, t, b); 
+    lstn_scroll_zone(animation, x, t, b); 
   }
 }
 
 
 //:::::::::::::::::::::::::::::::::::::::: functions called by events
 
-/*———————————————————————————————————————— list_scroll_func(name, triggers, trig_top, args)
+/*———————————————————————————————————————— lstn_scroll_func(name, triggers, trig_top, args)
 
     this was not finished betriggers it involves adding new variables and
     making the triggers functionality more complex.
@@ -1037,7 +1037,7 @@ function add_scroll_zone(animation, x){
     also: consider changing to "when triggers is entirely visible"
     instead of "when top crosses top" */
 
-function list_scroll_func(name, triggers, trig_top, args){
+function lstn_scroll_func(name, triggers, trig_top, args){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop
   var pixel_height = window.innerHeight
@@ -1063,7 +1063,7 @@ function list_scroll_func(name, triggers, trig_top, args){
 
 }
 
-//———————————————————————————————————————— list_scroll_point(animation, x, trig_top, params)
+//———————————————————————————————————————— lstn_scroll_point(animation, x, trig_top, params)
 
 // https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
@@ -1080,7 +1080,7 @@ function list_scroll_func(name, triggers, trig_top, args){
   // goes on when trig object top scrolls up past top of page
   
 
-function list_scroll_point(animation, which_event, trig_top){
+function lstn_scroll_point(animation, which_event, trig_top){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop
   var pixel_height = window.innerHeight
@@ -1091,11 +1091,11 @@ function list_scroll_point(animation, which_event, trig_top){
   var tline        = window[funcName]
 
   if (trig_top < rem_top)
-	  if (tline.totalTime() == 0) tline.play() // hasn't yet run
+    if (tline.totalTime() == 0) tline.play() // if hasn't yet run, play it
 
 }
 
-/*———————————————————————————————————————— list_scroll_scrub(animation, x, trig_top, trig_bot, params)
+/*———————————————————————————————————————— lstn_scroll_scrub(animation, x, trig_top, trig_bot, params)
 
     executed for the first time the first time on load
     and thereafter each time the window is scrolled
@@ -1119,7 +1119,7 @@ function list_scroll_point(animation, which_event, trig_top){
 var scrub_foix = 8 // how many extra calls are made compared to scroll trigger_types
 var scrub_rate = 10 // how many ms between extra calls
 
-function list_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
+function lstn_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop
   var pixel_height = window.innerHeight
@@ -1175,10 +1175,13 @@ function list_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
   // re-request same function to double frequency
 
   if (active && fois < scrub_foix)
-    setTimeout(list_scroll_scrub, scrub_rate, animation, x, trig_top, trig_bot, params, fois+1)
+    setTimeout(lstn_scroll_scrub, scrub_rate, animation, x, trig_top, trig_bot, params, fois+1)
 }
 
-//———————————————————————————————————————— list_scroll_zone(animation, x, trig_top, trig_bot, params)
+//———————————————————————————————————————— lstn_scroll_zone(animation, x, trig_top, trig_bot, params)
+
+  // goes on when trig top scrolls up past top of page
+  // goes off when trig object bottom < bottom of page
 
 /*    called on load then on each scroll trig
 
@@ -1191,54 +1194,102 @@ function list_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
 
 // called every time a scroll evnt
 
-function list_scroll_zone(animation, x, trig_top, trig_bot, params){
+function lstn_scroll_zone(animation, which_event, trig_top, trig_bot, params){
 
   var page_top     = document.documentElement.scrollTop || document.body.scrollTop
   var pixel_height = window.innerHeight
   var page_bot     = page_top + pixel_height
 
-  var rem_top = page_top / aiPixel
-  var rem_bot = page_bot / aiPixel
+  var rem_top      = page_top / aiPixel
+  var rem_bot      = page_bot / aiPixel
 
-  var obj      = animation.evnt[x].obj
-  var funcName = animation.name + x + '_timeline'
-  var tline    = window[funcName]
+  var obj          = animation.evnt[which_event].obj
+  var funcName     = animation.name + which_event + '_timeline'
+  var tline        = window[funcName]
 
-  // goes on when trig top scrolls up past top of page
-  // goes off when trig object bottom < bottom of page
-  
-  // trig is activated
-  if (trig_top > rem_top && trig_bot < rem_bot){
-    if (typeof tline != 'undefined'){
-      if (tline.reversed()) tline.play()       //  if reversed play it
-    }
-    else{
-      //  doesn't exist: create & play it
-      window[funcName] = new gsap.timeline({paused:true})
-      var tline = window[funcName]
+/*    variables:
 
-log('💥 1198 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto)
-      tline[animation.evnt[x].fromto](obj, params)
-//    tline.to(obj, params)
+      trigger is active (visible)   boolean
+      tlPosition                    beginning | middle | end 
 
-      set_existence(obj, true)
-      tline.play()
-    }
+      tlReversed                    boolean
+      tlPlaying                     boolean  */
+
+  if (trig_top > rem_top && trig_bot < rem_bot)
+    var triggerActive = true
+  else
+    var triggerActive = false
+
+  if (tline.totalTime() == 0)
+   var tlPosition = 'beginning'
+  else if (tline.totalTime() == tline.totalDuration())
+    var tlPosition = 'end'
+  else
+    var tlPosition = 'middle'
+
+  var tlReversed = tline.reversed()
+  var tlPlaying = tline.isActive()
+
+/*
+
+                                trigger:   visible  hidden
+
+  - animation !playing && pos != end        play     -
+  - animation playing && reversed           play     -
+
+  - animation !playing && pos != beginning  -        reverse
+  - animation playing && !reversed          -        reverse 
+
+*/
+
+  if(triggerActive){
+    if (!tlPlaying && tlPosition != 'end') tline.play()
+    if ( tlPlaying && tlReversed         ) tline.play()
   }
 
-  // trig is deactivated
-  else{
-    if (typeof tline == 'undefined') return true                      //  doesn't exist: do nothing
-    if (!tline.isActive() && !tline.reversed()) tline.reverse()       //  paused not reversed (at end): reverse it
-    else if (tline.isActive() && !tline.reversed()) tline.reverse()   //  playing not reversed: reverse it */
-    return true
+  if(!triggerActive){
+    if (!tlPlaying && tlPosition != 'beginning') tline.reverse()
+    if ( tlPlaying && !tlReversed)             tline.reverse()
   }
+
+log('active: ' + triggerActive + ', playing: ' + tlPlaying + ', position: ' + tlPosition + ', reversed: ' + tlReversed + ', display: '+ obj.style.display);
+
+
+/* INSERT DISPLAY:BLOCK AT BEGINNING OF TIMELINES FROM 0 OPACITY ETC. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*            // trig is activated
+              if (trig_top > rem_top && trig_bot < rem_bot){
+                if (typeof tline != 'undefined'){
+                  if (tline.reversed()) tline.play()       //  if reversed play it
+                }
+              }
+            
+              // trig is deactivated
+              else{
+                if (typeof tline == 'undefined') return true                      //  doesn't exist: do nothing
+                if (!tline.isActive() && !tline.reversed()) tline.reverse()       //  paused not reversed (at end): reverse it
+                else if (tline.isActive() && !tline.reversed()) tline.reverse()   //  playing not reversed: reverse it 
+                return true
+              } */
 
 }
 
-//———————————————————————————————————————— list_mouse_toggle(obj, params)
+//———————————————————————————————————————— lstn_mouse_toggle(obj, params)
 
-function list_mouse_toggle(namex, evntx, params){
+function lstn_mouse_toggle(namex, evntx, params){
 
   var obj      = evntx.obj
   var funcName = namex + '_timeline'
@@ -1260,10 +1311,10 @@ function list_mouse_toggle(namex, evntx, params){
 
 }
 
-//———————————————————————————————————————— list_play(obj, params)
+//———————————————————————————————————————— lstn_play(obj, params)
 
-//nction list_play(animation, params){
-function list_play(namex, evntx){
+//nction lstn_play(animation, params){
+function lstn_play(namex, evntx){
 
   obj = evntx.obj
 
@@ -1281,10 +1332,10 @@ function list_play(namex, evntx){
 //                    else set_existence(obj, true );
 }
 
-//———————————————————————————————————————— list_reverse(obj, params)
+//———————————————————————————————————————— lstn_reverse(obj, params)
 
-//nction list_reverse(animation){
-function list_reverse(namex, evntx){
+//nction lstn_reverse(animation){
+function lstn_reverse(namex, evntx){
 // NEED TO MAKE OBJECT VISIBLE IF IT WAS MADE NON-EXISTANT
   var funcName = namex + '_timeline';
   set_existence(evntx.obj, true);
@@ -1455,12 +1506,12 @@ function getElementsByRegex(pattern){
 
 /*———————————————————————————————————————— decode_entities(arg)
 
-		used for args passed to func trigger flag
+    used for args passed to func trigger flag
 
-		converts illustrator style entites to html entites
+    converts illustrator style entites to html entites
     _x22_ to &#x22; to get normal entity
 
-		then converts those to regular text
+    then converts those to regular text
     &#x22; to ! */
 
 function decode_entities(arg){
