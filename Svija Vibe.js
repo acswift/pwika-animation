@@ -40,7 +40,6 @@
 
 const d1 = new Date();
 let start_time = d1.getTime();
-console.group('Svija Vibe');
 
 //———————————————————————————————————————— separator · types of triggers and events
 
@@ -343,9 +342,9 @@ class Animation{
         errlog('Function func_'+this.name+' not found.');
 
       else switch (this.triggers[x].kind) {
-        case 'mouse' :    activate_mouse_trigger_func(this.name, this.triggers[x], args); break;
-        case 'time'  :   activate_time_trigger_func(this.name, this.triggers[x], args); break;
-        case 'scroll': activate_scroll_triggers_func(this.name, this.triggers[x], args); break;
+        case 'mouse' :    mouse_trigger_funcs(this.name, this.triggers[x], args); break;
+        case 'time'  :   time_trigger_funcs(this.name, this.triggers[x], args); break;
+        case 'scroll': scroll_triggers_funcs(this.name, this.triggers[x], args); break;
 
         default:
           log('⚠️ unimplemented trig kind: "'+animations[name].triggers[0].kind+'" in animation "'+animation.name+'"');
@@ -571,9 +570,11 @@ class Evnt{
 
 //:::::::::::::::::::::::::::::::::::::::: program
 
-/*———————————————————————————————————————— ▼ disambiguate clipping masks
+//———————————————————————————————————————— ▼ disambiguate clipping masks
 
-    Illustrator's clipping masks use duplicate ID's
+console.group('Svija Vibe');
+
+/*  Illustrator's clipping masks use duplicate ID's
     for the mask and the parent container
 
     in order to animate the mask only, it's necessary
@@ -607,7 +608,7 @@ class Evnt{
 
 const clip_users = document.querySelectorAll("[style^='clip']")
 
-log('verifying clipping paths…');
+log('cleaning up clipping paths…');
 for(var x=0; x<clip_users.length; x++){
 
   var path_url = clip_users[x].style.clipPath;
@@ -629,7 +630,7 @@ for(var x=0; x<clip_users.length; x++){
   }
 }
 
-//———————————————————————————————————————— load triggers by type
+//———————————————————————————————————————— register triggers by type
 
 console.group('registering triggers…');
 
@@ -663,7 +664,7 @@ trigger_types.forEach(kind => {
 
 console.groupEnd();
 
-//———————————————————————————————————————— load events by type
+//———————————————————————————————————————— register events by type
 
 console.group('registering events…');
 
@@ -699,14 +700,15 @@ event_types.forEach(kind => {
 
 console.groupEnd();
 
-//———————————————————————————————————————— set cursors, and activate "func" flags, turn on "default on" objs
+//———————————————————————————————————————— set cursors, activate "func" flags, and turn on "default on" objects
 
-log('setting cursors, activating functions & making objects visible…');
+console.group('setup & error checking…')
+log('setting cursors, activating functions & making objects visible…')
 
 Object.keys(animations).forEach(name => {
-  animations[name].set_cursor();
-  animations[name].activate_func_flag(); // method of Animation class, line 327
-  animations[name].make_visible();
+  animations[name].set_cursor()
+  animations[name].activate_func_flag() // method of Animation class, line 327
+  animations[name].make_visible()
 })
 
 //———————————————————————————————————————— delete unused trigger_types
@@ -717,9 +719,11 @@ Object.keys(animations).forEach(name =>
   animations[name].delete_if_no_event()
 )
 
+console.groupEnd();
+
 //———————————————————————————————————————— activate events by type
 
-log('activating events…');
+console.group('activating events…');
 
 Object.keys(animations).forEach(name => {
 
@@ -736,6 +740,8 @@ Object.keys(animations).forEach(name => {
   }
 
 })
+
+console.groupEnd();
 
 //———————————————————————————————————————— end timer
 
@@ -767,34 +773,34 @@ if (typeof debug != 'undefined'){
 console.groupEnd();
 
 
-//:::::::::::::::::::::::::::::::::::::::: activate trigger "func" functions
+//:::::::::::::::::::::::::::::::::::::::: program trigger "func" functions
 
-//———————————————————————————————————————— activate_mouse_trigger_func(name, triggers, args)
+//———————————————————————————————————————— mouse_trigger_funcs(name, triggers, args)
 
-function activate_mouse_trigger_func(name, triggers, args){
-  triggers.obj.addEventListener('click', functions[name].bind(null, ...args)); 
+function mouse_trigger_funcs(name, triggers, args){
+  triggers.obj.addEventListener('click', functions[name].bind(null, ...args)) 
 }
 
-//———————————————————————————————————————— activate_time_trigger_func(name, triggers, args)
+//———————————————————————————————————————— time_trigger_funcs(name, triggers, args)
 
-function activate_time_trigger_func(name, triggers, args){
-  setTimeout(functions[name].bind(null, ...args), triggers.delay*1000);
+function time_trigger_funcs(name, triggers, args){
+  setTimeout(functions[name].bind(null, ...args), triggers.delay*1000)
 }
 
-//———————————————————————————————————————— activate_scroll_triggers_func(name, triggers, args)
+//———————————————————————————————————————— scroll_triggers_funcs(name, triggers, args)
 
-function activate_scroll_triggers_func(name, triggers, args){
+function scroll_triggers_funcs(name, triggers, args){
 
-  var obj = triggers.obj;
+  var obj = triggers.obj
 
-  var box = obj.getBBox();      // get bounding box of trig object
-  var trig_top = box['y'];             // top
+  var box = obj.getBBox()      // get bounding box of trig object
+  var trig_top = box['y']             // top
 
-  window.addEventListener('scroll', execute_scroll_func.bind(null, name, triggers, trig_top, args)); 
+  window.addEventListener('scroll', execute_scroll_func.bind(null, name, triggers, trig_top, args)) 
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: set up events
+//:::::::::::::::::::::::::::::::::::::::: activate events
 
 //———————————————————————————————————————— activate_mouse_events(animation)
 
