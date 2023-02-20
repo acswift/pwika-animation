@@ -390,7 +390,7 @@ class Animation{
   }
 
   dump_flags(){
-    console.group(this.name + ' flag dump');
+    console.group('animation ' + this.name + ':');
 
     Object.keys(this).forEach(key => {
       if (typeof this[key] != 'undefined')
@@ -813,15 +813,15 @@ function activate_mouse_events(animation){
     switch (animation.evnt[x].kind) {
       case undefined: break; // if it's just a link or func
   
-      case 'click' : mouse_single(animation, x, 'pointerup'  ); break;
-      case 'press' : mouse_single(animation, x, 'pointerdown'); break;
-      case 'over'  : mouse_single(animation, x, 'pointerover'); break;
-      case 'away'  : mouse_single(animation, x, 'pointerout' ); break; // or pointerleave
+      case 'click' : add_mouse_single(animation, x, 'pointerup'  ); break;
+      case 'press' : add_mouse_single(animation, x, 'pointerdown'); break;
+      case 'over'  : add_mouse_single(animation, x, 'pointerover'); break;
+      case 'away'  : add_mouse_single(animation, x, 'pointerout' ); break; // or pointerleave
   
       // special cases
-      case 'ovaway': mouse_ovaway(animation, x); break;
-      case 'down'  :   mouse_down(animation, x); break;
-      case 'toggle': mouse_toggle(animation, x); break;
+      case 'ovaway': add_mouse_ovaway(animation, x); break;
+      case 'down'  :   add_mouse_down(animation, x); break;
+      case 'toggle': add_mouse_toggle(animation, x); break;
   
       default:
         log('⚠️ unimplemented mouse event: "'+animation.evnt[0].kind+'" in animation "'+animation.name+'"');
@@ -841,7 +841,7 @@ function activate_time_events(animation){
   for (var x=0; x<animation.evnt.length; x++){
     switch (animation.evnt[x].kind) {
     case 'delay':
-      time_delay(animation, x)
+      add_time_delay(animation, x)
       break
 
     default:
@@ -862,15 +862,15 @@ function activate_scroll_events(animation){
   for (var x=0; x<animation.evnt.length; x++){
     switch (animation.evnt[x].kind) {
     case 'point':
-      scroll_point(animation, x)
+      add_scroll_point(animation, x)
       break
 
     case 'zone':
-      scroll_zone(animation, x)
+      add_scroll_zone(animation, x)
       break
 
     case 'scrub':
-      scroll_scrub(animation, x)
+      add_scroll_scrub(animation, x)
       break
 
     default:
@@ -885,9 +885,9 @@ function activate_scroll_events(animation){
 
 //:::::::::::::::::::::::::::::::::::::::: addEventListener type functions
 
-//———————————————————————————————————————— time_delay(animation)
+//———————————————————————————————————————— add_time_delay(animation)
 
-function time_delay(animation, x){
+function add_time_delay(animation, x){
 
   delay  = animation.triggers[0].delay * 1000
   params = gsap_params(animation.evnt[x])
@@ -897,9 +897,9 @@ function time_delay(animation, x){
 
 }
 
-//———————————————————————————————————————— mouse_single(animation, x, type)
+//———————————————————————————————————————— add_mouse_single(animation, x, type)
 
-function mouse_single(animation, x, type){
+function add_mouse_single(animation, x, type){
 
   params = gsap_params(animation.evnt[x])
 
@@ -911,11 +911,11 @@ function mouse_single(animation, x, type){
   }
 }
 
-//———————————————————————————————————————— mouse_ovaway(animation, x)
+//———————————————————————————————————————— add_mouse_ovaway(animation, x)
 
 // rotation is not cumulative (rotating to 90° twice just turns to 90°)
 
-function mouse_ovaway(animation, x){
+function add_mouse_ovaway(animation, x){
 
   params = gsap_params(animation.evnt[x]);
 
@@ -927,11 +927,11 @@ function mouse_ovaway(animation, x){
 
 }
 
-//———————————————————————————————————————— mouse_down(animation, x)
+//———————————————————————————————————————— add_mouse_down(animation, x)
 
 // rotation is not cumulative (rotating to 90° twice just turns to 90°)
 
-function mouse_down(animation, x){
+function add_mouse_down(animation, x){
 
   params = gsap_params(animation.evnt[x]);
 
@@ -946,9 +946,9 @@ function mouse_down(animation, x){
 
 }
 
-//———————————————————————————————————————— mouse_toggle(animation, x)
+//———————————————————————————————————————— add_mouse_toggle(animation, x)
 
-function mouse_toggle(animation, x){
+function add_mouse_toggle(animation, x){
 
   params = gsap_params(animation.evnt[x]);
 
@@ -958,14 +958,14 @@ function mouse_toggle(animation, x){
   }
 }
 
-/*———————————————————————————————————————— scroll_point(animation,x)
+/*———————————————————————————————————————— add_scroll_point(animation,x)
 
 		can have multiple triggers that set off the animation
 
     it is the fact that the "point" crosses the top border of the window
     that triggers the animation — not if it's visible already or not */
 
-function scroll_point(animation, which_event){
+function add_scroll_point(animation, which_event){
 
   for (var t=0; t<animation.triggers.length; t++){
 
@@ -981,9 +981,9 @@ function scroll_point(animation, which_event){
   }
 }
 
-//———————————————————————————————————————— scroll_scrub(animation,x)
+//———————————————————————————————————————— add_scroll_scrub(animation,x)
 
-function scroll_scrub(animation, x){
+function add_scroll_scrub(animation, x){
 
   for (var t=0; t<animation.triggers.length; t++){
     var obj = animation.triggers[t].obj;
@@ -1002,9 +1002,9 @@ function scroll_scrub(animation, x){
   }
 }
 
-//———————————————————————————————————————— scroll_zone(animation,x)
+//———————————————————————————————————————— add_scroll_zone(animation,x)
 
-function scroll_zone(animation, x){
+function add_scroll_zone(animation, x){
 
   for (var t=0; t<animation.triggers.length; t++){
     var obj = animation.triggers[t].obj;
