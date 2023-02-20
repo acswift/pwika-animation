@@ -727,12 +727,12 @@ Object.keys(animations).forEach(name => {
   // the first one is enough to set up the event
 
   switch (animations[name].triggers[0].kind) {
-    case 'mouse' :  activate_mouse_events(animations[name]); break;
-    case 'time'  :   activate_time_events(animations[name]); break;
-    case 'scroll': activate_scroll_events(animations[name]); break;
+    case 'mouse' :  activate_mouse_events(animations[name]); break
+    case 'time'  :   activate_time_events(animations[name]); break
+    case 'scroll': activate_scroll_events(animations[name]); break
 
     default:
-      log('⚠️ unimplemented trigger kind: "'+animations[name].triggers[0].kind+'" in animation "'+animation.name+'"');
+      log('⚠️ unimplemented trigger kind: "'+animations[name].triggers[0].kind+'" in animation "'+name+'"')
   }
 
 })
@@ -945,6 +945,7 @@ function mouse_down(animation, x){
 function mouse_toggle(animation, x){
 
   params = gsap_params(animation.evnt[x]);
+
   for (var t=0; t<animation.triggers.length; t++){
     create_tline(animation.name+x, animation.evnt[x], params);
     animation.triggers[t].obj.addEventListener('pointerup', execute_toggle.bind(null, animation.name+x, animation.evnt[x]), false);
@@ -1014,7 +1015,7 @@ function scroll_zone(animation, x){
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: event-related functions
+//:::::::::::::::::::::::::::::::::::::::: linked to events
 
 /*———————————————————————————————————————— execute_scroll_func(name, triggers, trig_top, args)
 
@@ -1237,28 +1238,6 @@ log('💥 1198 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto);
 
 }
 
-//———————————————————————————————————————— create_tline(obj, params)
-
-//nction create_tline(animation, params){
-function create_tline(namex, evntx, params){
-
-  obj = evntx.obj;
-
-  var funcName = namex + '_timeline';
-
-  var tline    = window[funcName];
-
-  if (typeof tline == 'undefined'){
-
-    window[funcName] = new gsap.timeline({paused:true});
-
-    var tline = window[funcName];
-
-    tline[evntx.fromto](obj, params);
-
-  }
-}
-
 //———————————————————————————————————————— play_tline_prev(namex, effectx, params)
 
 //nction play_tline(animation, params){
@@ -1291,16 +1270,20 @@ function play_tline_prev(namex, effectx, params){
 //nction play_tline(animation, params){
 function play_tline(namex, evntx){
 
-  obj = evntx.obj;
+  obj = evntx.obj
 
-  var funcName = namex + '_timeline';
-  var tline    = window[funcName];
+  var funcName = namex + '_timeline'
+  var tline    = window[funcName]
+
+log(funcName +' if you dont see "done" just below, line 1281 failed')
 
   // play if it's not playing or if it's reversed
   if (!tline.isActive() || (tline.isActive() && tline.reversed())){
-    set_existence(obj, true);
-    tline.play();
+    set_existence(obj, true)
+    tline.play()
   }
+
+log('done')
 
 //// make unexists to avoid layering conflicts                // now handled by timeline
 //if (params.autoAlpha==0) set_existence(obj, false);
@@ -1552,6 +1535,30 @@ function decode_entities(arg){
 //———————————————————————————————————————— debugging
 
 //var a = 'name5'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+
+//———————————————————————————————————————— create_tline(obj, params)
+
+//nction create_tline(animation, params){
+function create_tline(namex, evntx, params){
+
+  obj = evntx.obj;
+
+  var funcName = namex + '_timeline';
+
+  var tline    = window[funcName];
+
+  if (typeof tline == 'undefined'){
+
+    window[funcName] = new gsap.timeline({paused:true});
+
+    var tline = window[funcName];
+
+    tline[evntx.fromto](obj, params);
+
+    log('timeline '+funcName + '.'+evntx.fromto+' created');
+
+  }
+}
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
