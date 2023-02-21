@@ -251,18 +251,29 @@ class Animation{
     }
 
     // special cases (so absence of flags behaves as expected) ———————————————————————————————
-
-    // set transparency 0 to 1
+    // set transparency 0 to 1 ——————————— ONLY IF NO FLAGS
     if ( typeof zoopy.xmove     == 'undefined' &&
          typeof zoopy.ymove     == 'undefined' &&
          typeof zoopy.rotate    == 'undefined' &&
          typeof zoopy.scale     == 'undefined' &&
          typeof zoopy.xscale    == 'undefined' &&
-         typeof zoopy.yscale    == 'undefined' &&
-         typeof zoopy.transp_to == 'undefined' ){
-      zoopy.transp_from = 0
-      zoopy.transp_to   = 1
-      zoopy.obj.style.opacity = 0
+         typeof zoopy.yscale    == 'undefined'){
+
+      if (typeof zoopy.transp_to == 'undefined') // no info, so goes from 0 › 1
+        zoopy.transp_to = 1
+
+      if (zoopy.transp_to == 0)                  // if goes to 0, starts with current opacity
+        zoopy.transp_from = zoopy.obj.style.opacity
+
+if (zoopy.name == 'name9') log('————————————————————————————————-- obj.id = '+decodeEntities(zoopy.obj.id))
+if (zoopy.name == 'name9') log('————————————————————————————————-- obj.style.opacity = '+zoopy.obj.style.opacity)
+if (zoopy.name == 'name9') log('————————————————————————————————-- '+zoopy.transp_from+'::'+zoopy.transp_to)
+
+      else{
+        zoopy.transp_from = 0                    // otherwise starts at 0
+        zoopy.obj.style.opacity = 0
+      }
+
     }
     else zoopy.obj.style.display = 'block'
 
@@ -286,10 +297,10 @@ class Animation{
     // set starting transparency
 
     if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
-      zoopy.transp_from = 1;
+      zoopy.transp_from = 1
 
     if (zoopy.transp_to == 1 && typeof zoopy.transp_from == 'undefined'){
-      zoopy.transp_from = zoopy.obj.style.opacity; // if 1 make it 0 otherwise get current value
+      zoopy.transp_from = zoopy.obj.style.opacity // if 1 make it 0 otherwise get current value
 //    zoopy.obj.style.opacity = 0
     }
 
@@ -308,8 +319,6 @@ class Animation{
     if (typeof this.evnt == 'undefined') this.evnt = []
     this.evnt.push(zoopy)
     
-log('—————————————————————————— id added: '+ decodeEntities(zoopy.obj.id))
-
   }
 
   set_cursor(){
@@ -1560,7 +1569,7 @@ function svgName(obj){
 
 //———————————————————————————————————————— debugging
 
-var a = 'nameF'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
+var a = 'name9'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
