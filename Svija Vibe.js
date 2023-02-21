@@ -148,8 +148,8 @@ const event_defaults = {
 
 // https://www.w3schools.com/js/js_classes.asp
 
-var animations = {};   // Animations
-var functions  = [];   // mouse functions called by func flag
+var animations = {}   // Animations
+var functions  = []   // mouse functions called by func flag
 
 class Animation{
 
@@ -225,10 +225,10 @@ class Animation{
 
     // initialize
 
-    var zoopy     = new Evnt;
-    zoopy.obj     = obj;
-    zoopy.kind    = kind;
-    zoopy.name    = this.name;
+    var zoopy     = new Evnt
+    zoopy.obj     = obj
+    zoopy.kind    = kind
+    zoopy.name    = this.name
 
     // loop through flags (kind|name|parameters...)
 
@@ -246,7 +246,7 @@ class Animation{
 
       if (typeof zoopy[key] != 'undefined') errLog('Duplicate "'+key+'" flags', zoopy.obj);
 
-      zoopy[key] = this.get_flag_val(key, flag);
+      zoopy[key] = this.get_flag_val(key, flag, obj);
 
     }
 
@@ -260,15 +260,15 @@ class Animation{
          typeof zoopy.xscale    == 'undefined' &&
          typeof zoopy.yscale    == 'undefined' &&
          typeof zoopy.transp_to == 'undefined' ){
-      zoopy.transp_from = 0;
-      zoopy.transp_to   = 1;
-      zoopy.obj.style.opacity = 0;
+      zoopy.transp_from = 0
+      zoopy.transp_to   = 1
+      zoopy.obj.style.opacity = 0
     }
-
+    else zoopy.obj.style.display = 'block'
 
     // set default fromto
     if (typeof zoopy.fromto=='undefined')
-      zoopy.fromto= event_defaults.fromto;
+      zoopy.fromto= event_defaults.fromto
 
     // set default duration
     if (typeof zoopy.duration=='undefined')
@@ -283,11 +283,17 @@ class Animation{
     if (typeof zoopy.delay!='undefined')
       zoopy.delay= 1 * zoopy.delay;
 
-    // if set to disappear, need starting transp of 1
+    // set starting transparency
+
     if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
       zoopy.transp_from = 1;
 
-    // if destination transparency is not 0, default starting transparency is 0
+    if (zoopy.transp_to == 1 && typeof zoopy.transp_from == 'undefined'){
+      zoopy.transp_from = zoopy.obj.style.opacity; // if 1 make it 0 otherwise get current value
+//    zoopy.obj.style.opacity = 0
+    }
+
+    // if destination transparency is not 0, default starting transparency is 0 COMMENTED OUT
 //  if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined'){ 
 //    zoopy.transp_from = 0;
 //    zoopy.obj.style.opacity = 0;
@@ -357,7 +363,7 @@ class Animation{
     }
   }
 
-  make_visible(){  // PROBABLY DEPRECATED!!!!
+  make_visible(){  // PROBABLY DEPRECATED!!!! COMMENTED OUT AT CALL
 
     if (typeof this.evnt=='undefined') return true;
 
@@ -432,55 +438,55 @@ class Animation{
      needs to be updated when flags are modified  */
 
     switch(flag){
-      case 'softout': return 'ease'   ; // whole flag
-      case 'softin' : return 'ease'   ;
-      case 'soft'   : return 'ease'   ;
-      case 'hard'   : return 'ease'   ;
-      case '>'      : return 'fromto' ;
-      case '<'      : return 'fromto' ;
+      case 'softout': return 'ease'    // whole flag
+      case 'softin' : return 'ease'
+      case 'soft'   : return 'ease'
+      case 'hard'   : return 'ease'
+      case '>'      : return 'fromto'
+      case '<'      : return 'fromto'
     
     }
 
     switch(flag.slice(0,3)){
-      case '+x%'   : return 'xscale'  ; // first 3 chars
-      case '-x%'   : return 'xscale'  ;
-      case '+y%'   : return 'yscale'  ;
-      case '-y%'   : return 'yscale'  ;
+      case '+x%'   : return 'xscale'    // first 3 chars
+      case '-x%'   : return 'xscale'
+      case '+y%'   : return 'yscale'
+      case '-y%'   : return 'yscale'
     }
 
     switch(flag.slice(0,2)){
-      case '+x'    : return 'xmove'   ; // first 2 chars
-      case '-x'    : return 'xmove'   ;
-      case '+y'    : return 'ymove'   ;
-      case '-y'    : return 'ymove'   ;
-      case 'x%'    : return 'xscale'  ;
-      case 'y%'    : return 'yscale'  ;
-      case '+%'    : return 'scale'   ;
-      case '-%'    : return 'scale'   ;
+      case '+x'    : return 'xmove'     // first 2 chars
+      case '-x'    : return 'xmove'
+      case '+y'    : return 'ymove'
+      case '-y'    : return 'ymove'
+      case 'x%'    : return 'xscale'
+      case 'y%'    : return 'yscale'
+      case '+%'    : return 'scale'
+      case '-%'    : return 'scale'
     }
 
     switch(flag.slice(0,1)){
-      case '%'    : return 'scale'    ; // first 1 char
-      case '<'    : return 'rotate'   ;
-      case 'd'    : return 'delay'    ;
-      case 'o'    : return 'origin'   ;
-      case 't'    : return 'transp_to';
-//    case 'x'    : return 'xmove'    ;
-//    case 'y'    : return 'ymove'    ;
+      case '%'    : return 'scale'      // first 1 char
+      case '<'    : return 'rotate'
+      case 'd'    : return 'delay'
+      case 'o'    : return 'origin'
+      case 't'    : return 'transp_to'
+//    case 'x'    : return 'xmove'
+//    case 'y'    : return 'ymove'
     }
 
-    if (flag.slice(-1) == '>')    return 'rotate';   // /130> rotation clockwise
-    if (parseFloat(flag) == flag) return 'duration'; // integer means duration
+    if (flag.slice(-1) == '>')    return 'rotate'    // /130> rotation clockwise
+    if (parseFloat(flag) == flag) return 'duration'  // integer means duration
 
     if (flag != '')
       errLog('Unknown flag "' + flag + '"', obj)
     else
       errLog('Extra slash', obj)
 
-    return null;
+    return null 
   }
 
-  get_flag_val(key, flag){
+  get_flag_val(key, flag, obj){
     var flag_len = flag_length[key];
   
     if (key=='ease')   return eases[flag];
@@ -504,12 +510,23 @@ class Animation{
         return flag.substr(flag_len+1);
       else return flag.substr(flag_len);  //  x200
   
-    if (key=='scale' || key=='xscale' || key=='yscale')
-      if (flag.slice(0,1)=='-')                 // -%200
-        return (0-flag.substr(flag_len+1))/100;
-      else if (flag.slice(0,1)=='+')            // +%200
-        return (flag.substr(flag_len+1)/100);
-      else return (flag.substr(flag_len)/100);  //  %200
+    if (key=='scale' || key=='xscale' || key=='yscale'){
+      var rest;
+
+      if (flag.slice(0,1)=='-')                 // -%200, -x%200
+        rest = (0-flag.substr(flag_len+1))/100;
+
+      else if (flag.slice(0,1)=='+')            // +%200, +x%200
+        rest = (flag.substr(flag_len+1)/100);
+
+      else rest = (flag.substr(flag_len)/100);  //  %200, x%200
+
+      if (!isNaN(rest)) return rest
+      else{
+        errLog('Invalid scaling factor', obj)
+        return 1
+      }
+    }
 
     return flag.substr(flag_len);
   }
@@ -1540,7 +1557,7 @@ function svgName(obj){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'name1'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
+var a = 'nameE'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin

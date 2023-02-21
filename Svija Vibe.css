@@ -96,7 +96,14 @@ polygon[id^='toggle_x2F_'], polygon[id^='delay_x2F_' ], polygon[id^='zone_x2F_' 
 
 /*———————————————————————————————————————— style directives */
 
-svg{pointer-events:none;}
+#x{
+  pointer-events:none;
+  display:none;
+}
+
+svg{
+  pointer-events:none;
+}
 
 
 /*:::::::::::::::::::::::::::::::::::::::: fin */
