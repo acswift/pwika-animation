@@ -195,13 +195,15 @@ class Animation{
         zoopy.func = true;
         zoopy.args = [];
         for (var y=x+1; y<flags.length; y++)
-          zoopy.args.push(decode_entities(flags[y]));
+          zoopy.args.push(decodeEntities(flags[y]));
         x = 1000; // get out of loop — no other flags can follow func
       }
       else{
         var v = trigger_flag_value_to_key_value[val];
-        if (val == '') errlog('Trigger "'+this.name+'" has an extra slash.');
-        else if (typeof v == 'undefined') errlog('Trigger "'+this.name+'" has unknown flag: "'+val+'".');
+        if (val == '')
+          errLog('Extra slash',  obj);
+        else if (typeof v == 'undefined')
+          errLog('Unknown flag', obj);
         else zoopy[key] = v;
       }
 
@@ -240,9 +242,9 @@ class Animation{
       if (flag.indexOf('_') > -1) flag = convert_entities(flag);
 
       // assign value to flag
-      key = this.event_key_from_flag(flag);
+      key = this.event_key_from_flag(flag, obj);
 
-      if (typeof zoopy[key] != 'undefined') errlog('Event "'+this.name +'" ('+kind+') has duplicate "'+key+'" flags');
+      if (typeof zoopy[key] != 'undefined') errLog('Duplicate "'+key+'" flags', zoopy.obj);
 
       zoopy[key] = this.get_flag_val(key, flag);
 
@@ -339,7 +341,7 @@ class Animation{
          a single trigger calls several events */
 
       if (typeof functions[this.name] == 'undefined')
-        errlog('Function func_'+this.name+' not found.');
+        errLog('Function func_'+this.name+' not found.', this.triggers[x].obj);
 
       else switch (this.triggers[x].kind) {
         case 'mouse' :    mouse_trigger_funcs(this.name, this.triggers[x], args); break;
@@ -381,7 +383,7 @@ class Animation{
     for (var t=0; t<this.triggers.length; t++){
       if (typeof this.evnt == 'undefined')
         if (!this.triggers[t].func && !this.triggers[t].link){
-          errlog('Event object "'+this.name+'" ('+this.triggers[t].kind+') de-registered (no event, link or function). SVG NAME');
+          errLog('Trigger has no event, link or function', this.triggers[t].obj);
           delete animations[this.name];
         }
     }
@@ -421,7 +423,7 @@ class Animation{
     console.groupEnd();
   }
 
-  event_key_from_flag(flag){
+  event_key_from_flag(flag, obj){
 
 /*   should return key & flag w/o key
      rename to split_key_flag
@@ -472,9 +474,9 @@ class Animation{
     if (parseFloat(flag) == flag) return 'duration'; // integer means duration
 
     if (flag != '')
-      errlog('Event "'+this.name+'" has an unknown flag: "'+flag +'".');
+      errLog('Unknown flag "' + flag + '"', obj)
     else
-      errlog('Event "'+this.name+'" has an extra slash.');
+      errLog('Extra slash', obj)
 
     return null;
   }
@@ -666,39 +668,39 @@ console.groupEnd();
 
 //———————————————————————————————————————— register events by type
 
-console.groupCollapsed('registering events…');
+console.groupCollapsed('registering events…')
 
 event_types.forEach(kind => {
-  var stem = "[id^='" + kind + separator + "']";
-  var obj_array = Array.from(document.querySelectorAll(stem));
+  var stem = "[id^='" + kind + separator + "']"
+  var obj_array = Array.from(document.querySelectorAll(stem))
 
   // loop through adding events
   for(var x=0; x<obj_array.length; x++){
 
-    var obj   = obj_array[x];
-    var flags = obj.id.split(separator);
+    var obj   = obj_array[x]
+    var flags = obj.id.split(separator)
 
     // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
     if (flags[flags.length-1].length > 50)
-      flags[flags.length-1] = flags[flags.length-1].slice(0, -52);
+      flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
 
-    //  kind = flags[0];
-    var name = flags[1];
+    //  kind = flags[0]
+    var name = flags[1]
 
     if (Object.keys(animations).includes(name))
       animations[name].add_event(obj, kind, flags)
     else
-      errlog('Event "'+name+'" has no trigger and was not registered (id='+obj_array[x].id+') SVG NAME');
+      errLog('Event "'+name+'" has no trigger', obj)
 
   }
 
   // log results
-  if (obj_array.length != 0) log(obj_array.length+' '+ kind+' events registered');
-  //                    else log('—› no '+kind+' event_types');
+  if (obj_array.length != 0) log(obj_array.length+' '+ kind+' events registered')
+  //                    else log('—› no '+kind+' event_types')
 
-});
+})
 
-console.groupEnd();
+console.groupEnd()
 
 //———————————————————————————————————————— set cursors, activate "func" flags, and turn on "default on" objects
 
@@ -824,7 +826,7 @@ function activate_mouse_events(animation){
       case 'toggle': add_mouse_toggle(animation, x); break;
   
       default:
-        log('⚠️ unimplemented mouse event: "'+animation.evnt[0].kind+'" in animation "'+animation.name+'"');
+        errLog('Unknown mouse event', animation.evnt[x]);
     }
   }
 
@@ -845,8 +847,9 @@ function activate_time_events(animation){
       break
 
     default:
-      if (typeof animation.evnt[x].kind != 'undefined') errlog('unknown time kind: '+animation.evnt[x].kind)
-      else errlog('missing time evnt: '+animation.name)
+      if (typeof animation.evnt[x].kind != 'undefined')
+           errLog('Unknown time event', animation.evnt[x])
+      else errLog('Missing time event', animation.evnt[x])
     }
   }
 
@@ -874,8 +877,9 @@ function activate_scroll_events(animation){
       break
 
     default:
-      if (typeof animation.evnt[x].kind != 'undefined') errlog('unknown scroll kind: '+animation.evnt[x].kind)
-      else errlog('missing scroll evnt: '+animation.name)
+      if (typeof animation.evnt[x].kind != 'undefined')
+           errLog('Unknown scroll event', animation.evnt[x])
+      else errLog('Missing scroll event', animation.evnt[x])
     }
   }
 
@@ -1056,10 +1060,12 @@ function lstn_scroll_func(name, triggers, trig_top, args){
 
 */
 
-  // trig is activated
-  if (trig_top < rem_top){
-    functions[name](...args) 
-  }
+  if (trig_top < rem_top)
+    if (typeof functions[name] != 'undefined'){
+      functions[name](...args) 
+      delete functions[name]
+    }
+
 
 }
 
@@ -1168,7 +1174,7 @@ function lstn_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
     // if trig object is above top of page, snap to 100
     if (trig_bot < rem_top){
       tline.totalTime(tline.totalDuration())
-      if (params['autoAlpha'] == 0) set_existence(obj, false)
+//    if (params['autoAlpha'] == 0) set_existence(obj, false)
     }
   }
 
@@ -1203,87 +1209,62 @@ function lstn_scroll_zone(animation, which_event, trig_top, trig_bot, params){
   var rem_top      = page_top / aiPixel
   var rem_bot      = page_bot / aiPixel
 
+  var rem_dist     = rem_bot - trig_bot // distance between bottom of trigger
+  if (rem_dist < 0) rem_dist = 0        // and bottom of window
+
   var obj          = animation.evnt[which_event].obj
   var funcName     = animation.name + which_event + '_timeline'
   var tline        = window[funcName]
 
-/*    variables:
+    if (trig_top > rem_top && trig_bot < rem_bot) var triggerActive = true
+                                             else var triggerActive = false
 
-      trigger is active (visible)   boolean
-      tlPosition                    beginning | middle | end 
+  if (tline.totalTime() == tline.totalDuration()) var tlPosition    = 'end'
+                 else if (tline.totalTime() == 0) var tlPosition    = 'beginning'
+                                             else var tlPosition    = 'middle'
 
-      tlReversed                    boolean
-      tlPlaying                     boolean  */
-
-  if (trig_top > rem_top && trig_bot < rem_bot)
-    var triggerActive = true
-  else
-    var triggerActive = false
-
-  if (tline.totalTime() == 0)
-   var tlPosition = 'beginning'
-  else if (tline.totalTime() == tline.totalDuration())
-    var tlPosition = 'end'
-  else
-    var tlPosition = 'middle'
-
-  var tlReversed = tline.reversed()
-  var tlPlaying = tline.isActive()
+                                                  var tlReversed    = tline.reversed()
+                                                  var tlPlaying     = tline.isActive()
 
 /*
 
                                 trigger:   visible  hidden
 
-  - animation !playing && pos != end        play     -
-  - animation playing && reversed           play     -
+    animation !playing && pos != end        play     -
+                       if rem_dist>100      » end                    commented out below; I don't know how to tell whether it's that the animation has
+                                                                     played to the end and we're now scrolling up, or whether the page has simply been
+    animation playing && reversed           play     -               loaded with the scroll trigger entirely visible
+    animation !playing && pos != beginning  -        reverse
+    animation playing && !reversed          -        reverse 
 
-  - animation !playing && pos != beginning  -        reverse
-  - animation playing && !reversed          -        reverse 
+		doesn't work when we scroll down the page
 
 */
 
+  var dist_limit = 100
+
   if(triggerActive){
-    if (!tlPlaying && tlPosition != 'end') tline.play()
-    if ( tlPlaying && tlReversed         ) tline.play()
+    if (!tlPlaying && tlPosition != 'end'){
+//    if (rem_dist > dist_limit){
+//      tline.totalTime(tline.totalDuration(), false)
+//      log(animation.name+which_event + ' skipping to end')
+//    }
+//    else{
+        tline.play()
+//      log(animation.name+which_event + ' playing from beginning')
+//    }
+    }
+    if ( tlPlaying && tlReversed) tline.play()
   }
 
   if(!triggerActive){
     if (!tlPlaying && tlPosition != 'beginning') tline.reverse()
-    if ( tlPlaying && !tlReversed)             tline.reverse()
+    if ( tlPlaying && !tlReversed)               tline.reverse()
   }
 
-log('active: ' + triggerActive + ', playing: ' + tlPlaying + ', position: ' + tlPosition + ', reversed: ' + tlReversed + ', display: '+ obj.style.display);
-
+//log('active: ' + triggerActive + ', playing: ' + tlPlaying + ', position: ' + tlPosition + ', reversed: ' + tlReversed + ', display: '+ obj.style.display);
 
 /* INSERT DISPLAY:BLOCK AT BEGINNING OF TIMELINES FROM 0 OPACITY ETC. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*            // trig is activated
-              if (trig_top > rem_top && trig_bot < rem_bot){
-                if (typeof tline != 'undefined'){
-                  if (tline.reversed()) tline.play()       //  if reversed play it
-                }
-              }
-            
-              // trig is deactivated
-              else{
-                if (typeof tline == 'undefined') return true                      //  doesn't exist: do nothing
-                if (!tline.isActive() && !tline.reversed()) tline.reverse()       //  paused not reversed (at end): reverse it
-                else if (tline.isActive() && !tline.reversed()) tline.reverse()   //  playing not reversed: reverse it 
-                return true
-              } */
 
 }
 
@@ -1326,10 +1307,6 @@ function lstn_play(namex, evntx){
     set_existence(obj, true)
     tline.play()
   }
-
-//// make unexists to avoid layering conflicts                // now handled by timeline
-//if (params.autoAlpha==0) set_existence(obj, false);
-//                    else set_existence(obj, true );
 }
 
 //———————————————————————————————————————— lstn_reverse(obj, params)
@@ -1409,17 +1386,8 @@ function gsap_params(evntx){
   if (typeof evntx.transp_to != 'undefined') params['autoAlpha'      ] = evntx.transp_to    ;
   if (typeof evntx.rotate    != 'undefined') params['rotation'       ] = '+=' + evntx.rotate;
 
-  //————— make exists if not 0 opacity
-
-//if (params['autoAlpha']==1){                          // this has to happen before anim is called
-//  params['onComplete'      ] = set_existence;
-//  params['onCompleteParams'] = [evntx.obj, true];
-//}
-
-  if (params['autoAlpha']==0){
-      params['onComplete'      ] = set_existence;
-      params['onCompleteParams'] = [evntx.obj, false];
-  }
+  if (params['autoAlpha']==0) params['display'] = 'none';
+  if (params['autoAlpha']!=0) params['display'] = 'block';
 
   return params;
 }
@@ -1430,9 +1398,11 @@ function log(arg){
   console.log(arg)
 }
 
-//———————————————————————————————————————— errlog(arg)
+//———————————————————————————————————————— errLog(arg)
 
-function errlog(arg){
+function errLog(arg, obj){
+
+  if (typeof obj != 'undefined') arg += ' in ' + svgName(obj) + '.ai' + ' › ' + decodeEntities(obj.id)
 
   log('⚠️  '+arg);
   if (typeof debug == 'undefined') return true;
@@ -1504,7 +1474,7 @@ function getElementsByRegex(pattern){
    return arrElements; // return matching elements
 };
 
-/*———————————————————————————————————————— decode_entities(arg)
+/*———————————————————————————————————————— decodeEntities(arg)
 
     used for args passed to func trigger flag
 
@@ -1514,25 +1484,26 @@ function getElementsByRegex(pattern){
     then converts those to regular text
     &#x22; to ! */
 
-function decode_entities(arg){
+function decodeEntities(arg){
+  if (typeof arg == 'undefined') return ''
 
-  const regex = /_x([0-9A-Z]{2})_/g;
+  const regex = /_x([0-9A-Z]{2})_/g
 
   var html = arg.replace(regex, function($1){
-    var x = $1.toLowerCase(); 
+    var x = $1.toLowerCase() 
         x = x.replaceAll('_x','&#x')
-        return x.replaceAll('_', ';');
+        return x.replaceAll('_', ';')
   })
 
-  html = html.replaceAll('_', ' ');
+  html = html.replaceAll('_', ' ')
 
-  var tmpObject = document.createElement('textarea');
+  var tmpObject = document.createElement('textarea')
 
-  tmpObject.innerHTML = html;
-  var val = tmpObject.value;
-  tmpObject.remove();
+  tmpObject.innerHTML = html
+  var val = tmpObject.value
+  tmpObject.remove()
 
-  return val;
+  return val
 }
 
 //———————————————————————————————————————— create_tline(obj, params)
@@ -1559,9 +1530,18 @@ function create_tline(namex, evntx, params){
   }
 }
 
+//———————————————————————————————————————— svgName(obj)
+
+function svgName(obj){
+  while (obj.tagName != 'svg')
+    obj = obj.parentElement
+  return decodeEntities(obj.id)
+}
+
+
 //———————————————————————————————————————— debugging
 
-var a = 'name8'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+// var a = 'name8'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
