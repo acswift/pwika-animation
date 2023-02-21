@@ -305,8 +305,10 @@ class Animation{
       zoopy.ease = 'none';
 
     // add to evnt array
-    if (typeof this.evnt == 'undefined') this.evnt = [];
-    this.evnt.push(zoopy);
+    if (typeof this.evnt == 'undefined') this.evnt = []
+    this.evnt.push(zoopy)
+    
+log('—————————————————————————— id added: '+ decodeEntities(zoopy.obj.id))
 
   }
 
@@ -889,7 +891,7 @@ function activate_scroll_events(animation){
       break
 
     case 'scrub':
-      add_scroll_scrub(animation, x)
+      addScrollScrub(animation, x)
       break
 
     default:
@@ -1001,24 +1003,25 @@ function add_scroll_point(animation, which_event){
   }
 }
 
-//———————————————————————————————————————— add_scroll_scrub(animation,x)
+//———————————————————————————————————————— addScrollScrub(animation,x)
 
-function add_scroll_scrub(animation, x){
+function addScrollScrub(animation, x){
 
   for (var t=0; t<animation.triggers.length; t++){
-    var obj = animation.triggers[t].obj;
 
-    var box = obj.getBBox();      // get bounding box of trig object
-    var t = box['y'];             // top
-    var b = t + box['height'];    // bottom
+    var obj = animation.triggers[t].obj //———————————————————————— ERROR
 
-    var params = gsap_params(animation.evnt[x]);
+    var box    = obj.getBBox()                // get bounding box of trig object
+    var boxTop = box['y'] < 0 ? 0 : box['y']  // top
+    var boxBot = boxTop + box['height']       // bottom
 
-    create_tline(animation.name+x, animation.evnt[x], params);
-    window.addEventListener('scroll', lstn_scroll_scrub.bind(null, animation, x, t, b, 0)); 
+    var params = gsap_params(animation.evnt[x])
+
+    create_tline(animation.name+x, animation.evnt[x], params)
+    window.addEventListener('scroll', lstn_scroll_scrub.bind(null, animation, x, boxTop, boxBot, 0)) 
 
     // in case something should already be visible
-    lstn_scroll_scrub(animation, x, t, b, params, 0); 
+    lstn_scroll_scrub(animation, x, boxTop, boxBot, params, 0) 
   }
 }
 
@@ -1557,7 +1560,7 @@ function svgName(obj){
 
 //———————————————————————————————————————— debugging
 
-var a = 'nameE'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
+var a = 'nameF'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
