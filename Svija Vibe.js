@@ -203,7 +203,7 @@ class Animation{
         if (val == '')
           errLog('Extra slash',  obj);
         else if (typeof v == 'undefined')
-          errLog('Unknown flag', obj);
+          errLog('Unknown flag "' + val + '"', obj);
         else zoopy[key] = v;
       }
 
@@ -262,7 +262,9 @@ class Animation{
          typeof zoopy.transp_to == 'undefined' ){
       zoopy.transp_from = 0;
       zoopy.transp_to   = 1;
+      zoopy.obj.style.opacity = 0;
     }
+
 
     // set default fromto
     if (typeof zoopy.fromto=='undefined')
@@ -286,10 +288,11 @@ class Animation{
       zoopy.transp_from = 1;
 
     // if destination transparency is not 0, default starting transparency is 0
-    if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined'){ 
-      zoopy.transp_from = 0;
-      zoopy.obj.style.opacity = 0;
-    }
+//  if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined'){ 
+//    zoopy.transp_from = 0;
+//    zoopy.obj.style.opacity = 0;
+//    log('——————————————————————————————————————————— '+zoopy.name+' set to ZERO')
+//  }
 
     // scrub event_types default to hard ease
     if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
@@ -354,7 +357,7 @@ class Animation{
     }
   }
 
-  make_visible(){
+  make_visible(){  // PROBABLY DEPRECATED!!!!
 
     if (typeof this.evnt=='undefined') return true;
 
@@ -366,12 +369,8 @@ class Animation{
         continue;
       }
 
-      // if no transparency event_types, make visible
-      if (typeof this.evnt[x].transp_from == 'undefined')
-        this.evnt[x].obj.style.opacity = 1;
-
-      // set specified transparency
-      else
+      // set specified transparency 
+      if (typeof this.evnt[x].transp_from != 'undefined')
         this.evnt[x].obj.style.opacity = this.evnt[x].transp_from;
 
       set_existence(this.evnt[x].obj, true);
@@ -383,7 +382,7 @@ class Animation{
     for (var t=0; t<this.triggers.length; t++){
       if (typeof this.evnt == 'undefined')
         if (!this.triggers[t].func && !this.triggers[t].link){
-          errLog('Trigger has no event, link or function', this.triggers[t].obj);
+          errLog('Trigger with no event, link or function', this.triggers[t].obj);
           delete animations[this.name];
         }
     }
@@ -391,7 +390,7 @@ class Animation{
     return true;
   }
 
-  dump_flags(){
+  flagDump(){
     console.group('animation ' + this.name + ':');
 
     Object.keys(this).forEach(key => {
@@ -466,8 +465,8 @@ class Animation{
       case 'd'    : return 'delay'    ;
       case 'o'    : return 'origin'   ;
       case 't'    : return 'transp_to';
-      case 'x'    : return 'xmove'    ;
-      case 'y'    : return 'ymove'    ;
+//    case 'x'    : return 'xmove'    ;
+//    case 'y'    : return 'ymove'    ;
     }
 
     if (flag.slice(-1) == '>')    return 'rotate';   // /130> rotation clockwise
@@ -690,7 +689,7 @@ event_types.forEach(kind => {
     if (Object.keys(animations).includes(name))
       animations[name].add_event(obj, kind, flags)
     else
-      errLog('Event "'+name+'" has no trigger', obj)
+      errLog('Event with no trigger', obj)
 
   }
 
@@ -710,7 +709,7 @@ log('setting cursors, activating functions & making objects visible…')
 Object.keys(animations).forEach(name => {
   animations[name].set_cursor()
   animations[name].activate_func_flag() // method of Animation class, line 327
-  animations[name].make_visible()
+//animations[name].make_visible()         // should be unnecessary now that we don't disappear all by default
 })
 
 //———————————————————————————————————————— delete unused trigger_types
@@ -1541,7 +1540,7 @@ function svgName(obj){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'name8'; try { animations[a].dump_flags(); } catch (error) { log('⚠️  "'+a+'" is not listed.'); }
+//var a = 'name1'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin

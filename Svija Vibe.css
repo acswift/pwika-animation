@@ -46,10 +46,11 @@ polygon[id^='time_x2F_'  ], polygon[id^='scroll_x2F_'], polygon[id^='mouse_x2F_'
    rect[id^='time_x2F_'  ],    rect[id^='scroll_x2F_'],    rect[id^='mouse_x2F_' ],
 
 /*———————————————————————————————————————— style directives */
-#x{
-  opacity:0;
 
 /* https://www.arungudelli.com/tutorial/css/disable-text-selection-in-html-using-user-select-css-property/ */
+
+#x{
+              opacity: 0;
           user-select: none; /* supported by Chrome and Opera */
   -webkit-user-select: none; /* Safari */
    -khtml-user-select: none; /* Konqueror HTML */
@@ -95,7 +96,6 @@ polygon[id^='toggle_x2F_'], polygon[id^='delay_x2F_' ], polygon[id^='zone_x2F_' 
 
 /*———————————————————————————————————————— style directives */
 
-/*#x{ opacity:0; pointer-events:none; } */
 svg{pointer-events:none;}
 
 
