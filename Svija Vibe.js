@@ -102,7 +102,7 @@ const flag_length = {
   'order'      : 0,
   'origin'     : 1,
   'rotate'     : 1,
-  'transp_to'  : 1,
+  'transpFinal'  : 1,
   'xmove'      : 1,
   'ymove'      : 1,
   'scale'      : 1,
@@ -221,65 +221,81 @@ class Animation{
 
   }
 
-  add_event(obj, kind, flags){
+  add_event(obj, kind, objId){
 
     // initialize
-
+    var flags     = objId.slice(2)
+    var flagLen   = flags.length
     var zoopy     = new Evnt
     zoopy.obj     = obj
     zoopy.kind    = kind
     zoopy.name    = this.name
 
-    // loop through flags (kind|name|parameters...)
+    // create dictionary zoopy[key] = flag value
 
-    for(var x=2; x<flags.length; x++){
+    for(var x=0; x<flags.length; x++){
 
-      // get key
-      var key;
-      var flag = flags[x];
+      var flag = flags[x]
 
-      // convert entites to real characters
-      if (flag.indexOf('_') > -1) flag = convert_entities(flag);
+      if (flag.indexOf('_') > -1) flag = convert_entities(flag)
 
-      // assign value to flag
-      key = this.event_key_from_flag(flag, obj);
+      var key = this.event_key_from_flag(flag, obj)
 
-      if (typeof zoopy[key] != 'undefined') errLog('Duplicate "'+key+'" flags', zoopy.obj);
-
-      zoopy[key] = this.get_flag_val(key, flag, obj);
+      if (typeof zoopy[key] == 'undefined')
+          zoopy[key] =  this.get_flag_val(key, flag, obj)
+      else
+          errLog('Duplicate "'+key+'" flag ignored', zoopy.obj)
 
     }
-
-    // special cases (so absence of flags behaves as expected) ———————————————————————————————
-    // set transparency 0 to 1 ——————————— ONLY IF NO FLAGS
-    if ( typeof zoopy.xmove     == 'undefined' &&
-         typeof zoopy.ymove     == 'undefined' &&
-         typeof zoopy.rotate    == 'undefined' &&
-         typeof zoopy.scale     == 'undefined' &&
-         typeof zoopy.xscale    == 'undefined' &&
-         typeof zoopy.yscale    == 'undefined'){
-
-      if (typeof zoopy.transp_to == 'undefined') // no info, so goes from 0 › 1
-        zoopy.transp_to = 1
-
-      if (zoopy.transp_to == 0)                  // if goes to 0, starts with current opacity
-        zoopy.transp_from = zoopy.obj.style.opacity
-
-if (zoopy.name == 'name9') log('————————————————————————————————-- obj.id = '+decodeEntities(zoopy.obj.id))
-if (zoopy.name == 'name9') log('————————————————————————————————-- obj.style.opacity = '+zoopy.obj.style.opacity)
-if (zoopy.name == 'name9') log('————————————————————————————————-- '+zoopy.transp_from+'::'+zoopy.transp_to)
-
-      else{
-        zoopy.transp_from = 0                    // otherwise starts at 0
-        zoopy.obj.style.opacity = 0
-      }
-
-    }
-    else zoopy.obj.style.display = 'block'
 
     // set default fromto
-    if (typeof zoopy.fromto=='undefined')
-      zoopy.fromto= event_defaults.fromto
+
+    if (typeof zoopy.fromto=='undefined') zoopy.fromto = event_defaults.fromto
+
+    /* set transparency · see logic spreadsheet
+
+    display is set to none by CSS
+    needs to be updated here for initially-visible objects
+
+    docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=1328156795 */
+
+    var transCurrent = window.getComputedStyle(obj).getPropertyValue('opacity')
+    var isVisible    = transCurrent != '0'
+    var noFlag       = typeof zoopy['transpFinal'] == 'undefined'
+    var isTransform  = containsTransform(zoopy)
+
+    if (noFlag && !isVisible){  // lines 3-5 √
+      zoopy['transpInit' ] = 0
+      zoopy['transpFinal'] = 1
+    }
+
+    else if (noFlag && isVisible && !isTransform){  // lines 7-8 √
+      zoopy['transpInit' ] = 0
+      zoopy['transpFinal'] = transCurrent
+      zoopy.obj.style.opacity = 0
+      zoopy.obj.style.display = 'none'
+    }
+
+    else if (noFlag && isVisible && isTransform)  // line 10 √
+      zoopy.obj.style.display = 'block' 
+
+    else if (!isVisible && zoopy['transpFinal'] == 0) // lines 12-13 √
+      errLog('Transparent object has "t0" flag', obj)
+
+    else if (zoopy['transFinal'] == 0){     // lines 15-16
+      zoopy['transpInit' ] = transCurrent
+    }
+
+    else if (!noFlag){                      // lines 18-20
+      zoopy['transpInit' ] = transCurrent
+      zoopy.obj.style.display = 'block'
+    }
+
+    //—————————————————————————————— sumpn sumpn
+    if (zoopy.fromTo == '>')
+      zoopy.obj.style.opacity = zoopy.transInit
+    else
+      zoopy.obj.style.opacity = zoopy.transFinal
 
     // set default duration
     if (typeof zoopy.duration=='undefined')
@@ -294,23 +310,6 @@ if (zoopy.name == 'name9') log('————————————————
     if (typeof zoopy.delay!='undefined')
       zoopy.delay= 1 * zoopy.delay;
 
-    // set starting transparency
-
-    if (zoopy.transp_to == 0 && typeof zoopy.transp_from == 'undefined')
-      zoopy.transp_from = 1
-
-    if (zoopy.transp_to == 1 && typeof zoopy.transp_from == 'undefined'){
-      zoopy.transp_from = zoopy.obj.style.opacity // if 1 make it 0 otherwise get current value
-//    zoopy.obj.style.opacity = 0
-    }
-
-    // if destination transparency is not 0, default starting transparency is 0 COMMENTED OUT
-//  if (typeof zoopy.transp_from == 'undefined' && typeof zoopy.transp_to != 'undefined'){ 
-//    zoopy.transp_from = 0;
-//    zoopy.obj.style.opacity = 0;
-//    log('——————————————————————————————————————————— '+zoopy.name+' set to ZERO')
-//  }
-
     // scrub event_types default to hard ease
     if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
       zoopy.ease = 'none';
@@ -319,6 +318,7 @@ if (zoopy.name == 'name9') log('————————————————
     if (typeof this.evnt == 'undefined') this.evnt = []
     this.evnt.push(zoopy)
     
+
   }
 
   set_cursor(){
@@ -372,27 +372,6 @@ if (zoopy.name == 'name9') log('————————————————
           log('⚠️ unimplemented trig kind: "'+animations[name].triggers[0].kind+'" in animation "'+animation.name+'"');
       }
     }
-  }
-
-  make_visible(){  // PROBABLY DEPRECATED!!!! COMMENTED OUT AT CALL
-
-    if (typeof this.evnt=='undefined') return true;
-
-    for (var x=0; x<this.evnt.length; x++){
-
-      // hidden at load
-      if (this.evnt[x].transp_from == 0){
-        set_existence(this.evnt[x].obj, false);
-        continue;
-      }
-
-      // set specified transparency 
-      if (typeof this.evnt[x].transp_from != 'undefined')
-        this.evnt[x].obj.style.opacity = this.evnt[x].transp_from;
-
-      set_existence(this.evnt[x].obj, true);
-    }
-
   }
 
   delete_if_no_event(){
@@ -481,7 +460,7 @@ if (zoopy.name == 'name9') log('————————————————
       case '<'    : return 'rotate'
       case 'd'    : return 'delay'
       case 'o'    : return 'origin'
-      case 't'    : return 'transp_to'
+      case 't'    : return 'transpFinal'
 //    case 'x'    : return 'xmove'
 //    case 'y'    : return 'ymove'
     }
@@ -509,7 +488,7 @@ if (zoopy.name == 'name9') log('————————————————
       if (flag.slice(-1)=='>') return flag.slice(0, flag.length-1);
       else return 0-flag.slice(1, flag.length);
   
-    if (key=='transp_to'){
+    if (key=='transpFinal'){
        var v = flag.substr(flag_len)/100;
        return v;
     }
@@ -570,7 +549,7 @@ class Trigger{
 class Evnt{
 
   constructor( name, obj, kind, delay, handoff, handwait, duration, ease,
-               xmove, ymove, origin, rotate, scale, xscale, yscale, transp_to, transp_from ){
+               xmove, ymove, origin, rotate, scale, xscale, yscale, transpFinal, transpInit ){
 
     this.name        = name;         // 20-character string
     this.obj         = obj;          // object reference
@@ -591,8 +570,8 @@ class Evnt{
     this.scale       = scale;        // number · percentage to scale             %150
     this.xscale      = xscale;       // number · percentage to scale x           x%20
     this.yscale      = yscale;       // number · percentage to scale y           y%30
-    this.transp_to   = transp_to;    // number · percentage transp_to            o30
-    this.transp_from = transp_from;  // number · transp_from/transp_to           programmatically
+    this.transpFinal   = transpFinal;    // number · percentage transpFinal            o30
+    this.transpInit = transpInit;  // number · transpInit/transpFinal           programmatically
   }
 }
 
@@ -732,12 +711,11 @@ console.groupEnd()
 //———————————————————————————————————————— set cursors, activate "func" flags, and turn on "default on" objects
 
 console.groupCollapsed('setup & error checking…')
-log('setting cursors, activating functions & making objects visible…')
+log('setting cursors & activating "/func" functions…')
 
 Object.keys(animations).forEach(name => {
   animations[name].set_cursor()
   animations[name].activate_func_flag() // method of Animation class, line 327
-//animations[name].make_visible()         // should be unnecessary now that we don't disappear all by default
 })
 
 //———————————————————————————————————————— delete unused trigger_types
@@ -1411,7 +1389,7 @@ function gsap_params(evntx){
   if (typeof evntx.xscale    != 'undefined') params['scaleX'         ] = '*=' + evntx.xscale;
   if (typeof evntx.yscale    != 'undefined') params['scaleY'         ] = '*=' + evntx.yscale;
 
-  if (typeof evntx.transp_to != 'undefined') params['autoAlpha'      ] = evntx.transp_to    ;
+  if (typeof evntx.transpFinal != 'undefined') params['autoAlpha'      ] = evntx.transpFinal    ;
   if (typeof evntx.rotate    != 'undefined') params['rotation'       ] = '+=' + evntx.rotate;
 
   if (params['autoAlpha']==0) params['display'] = 'none';
@@ -1430,12 +1408,16 @@ function log(arg){
 
 function errLog(arg, obj){
 
-  if (typeof obj != 'undefined') arg += ' in ' + svgName(obj) + '.ai' + ' › ' + decodeEntities(obj.id)
+  if (typeof obj != 'undefined'){
+    var id   = decodeEntities(obj.id)
+    if (id.length > 50) id = id.slice(0, -52);
 
+    arg += ' in ' + svgName(obj) + '.ai' + ' › ' + id
+  }
+
+  if (typeof debug != 'undefined') alert('⚠️  '+arg);
   log('⚠️  '+arg);
-  if (typeof debug == 'undefined') return true;
 
-  alert('⚠️  '+arg);
 }
 
 //———————————————————————————————————————— not_number(x)
@@ -1566,10 +1548,22 @@ function svgName(obj){
   return decodeEntities(obj.id)
 }
 
+//———————————————————————————————————————— containsTransform(trigger)
+
+function containsTransform(trigger){
+  if ( typeof trigger.xmove     == 'undefined' &&
+       typeof trigger.ymove     == 'undefined' &&
+       typeof trigger.rotate    == 'undefined' &&
+       typeof trigger.scale     == 'undefined' &&
+       typeof trigger.xscale    == 'undefined' &&
+       typeof trigger.yscale    == 'undefined'  ) return false
+
+  return true
+}
 
 //———————————————————————————————————————— debugging
 
-var a = 'name9'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
+//var a = 'name03'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
