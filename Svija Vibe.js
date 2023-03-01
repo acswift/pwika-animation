@@ -259,7 +259,22 @@ class Animation{
 
     docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=1328156795 */
 
+//  toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard.style.display = 'block'; alert(262); // works
+//  obj.style.display = 'block'; alert(264); // broken
+
+//  var nutsId = String(obj.id);                    // toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard
+//  var nuts = document.getElementById(nutsId);     // broken
+//  nuts.style.display = 'block'; alert(267+'*');   // broken
+
+
+//  var nuts = document.getElementById('toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard'); // this works
+//  nuts.style.display = 'block'; alert(270);                                                            // this works
+
+//toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard.style.display = 'block'; alert(269); // works
+
     var transCurrent = window.getComputedStyle(obj).getPropertyValue('opacity')
+// toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard.style.display = 'block'; alert(264); // broken
+
     var isVisible    = transCurrent != '0'
     var noFlag       = typeof zoopy['transpFinal'] == 'undefined'
     var isTransform  = containsTransform(zoopy)
@@ -276,8 +291,9 @@ class Animation{
       zoopy.obj.style.display = 'none'
     }
 
-    else if (noFlag && isVisible && isTransform)  // line 10 √
-      zoopy.obj.style.display = 'block' 
+    else if (noFlag && isVisible && isTransform){  // line 10 √
+      zoopy.obj.style.display = 'block'
+    }
 
     else if (!isVisible && zoopy['transpFinal'] == 0) // lines 12-13 √
       errLog('Transparent object has "t0" flag', obj)
@@ -578,7 +594,7 @@ class Evnt{
 
 //:::::::::::::::::::::::::::::::::::::::: program
 
-//———————————————————————————————————————— ▼ start loggin
+//———————————————————————————————————————— ▼ start logging
 
 console.groupCollapsed('Svija Vibe');
 
@@ -721,7 +737,6 @@ event_types.forEach(kind => {
       animations[name].add_event(obj, kind, flags)
     else
       errLog('Event with no trigger', obj)
-
   }
 
   // log results
@@ -732,7 +747,8 @@ event_types.forEach(kind => {
 
 console.groupEnd()
 
-//———————————————————————————————————————— set cursors, activate "func" flags, and turn on "default on" objects
+
+//———————————————————————————————————————— set cursors and activate "func" flags
 
 console.groupCollapsed('setup & error checking…')
 log('setting cursors & activating "/func" functions…')
@@ -1352,7 +1368,9 @@ function lstn_reverse(namex, evntx){
 
 //:::::::::::::::::::::::::::::::::::::::: utility functions
 
-//———————————————————————————————————————— set_existence(obj, exists)
+/*———————————————————————————————————————— set_existence(obj, exists)
+
+    used only for triggers, which are not animated */
 
 function set_existence(obj, exists){
 //log(convertEntities(obj.id)+' exists set to '+exists);
@@ -1643,7 +1661,7 @@ function getParentG(obj){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'name03'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
+//var a = 'trigger1'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
