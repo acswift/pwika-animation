@@ -237,7 +237,7 @@ class Animation{
 
       var flag = flags[x]
 
-      if (flag.indexOf('_') > -1) flag = convert_entities(flag)
+      if (flag.indexOf('_') > -1) flag = convertEntities(flag)
 
       var key = this.event_key_from_flag(flag, obj)
 
@@ -399,7 +399,7 @@ class Animation{
       log('\nTrigger['+t+']');
       Object.keys(this.triggers[t]).forEach(key => {
         if (typeof this.triggers[t][key] != 'undefined')
-          if(key=='obj')log('obj (object): '+convert_entities(this.triggers[t][key].id));
+          if(key=='obj')log('obj (object): '+convertEntities(this.triggers[t][key].id));
           else log(key+' ('+typeof(this.triggers[t][key])+'): '+this.triggers[t][key]);
       });
     }
@@ -409,7 +409,7 @@ class Animation{
         log('\nEvnt[' + x + ']');
         Object.keys(this.evnt[x]).forEach(key => {
           if (typeof this.evnt[x][key] != 'undefined')
-            if(key=='obj')log('obj (object): '+convert_entities(this.evnt[x][key].id));
+            if(key=='obj')log('obj (object): '+convertEntities(this.evnt[x][key].id));
             else log(key+' ('+typeof(this.evnt[x][key])+'): '+this.evnt[x][key]);
         });
       }
@@ -578,65 +578,89 @@ class Evnt{
 
 //:::::::::::::::::::::::::::::::::::::::: program
 
-//———————————————————————————————————————— ▼ disambiguate clipping masks
+//———————————————————————————————————————— ▼ start loggin
 
 console.groupCollapsed('Svija Vibe');
 
-/*  Illustrator's clipping masks use duplicate ID's
-    for the mask and the parent container
+/*———————————————————————————————————————— disambiguate clipping masks
 
-    in order to animate the mask only, it's necessary
-    to change the container's id 
+——— A clipping path has three elements:
 
-  <defs>
-    <rect id="this" x="81.5" y="122.5" width="134" height="134"/>
-  </defs>
+    1. rect object (the actual path used to clip)
+    2. clipPath object (with a <use tag referring to #1)
+    3. clipped object (with a style="clip-path:url(# declaration referring to #2
 
-  <clipPath id="this_00000008131292206288288250000010619513817506336950_">
-    <use xlink:href="#this"  style="overflow:visible;"/>
-  </clipPath>
+——— problems with this:
 
-  <g style="clip-path:url(#this_00000008131292206288288250000010619513817506336950_);">
-      <image style="overflow:visible;" width="1185" height="1800" xlink:href="pod20180-1.jpg"  transform="matrix(0.75 0 0 0.75 64 85)"></image>
-  </g>
+    1. animating the mask itself (clipping path has a custom name in AI)
 
-  the program will ignore the 52 last characters of an AI generated ID
-  which results in multiple same ID's
+       the clipping masks in the SVG use duplicate ID's for the mask and the
+       parent container. in order to animate the mask only, we change the IDs
+       of #2 and #3 above, leaving only #1 to be animated
 
-  What we are animating is the rect.
-  We do NOT want to animat the clipPath, so we will change its ID
+    2. a group is being clipped
 
-  If we change the clipPath ID, we need to change the reference to it
-  just after, in the g style="clip-path:"...
+       the clipped group is given the style="clip-path" attribute itself,
+       instead of being in a sub <g>. this means that animating the 
+       clipped group animates the clipping path with it
 
-  SEPARATELY
+       this is why adding a second level of group solved the problem.
 
-  if the rect ID contains a minus sign, we need to correct for an Illustrator bug
-  that converts it to an entity when called, but not when declared  */
+    3. in AI, a clipping mask is named with a minus sign -
 
-const clip_users = document.querySelectorAll("[style^='clip']")
+       in exporting the .svg, Illustrator is inconsistent about converting
+       the - to an entity
+   
+
+——— the script does three things:
+
+    1. "moves" the clippedObject status to the parent <g> element
+       so that when the clipped object is moved, the clipping path
+       is not (problem #2 above)
+
+    2. modifies the ID elements #2 and #3 above so that only the rect
+       keeps the original ID and will thus be animated (probem #1 above)
+
+    3. fixes the issue where a - sign is not consistently represented */
 
 log('cleaning up clipping paths…');
-for(var x=0; x<clip_users.length; x++){
 
-  var path_url = clip_users[x].style.clipPath;
-  if (path_url.slice(6,12)=='SVGID_') continue; // should be 'SVGID_', or match parent SVG ID
-  id = path_url.slice(6, path_url.length-2);
-  var new_id = 'CP' + id;
-  clip_path = document.getElementById(id);
-  log('clipping paths verified');
+const clippedObjects = document.querySelectorAll("[style^='clip']")
 
-  try{
-    clip_path.id = new_id;
-    clip_users[x].style.clipPath = 'url("#' + new_id + '")';
-//  log('clipping path disambiguated: '+convert_entities(id.slice(0,-52)));
+for(var x=0; x<clippedObjects.length; x++){
 
-    if (r=fix_minus(clip_path)) var z = 0; // log('minus-sign bug corrected for '+convert_entities(r));
+  var clippedObj = clippedObjects[x]                   // #3 above
+  var pathUrl    = clippedObj.style.clipPath;
+  var pathId     = pathUrl.slice(6, pathUrl.length-2)
+  var clipPath   = document.getElementById(pathId);      // #2 above
+
+  // move clipped object status to parent <g> 
+  var parentG = getParentG(clippedObj);
+  if (parentG != null){
+    parentG.style.clipPath = pathUrl
+    clippedObj.style.clipPath = ''
+    clippedObj = parentG
   }
-  catch(msg){
-//  log('⚠️  object with ID '+convert_entities(id)+' could not be updated');
+
+  if (pathId.slice(0,6) != 'SVGID_'){ // if it has custom name
+    try{
+
+      // disambigate custom path names (problem #1 above)
+      var newId = 'CP' + pathId;
+      var newUrl = 'url("#' + newId + '")'
+
+      clipPath.id               = newId;
+      clippedObj.style.clipPath = newUrl;
+  
+      // fix minus sign (problem #3 above)
+      if (r = fix_minus(clipPath)){}
+
+    }
+    catch(msg){ log('⚠️  object with ID '+convertEntities(pathId)+' could not be updated'); }
   }
 }
+
+log('clipping paths verified');
 
 //———————————————————————————————————————— register triggers by type
 
@@ -1331,17 +1355,17 @@ function lstn_reverse(namex, evntx){
 //———————————————————————————————————————— set_existence(obj, exists)
 
 function set_existence(obj, exists){
-//log(convert_entities(obj.id)+' exists set to '+exists);
+//log(convertEntities(obj.id)+' exists set to '+exists);
 
   if (exists){
     obj.style.pointerEvents = 'visiblePainted';
     obj.style.display       = 'block';
-//  log(convert_entities(obj.id) + ' made clickable');
+//  log(convertEntities(obj.id) + ' made clickable');
   }
   else{
     obj.style.pointerEvents = 'none';
     obj.style.display       = 'none';
-//  log(convert_entities(obj.id) + ' hidden');
+//  log(convertEntities(obj.id) + ' hidden');
   }
 }
 
@@ -1426,11 +1450,11 @@ function not_number(x) {
   return parseFloat(x) != x;
 };
 
-/*———————————————————————————————————————— convert_entities(in)
+/*———————————————————————————————————————— convertEntities(in)
 
     id="toggle_x2F_name15_x2F_-y10_x2F_x_x2B_30_x2F_t100" */
 
-function convert_entities(str){
+function convertEntities(str){
 
   var parts = str.split('_');
   
@@ -1446,7 +1470,17 @@ function convert_entities(str){
 
 }
 
-//———————————————————————————————————————— fix_minus(clip_path)
+/*———————————————————————————————————————— fixMinus(clip_path)
+
+    fix illustrator bug with clipping masks with a - in the name
+
+    In the SVG code, the path definition looks like this:
+        <rect id="clipping-path" ... >
+
+    but the reference to it looks like this:
+        <use xlink:href="#clipping_x002D_path" ... >
+
+    https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain */
 
 function fix_minus(clip_path){
   // fix illustrator bug
@@ -1462,6 +1496,21 @@ function fix_minus(clip_path){
     return correct_id;
   }
   return false;
+}
+
+function fixMinusx(clipPath){
+  if (clipPath.indexOf('-') < 0) return true
+  
+  var first_child = clipPath.innerHTML
+  var correct_id  = first_child.split('"')[1].slice(1)
+  
+  if (correct_id.indexOf('_x002D_') < 0) return true
+
+  var wrong_id = correct_id.replace('_x002D_', '-')
+  var path = document.getElementById(wrong_id)
+  path.id  = correct_id
+
+  return true
 }
 
 //———————————————————————————————————————— getElementsByRegex(pattern)
@@ -1559,6 +1608,37 @@ function containsTransform(trigger){
        typeof trigger.yscale    == 'undefined'  ) return false
 
   return true
+}
+
+/*———————————————————————————————————————— getParentG()
+
+    accepts object <g... tag in an SVG
+    returns the parent <g... tag
+
+    used to move the style="clip-path... to the parent tag,
+    in order to avoid a problem where the clip path was animated
+    along with its contents */
+
+function getParentG(obj){
+  // create array of parent objects
+  // max length 3 (à voir)
+  // go up array until find G or get to end of array
+  // return G or null
+  var parts = []
+
+  if (typeof obj.parentElement != 'undefined'){
+    parts.push(obj.parentElement)
+    if (typeof obj.parentElement.parentElement != 'undefined'){
+      parts.push(obj.parentElement.parentElement)
+      if (typeof obj.parentElement.parentElement.parentElement != 'undefined'){
+        parts.push(obj.parentElement.parentElement.parentElement)
+      }
+    }
+  }
+  for (var x=0; x<parts.length; x++)
+    if (parts[x].tagName == 'g') return parts[x]
+
+  return null;
 }
 
 //———————————————————————————————————————— debugging
