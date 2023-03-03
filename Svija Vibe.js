@@ -747,7 +747,6 @@ event_types.forEach(kind => {
 
 console.groupEnd()
 
-
 //———————————————————————————————————————— set cursors and activate "func" flags
 
 console.groupCollapsed('setup & error checking…')
