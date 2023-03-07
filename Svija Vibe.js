@@ -489,7 +489,7 @@ class Animation{
     });
 
     for (var t=0; t<this.triggers.length; t++){
-      log('\nTrigger['+t+']');
+      log('\nTrigger '+t);
       Object.keys(this.triggers[t]).forEach(key => {
         if (typeof this.triggers[t][key] != 'undefined')
           if(key=='obj')log('obj (object): '+convertEntities(this.triggers[t][key].id));
@@ -499,7 +499,7 @@ class Animation{
 
     if (typeof this.evnt != 'undefined'){
       for (var x=0; x<this.evnt.length; x++){
-        log('\nEvnt[' + x + ']');
+        log('\nEvent ' + x);
         Object.keys(this.evnt[x]).forEach(key => {
           if (typeof this.evnt[x][key] != 'undefined')
             if(key=='obj'){
@@ -770,13 +770,13 @@ for(var x=0; x<clippedObjects.length; x++){
       clippedObj.style.clipPath = newUrl;
       clipPath.id               = newId;
 
-      defsObj.style.display = 'block'
+      try{defsObj.style.display = 'block'} catch(e){}
   
       // fix minus sign (fix #3 above)
       if (r = fix_minus(clipPath)){}
 
     }
-    catch(msg){ log('⚠️  object with ID '+convertEntities(pathId)+' could not be updated'); }
+    catch(msg){ log('⚠️  object with ID '+convertEntities(pathId)+' could not be updated:\n'+msg+ ' (line 779)'); }
   }
 }
 
@@ -1791,7 +1791,7 @@ function setBlock(anim){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'trigger1'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
+ var a = 'name3'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
