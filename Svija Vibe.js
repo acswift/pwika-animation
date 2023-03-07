@@ -748,9 +748,15 @@ for(var x=0; x<clippedObjects.length; x++){
   var clippedObj = clippedObjects[x]                     // object #3 above
   var pathUrl    = clippedObj.style.clipPath;
   var pathId     = pathUrl.slice(6, pathUrl.length-2)
+
   var clipPath   = document.getElementById(pathId);      // object #2 above
+  fix_minus(clipPath)                                    // fix minus sign (fix #3 above)
+
   var defsId     = clipPath.firstElementChild.getAttributeNS('http://www.w3.org/1999/xlink', 'href').slice(1);
   var defsObj    = document.getElementById(defsId)
+
+
+//alert(defsId) // problem with - sign
 
   // move clipped object status to parent <g>  (fix #1 above)
   var parentG = getParentG(clippedObj);
@@ -770,11 +776,8 @@ for(var x=0; x<clippedObjects.length; x++){
       clippedObj.style.clipPath = newUrl;
       clipPath.id               = newId;
 
-      try{defsObj.style.display = 'block'} catch(e){}
+      try{defsObj.style.display = 'block'} catch(e){log('Object ' + decodeEntities(defsId) + ' could not be set to display:block')}
   
-      // fix minus sign (fix #3 above)
-      if (r = fix_minus(clipPath)){}
-
     }
     catch(msg){ log('⚠️  object with ID '+convertEntities(pathId)+' could not be updated:\n'+msg+ ' (line 779)'); }
   }
@@ -1617,24 +1620,7 @@ function fix_minus(clip_path){
     var wrong_id = correct_id.replace('_x002D_', '-');
     var path = document.getElementById(wrong_id);
     path.id  = correct_id;
-    return correct_id;
   }
-  return false;
-}
-
-function fixMinusx(clipPath){
-  if (clipPath.indexOf('-') < 0) return true
-  
-  var first_child = clipPath.innerHTML
-  var correct_id  = first_child.split('"')[1].slice(1)
-  
-  if (correct_id.indexOf('_x002D_') < 0) return true
-
-  var wrong_id = correct_id.replace('_x002D_', '-')
-  var path = document.getElementById(wrong_id)
-  path.id  = correct_id
-
-  return true
 }
 
 //———————————————————————————————————————— getElementsByRegex(pattern)
@@ -1791,7 +1777,7 @@ function setBlock(anim){
 
 //———————————————————————————————————————— debugging
 
- var a = 'name3'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
+// var a = 'name3'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
