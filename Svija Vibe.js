@@ -295,7 +295,7 @@ class Animation{
     var to      = (zoopy.fromto == 'to')
     var visible = (transpInit   != '0' )
 
-    // three cases of transparency ////////////////////
+    // four cases of transparency ////////////////////
     transparency:{
 
       // exception · when no flags we assume mouseovers
@@ -304,6 +304,13 @@ class Animation{
         zoopy['transpInit']  = 0
         if (visible)  zoopy['transpFinal'] = transpInit
         if (!visible) zoopy['transpFinal'] = 1
+        break transparency
+      }
+
+      // exception · when visible and t100 flag
+      if (to && transpInit==1 && transpFinal==1){
+        zoopy['transpInit' ] = 0
+        zoopy.obj.style.opacity = 0
         break transparency
       }
 
@@ -1784,7 +1791,7 @@ function setBlock(anim){
 
 //———————————————————————————————————————— debugging
 
-var a = 'trigger1'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
+// var a = 'trigger1'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
