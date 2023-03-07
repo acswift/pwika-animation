@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 560 80" style="enable-background:new 0 0 560 80;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#333333;}
+	.st1{fill:#FFFFFF;}
+	.st2{font-family:'Helvetica-Bold';}
+	.st3{font-size:12.6487px;}
+	.st4{fill:#FF0040;}
+	.st5{fill:none;}
+	.st6{opacity:0.3;fill:#BED700;}
+</style>
+<g id="background">
+	
+		<image style="overflow:visible;opacity:0.5;" width="828" height="64" xlink:href="../../Links/shadow horizontal.png"  transform="matrix(0.5991 0 0 0.4571 36.1349 50.7459)">
+	</image>
+	<path class="st0" d="M523.3,54H36.7C33,54,30,51,30,47.3V0h500v47.3C530,51,527,54,523.3,54z"/>
+	<g>
+		<text transform="matrix(1 0 0 1 71.1078 21.9528)"><tspan x="0" y="0" class="st1 st2 st3">We&apos;re moving fast—</tspan><tspan x="-31.405" y="17.022" class="st1 st2 st3">Sign up to stay informed!</tspan></text>
+	</g>
+</g>
+<g id="events">
+	<g id="ovaway_x2F_newsSub_x2F__x25_120_x2F_o0_x2C_50">
+		<g id="delay_x2F_newsCP_x2F_360_x3E__x2F_5_x2F_softout">
+			<circle class="st5" cx="494.846" cy="26.8" r="20.241"/>
+			<path class="st4" d="M512.305,23.899l-23.804-13.743c-1.261-0.728-2.7-0.531-3.714,0.242c-0.782,0.597-1.311,1.536-1.311,2.659
+				v27.486c0,1.218,0.623,2.22,1.515,2.803c0.997,0.651,2.332,0.779,3.51,0.098l23.804-13.743c1.051-0.607,1.607-1.641,1.669-2.701
+				C514.044,25.807,513.487,24.582,512.305,23.899z"/>
+		</g>
+	</g>
+	<path id="delay_x2F_newsCP_x2F_5_x2F_x_x25_100000_x2F_o0_x2C_0_x2F__x2B_x1_x2F_softout" class="st1" d="M204.005,44h0.26
+		c0.001,0,0.001-0.14,0.002-0.393c0.002-0.759,0.003-2.536,0.003-4.607V15c0-1.381-0.001-2.631-0.001-3.536
+		C204.268,10.56,204.266,10,204.265,10h-0.26c-0.001,0-0.003,0.547-0.004,1.433C204.001,12.34,204,13.603,204,15v24
+		c0,0.69,0,1.348,0,1.946C204.001,42.741,204.003,44,204.005,44z"/>
+	<g id="ovaway_x2F_newsClose_x2F__x25_200_x2F_o0_x2C_0">
+		<g id="delay_x2F_newsCP_x2F_360_x3E__x2F_5_x2F_softout_00000016054408247865767240000012909089950803961265_">
+			
+				<rect x="38.335" y="3.619" transform="matrix(0.7071 0.7071 -0.7071 0.7071 18.0951 -25.296)" class="st4" width="2.495" height="11.152"/>
+			
+				<rect x="38.335" y="3.619" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 74.0733 -12.2928)" class="st4" width="2.495" height="11.152"/>
+		</g>
+	</g>
+	<rect x="202.981" y="8.999" class="st0" width="1.384" height="35.001"/>
+</g>
+<g id="triggers">
+	<rect id="mouse_x2F_newsSub_x2F_func" x="479.844" y="6.33" class="st6" width="40.699" height="40.699"/>
+	<rect id="mouse_x2F_newsClose_x2F_func" x="32.074" y="1.781" class="st6" width="15.108" height="15.108"/>
+	<rect id="time_x2F_newsCP_x2F_0" y="0" class="st6" width="10" height="10"/>
+</g>
+</svg>

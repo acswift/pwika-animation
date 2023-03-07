@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1200 2437" style="enable-background:new 0 0 1200 2437;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#333333;}
+	.st2{font-family:'OpenSans-Light';}
+	.st3{font-size:40.6384px;}
+	.st4{fill:none;}
+	.st5{font-size:15px;}
+	.st6{font-family:'OpenSansLight-Italic';}
+	.st7{fill:#002A66;}
+	.st8{font-family:'OpenSans-Semibold';}
+	.st9{font-size:24px;}
+	.st10{font-size:17px;}
+	.st11{fill:#424242;}
+	.st12{font-size:12px;}
+	.st13{fill:#025393;}
+	.st14{fill:#F8F9FA;}
+	.st15{fill:url(#SVGID_1_);stroke:#D6D6D6;stroke-width:0.586;stroke-miterlimit:10;}
+	.st16{fill:none;stroke:#002A66;stroke-width:0.5;stroke-miterlimit:10;}
+	.st17{opacity:0;}
+	.st18{opacity:0.2;fill:#FF0095;}
+	.st19{fill:none;stroke:#333333;stroke-width:0.5;stroke-miterlimit:10;}
+	
+		.st20{clip-path:url(#SVGID_00000018953630559616561550000015226899895555139222_);fill:none;stroke:#333333;stroke-width:0.5;stroke-miterlimit:10;}
+	.st21{opacity:0;fill:#FF2BF7;}
+</style>
+<g id="page_color">
+	<rect x="0" y="0" class="st0" width="1200" height="1470"/>
+</g>
+<g id="content">
+	<text transform="matrix(1 0 0 1 318 173.8215)" class="st1 st2 st3">https://www.makeswift.com/company</text>
+	<rect x="318" y="198" class="st4" width="575" height="275"/>
+	<text transform="matrix(1 0 0 1 318 209.3999)"><tspan x="0" y="0" class="st1 st2 st5">Svija came about because I used to build websites in Flash using Adobe Illustrator.</tspan><tspan x="0" y="36" class="st1 st2 st5">The last real website I built in Flash was in 2005. After that I was working on a big </tspan><tspan x="0" y="60" class="st1 st2 st5">programming job and didn’t need a good site of my own.</tspan><tspan x="278.253" y="96" class="st1 st2 st5">· · ·</tspan><tspan x="0" y="132" class="st1 st2 st5">Fast forward to 2014, when I needed to look for clients and wanted to build the best </tspan><tspan x="0" y="156" class="st1 st2 st5">site I possibly could.</tspan><tspan x="0" y="192" class="st1 st2 st5">Having built sites in Adobe Illustrator for Flash, I was used to being able to do </tspan><tspan x="0" y="216" class="st1 st2 st5">anything… vectors, animation, etc.</tspan><tspan x="0" y="252" class="st1 st2 st5">But in 2014, Flash was almost dead.</tspan></text>
+	<rect x="502" y="516" class="st4" width="447" height="362.6"/>
+	<text transform="matrix(1 0 0 1 502 527.3999)"><tspan x="0" y="0" class="st1 st2 st5">I just hated the idea of trying to build a serious website in HTML.</tspan><tspan x="0" y="36" class="st1 st2 st5">HTML is fundamentally suited to displaying text documents. </tspan><tspan x="0" y="60" class="st1 st2 st5">Everything else is tacked on.</tspan><tspan x="0" y="96" class="st1 st2 st5">Building a website with HTML feels like trying to build a bicycle </tspan><tspan x="0" y="120" class="st1 st2 st5">with Lego — it&apos;s possible, but you spend a lot of time putting </tspan><tspan x="0" y="144" class="st1 st2 st5">pieces together.</tspan><tspan x="0" y="180" class="st1 st2 st5">Things that were trivially easy in Adobe Illustrator in 1993  </tspan><tspan x="0" y="204" class="st1 st2 st5">(I started with Version 5) are still difficult or impossible in HTML, </tspan><tspan x="0" y="228" class="st1 st2 st5">even in 2022.</tspan><tspan x="0" y="264" class="st1 st2 st5">SVG seemed like the main alternative. It was the closest to what I </tspan><tspan x="0" y="288" class="st1 st2 st5">had been doing in Flash and was supported by all major browsers.</tspan></text>
+	<rect x="502" y="1158" class="st4" width="447" height="111.223"/>
+	<text transform="matrix(1 0 0 1 502 1169.3999)"><tspan x="0" y="0" class="st1 st2 st5">After building a few sites with multiple SVG images, it turned out to </tspan><tspan x="0" y="24" class="st1 st2 st5">be easier just to build the whole page as a single SVG.</tspan><tspan x="0" y="60" class="st1 st2 st5">That is Svija.</tspan><tspan x="0" y="96" class="st1 st6 st5">— Andy Swift, founder</tspan></text>
+	<rect x="206.869" y="870" class="st4" width="538.131" height="243.436"/>
+	<text transform="matrix(1 0 0 1 206.8691 881.3999)"><tspan x="0" y="0" class="st1 st2 st5">Coincidentally, Adobe Illustrator has excellent support for SVG.</tspan><tspan x="0" y="36" class="st1 st2 st5">At first, I just built HTML pages with big SVG images included as images or </tspan><tspan x="0" y="60" class="st1 st2 st5">objects. There were problems:</tspan><tspan x="30" y="96" class="st1 st2 st5">• When SVG is used in an &lt;img&gt; tag, Webkit-based browsers don’t display </tspan><tspan x="40" y="120" class="st1 st2 st5">embedded JPG images.</tspan><tspan x="30" y="144" class="st1 st2 st5">• When SVG is used in an &lt;object&gt; tag, all communication is cut off with the </tspan><tspan x="40" y="168" class="st1 st2 st5">rest of the page, o no interactivity..</tspan><tspan x="0" y="204" class="st1 st2 st5">The easiest way to use SVG turned out to be including the SVG code directly in </tspan><tspan x="0" y="228" class="st1 st2 st5">the web page, in an &lt;svg&gt; tag.</tspan></text>
+	<rect x="176.116" y="1510.708" class="st4" width="929.659" height="580.668"/>
+	<text id="content_cp_00000020380284667064377510000009117781340380948406_" transform="matrix(1 0 0 1 176.1163 1528.9475)"><tspan x="0" y="0" class="st7 st8 st9">History</tspan><tspan x="0" y="36.4" class="st1 st8 st10">Andrew Swift and Anaÿs</tspan><tspan x="0" y="65.4" class="st11 st2 st12">Svija is the creation of </tspan><tspan x="120.188" y="65.4" class="st11 st8 st12">Andrew Swift</tspan><tspan x="197.039" y="65.4" class="st11 st2 st12">, an American designer and developer who has lived in France since 2000 (Toulouse). </tspan><tspan x="0" y="84.4" class="st11 st2 st12">From 2002-2008 Swift developed </tspan><tspan x="181.43" y="84.4" class="st13 st2 st12">Anaÿs≈</tspan><tspan x="220.014" y="84.4" class="st11 st2 st12">, a tool that enabled the construction of indexable and user-modifiable websites in </tspan><tspan x="0" y="103.4" class="st13 st2 st12">Flash</tspan><tspan x="27.762" y="103.4" class="st11 st2 st12">, based on Adobe Illustrator files.</tspan><tspan x="0" y="130.4" class="st11 st2 st12">After the sale of his business in 2010, Swift left the field of technology, planning to become a full-time fine artist. In 2014, </tspan><tspan x="0" y="149.4" class="st11 st2 st12">realizing that a career in fine art would be difficult to achieve, he decided to return to web-based graphic design.</tspan><tspan x="0" y="181.8" class="st1 st8 st10">The end of Flash</tspan><tspan x="0" y="210.8" class="st11 st2 st12">With the advent of the </tspan><tspan x="122.789" y="210.8" class="st13 st2 st12">iPhone</tspan><tspan x="160.295" y="210.8" class="st11 st2 st12"> and the increased importance of the mobile web, Flash was no longer an option. The creation </tspan><tspan x="0" y="229.8" class="st11 st2 st12">of websites had come to be dominated by site-building tools like </tspan><tspan x="348.234" y="229.8" class="st13 st2 st12">Wordpress</tspan><tspan x="407.361" y="229.8" class="st11 st2 st12">, </tspan><tspan x="413.057" y="229.8" class="st13 st2 st12">Wix</tspan><tspan x="432.451" y="229.8" class="st11 st2 st12">, </tspan><tspan x="438.146" y="229.8" class="st13 st2 st12">Weebly</tspan><tspan x="477.387" y="229.8" class="st11 st2 st12"> and </tspan><tspan x="504.199" y="229.8" class="st13 st2 st12">Squarespace</tspan><tspan x="573.949" y="229.8" class="st11 st2 st12">.</tspan><tspan x="0" y="256.8" class="st11 st2 st12">Swift, refusing to accept working with HTML, started looking for a </tspan><tspan x="349.998" y="256.8" class="st13 st2 st12">vector</tspan><tspan x="383.514" y="256.8" class="st11 st2 st12">-based solution. It quickly became apparent that </tspan><tspan x="0" y="275.8" class="st11 st2 st12">there were only two widely-supported alternatives: the </tspan><tspan x="295.676" y="275.8" class="st13 st2 st12">HTML 5 Canvas element</tspan><tspan x="425.812" y="275.8" class="st11 st2 st12"> and the </tspan><tspan x="473.426" y="275.8" class="st13 st2 st12">SVG</tspan><tspan x="495.568" y="275.8" class="st11 st2 st12"> image format. SVG was chosen </tspan><tspan x="0" y="294.8" class="st11 st2 st12">because it permitted search-engine indexable text.</tspan><tspan x="0" y="321.8" class="st11 st2 st12">Initially it was unclear whether the SVG format would be sufficiently stable for building websites. Swift encountered various </tspan><tspan x="0" y="340.8" class="st11 st2 st12">problems including: linked images would occasionally fail to appear, SVG content would be displayed at different sizes in </tspan><tspan x="0" y="359.8" class="st11 st2 st12">different browsers, and Apple&apos;s </tspan><tspan x="170.256" y="359.8" class="st13 st2 st12">Safari browser</tspan><tspan x="247.975" y="359.8" class="st11 st2 st12"> would resize SVG text erratically.</tspan><tspan x="0" y="386.8" class="st11 st2 st12">These and other issues were eventually resolved. The first few SVG-based websites were built by hand but over the course of </tspan><tspan x="0" y="405.8" class="st11 st2 st12">eighteen months in 2015-2016 the process was automated, and Svija was born.</tspan><tspan x="0" y="438.2" class="st1 st8 st10">Svija SAS</tspan><tspan x="0" y="467.2" class="st11 st2 st12">Beginning in 2017, Swift partnered with </tspan><tspan x="214.078" y="467.2" class="st13 st2 st12">web agencies</tspan><tspan x="286.488" y="467.2" class="st11 st2 st12"> One Cut Studio and Agence Takotak on several Svija-based websites. In 2019, Jean-Philippe Juan and Badre Akaaboune, </tspan><tspan x="0" y="486.2" class="st11 st2 st12">heads of their respective agencies, proposed a partnership in order to commercialize Svija.</tspan><tspan x="0" y="513.2" class="st11 st2 st12">Initially, the intention was to seek funding directly before commercializing the program. However, it quickly became clear that raising funding would depend on being able to </tspan><tspan x="0" y="532.2" class="st11 st2 st12">show an interested and growing user base.</tspan><tspan x="0" y="559.2" class="st11 st2 st12">Since January 2020, efforts have been concentrated on distributing a beta version of the Svija software. Svija SAS was officially created in September, 2020.</tspan></text>
+	<rect id="picture_wrap_cp" x="851.755" y="1548.593" class="st0" width="267.939" height="380.405"/>
+	<g id="drawing_cp">
+		
+			<image style="overflow:visible;opacity:0.3;" width="828" height="64" xlink:href="../../Links/shadow horizontal.png"  transform="matrix(0.2657 0 0 0.5229 874.7166 1935.1313)">
+		</image>
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="886.0654" y1="1575.7524" x2="1085.9166" y2="1948.2023">
+			<stop  offset="0" style="stop-color:#F7F7F7"/>
+			<stop  offset="1" style="stop-color:#D9D9D9"/>
+		</linearGradient>
+		<rect x="868.158" y="1581.802" class="st15" width="232.959" height="355.304"/>
+		<g>
+			
+				<image style="overflow:visible;" width="1280" height="1280" xlink:href="../../Links/dessin drape.jpg"  transform="matrix(0.166 0 0 0.166 878.6086 1591.8018)">
+			</image>
+		</g>
+		<g>
+			<rect x="878.609" y="1821.881" class="st4" width="212.016" height="129.682"/>
+			<text transform="matrix(1 0 0 1 878.6089 1831.0007)"><tspan x="0" y="0" class="st11 st6 st12">N° 379, 2014 · Sitting Figure</tspan><tspan x="0" y="27" class="st11 st2 st12">Based on “Studio di panneggio di una </tspan><tspan x="0" y="46" class="st11 st2 st12">figura seduta” by Leonardo da Vinci.</tspan><tspan x="0" y="73" class="st11 st2 st12">Charcoal and Carbothello on brown </tspan><tspan x="0" y="92" class="st11 st2 st12">Canson paper. 36,0 x 36,0 cm.</tspan></text>
+		</g>
+		
+			<image style="overflow:visible;opacity:0.1;" width="828" height="64" xlink:href="../../Links/shadow horizontal.png"  transform="matrix(0.2814 0 0 -0.3118 868.1581 1581.8018)">
+		</image>
+	</g>
+	
+		<line id="hr_00000123427438262193600500000000934028509546554540_" class="st16" x1="176.371" y1="1532.765" x2="1101.116" y2="1532.765"/>
+	<g id="links_cp_00000101100790791478166940000016807992795566317758_" class="st17">
+		<a xlink:href="https://en.wikipedia.org/wiki/Adobe_Flash" >
+			<rect x="329.702" y="1618.657" class="st18" width="36.616" height="18"/>
+		</a>
+		<a xlink:href="http://anays.com" >
+			<rect x="424.531" y="1599.657" class="st18" width="52.886" height="18"/>
+		</a>
+		<a xlink:href="https://en.wikipedia.org/wiki/IPhone" >
+			<rect x="300.558" y="1725.813" class="st18" width="47.452" height="18"/>
+		</a>
+		<a xlink:href="https://en.wikipedia.org/wiki/WordPress" >
+			<rect x="585.071" y="1744.839" class="st18" width="66.674" height="18"/>
+		</a>
+		<a xlink:href="https://en.wikipedia.org/wiki/Wix.com" >
+			<rect x="651.745" y="1744.839" class="st18" width="25.409" height="18"/>
+		</a>
+		<a xlink:href="https://en.wikipedia.org/wiki/Weebly" >
+			<rect x="677.153" y="1744.839" class="st18" width="48.618" height="18"/>
+		</a>
+		<a xlink:href="https://en.wikipedia.org/wiki/Squarespace" >
+			<rect x="746.292" y="1744.839" class="st18" width="80.461" height="18"/>
+		</a>
+		<a xlink:href="https://en.wikipedia.org/wiki/Safari_(web_browser)" >
+			<rect x="444.644" y="1874.534" class="st18" width="88.687" height="18"/>
+		</a>
+		<a xlink:href="https://en.wikipedia.org/wiki/Vector_graphics" >
+			<rect x="537.946" y="1772.543" class="st18" width="44.521" height="18"/>
+		</a>
+		<a xlink:href="https://en.wikipedia.org/wiki/Canvas_element" >
+			<rect x="506.476" y="1791.327" class="st18" width="140.784" height="18"/>
+		</a>
+		<a xlink:href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics" >
+			<rect x="690.079" y="1791.327" class="st18" width="32.057" height="18"/>
+		</a>
+		<a xlink:href="https://en.wikipedia.org/wiki/Advertising_agency" >
+			<rect x="394.927" y="1981.578" class="st18" width="82.49" height="18"/>
+		</a>
+	</g>
+</g>
+<g id="image">
+	<g>
+		<defs>
+			<path id="SVGID_00000034070393160269841210000016507327126433476750_" d="M437.225,815.429H209.81c-1.105,0-2-0.895-2-2V519.011
+				c0-1.105,0.895-2,2-2h227.415c1.105,0,2,0.895,2,2v294.418C439.225,814.534,438.329,815.429,437.225,815.429z"/>
+		</defs>
+		<clipPath id="SVGID_00000031918011845419385040000009203587056488354488_">
+			<use xlink:href="#SVGID_00000034070393160269841210000016507327126433476750_"  style="overflow:visible;"/>
+		</clipPath>
+		<g style="clip-path:url(#SVGID_00000031918011845419385040000009203587056488354488_);">
+			
+				<image style="overflow:visible;" width="1000" height="1331" xlink:href="../../Links/andrew_IMG_0793.jpg"  transform="matrix(0.2363 0 0 0.2363 206.6655 502.0916)">
+			</image>
+		</g>
+	</g>
+	<path class="st19" d="M437.225,815.429H209.81c-1.105,0-2-0.895-2-2V519.011c0-1.105,0.895-2,2-2h227.415c1.105,0,2,0.895,2,2
+		v294.418C439.225,814.534,438.329,815.429,437.225,815.429z"/>
+</g>
+<g id="mouseover">
+	<g id="linkAndrewMO">
+		<defs>
+			<path id="SVGID_00000099647001304981239440000005194101900709667007_" d="M437.225,815.429H209.81c-1.105,0-2-0.895-2-2V519.011
+				c0-1.105,0.895-2,2-2h227.415c1.105,0,2,0.895,2,2v294.418C439.225,814.534,438.329,815.429,437.225,815.429z"/>
+		</defs>
+		<clipPath id="SVGID_00000130644313040431663520000002770274114741022369_">
+			<use xlink:href="#SVGID_00000099647001304981239440000005194101900709667007_"  style="overflow:visible;"/>
+		</clipPath>
+		
+			<g transform="matrix(1 0 0 1 -1.525879e-05 0)" style="clip-path:url(#SVGID_00000130644313040431663520000002770274114741022369_);">
+			
+				<image style="overflow:visible;" width="1442" height="1736" xlink:href="../../Links/andrew_IMG_9168.jpg"  transform="matrix(0.1743 0 0 0.1743 194.6865 516.0184)">
+			</image>
+		</g>
+		
+			<path style="clip-path:url(#SVGID_00000130644313040431663520000002770274114741022369_);fill:none;stroke:#333333;stroke-width:0.5;stroke-miterlimit:10;" d="
+			M437.225,815.429H209.81c-1.105,0-2-0.895-2-2V519.011c0-1.105,0.895-2,2-2h227.415c1.105,0,2,0.895,2,2v294.418
+			C439.225,814.534,438.329,815.429,437.225,815.429z"/>
+	</g>
+</g>
+<g id="links">
+	<a>
+		<rect id="linkAndrew" x="207.81" y="517.011" class="st21" width="231.415" height="298.418"/>
+	</a>
+</g>
+</svg>

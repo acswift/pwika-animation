@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1920 1080" style="enable-background:new 0 0 1920 1080;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#262626;}
+	.st1{fill:#FFFFFF;}
+	.st2{fill:#D3205B;}
+	.st3{font-family:'ArialMT';}
+	.st4{font-size:27.0101px;}
+	.st5{font-family:'OpenSans-Semibold';}
+	.st6{font-size:42.7832px;}
+	.st7{opacity:0;fill:#FF0095;}
+</style>
+<g id="background">
+	<rect y="0" class="st0" width="1920" height="1080"/>
+</g>
+<g id="content">
+	<g>
+		
+			<image style="overflow:visible;" width="2894" height="1624" xlink:href="../../Pitch/Links/elementor.jpg"  transform="matrix(0.6634 0 0 0.665 0 0)">
+		</image>
+		<rect x="416.33" y="240.66" class="st1" width="305.918" height="33.331"/>
+	</g>
+	<text transform="matrix(1 0 0 1 426.0001 265.1031)" class="st2 st3 st4">Ajouter votre titre ici…</text>
+	<rect x="0" class="st2" width="397.591" height="52.387"/>
+	<path class="st2" d="M1920.006,874.045h-739.098c-5.523,0-10-4.477-10-10V701.879c0-5.523,4.477-10,10-10h739.098
+		c5.523,0,10,4.477,10,10v162.165C1930.006,869.568,1925.529,874.045,1920.006,874.045z"/>
+	<text transform="matrix(1 0 0 1 1250.1296 761.684)"><tspan x="0" y="0" class="st1 st5 st6">Les sites web sont construits </tspan><tspan x="-28.515" y="68.584" class="st1 st5 st6">tous en HTML — 6 MD de pages</tspan></text>
+</g>
+<g id="links">
+	<a xlink:href="/fr/pitch-02" >
+		<rect x="0" y="0" class="st7" width="960" height="1080"/>
+	</a>
+	<a xlink:href="/fr/pitch-04" >
+		<rect x="960" y="0" class="st7" width="960" height="1080"/>
+	</a>
+</g>
+</svg>

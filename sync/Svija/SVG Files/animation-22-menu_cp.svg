@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.3.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 100 650" style="enable-background:new 0 0 100 650;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#333333;}
+	.st1{font-family:'Helvetica-Bold';}
+	.st2{font-size:35.7596px;}
+	.st3{font-size:30px;}
+	.st4{opacity:0.3;fill:#FF00FF;}
+</style>
+<g id="page_color">
+</g>
+<g id="content">
+	<text transform="matrix(1 0 0 1 6.584 53.5282)" class="st0 st1 st2">01</text>
+	<text transform="matrix(1 0 0 1 6.584 123.5282)" class="st0 st1 st2">02</text>
+	<text transform="matrix(1 0 0 1 6.584 193.5282)" class="st0 st1 st2">03</text>
+	<text transform="matrix(1 0 0 1 6.584 263.5282)" class="st0 st1 st2">04</text>
+	<text transform="matrix(1 0 0 1 6.584 333.5282)" class="st0 st1 st2">05</text>
+	<text transform="matrix(1 0 0 1 6.584 403.5282)" class="st0 st1 st2">06</text>
+	<text transform="matrix(1 0 0 1 6.584 473.5282)" class="st0 st1 st2">07</text>
+</g>
+<g id="events">
+	<text transform="matrix(6.123234e-17 -1 1 6.123234e-17 656.103 189.3208)" class="st0 st1 st3">MARIAGE</text>
+	<text transform="matrix(6.123234e-17 -1 1 6.123234e-17 533.2812 294.1313)" class="st0 st1 st3">FUNERAILLES</text>
+	<text transform="matrix(6.123234e-17 -1 1 6.123234e-17 574.2222 352.272)" class="st0 st1 st3">PROMOTION</text>
+	<text transform="matrix(6.123234e-17 -1 1 6.123234e-17 615.1626 418.7622)" class="st0 st1 st3">NAISSANCE</text>
+	<text transform="matrix(6.123234e-17 -1 1 6.123234e-17 492.3408 538.5737)" class="st0 st1 st3">INFOS PRATIQUES</text>
+	<text transform="matrix(6.123234e-17 -1 1 6.123234e-17 737.9844 545.0269)" class="st0 st1 st3">CONTACT</text>
+	<g id="_x30_2-07">
+		<g id="ovaway_x2F_trig01_x2F__x2B_y100_x2F_d0.5">
+			<g id="ovaway_x2F_trig01_x2F_t100_00000100347656865879448710000006410547557781407420_">
+				<text transform="matrix(1 0 0 1 53.2352 123.5282)" class="st0 st1 st2">02</text>
+				<text transform="matrix(1 0 0 1 53.2352 193.5282)" class="st0 st1 st2">03</text>
+				<text transform="matrix(1 0 0 1 53.2352 263.5282)" class="st0 st1 st2">04</text>
+				<text transform="matrix(1 0 0 1 53.2352 333.5282)" class="st0 st1 st2">05</text>
+				<text transform="matrix(1 0 0 1 53.2352 403.5282)" class="st0 st1 st2">06</text>
+				<text transform="matrix(1 0 0 1 53.2352 473.5282)" class="st0 st1 st2">07</text>
+			</g>
+		</g>
+	</g>
+	<g id="accueil">
+		
+			<text id="ovaway_x2F_trig01_x2F_t100_x2F_d1_x2F__x2B_x10" transform="matrix(6.123234e-17 -1 1 6.123234e-17 83.1147 199.6187)" class="st0 st1 st3">ACCUEIL</text>
+	</g>
+	<g id="_x30_1">
+		<g id="ovaway_x2F_trig01_x2F_t100_x2F__x2B_x10">
+			<text transform="matrix(1 0 0 1 53.2352 53.5282)" class="st0 st1 st2">01</text>
+		</g>
+	</g>
+</g>
+<g id="triggers">
+	<rect id="mouse_x2F_trig07" y="428" class="st4" width="100" height="70"/>
+	<rect id="mouse_x2F_trig06" y="358" class="st4" width="100" height="70"/>
+	<rect id="mouse_x2F_trig05" y="288" class="st4" width="100" height="70"/>
+	<rect id="mouse_x2F_trig04" y="218" class="st4" width="100" height="70"/>
+	<rect id="mouse_x2F_trig03" y="148" class="st4" width="100" height="70"/>
+	<rect id="mouse_x2F_trig02" y="78" class="st4" width="100" height="70"/>
+	<rect id="mouse_x2F_trig01" y="8" class="st4" width="100" height="70"/>
+</g>
+</svg>

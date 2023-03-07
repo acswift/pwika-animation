@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1920 1080" style="enable-background:new 0 0 1920 1080;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#262626;}
+	.st1{fill:#FFFFFF;}
+	.st2{font-family:'FuturaStd-CondExtraBoldObl';}
+	.st3{font-size:26.7505px;}
+	.st4{font-size:113.6084px;}
+	.st5{opacity:0.6;}
+	.st6{opacity:0;fill:#FF0095;}
+</style>
+<g id="background">
+	<rect y="0" class="st0" width="1920" height="1080"/>
+</g>
+<g id="content">
+	<g>
+		<defs>
+			<rect id="SVGID_1_" y="0" width="1920" height="1080"/>
+		</defs>
+		<clipPath id="SVGID_00000129924019043491989020000006914593195551898264_">
+			<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+		</clipPath>
+	</g>
+	<g>
+		<defs>
+			<rect id="SVGID_00000168114215921163263440000008883607202060749454_" y="-0.5" width="1920" height="1080"/>
+		</defs>
+		<clipPath id="SVGID_00000113330603181357311310000002542332602434010806_">
+			<use xlink:href="#SVGID_00000168114215921163263440000008883607202060749454_"  style="overflow:visible;"/>
+		</clipPath>
+		<g style="clip-path:url(#SVGID_00000113330603181357311310000002542332602434010806_);">
+			
+				<image style="overflow:visible;" width="1400" height="1680" xlink:href="../../Pitch/Links/nike 901af864484027.5ad45886d3898.jpg"  transform="matrix(1.3714 0 0 1.3714 0 -503.5561)">
+			</image>
+		</g>
+	</g>
+	<path class="st1" d="M1539.705,867.772c-21.237,24.94-41.27,58.124-23.575,73.406c17.146,14.808,38.578,6.04,53.191,0.195
+		c14.613-5.845,176.135-75.987,176.135-75.987c1.559-0.779,1.267-1.753-0.682-1.266c-0.786,0.197-175.842,47.638-175.842,47.638
+		C1546.72,917.992,1521.391,904.402,1539.705,867.772z"/>
+	<text transform="matrix(1 0 0 1 1504.656 984.1436)" class="st1 st2 st3">RUN FROM ORDINARY</text>
+	<text transform="matrix(1 0 0 1 100.4236 527.1785)" class="st1 st2 st4">LIGHTER.</text>
+	<rect y="-0.5" class="st5" width="1920" height="1080"/>
+	
+		<image style="overflow:visible;" width="5120" height="15747" xlink:href="../../Pitch/Links/normal.jpg"  transform="matrix(0.0686 0 0 0.0686 784.4237 0)">
+	</image>
+	
+		<image style="overflow:visible;" width="828" height="64" xlink:href="../../Pitch/Links/shadow horizontal.png"  transform="matrix(6.313600e-11 -1.3043 1.4062 5.856100e-11 1135.5763 1080)">
+	</image>
+	
+		<image style="overflow:visible;" width="828" height="64" xlink:href="../../Pitch/Links/shadow horizontal.png"  transform="matrix(-4.575000e-12 -1.3043 -1.4062 -4.575000e-12 784.4237 1080)">
+	</image>
+</g>
+<g id="links">
+	<a xlink:href="/fr/pitch-16" >
+		<rect x="0" y="0" class="st6" width="960" height="1080"/>
+	</a>
+	<a xlink:href="/fr/pitch-18" >
+		<rect x="960" y="0" class="st6" width="960" height="1080"/>
+	</a>
+</g>
+</svg>

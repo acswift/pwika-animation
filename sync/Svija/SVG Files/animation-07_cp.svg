@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1200 700" style="enable-background:new 0 0 1200 700;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#B4FF00;}
+	.st2{fill:#B4FF00;stroke:#333333;stroke-width:0.51;stroke-miterlimit:10;}
+	.st3{fill:#333333;}
+	.st4{font-family:'OpenSans-Light';}
+	.st5{font-size:14px;}
+	.st6{fill:#FF3FA2;}
+	.st7{fill:#FD001E;}
+	.st8{fill:#FF3FA2;stroke:#333333;stroke-width:0.3606;stroke-miterlimit:10;}
+	.st9{opacity:0.5;fill:#FF6FFA;}
+</style>
+<g id="page_color">
+	<rect x="0" y="0" class="st0" width="1200" height="3000"/>
+</g>
+<g id="buttons">
+	<path class="st2" d="M577,160.084H183c-1.657,0-3-1.343-3-3v-34c0-1.657,1.343-3,3-3h394c1.657,0,3,1.343,3,3v34
+		C580,158.741,578.657,160.084,577,160.084z"/>
+	<path class="st2" d="M577,230.084H183c-1.657,0-3-1.343-3-3v-34c0-1.657,1.343-3,3-3h394c1.657,0,3,1.343,3,3v34
+		C580,228.741,578.657,230.084,577,230.084z"/>
+	<path class="st2" d="M577,300.084H183c-1.657,0-3-1.343-3-3v-34c0-1.657,1.343-3,3-3h394c1.657,0,3,1.343,3,3v34
+		C580,298.741,578.657,300.084,577,300.084z"/>
+	<path class="st2" d="M577,370.084H183c-1.657,0-3-1.343-3-3v-34c0-1.657,1.343-3,3-3h394c1.657,0,3,1.343,3,3v34
+		C580,368.741,578.657,370.084,577,370.084z"/>
+	<path class="st2" d="M577,440.084H183c-1.657,0-3-1.343-3-3v-34c0-1.657,1.343-3,3-3h394c1.657,0,3,1.343,3,3v34
+		C580,438.741,578.657,440.084,577,440.084z"/>
+	<path class="st2" d="M577,510.084H183c-1.657,0-3-1.343-3-3v-34c0-1.657,1.343-3,3-3h394c1.657,0,3,1.343,3,3v34
+		C580,508.741,578.657,510.084,577,510.084z"/>
+</g>
+<g id="text">
+	<text transform="matrix(1 0 0 1 435.1674 144.8991)"><tspan x="0" y="0" class="st3 st4 st5">mouse/name1</tspan><tspan x="0" y="70" class="st3 st4 st5">mouse/name2</tspan><tspan x="0" y="140" class="st3 st4 st5">mouse/name3</tspan><tspan x="0" y="210" class="st3 st4 st5">mouse/name4</tspan><tspan x="0" y="280" class="st3 st4 st5">mouse/name5</tspan><tspan x="0" y="350" class="st3 st4 st5">mouse/name6</tspan></text>
+	<text transform="matrix(1 0 0 1 911.8495 141.9227)"><tspan x="0" y="0" class="st6 st4 st5">scale 200% horizontally</tspan><tspan x="0" y="70" class="st6 st4 st5">scale 200% horizontally</tspan><tspan x="0" y="140" class="st6 st4 st5">rotate 45° counter clockwise</tspan><tspan x="0" y="210" class="st6 st4 st5">rotate 45° counter clockwise</tspan><tspan x="0" y="280" class="st6 st4 st5">70px left, 45° c. clockwise, 130% scale</tspan><tspan x="0" y="350" class="st6 st4 st5">70px left, 45° c. clockwise, 130% scale</tspan></text>
+	<g>
+		<text transform="matrix(1 0 0 1 704.5985 141.9227)"><tspan x="0" y="0" class="st3 st4 st5">ovaway/name1/y%200</tspan><tspan x="0" y="70" class="st3 st4 st5">down/name2/y%200</tspan><tspan x="0" y="140" class="st3 st4 st5">ovaway/name3/&lt;45</tspan><tspan x="0" y="210" class="st3 st4 st5">down/name4/&lt;45</tspan><tspan x="0" y="280" class="st3 st4 st5">ovaway/name5/-y70/45&gt;/%130</tspan><tspan x="0" y="350" class="st3 st4 st5">down/name6/-y70/45&gt;/%130</tspan></text>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 180 104.0504)" class="st3 st4 st5">New mouse event: DOWN</text>
+	</g>
+	<polygon class="st7" points="157.708,210.084 136.809,230.983 136.809,189.186 	"/>
+	<polygon class="st7" points="157.708,350.084 136.809,370.983 136.809,329.185 	"/>
+	<polygon class="st7" points="157.708,490.084 136.809,510.983 136.809,469.185 	"/>
+	<rect x="119.837" y="33.168" class="st3" width="15.144" height="4.048"/>
+</g>
+<g id="effects">
+	<g id="_x31_-6">
+		<path id="down_x2F_name6_x2F_-y70_x2F_45_x3E__x2F__x25_130" class="st8" d="M668,510.084h-35c-1.657,0-3-1.343-3-3v-34
+			c0-1.657,1.343-3,3-3h35c1.105,0,2,0.895,2,2v36C670,509.189,669.105,510.084,668,510.084z"/>
+		<path id="ovaway_x2F_name5_x2F_-y70_x2F_45_x3E__x2F__x25_130" class="st8" d="M668,440.084h-35c-1.657,0-3-1.343-3-3v-34
+			c0-1.657,1.343-3,3-3h35c1.105,0,2,0.895,2,2v36C670,439.189,669.105,440.084,668,440.084z"/>
+		<path id="down_x2F_name4_x2F__x3C_45" class="st8" d="M668,370.084h-35c-1.657,0-3-1.343-3-3v-34c0-1.657,1.343-3,3-3h35
+			c1.105,0,2,0.895,2,2v36C670,369.189,669.105,370.084,668,370.084z"/>
+		<path id="ovaway_x2F_name3_x2F__x3C_45" class="st8" d="M668,300.084h-35c-1.657,0-3-1.343-3-3v-34c0-1.657,1.343-3,3-3h35
+			c1.105,0,2,0.895,2,2v36C670,299.189,669.105,300.084,668,300.084z"/>
+		<path id="down_x2F_name2_x2F_y_x25_200" class="st8" d="M668,230.084h-35c-1.657,0-3-1.343-3-3v-34c0-1.657,1.343-3,3-3h35
+			c1.105,0,2,0.895,2,2v36C670,229.189,669.105,230.084,668,230.084z"/>
+		<path id="ovaway_x2F_name1_x2F_y_x25_200" class="st8" d="M668,160.084h-35c-1.657,0-3-1.343-3-3v-34c0-1.657,1.343-3,3-3h35
+			c1.105,0,2,0.895,2,2v36C670,159.189,669.105,160.084,668,160.084z"/>
+	</g>
+</g>
+<g id="events">
+	<g id="_x31_-7">
+		<rect id="mouse_x2F_name6" x="180" y="470.084" class="st9" width="400" height="40"/>
+		<rect id="mouse_x2F_name5" x="180" y="400.084" class="st9" width="400" height="40"/>
+		<rect id="mouse_x2F_name4" x="180" y="330.084" class="st9" width="400" height="40"/>
+		<rect id="mouse_x2F_name3" x="180" y="260.084" class="st9" width="400" height="40"/>
+		<rect id="mouse_x2F_name2" x="180" y="190.084" class="st9" width="400" height="40"/>
+		<rect id="mouse_x2F_name1" x="180" y="120.084" class="st9" width="400" height="40"/>
+	</g>
+</g>
+</svg>

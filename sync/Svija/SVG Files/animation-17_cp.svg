@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1200 1200" style="enable-background:new 0 0 1200 1200;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#333333;}
+	.st2{font-family:'Helvetica-Light';}
+	.st3{font-size:22.7296px;}
+	.st4{fill:#FFFFFF;stroke:#2B2B2B;stroke-width:0.5;stroke-miterlimit:10;}
+	.st5{fill:#2B2B2B;}
+	.st6{font-family:'Helvetica-Bold';}
+	.st7{font-size:21.6653px;}
+	.st8{fill:#6060FF;}
+	.st9{fill:#41BEFF;}
+	.st10{fill:#FF40C0;}
+	.st11{font-size:15px;}
+	.st12{opacity:0.3;fill:#FF40C0;stroke:#2B2B2B;stroke-width:0.5;stroke-miterlimit:10;}
+</style>
+<g id="page_color">
+	<rect x="0" class="st0" width="1200" height="1200"/>
+</g>
+<g id="content">
+	<text transform="matrix(1 0 0 1 346.8582 69.4154)"><tspan x="0" y="0" class="st1 st2 st3">#128 · origin 0,0 broken </tspan><tspan x="0" y="30.864" class="st1 st2 st3">#127 · /h flag breaks functions</tspan><tspan x="0" y="61.728" class="st1 st2 st3">#130 · func args should be normalized</tspan><tspan x="0" y="92.592" class="st1 st2 st3">#122 · object called &quot;debug&quot; makes triggers visible</tspan><tspan x="0" y="123.456" class="st1 st2 st3">#37 · add &quot;func&quot; flag to time trigger</tspan></text>
+	<g>
+		<path class="st4" d="M343.031,308.335h-177.48c-2.761,0-5-2.239-5-5v-22.771c0-2.761,2.239-5,5-5h177.48c2.761,0,5,2.239,5,5
+			v22.771C348.031,306.096,345.793,308.335,343.031,308.335z"/>
+		<text transform="matrix(1 0 0 1 190.5063 299.6492)" class="st5 st6 st7">HAND FLAG</text>
+	</g>
+	<g>
+		<path class="st4" d="M343.031,377.154h-177.48c-2.761,0-5-2.239-5-5v-22.771c0-2.761,2.239-5,5-5h177.48c2.761,0,5,2.239,5,5
+			v22.771C348.031,374.915,345.793,377.154,343.031,377.154z"/>
+		<text transform="matrix(1 0 0 1 206.1362 368.4683)" class="st5 st6 st7">&lt; FLAG &gt;</text>
+	</g>
+	<rect x="286.837" y="33.168" class="st1" width="15.144" height="4.048"/>
+</g>
+<g id="events">
+	<rect id="ovaway_x2F_name5_x2F__x25_150" x="267.545" y="558.817" class="st8" width="110.366" height="110.366"/>
+	<rect id="ovaway_x2F_name5_x2F__x25_150_x2F__x3C_" x="192.131" y="435.517" class="st9" width="110.366" height="110.366"/>
+	<rect id="ovaway_x2F_name5_x2F__x25_150_x2F__x3E_" x="339.601" y="435.517" class="st10" width="110.366" height="110.366"/>
+	
+		<image style="overflow:visible;" width="750" height="500" id="scrub_x2F_name1_x2F__x3C_500_x2F_o0_x2C_0" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.4406 0 0 0.4406 535.4111 491.3979)">
+	</image>
+	<rect id="click_x2F_orphan2_x2F__x25_200_x2F_" x="787.461" y="308.335" class="st8" width="194.891" height="90.893"/>
+	<rect id="click_x2F_orphan_x2F__x25_200" x="545.149" y="308.335" class="st8" width="194.891" height="90.893"/>
+	<text id="xclick_x2F_orphan2_x2F__x25_200_x2F_" transform="matrix(1 0 0 1 812.9436 422.8929)" class="st1 st2 st11">click/orphan2/%200/</text>
+	
+		<text id="xclick_x2F_orphan2_x2F__x25_200_x2F__00000003791176226733610230000015061054140687297669_" transform="matrix(1 0 0 1 575.8942 422.8929)" class="st1 st2 st11">click/orphan/%200</text>
+</g>
+<g id="triggers">
+	<rect id="mouse_x2F_name5_x2F_h" x="155.551" y="339.383" class="st12" width="202.836" height="44.438"/>
+	<rect id="scroll_x2F_name4_x2F_func_x2F_scroll_works_x21_" x="67.921" y="85" class="st12" width="10" height="10"/>
+	
+		<rect id="time_x2F_name3_x2F_2_x2F_func_x2F_time_works_x21__00000078753586873036250340000002982266855611212955_" x="56.921" y="0" class="st12" width="10" height="10"/>
+	
+		<rect id="mouse_x2F_name2_x2F_h_x2F_func_x2F_Hello_there_x21__x2A___x23_wow_x5C__sumpn_x5F_02" x="154.243" y="269.395" class="st12" width="204.144" height="43.373"/>
+	<rect id="scroll_x2F_name1" x="40.376" y="0" class="st12" width="10" height="500"/>
+</g>
+</svg>
