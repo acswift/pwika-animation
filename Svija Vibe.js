@@ -1,6 +1,9 @@
 
 //:::::::::::::::::::::::::::::::::::::::: Svija Vibe.js
 
+
+// CHANGE FROMTO FROM 'FROM' AND 'TO' TO BOOLEAN TRUE = TO ////////////////////
+
 /*———————————————————————————————————————— notes
 
   Svija Vibe 1.0.11
@@ -254,12 +257,12 @@ class Animation{
 
     /* set transparency · see logic spreadsheet
 
-    display is set to none by CSS
+    events are set to display:none by default (in CSS)
+
     needs to be updated here for initially-visible objects
 
     docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=1328156795 */
 
-//  toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard.style.display = 'block'; alert(262); // works
 //  obj.style.display = 'block'; alert(264); // broken
 
 //  var nutsId = String(obj.id);                    // toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard
@@ -270,48 +273,108 @@ class Animation{
 //  var nuts = document.getElementById('toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard'); // this works
 //  nuts.style.display = 'block'; alert(270);                                                            // this works
 
-//toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard.style.display = 'block'; alert(269); // works
+    // toggle_x2F_trigger3
+    // toggle_x2F_trigger2_x2F_-x684_x2F_4_x2F_hard
+    // toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard
 
-    var transCurrent = window.getComputedStyle(obj).getPropertyValue('opacity')
-// toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard.style.display = 'block'; alert(264); // broken
+//  obj.style.display = 'block';  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    var isVisible    = transCurrent != '0'
-    var noFlag       = typeof zoopy['transpFinal'] == 'undefined'
-    var isTransform  = containsTransform(zoopy)
 
-    if (noFlag && !isVisible){  // lines 3-5 √
-      zoopy['transpInit' ] = 0
-      zoopy['transpFinal'] = 1
+    /* docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=1328156795 */
+    zoopy['transpInit'] = window.getComputedStyle(obj).getPropertyValue('opacity')
+
+    if (typeof zoopy['transpFinal'] == 'undefined'){
+      var transpInit  = zoopy['transpInit']
+      var transpFinal = null
+    }
+    else{
+      var transpInit  = zoopy['transpInit']
+      var transpFinal = zoopy['transpFinal']
     }
 
-    else if (noFlag && isVisible && !isTransform){  // lines 7-8 √
+    var to      = (zoopy.fromto == 'to')
+    var visible = (transpInit   != '0' )
+
+    // three cases of transparency ////////////////////
+    transparency:{
+
+//    // exception · when no flags we assume mouseovers
+//    if (to && zoopy['transpFinal']==null && !containsTransform(zoopy)){
+//      zoopy['transInit']  = 0
+//      if (visible)  zoopy['transpFinal'] = transpInit
+//      if (!visible) zoopy['transpFinal'] = 1
+//      break transparency
+//    }
+
+      // error · zero to zero
+      if (transpInit == 0 && transpFinal == 0){
+        zoopy['transpInit' ] = undefined
+        zoopy['transpFinal'] = undefined
+        errLog('Zero to zero transparency', zoopy.obj)
+        break transparency
+      }
+
+      // all the rest: use current transparency as starting state
+      if (transpFinal == null){
+        zoopy['transpInit' ] = undefined
+        zoopy['transpFinal'] = undefined
+      }
+    }
+
+    if (setBlock(zoopy)) zoopy.obj.style.display = 'block'
+
+////////////////////// CHANGE ZOOPY['FINAL'] TO ZOOPY.FINAL EVERYWHERE WHEN DONE
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+    if (noFlags && !visible){  // lines 3-5 √
+      zoopy['transpInit' ] = 0
+      zoopy['transpFinal'] = 1
+      zoopy.obj.style.display = 'none';  // zyx
+    }
+
+    else if (noFlags && visible && !transform){  // lines 7-8 √
       zoopy['transpInit' ] = 0
       zoopy['transpFinal'] = transCurrent
       zoopy.obj.style.opacity = 0
       zoopy.obj.style.display = 'none'
     }
 
-    else if (noFlag && isVisible && isTransform){  // line 10 √
+    else if (noFlags && visible && transform){  // line 10 √
       zoopy.obj.style.display = 'block'
     }
 
-    else if (!isVisible && zoopy['transpFinal'] == 0) // lines 12-13 √
+    else if (!visible && zoopy['transpFinal'] == 0) // lines 12-13 √
       errLog('Transparent object has "t0" flag', obj)
 
     else if (zoopy['transFinal'] == 0){     // lines 15-16
       zoopy['transpInit' ] = transCurrent
     }
 
-    else if (!noFlag){                      // lines 18-20
+    else if (!noFlags){                      // lines 18-20
       zoopy['transpInit' ] = transCurrent
       zoopy.obj.style.display = 'block'
     }
 
     //—————————————————————————————— sumpn sumpn
-    if (zoopy.fromTo == '>')
+    if (zoopy.fromto == '>')
       zoopy.obj.style.opacity = zoopy.transInit
     else
       zoopy.obj.style.opacity = zoopy.transFinal
+*/
+
+/*/////////////////////////////////////// set display based on transpinit, fromto */
 
     // set default duration
     if (typeof zoopy.duration=='undefined')
@@ -425,7 +488,10 @@ class Animation{
         log('\nEvnt[' + x + ']');
         Object.keys(this.evnt[x]).forEach(key => {
           if (typeof this.evnt[x][key] != 'undefined')
-            if(key=='obj')log('obj (object): '+convertEntities(this.evnt[x][key].id));
+            if(key=='obj'){
+              log('obj (object): '+convertEntities(this.evnt[x][key].id));
+              log('style.display: '+this.evnt[x].obj.style.display)
+            }
             else log(key+' ('+typeof(this.evnt[x][key])+'): '+this.evnt[x][key]);
         });
       }
@@ -538,7 +604,6 @@ class Animation{
   }
 
 }
-
 
 //———————————————————————————————————————— class Trigger
 
@@ -719,6 +784,9 @@ console.groupCollapsed('registering events…')
 event_types.forEach(kind => {
   var stem = "[id^='" + kind + separator + "']"
   var obj_array = Array.from(document.querySelectorAll(stem))
+
+// if (obj_array.length == 0) alert(kind + ': '+obj_array.length);
+// click · over · away · ovaway · press · down · toggle · delay · point · zone · scrub
 
   // loop through adding events
   for(var x=0; x<obj_array.length; x++){
@@ -1582,27 +1650,17 @@ function decodeEntities(arg){
   return val
 }
 
-//———————————————————————————————————————— create_tline(obj, params)
+//———————————————————————————————————————— create_tline(namex, evntx, params)
 
-//nction create_tline(animation, params){
 function create_tline(namex, evntx, params){
 
-  obj = evntx.obj;
-
   var funcName = namex + '_timeline';
-
   var tline    = window[funcName];
 
   if (typeof tline == 'undefined'){
-
     window[funcName] = new gsap.timeline({paused:true});
-
     var tline = window[funcName];
-
-    tline[evntx.fromto](obj, params);
-
-//  log('timeline '+funcName + '.'+evntx.fromto+' created');
-
+    tline[evntx.fromto](evntx.obj, params);
   }
 }
 
@@ -1658,9 +1716,43 @@ function getParentG(obj){
   return null;
 }
 
+//———————————————————————————————————————— dumpKeys(obj)
+
+function dumpKeys(obj){
+  var str = '';
+
+  for (var i in obj){
+    try{
+      str += '\n'+i+': '+obj[i].typename;
+    }
+    catch(e){
+      str += '\n'+i+': error';
+    }
+  }
+  alert(str);
+}
+
+/*———————————————————————————————————————— setBlock(anim)
+
+    will set display:none or display:block depending on
+    whether it should be initially hidden
+
+    objects are set to 'none' when arriving here
+
+    see google spreadsheet for logic
+    https://docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=601106820   */
+
+function setBlock(anim){
+  if (typeof anim.transpInit == 'undefined'        ) return true // no change in transparency
+  if (anim.transpInit  > 0                         ) return true // starts visible
+  if (anim.transpFinal > 0 && anim.fromto == 'from') return true // starts visible
+
+  return false;
+}
+
 //———————————————————————————————————————— debugging
 
-//var a = 'trigger1'; try { animations[a].flagDump(); } catch (error) { log('⚠️  dumpFlags: "'+a+'" is not listed.'); }
+//var a = 'nameA'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
