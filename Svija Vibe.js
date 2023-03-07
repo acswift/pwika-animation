@@ -279,9 +279,9 @@ class Animation{
 
 //  obj.style.display = 'block';  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
     /* docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=1328156795 */
-    zoopy['transpInit'] = window.getComputedStyle(obj).getPropertyValue('opacity')
+    zoopy['transpInit'] = +window.getComputedStyle(obj).getPropertyValue('opacity') // breaks clipping mask
+//  zoopy['transpInit'] = 1                                                         // works
 
     if (typeof zoopy['transpFinal'] == 'undefined'){
       var transpInit  = zoopy['transpInit']
@@ -298,13 +298,14 @@ class Animation{
     // three cases of transparency ////////////////////
     transparency:{
 
-//    // exception · when no flags we assume mouseovers
-//    if (to && zoopy['transpFinal']==null && !containsTransform(zoopy)){
-//      zoopy['transInit']  = 0
-//      if (visible)  zoopy['transpFinal'] = transpInit
-//      if (!visible) zoopy['transpFinal'] = 1
-//      break transparency
-//    }
+      // exception · when no flags we assume mouseovers
+      if (to && !containsTransform(zoopy) && zoopy['transpFinal']==null){
+        zoopy.obj.style.opacity = 0
+        zoopy['transpInit']  = 0
+        if (visible)  zoopy['transpFinal'] = transpInit
+        if (!visible) zoopy['transpFinal'] = 1
+        break transparency
+      }
 
       // error · zero to zero
       if (transpInit == 0 && transpFinal == 0){
@@ -316,12 +317,18 @@ class Animation{
 
       // all the rest: use current transparency as starting state
       if (transpFinal == null){
-        zoopy['transpInit' ] = undefined
-        zoopy['transpFinal'] = undefined
+        zoopy['transpFinal'] = zoopy['transpInit']
+//      zoopy['transpInit' ] = undefined
+//      zoopy['transpFinal'] = undefined
       }
     }
 
-    if (setBlock(zoopy)) zoopy.obj.style.display = 'block'
+    zoopy.transpInit = 1*zoopy.transpInit   // doesn't seem
+    zoopy.transpFinal = 1*zoopy.transpFinal // to make a difference
+
+    if (setBlock(zoopy)){
+      zoopy.obj.style.display = 'block'
+    }
 
 ////////////////////// CHANGE ZOOPY['FINAL'] TO ZOOPY.FINAL EVERYWHERE WHEN DONE
 
@@ -369,7 +376,7 @@ class Animation{
 
     //—————————————————————————————— sumpn sumpn
     if (zoopy.fromto == '>')
-      zoopy.obj.style.opacity = zoopy.transInit
+      zoopy.obj.style.opacity = zoopy.transpInit
     else
       zoopy.obj.style.opacity = zoopy.transFinal
 */
@@ -491,6 +498,7 @@ class Animation{
             if(key=='obj'){
               log('obj (object): '+convertEntities(this.evnt[x][key].id));
               log('style.display: '+this.evnt[x].obj.style.display)
+              log('style.opacity: '+this.evnt[x].obj.style.opacity)
             }
             else log(key+' ('+typeof(this.evnt[x][key])+'): '+this.evnt[x][key]);
         });
@@ -704,18 +712,40 @@ console.groupCollapsed('Svija Vibe');
 
     3. fixes the issue where a - sign is not consistently represented */
 
+//    <defs>
+//        <rect id="aiId" x="360.49" y="113.505" width="371.287" height="144.554"/>
+//    </defs>
+//    
+//    <clipPath id="aiId_00000088841081244737966180000018036638614755142529_">
+//      <use xlink:href="#aiId"  style="overflow:visible;"/>
+//    </clipPath>
+//    
+//    <g style="clip-path:url(#aiId_00000088841081244737966180000018036638614755142529_);">
+//      <image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(1 0 0 1 360.49 113.505)"></image>
+//    </g>
+
+/* the solution is to get the id of the rect and make display:block
+if I just calculate the ID from the other paths, it might break if
+illustrator has multiple objects with the same ID's
+
+better to get it "officially", by following the reference in the clipPath
+
+I can get all the "use" tags and look for a similar ID */
+
 log('cleaning up clipping paths…');
 
 const clippedObjects = document.querySelectorAll("[style^='clip']")
 
 for(var x=0; x<clippedObjects.length; x++){
 
-  var clippedObj = clippedObjects[x]                   // #3 above
+  var clippedObj = clippedObjects[x]                     // object #3 above
   var pathUrl    = clippedObj.style.clipPath;
   var pathId     = pathUrl.slice(6, pathUrl.length-2)
-  var clipPath   = document.getElementById(pathId);      // #2 above
+  var clipPath   = document.getElementById(pathId);      // object #2 above
+  var defsId     = clipPath.firstElementChild.getAttributeNS('http://www.w3.org/1999/xlink', 'href').slice(1);
+  var defsObj    = document.getElementById(defsId)
 
-  // move clipped object status to parent <g> 
+  // move clipped object status to parent <g>  (fix #1 above)
   var parentG = getParentG(clippedObj);
   if (parentG != null){
     parentG.style.clipPath = pathUrl
@@ -723,17 +753,19 @@ for(var x=0; x<clippedObjects.length; x++){
     clippedObj = parentG
   }
 
-  if (pathId.slice(0,6) != 'SVGID_'){ // if it has custom name
+  if (pathId.slice(0,6) != 'SVGID_'){ // IF IT HAS CUSTOM NAME /////////////////// this breaks animation/22
     try{
 
-      // disambigate custom path names (problem #1 above)
-      var newId = 'CP' + pathId;
+      // disambigate custom path names (fix #2 above)
+      var newId  = 'CP'     + pathId
       var newUrl = 'url("#' + newId + '")'
 
-      clipPath.id               = newId;
       clippedObj.style.clipPath = newUrl;
+      clipPath.id               = newId;
+
+      defsObj.style.display = 'block'
   
-      // fix minus sign (problem #3 above)
+      // fix minus sign (fix #3 above)
       if (r = fix_minus(clipPath)){}
 
     }
@@ -1350,7 +1382,7 @@ function lstn_scroll_zone(animation, which_event, trig_top, trig_bot, params){
     animation !playing && pos != beginning  -        reverse
     animation playing && !reversed          -        reverse 
 
-		doesn't work when we scroll down the page
+    doesn't work when we scroll down the page
 
 */
 
@@ -1752,8 +1784,7 @@ function setBlock(anim){
 
 //———————————————————————————————————————— debugging
 
-//var a = 'nameA'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
+var a = 'trigger1'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
-
