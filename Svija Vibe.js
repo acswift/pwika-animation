@@ -910,7 +910,7 @@ log((end_time-start_time)+'ms elapsed');
 
 // https://stackoverflow.com/a/1938465
 
-if (typeof debug != 'undefined'){
+if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined'){
   var arrMatches = getElementsByRegex('^time_x2F_.*');
   for (var x=0; x<arrMatches.length; x++)
     arrMatches[x].style.opacity = 0.3;
@@ -1566,9 +1566,10 @@ function errLog(arg, obj){
     arg += ' in ' + svgName(obj) + '.ai' + ' › ' + id
   }
 
-  if (typeof debug != 'undefined') alert('⚠️  '+arg);
-  log('⚠️  '+arg);
+  if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined')
+    alert('⚠️  '+arg);
 
+  log('⚠️  '+arg);
 }
 
 //———————————————————————————————————————— not_number(x)
