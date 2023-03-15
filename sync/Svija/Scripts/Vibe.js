@@ -1,6 +1,7 @@
 
 //:::::::::::::::::::::::::::::::::::::::: Svija Vibe.js
 
+// listenrs for both window & document.body — can I use document.body everywhere?
 // CHANGE FROMTO FROM 'FROM' AND 'TO' TO BOOLEAN TRUE = TO ////////////////////
 // https://www.toptal.com/developers/javascript-minifier
 
@@ -1157,6 +1158,7 @@ function addScrollPoint(animation, whichEvent){
     var params = gsap_params(animation.evnt[whichEvent])
     create_tline(animation.name+whichEvent, animation.evnt[whichEvent], params)
 
+    window.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
     document.body.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
 
   }
@@ -1184,6 +1186,7 @@ function addScrollScrub(animation, whichEvent){
     var params = gsap_params(animation.evnt[whichEvent])
 
     create_tline(animation.name+whichEvent, animation.evnt[whichEvent], params)
+    window.addEventListener('scroll', listenScrollScrub.bind(null, animation, whichEvent, vert, startPx, endPx, 0)) 
     document.body.addEventListener('scroll', listenScrollScrub.bind(null, animation, whichEvent, vert, startPx, endPx, 0)) 
 
     // in case something should already be visible
@@ -1214,6 +1217,7 @@ function addScrollZone(animation, whichEvent){
 
     create_tline(animation.name+whichEvent, animation.evnt[whichEvent], params)
     document.body.addEventListener('scroll', listenScrollZone.bind(null, animation, whichEvent, vert, startPx, endPx)) 
+    window.addEventListener('scroll', listenScrollZone.bind(null, animation, whichEvent, vert, startPx, endPx)) 
 
     // in case something should already be visible
     listenScrollZone(animation, whichEvent, vert, startPx, endPx) 
@@ -1809,7 +1813,7 @@ function isHorizontal(obj){
 
 //———————————————————————————————————————— debugging
 
-// var a = 'zoneTest'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
+// var a = 'name1'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
