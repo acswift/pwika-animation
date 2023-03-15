@@ -25,7 +25,7 @@
 		8013.485,460.502 7727.4,320.854 7092.648,406.861 6565.178,406.861 6234.392,460.502 5966.187,299.579 5706.922,460.502 
 		5277.794,460.502 4696.684,299.579 4365.897,460.502 3874.188,460.502 3194.736,371.1 2685.146,460.502 2425.882,299.579 
 		1111.677,460.502 762.189,320.854 	"/>
-	<text transform="matrix(1 0 0 1 98.374 712.3418)"><tspan x="0" y="0" class="st1 st3 st4">The rule is that if the trigger is wider  </tspan><tspan x="0" y="68.023" class="st1 st3 st4">than tall, it&apos;s a horizontal trigger</tspan></text>
+	<text transform="matrix(1 0 0 1 98.374 116.6804)"><tspan x="0" y="0" class="st1 st3 st4">The rule is that if the trigger is wider  </tspan><tspan x="0" y="68.023" class="st1 st3 st4">than tall, it&apos;s a horizontal trigger</tspan></text>
 </g>
 <g id="events">
 	<g id="scrub_x2F_scrubTest_x2F__x3C_90">
@@ -48,7 +48,7 @@
 	<rect id="scroll_x2F_scrubTest" x="300" y="20" class="Trigger" width="1200" height="10"/>
 	<rect id="scroll_x2F_zoneTest" x="700" y="10" class="Trigger" width="900" height="10"/>
 	
-		<rect id="scroll_x2F_pointTest_00000070830981707193566680000010702064421572337573_" x="1400" class="Trigger" width="20" height="10"/>
+		<rect id="scroll_x2F_pointTest_00000070830981707193566680000010702064421572337573_" x="400" class="Trigger" width="20" height="10"/>
 </g>
 <g id="debug">
 </g>

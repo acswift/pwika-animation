@@ -1037,11 +1037,11 @@ function activate_scroll_events(animation){
   for (var x=0; x<animation.evnt.length; x++){
     switch (animation.evnt[x].kind) {
     case 'point':
-      add_scroll_point(animation, x)
+      addScrollPoint(animation, x)
       break
 
     case 'zone':
-      add_scroll_zone(animation, x)
+      addScrollZone(animation, x)
       break
 
     case 'scrub':
@@ -1134,25 +1134,30 @@ function add_mouse_toggle(animation, x){
   }
 }
 
-/*———————————————————————————————————————— add_scroll_point(animation,x)
+/*———————————————————————————————————————— addScrollPoint(animation,x)
 
     can have multiple triggers that set off the animation
 
     it is the fact that the "point" crosses the top border of the window
     that triggers the animation — not if it's visible already or not */
 
-function add_scroll_point(animation, which_event){
+function addScrollPoint(animation, which_event){
 
   for (var t=0; t<animation.triggers.length; t++){
 
     var obj         = animation.triggers[t].obj
     var rect        = obj.getBBox()              // get bounding box of trig object
-    var trigger_top = rect['y']                  // top of box, in pixels
+    var vert        = animation.triggers[t].vert
+
+    if (vert)
+      var triggerPx = rect['y']                  // top of box, in pixels
+    else
+      var triggerPx = rect['x']                  // left of box, in pixels
 
     var params = gsap_params(animation.evnt[which_event])
     create_tline(animation.name+which_event, animation.evnt[which_event], params)
 
-    window.addEventListener('scroll', lstn_scroll_point.bind(null, animation, which_event, trigger_top)) 
+    document.body.addEventListener('scroll', listenScrollPoint.bind(null, animation, which_event, vert, triggerPx)) 
 
   }
 }
@@ -1179,9 +1184,9 @@ function addScrollScrub(animation, x){
   }
 }
 
-//———————————————————————————————————————— add_scroll_zone(animation,x)
+//———————————————————————————————————————— addScrollZone(animation,x)
 
-function add_scroll_zone(animation, x){
+function addScrollZone(animation, x){
 
   for (var t=0; t<animation.triggers.length; t++){
     var obj = animation.triggers[t].obj;
@@ -1242,7 +1247,7 @@ function lstn_scroll_func(name, triggers, trig_top, args){
 
 }
 
-//———————————————————————————————————————— lstn_scroll_point(animation, x, trig_top, params)
+//———————————————————————————————————————— listenScrollPoint(animation, which_event, vert, startPx)
 
 // https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
@@ -1259,19 +1264,25 @@ function lstn_scroll_func(name, triggers, trig_top, args){
   // goes on when trig object top scrolls up past top of page
   
 
-function lstn_scroll_point(animation, which_event, trig_top){
+function listenScrollPoint(animation, which_event, vert, startPx){
 
-  var page_top     = document.documentElement.scrollTop || document.body.scrollTop
-  var pixel_height = window.innerHeight
-  var rem_top      = page_top / aiPixel
+  if (vert){
+    var page_top    = document.documentElement.scrollTop || document.body.scrollTop
+    var edgePx      = page_top / aiPixel
+  }
 
-  var obj          = animation.evnt[which_event].obj
-  var funcName     = animation.name + which_event + '_timeline'
-  var tline        = window[funcName]
+  else{
+    var page_left  = document.documentElement.scrollLeft || document.body.scrollLeft
+    var edgePx     = page_left / aiPixel
+  }
 
-  if (trig_top < rem_top)
+  var obj      = animation.evnt[which_event].obj
+  var funcName = animation.name + which_event + '_timeline'
+  var tline    = window[funcName]
+
+  if (startPx < edgePx){
     if (tline.totalTime() == 0) tline.play() // if hasn't yet run, play it
-
+  }
 }
 
 /*———————————————————————————————————————— lstn_scroll_scrub(animation, x, trig_top, trig_bot, params)
