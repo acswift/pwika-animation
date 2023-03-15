@@ -1,8 +1,6 @@
 
 //:::::::::::::::::::::::::::::::::::::::: Svija Vibe.js
 
-// listenrs for both window & document.body — can I use document.body everywhere?
-// CHANGE FROMTO FROM 'FROM' AND 'TO' TO BOOLEAN TRUE = TO ////////////////////
 // https://www.toptal.com/developers/javascript-minifier
 
 /*———————————————————————————————————————— notes
