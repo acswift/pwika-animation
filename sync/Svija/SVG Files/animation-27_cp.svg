@@ -45,7 +45,7 @@
 	</g>
 </g>
 <g id="triggers">
-	<rect id="scroll_x2F_scrubTest" x="300" y="20" class="Trigger" width="1200" height="10"/>
+	<rect id="scroll_x2F_scrubTest" x="300" y="20" class="Trigger" width="700" height="10"/>
 	<rect id="scroll_x2F_zoneTest" x="700" y="10" class="Trigger" width="900" height="10"/>
 	
 		<rect id="scroll_x2F_pointTest_00000070830981707193566680000010702064421572337573_" x="400" class="Trigger" width="20" height="10"/>

@@ -1141,67 +1141,82 @@ function add_mouse_toggle(animation, x){
     it is the fact that the "point" crosses the top border of the window
     that triggers the animation — not if it's visible already or not */
 
-function addScrollPoint(animation, which_event){
+function addScrollPoint(animation, whichEvent){
 
   for (var t=0; t<animation.triggers.length; t++){
 
-    var obj         = animation.triggers[t].obj
-    var rect        = obj.getBBox()              // get bounding box of trig object
-    var vert        = animation.triggers[t].vert
+    var obj  = animation.triggers[t].obj
+    var rect = obj.getBBox()              // get bounding box of trig object
+    var vert = animation.triggers[t].vert
 
     if (vert)
-      var triggerPx = rect['y']                  // top of box, in pixels
+      var startPx = rect['y']                  // top of box, in pixels
     else
-      var triggerPx = rect['x']                  // left of box, in pixels
+      var startPx = rect['x']                  // left of box, in pixels
 
-    var params = gsap_params(animation.evnt[which_event])
-    create_tline(animation.name+which_event, animation.evnt[which_event], params)
+    var params = gsap_params(animation.evnt[whichEvent])
+    create_tline(animation.name+whichEvent, animation.evnt[whichEvent], params)
 
-    document.body.addEventListener('scroll', listenScrollPoint.bind(null, animation, which_event, vert, triggerPx)) 
+    document.body.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
 
   }
 }
 
 //———————————————————————————————————————— addScrollScrub(animation,x)
 
-function addScrollScrub(animation, x){
+function addScrollScrub(animation, whichEvent){
 
   for (var t=0; t<animation.triggers.length; t++){
 
-    var obj = animation.triggers[t].obj //———————————————————————— ERROR
+    var obj  = animation.triggers[t].obj
+    var rect = obj.getBBox()                // get bounding rect of trig object
+    var vert = animation.triggers[t].vert
 
-    var box    = obj.getBBox()                // get bounding box of trig object
-    var boxTop = box['y'] < 0 ? 0 : box['y']  // top
-    var boxBot = boxTop + box['height']       // bottom
+    if (vert){
+      var startPx = rect['y'] < 0 ? 0 : rect['y']  // top
+      var endPx = startPx + rect['height']    // bottom
+    }
+    else{
+      var startPx = rect['x'] < 0 ? 0 : rect['x']  // top
+      var endPx = startPx + rect['width']    // bottom
+    }
 
-    var params = gsap_params(animation.evnt[x])
+    var params = gsap_params(animation.evnt[whichEvent])
 
-    create_tline(animation.name+x, animation.evnt[x], params)
-    window.addEventListener('scroll', lstn_scroll_scrub.bind(null, animation, x, boxTop, boxBot, 0)) 
+    create_tline(animation.name+whichEvent, animation.evnt[whichEvent], params)
+    document.body.addEventListener('scroll', listenScrollScrub.bind(null, animation, whichEvent, vert, startPx, endPx, 0)) 
 
     // in case something should already be visible
-    lstn_scroll_scrub(animation, x, boxTop, boxBot, params, 0) 
+    listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, 0) 
   }
 }
 
 //———————————————————————————————————————— addScrollZone(animation,x)
 
-function addScrollZone(animation, x){
+function addScrollZone(animation, whichEvent){
 
   for (var t=0; t<animation.triggers.length; t++){
-    var obj = animation.triggers[t].obj;
 
-    var box = obj.getBBox();      // get bounding box of trig object
-    var t = box['y'];             // top
-    var b = t + box['height'];    // bottom
+    var obj  = animation.triggers[t].obj
+    var rect = obj.getBBox()              // get bounding rect of trig object
+    var vert = animation.triggers[t].vert
 
-    var params = gsap_params(animation.evnt[x]);
+    if (vert){
+      var startPx = rect['y'] < 0 ? 0 : rect['y']  // top
+      var endPx = startPx + rect['height']    // bottom
+    }
+    else{
+      var startPx = rect['x'] < 0 ? 0 : rect['x']  // top
+      var endPx = startPx + rect['width']    // bottom
+    }
 
-    create_tline(animation.name+x, animation.evnt[x], params);
-    window.addEventListener('scroll', lstn_scroll_zone.bind(null, animation, x, t, b)); 
+    var params = gsap_params(animation.evnt[whichEvent])
+
+    create_tline(animation.name+whichEvent, animation.evnt[whichEvent], params)
+    document.body.addEventListener('scroll', listenScrollZone.bind(null, animation, whichEvent, vert, startPx, endPx)) 
 
     // in case something should already be visible
-    lstn_scroll_zone(animation, x, t, b); 
+    listenScrollZone(animation, whichEvent, vert, startPx, endPx) 
   }
 }
 
@@ -1264,28 +1279,25 @@ function lstn_scroll_func(name, triggers, trig_top, args){
   // goes on when trig object top scrolls up past top of page
   
 
-function listenScrollPoint(animation, which_event, vert, startPx){
+function listenScrollPoint(animation, whichEvent, vert, startPx){
 
-  if (vert){
-    var page_top    = document.documentElement.scrollTop || document.body.scrollTop
-    var edgePx      = page_top / aiPixel
-  }
+  if (vert)
+    var pageStart = document.documentElement.scrollTop  || document.body.scrollTop
+  else
+    var pageStart = document.documentElement.scrollLeft || document.body.scrollLeft
 
-  else{
-    var page_left  = document.documentElement.scrollLeft || document.body.scrollLeft
-    var edgePx     = page_left / aiPixel
-  }
+  var obj        = animation.evnt[whichEvent].obj
+  var tlineName  = animation.name + whichEvent + '_timeline'
+  var tline      = window[tlineName]
 
-  var obj      = animation.evnt[which_event].obj
-  var funcName = animation.name + which_event + '_timeline'
-  var tline    = window[funcName]
+  pageStart = pageStart / aiPixel
 
-  if (startPx < edgePx){
+  if (startPx < pageStart){
     if (tline.totalTime() == 0) tline.play() // if hasn't yet run, play it
   }
 }
 
-/*———————————————————————————————————————— lstn_scroll_scrub(animation, x, trig_top, trig_bot, params)
+/*———————————————————————————————————————— listenScrollScrub(animation, x, trig_top, trig_bot, params)
 
     executed for the first time the first time on load
     and thereafter each time the window is scrolled
@@ -1309,54 +1321,60 @@ function listenScrollPoint(animation, which_event, vert, startPx){
 var scrub_foix = 8 // how many extra calls are made compared to scroll trigger_types
 var scrub_rate = 10 // how many ms between extra calls
 
-function lstn_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
+function listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, fois){
 
-  var page_top     = document.documentElement.scrollTop || document.body.scrollTop
-  var pixel_height = window.innerHeight
+  if (vert){
+    var pageStart = document.documentElement.scrollTop || document.body.scrollTop
+    var pageSize  = window.innerHeight
+  }
+  else{
+    var pageStart = document.documentElement.scrollLeft || document.body.scrollLeft
+    var pageSize  = window.innerWidth
+  }
 
-  var rem_top = page_top / aiPixel
+  pageStart = pageStart / aiPixel
 
-  var obj      = animation.evnt[x].obj
-  var funcName = animation.name + x + '_timeline'
-  var tline    = window[funcName]
+  var obj       = animation.evnt[whichEvent].obj
+  var tlineName = animation.name + whichEvent + '_timeline'
+  var tline     = window[tlineName]
 
   if (typeof tline == 'undefined'){
-    log(funcName+' created')
-    window[funcName] = new gsap.timeline({paused:true})
-    var tline = window[funcName]
+    log(tlineName+' created')
+    window[tlineName] = new gsap.timeline({paused:true})
+    var tline = window[tlineName]
 //log('💥 1116 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto)
-    tline[animation.evnt[x].fromto](obj, params)
+    tline[animation.evnt[whichEvent].fromto](obj, params)
 //    set_existence(obj, true)
   }
 
   // % of bar above top of window = % of timeline
 
-  var active = false
+  var triggerActive = false
   
   // trig is activated
-  if (trig_top < rem_top && trig_bot > rem_top){
-    active = true
+  if (startPx < pageStart && endPx > pageStart){
+    triggerActive = true
 
     set_existence(obj, true) //—————————————————————————————————————————————————————————————————-- is this too much?
-    var obj_height = trig_bot - trig_top
-    var passed = rem_top - trig_top
-    var pcent = passed/obj_height
+    var triggerSize = endPx - startPx
+    var passed      = pageStart - startPx
+    var pcent       = passed/triggerSize
     pcent = Math.round(pcent * 10000)/10000 // percent + 2 decimals
-    var new_time = tline.totalDuration() * pcent
+    var newTime = tline.totalDuration() * pcent
 
-    tline.totalTime(new_time)
+    tline.totalTime(newTime)
   
   }
 
   else {
 
     // if trig object is below top of page, snap to 0
-    if (trig_top > rem_top){
+    if (startPx > pageStart){
       tline.totalTime(0)
     }
 
     // if trig object is above top of page, snap to 100
-    if (trig_bot < rem_top){
+    if (endPx < pageStart){
       tline.totalTime(tline.totalDuration())
 //    if (params['autoAlpha'] == 0) set_existence(obj, false)
     }
@@ -1364,11 +1382,11 @@ function lstn_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
 
   // re-request same function to double frequency
 
-  if (active && fois < scrub_foix)
-    setTimeout(lstn_scroll_scrub, scrub_rate, animation, x, trig_top, trig_bot, params, fois+1)
+  if (triggerActive && fois < scrub_foix)
+    setTimeout(listenScrollScrub, scrub_rate, animation, whichEvent, startPx, endPx, params, fois+1)
 }
 
-//———————————————————————————————————————— lstn_scroll_zone(animation, x, trig_top, trig_bot, params)
+//———————————————————————————————————————— listenScrollZone(animation, x, trig_top, trig_bot, params)
 
   // goes on when trig top scrolls up past top of page
   // goes off when trig object bottom < bottom of page
@@ -1384,71 +1402,44 @@ function lstn_scroll_scrub(animation, x, trig_top, trig_bot, params, fois){
 
 // called every time a scroll evnt
 
-function lstn_scroll_zone(animation, which_event, trig_top, trig_bot, params){
+function listenScrollZone(animation, whichEvent, vert, startPx, endPx, params){
 
-  var page_top     = document.documentElement.scrollTop || document.body.scrollTop
-  var pixel_height = window.innerHeight
-  var page_bot     = page_top + pixel_height
+  if (vert){
+    var pageStart = document.documentElement.scrollTop || document.body.scrollTop
+    var pageSize  = window.innerHeight
+  }
+  else{
+    var pageStart = document.documentElement.scrollLeft || document.body.scrollLeft
+    var pageSize  = window.innerWidth
+  }
 
-  var rem_top      = page_top / aiPixel
-  var rem_bot      = page_bot / aiPixel
+  var pageEnd     = pageStart + pageSize
 
-  var rem_dist     = rem_bot - trig_bot // distance between bottom of trigger
-  if (rem_dist < 0) rem_dist = 0        // and bottom of window
+  pageStart       = pageStart / aiPixel
+  pageEnd         = pageEnd   / aiPixel
 
-  var obj          = animation.evnt[which_event].obj
-  var funcName     = animation.name + which_event + '_timeline'
-  var tline        = window[funcName]
+  var obj         = animation.evnt[whichEvent].obj
+  var tlineName   = animation.name + whichEvent + '_timeline'
+  var tline       = window[tlineName]
 
-    if (trig_top > rem_top && trig_bot < rem_bot) var triggerActive = true
-                                             else var triggerActive = false
+  var tlReversed  = tline.reversed()
+  var tlPlaying   = tline.isActive()
+
+  if (startPx > pageStart && endPx < pageEnd) var triggerActive = true
+                                         else var triggerActive = false
 
   if (tline.totalTime() == tline.totalDuration()) var tlPosition    = 'end'
                  else if (tline.totalTime() == 0) var tlPosition    = 'beginning'
                                              else var tlPosition    = 'middle'
 
-                                                  var tlReversed    = tline.reversed()
-                                                  var tlPlaying     = tline.isActive()
-
-/*
-
-                                trigger:   visible  hidden
-
-    animation !playing && pos != end        play     -
-                       if rem_dist>100      » end                    commented out below; I don't know how to tell whether it's that the animation has
-                                                                     played to the end and we're now scrolling up, or whether the page has simply been
-    animation playing && reversed           play     -               loaded with the scroll trigger entirely visible
-    animation !playing && pos != beginning  -        reverse
-    animation playing && !reversed          -        reverse 
-
-    doesn't work when we scroll down the page
-
-*/
-
-  var dist_limit = 100
-
   if(triggerActive){
-    if (!tlPlaying && tlPosition != 'end'){
-//    if (rem_dist > dist_limit){
-//      tline.totalTime(tline.totalDuration(), false)
-//      log(animation.name+which_event + ' skipping to end')
-//    }
-//    else{
-        tline.play()
-//      log(animation.name+which_event + ' playing from beginning')
-//    }
-    }
-    if ( tlPlaying && tlReversed) tline.play()
+    if (!tlPlaying && tlPosition != 'end') tline.play()
+    if ( tlPlaying && tlReversed)          tline.play()
   }
-
-  if(!triggerActive){
+  else{
     if (!tlPlaying && tlPosition != 'beginning') tline.reverse()
     if ( tlPlaying && !tlReversed)               tline.reverse()
   }
-
-//log('active: ' + triggerActive + ', playing: ' + tlPlaying + ', position: ' + tlPosition + ', reversed: ' + tlReversed + ', display: '+ obj.style.display);
-
-/* INSERT DISPLAY:BLOCK AT BEGINNING OF TIMELINES FROM 0 OPACITY ETC. */
 
 }
 
@@ -1457,8 +1448,8 @@ function lstn_scroll_zone(animation, which_event, trig_top, trig_bot, params){
 function lstn_mouse_toggle(namex, evntx, params){
 
   var obj      = evntx.obj
-  var funcName = namex + '_timeline'
-  var tline    = window[funcName]
+  var tlineName = namex + '_timeline'
+  var tline    = window[tlineName]
 
   if (tline.isActive())
     if (tline.reversed()) tline.play() // was playing backwards: play forwards
@@ -1818,7 +1809,7 @@ function isHorizontal(obj){
 
 //———————————————————————————————————————— debugging
 
- var a = 'pointTest'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
+// var a = 'zoneTest'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
