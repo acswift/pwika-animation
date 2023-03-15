@@ -23,13 +23,13 @@
 		<defs>
 			<path id="down_x2F_name3_x2F_90_x3E__x2F_-x190_x2F__x25_300" d="M1055,362H872v-72h183V362z M1129,371h-44v220h44V371z"/>
 		</defs>
-		<clipPath id="down_x2F_name3_x2F_90_x3E__x2F_-x190_x2F__x25_300_00000034086766521874682410000004852207295539262109_">
+		<clipPath id="down_x2F_name3_x2F_90_x3E__x2F_-x190_x2F__x25_300_00000068658945976795133040000009336034616625156019_">
 			<use xlink:href="#down_x2F_name3_x2F_90_x3E__x2F__x002D_x190_x2F__x25_300"  style="overflow:visible;"/>
 		</clipPath>
 		
-			<g style="clip-path:url(#down_x2F_name3_x2F_90_x3E__x2F_-x190_x2F__x25_300_00000034086766521874682410000004852207295539262109_);">
+			<g style="clip-path:url(#down_x2F_name3_x2F_90_x3E__x2F_-x190_x2F__x25_300_00000068658945976795133040000009336034616625156019_);">
 			
-				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Test/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 793 222)">
+				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 793 222)">
 			</image>
 		</g>
 	</g>
@@ -38,13 +38,13 @@
 			<rect id="down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F_-y50_x2F_y_x25_70" x="37" y="158" width="581" height="465"/>
 		</defs>
 		
-			<clipPath id="down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F_-y50_x2F_y_x25_70_00000026165196134623131950000007036259402453420173_">
+			<clipPath id="down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F_-y50_x2F_y_x25_70_00000103985433039647373380000003476942097320173716_">
 			<use xlink:href="#down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F__x002D_y50_x2F_y_x25_70"  style="overflow:visible;"/>
 		</clipPath>
 		
-			<g style="clip-path:url(#down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F_-y50_x2F_y_x25_70_00000026165196134623131950000007036259402453420173_);">
+			<g style="clip-path:url(#down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F_-y50_x2F_y_x25_70_00000103985433039647373380000003476942097320173716_);">
 			
-				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Test/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 619 158)">
+				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 619 158)">
 			</image>
 		</g>
 	</g>
