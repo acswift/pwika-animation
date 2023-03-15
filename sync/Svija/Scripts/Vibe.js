@@ -39,6 +39,11 @@
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
+//———————————————————————————————————————— start timer
+
+const d1 = new Date();
+let start_time = d1.getTime();
+
 //———————————————————————————————————————— debugging variables
 
 if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined')
@@ -47,15 +52,9 @@ else debugOn = false
 
 var debugMessages = []
 
-//———————————————————————————————————————— start timer
-
-const d1 = new Date();
-let start_time = d1.getTime();
-
 //———————————————————————————————————————— separator · types of triggers and events
 
 const     separator = '_x2F_'; // regular slash
-
 const trigger_types = [ 'mouse', 'time', 'scroll' ];
 const   event_types = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ];
 
@@ -134,13 +133,15 @@ const fromtos = {
   '<' : 'from'
 }
 
+
 //———————————————————————————————————————— defaults
 
 const trigger_defaults = {
 
-  'func'       : false,
-  'link'       : false,
-  'blank'      : false
+  'func'  : false,
+  'link'  : false,
+  'blank' : false,
+  'vert'  : true // is scrolling trigger horizontal or vertical
 
 }
 
@@ -149,7 +150,7 @@ const time_trigger_default = 5.0;
 const event_defaults = {
   'delay'   : 5.0, // only for time/delay anims
   'duration': 0.5,
-  'fromto'  : 'to' 
+  'fromto'  : 'to'
 }
 
 
@@ -219,6 +220,12 @@ class Animation{
       }
 
     } //—————————————————————————————————————————————————————————————————————-
+
+    // is scrolling trigger horizontal or vertical
+
+    if (kind == 'scroll')
+      if (isHorizontal(obj))
+        zoopy.vert = false
 
     // set link & parent target
  
@@ -626,16 +633,17 @@ class Animation{
     return flag.substr(flag_len);
   }
 
+
 }
 
 //———————————————————————————————————————— class Trigger
 
 class Trigger{
 
-  constructor( name, obj, kind, cursor, func, args, link, blank, delay ){
+  constructor( name, obj, kind, cursor, func, args, link, blank, delay, vert){
 
     this.name       = name;         // 20-character string
-    this.obj    = obj;      // object reference
+    this.obj        = obj;          // object reference
     this.kind       = kind;         // string · kind of trig                    scroll, mouse, time 
 
     // flags
@@ -645,6 +653,7 @@ class Trigger{
     this.link       = link;         // boolean · is an SVG link                  programmatically
     this.blank      = blank;        // boolean · link target is _blank           n
     this.delay      = delay;        // number of seconds before activation (time trig)
+    this.vert       = vert;         // scrolling trigger is horizontal or vertical
   }
 }
 
@@ -1781,6 +1790,19 @@ function setBlock(anim){
   if (anim.transpFinal > 0 && anim.fromto == 'from') return true // starts visible
 
   return false;
+}
+
+/*———————————————————————————————————————— isHorizontal(obj)
+
+    https://stackoverflow.com/questions/18147915/get-width-height-of-svg-element
+
+    returns true if the width of the object is
+    greater than the height of the object */
+
+function isHorizontal(obj){
+  var rect = obj.getBoundingClientRect()
+  if (rect.width > rect.height) return true
+  else return false
 }
 
 //———————————————————————————————————————— debugging
