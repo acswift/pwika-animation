@@ -1,12 +1,12 @@
 
 //:::::::::::::::::::::::::::::::::::::::: Svija Vibe.js
 
-
 // CHANGE FROMTO FROM 'FROM' AND 'TO' TO BOOLEAN TRUE = TO ////////////////////
+// https://www.toptal.com/developers/javascript-minifier
 
 /*———————————————————————————————————————— notes
 
-  Svija Vibe 1.0.11
+  Svija Vibe 1.0.14
 
   github.com/svijalove/animation
   
@@ -38,6 +38,14 @@
 
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
+
+//———————————————————————————————————————— debugging variables
+
+if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined')
+  var debugOn = true
+else debugOn = false
+
+var debugMessages = []
 
 //———————————————————————————————————————— start timer
 
@@ -926,6 +934,7 @@ if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG !
 
 //———————————————————————————————————————— ▲ end console.groupCollapsed
 
+if (debugOn) alert('Svija Vibe Errors\n• ' + debugMessages.join('\n• '))
 console.groupEnd();
 
 
@@ -1566,10 +1575,8 @@ function errLog(arg, obj){
     arg += ' in ' + svgName(obj) + '.ai' + ' › ' + id
   }
 
-  if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined')
-    alert('⚠️  '+arg);
-
-  log('⚠️  '+arg);
+  debugMessages.push(arg)
+  log('⚠️  '+arg)
 }
 
 //———————————————————————————————————————— not_number(x)

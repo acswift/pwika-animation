@@ -1,10 +1,10 @@
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
-*Updated 7 March, 2023 · Toulouse*
+*Updated 15 March, 2023 · Toulouse*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-### Svija Vibe 1.0.13
+### Svija Vibe 1.0.14
 
 This repository contains the development files for Svija Animation, which is included with each new Svija website.
 
