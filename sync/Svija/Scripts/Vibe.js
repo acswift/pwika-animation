@@ -945,6 +945,11 @@ if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG !
 if (debugOn && debugMessages.length > 0) alert('Svija Vibe Errors\n• ' + debugMessages.join('\n• '))
 console.groupEnd();
 
+//———————————————————————————————————————— name debugging
+
+if (typeof debug_name != 'undefined')
+	try { animations[debug_name].flagDump(); } catch (error) { log('⚠️  debug_name = \'' + debug_name + '\' — animation not found.'); }
+
 
 //:::::::::::::::::::::::::::::::::::::::: program trigger "func" functions
 
@@ -1808,10 +1813,6 @@ function isHorizontal(obj){
   if (rect.width > rect.height) return true
   else return false
 }
-
-//———————————————————————————————————————— debugging
-
-// var a = 'name1'; try { animations[a].flagDump(); } catch (error) { log('⚠️  flagDump: "'+a+'" is not listed.'); }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
