@@ -5,7 +5,7 @@
 
 /*———————————————————————————————————————— notes
 
-  Svija Vibe 1.0.14
+  Svija Vibe 1.0.16
 
   github.com/svijalove/animation
   
@@ -60,6 +60,7 @@ const   event_types = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 't
 //———————————————————————————————————————— conversion dictionaries
 
 const entity_conversion = {
+  'x002E': '.',
   'x002D': '-',
   'x2F'  : '/',
   'x2B'  : '+',
@@ -792,7 +793,7 @@ for(var x=0; x<clippedObjects.length; x++){
       clippedObj.style.clipPath = newUrl;
       clipPath.id               = newId;
 
-      try{defsObj.style.display = 'block'} catch(e){log('Object ' + decodeEntities(defsId) + ' could not be set to display:block')}
+      try{defsObj.style.display = 'block'} catch(e){log('object ' + decodeEntities(defsId) + ' could not be set to display:block')}
   
     }
     catch(msg){ log('⚠️  object with ID '+convertEntities(pathId)+' could not be updated:\n'+msg+ ' (line 779)'); }
@@ -1645,7 +1646,8 @@ function fix_minus(clip_path){
   if (correct_id.indexOf('_x002D_') > 0){
     var wrong_id = correct_id.replace('_x002D_', '-');
     var path = document.getElementById(wrong_id);
-    path.id  = correct_id;
+    if (path != null)
+      path.id  = correct_id;
   }
 }
 
