@@ -112,7 +112,7 @@ const flag_length = {
   'order'      : 0,
   'origin'     : 1,
   'rotate'     : 1,
-  'transpFinal'  : 1,
+  'autoAlpha'  : 1,
   'xmove'      : 1,
   'ymove'      : 1,
   'scale'      : 1,
@@ -295,62 +295,63 @@ class Animation{
 //  obj.style.display = 'block';  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /* docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=1328156795 */
-    zoopy['transpInit'] = +window.getComputedStyle(obj).getPropertyValue('opacity') // breaks clipping mask
-//  zoopy['transpInit'] = 1                                                         // works
+    zoopy['opacity'] = +window.getComputedStyle(obj).getPropertyValue('opacity') // breaks clipping mask
+//  zoopy['opacity'] = 1                                                         // works
 
-    if (typeof zoopy['transpFinal'] == 'undefined'){
-      var transpInit  = zoopy['transpInit']
-      var transpFinal = null
+    if (typeof zoopy['autoAlpha'] == 'undefined'){
+      var opacity  = zoopy['opacity']
+      var autoAlpha = null
     }
     else{
-      var transpInit  = zoopy['transpInit']
-      var transpFinal = zoopy['transpFinal']
+      var opacity  = zoopy['opacity']
+      var autoAlpha = zoopy['autoAlpha']
     }
 
     var to      = (zoopy.fromto == 'to')
-    var visible = (transpInit   != '0' )
+    var visible = (opacity   != '0' )
 
     // four cases of transparency ////////////////////
     transparency:{
 
       // exception · when no flags we assume mouseovers
-      if (to && !containsTransform(zoopy) && zoopy['transpFinal']==null){
+      if (to && !containsTransform(zoopy) && zoopy['autoAlpha']==null){
         zoopy.obj.style.opacity = 0
-        zoopy['transpInit']  = 0
-        if (visible)  zoopy['transpFinal'] = transpInit
-        if (!visible) zoopy['transpFinal'] = 1
+        zoopy['opacity']  = 0
+        if (visible)  zoopy['autoAlpha'] = opacity
+        if (!visible) zoopy['autoAlpha'] = 1
         break transparency
       }
 
       // exception · when visible and t100 flag
-      if (to && transpInit==1 && transpFinal==1){
-        zoopy['transpInit' ] = 0
+      if (to && opacity==1 && autoAlpha==1){
+        zoopy['opacity' ] = 0
         zoopy.obj.style.opacity = 0
         break transparency
       }
 
       // error · zero to zero
-      if (transpInit == 0 && transpFinal == 0){
-        zoopy['transpInit' ] = undefined
-        zoopy['transpFinal'] = undefined
+      if (opacity == 0 && autoAlpha == 0){
+        zoopy['opacity' ] = undefined
+        zoopy['autoAlpha'] = undefined
         errLog('Zero to zero transparency', zoopy.obj)
         break transparency
       }
 
       // all the rest: use current transparency as starting state
-      if (transpFinal == null){
-        zoopy['transpFinal'] = zoopy['transpInit']
-//      zoopy['transpInit' ] = undefined
-//      zoopy['transpFinal'] = undefined
+      if (autoAlpha == null){
+        zoopy['autoAlpha'] = zoopy['opacity']
+//      zoopy['opacity' ] = undefined
+//      zoopy['autoAlpha'] = undefined
       }
     }
 
-    zoopy.transpInit = 1*zoopy.transpInit   // doesn't seem
-    zoopy.transpFinal = 1*zoopy.transpFinal // to make a difference
+    zoopy.opacity = 1*zoopy.opacity   // doesn't seem
+    zoopy.autoAlpha = 1*zoopy.autoAlpha // to make a difference
 
     if (setVisible(zoopy)){
       zoopy.obj.style.visibility = 'inherit'
     }
+    zoopy.obj.style.visibility = 'inherit'
 
 ////////////////////// CHANGE ZOOPY['FINAL'] TO ZOOPY.FINAL EVERYWHERE WHEN DONE
 
@@ -368,14 +369,14 @@ class Animation{
 /*
 
     if (noFlags && !visible){  // lines 3-5 √
-      zoopy['transpInit' ] = 0
-      zoopy['transpFinal'] = 1
+      zoopy['opacity' ] = 0
+      zoopy['autoAlpha'] = 1
       zoopy.obj.style.display = 'none';  // zyx
     }
 
     else if (noFlags && visible && !transform){  // lines 7-8 √
-      zoopy['transpInit' ] = 0
-      zoopy['transpFinal'] = transCurrent
+      zoopy['opacity' ] = 0
+      zoopy['autoAlpha'] = transCurrent
       zoopy.obj.style.opacity = 0
       zoopy.obj.style.display = 'none'
     }
@@ -384,21 +385,21 @@ class Animation{
       zoopy.obj.style.display = 'block'
     }
 
-    else if (!visible && zoopy['transpFinal'] == 0) // lines 12-13 √
+    else if (!visible && zoopy['autoAlpha'] == 0) // lines 12-13 √
       errLog('Transparent object has "t0" flag', obj)
 
     else if (zoopy['transFinal'] == 0){     // lines 15-16
-      zoopy['transpInit' ] = transCurrent
+      zoopy['opacity' ] = transCurrent
     }
 
     else if (!noFlags){                      // lines 18-20
-      zoopy['transpInit' ] = transCurrent
+      zoopy['opacity' ] = transCurrent
       zoopy.obj.style.display = 'block'
     }
 
     //—————————————————————————————— sumpn sumpn
     if (zoopy.fromto == '>')
-      zoopy.obj.style.opacity = zoopy.transpInit
+      zoopy.obj.style.opacity = zoopy.opacity
     else
       zoopy.obj.style.opacity = zoopy.transFinal
 */
@@ -519,7 +520,7 @@ class Animation{
           if (typeof this.evnt[x][key] != 'undefined')
             if(key=='obj'){
               log('obj (object): '+convertEntities(this.evnt[x][key].id));
-              log('style.display: '+this.evnt[x].obj.style.display)
+              log('style.visibility: '+this.evnt[x].obj.style.visibility)
               log('style.opacity: '+this.evnt[x].obj.style.opacity)
             }
             else log(key+' ('+typeof(this.evnt[x][key])+'): '+this.evnt[x][key]);
@@ -572,7 +573,7 @@ class Animation{
       case '<'    : return 'rotate'
       case 'd'    : return 'delay'
       case 'o'    : return 'origin'
-      case 't'    : return 'transpFinal'
+      case 't'    : return 'autoAlpha'
 //    case 'x'    : return 'xmove'
 //    case 'y'    : return 'ymove'
     }
@@ -600,7 +601,7 @@ class Animation{
       if (flag.slice(-1)=='>') return flag.slice(0, flag.length-1);
       else return 0-flag.slice(1, flag.length);
   
-    if (key=='transpFinal'){
+    if (key=='autoAlpha'){
        var v = flag.substr(flag_len)/100;
        return v;
     }
@@ -662,7 +663,7 @@ class Trigger{
 class Evnt{
 
   constructor( name, obj, kind, delay, handoff, handwait, duration, ease,
-               xmove, ymove, origin, rotate, scale, xscale, yscale, transpFinal, transpInit ){
+               xmove, ymove, origin, rotate, scale, xscale, yscale, autoAlpha, opacity ){
 
     this.name        = name;         // 20-character string
     this.obj         = obj;          // object reference
@@ -683,8 +684,8 @@ class Evnt{
     this.scale       = scale;        // number · percentage to scale             %150
     this.xscale      = xscale;       // number · percentage to scale x           x%20
     this.yscale      = yscale;       // number · percentage to scale y           y%30
-    this.transpFinal   = transpFinal;    // number · percentage transpFinal            o30
-    this.transpInit = transpInit;  // number · transpInit/transpFinal           programmatically
+    this.autoAlpha   = autoAlpha;    // number · percentage autoAlpha            o30
+    this.opacity = opacity;  // number · opacity/autoAlpha           programmatically
   }
 }
 
@@ -1511,7 +1512,7 @@ function setExistence(obj, exists){
 //log(convertEntities(obj.id)+' exists set to '+exists)
 
   if (exists){
-    //obj.style.pointerEvents = 'visiblePainted'
+    obj.style.pointerEvents = 'visiblePainted'
     obj.style.visibility    = 'inherit'
   }
   else{
@@ -1564,7 +1565,7 @@ function gsapParams(evntx){
   if (typeof evntx.xscale    != 'undefined') params['scaleX'         ] = '*=' + evntx.xscale;
   if (typeof evntx.yscale    != 'undefined') params['scaleY'         ] = '*=' + evntx.yscale;
 
-  if (typeof evntx.transpFinal != 'undefined') params['autoAlpha'      ] = evntx.transpFinal  ;
+  if (typeof evntx.autoAlpha != 'undefined') params['autoAlpha'      ] = evntx.autoAlpha  ;
   if (typeof evntx.rotate      != 'undefined') params['rotation'       ] = '+=' + evntx.rotate;
 
   return params;
@@ -1803,9 +1804,9 @@ function dumpKeys(obj){
     https://docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=601106820   */
 
 function setVisible(anim){
-  if (typeof anim.transpInit == 'undefined'        ) return true // no change in transparency
-  if (anim.transpInit  > 0                         ) return true // starts visible
-  if (anim.transpFinal > 0 && anim.fromto == 'from') return true // starts visible
+  if (typeof anim.opacity == 'undefined'        ) return true // if no change in transparency
+  if (anim.opacity  > 0                         ) return true // if starts visible
+  if (anim.autoAlpha > 0 && anim.fromto == 'from') return true // if starts visible
 
   return false;
 }

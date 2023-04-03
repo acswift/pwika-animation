@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 27.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 27.3.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 1200 726.456" style="enable-background:new 0 0 1200 726.456;" xml:space="preserve">
 <style type="text/css">
@@ -12,6 +12,7 @@
 	.st6{font-size:14px;}
 	.st7{fill:#FFFFFF;stroke:#333333;stroke-width:0.3606;stroke-miterlimit:10;}
 	.st8{opacity:0.5;fill:#FF6FFA;}
+	.st9{fill:#FF6FFA;}
 </style>
 <g id="page_color">
 	<rect x="0" y="0" class="st0" width="1200" height="3000"/>
@@ -54,7 +55,7 @@
 	</g>
 	<rect x="19.837" y="33.168" class="st4" width="15.144" height="4.048"/>
 </g>
-<g id="effects">
+<g id="events">
 	<path id="ovaway_x2F_name7" class="st7" d="M668,565h-36c-1.105,0-2-0.895-2-2v-16c0-1.105,0.895-2,2-2h36c1.105,0,2,0.895,2,2v16
 		C670,564.105,669.105,565,668,565z"/>
 	<path id="ovaway_x2F_name6_x2F_t50_x2F__x3C_20" class="st7" d="M668,495h-36c-1.105,0-2-0.895-2-2v-16c0-1.105,0.895-2,2-2h36
@@ -70,7 +71,7 @@
 	<path id="ovaway_x2F_name1_x2F__x2B_x20_x2F__x3C_90_x2F_t100" class="st7" d="M668,145h-36c-1.105,0-2-0.895-2-2v-16
 		c0-1.105,0.895-2,2-2h36c1.105,0,2,0.895,2,2v16C670,144.105,669.105,145,668,145z"/>
 </g>
-<g id="events">
+<g id="triggers">
 	<rect id="mouse_x2F_name7_x2F_func_x2F_andy_x2F_4" x="180" y="535" class="st8" width="400" height="40"/>
 	<rect id="mouse_x2F_name6_x2F_func" x="180" y="465" class="st8" width="400" height="40"/>
 	<a xlink:href="https://google.com" >
@@ -82,5 +83,6 @@
 		<rect id="mouse_x2F_name2_x2F_a" x="180" y="185" class="st8" width="400" height="40"/>
 	</a>
 	<rect id="mouse_x2F_name1" x="180" y="115" class="st8" width="400" height="40"/>
+	<rect id="debug" x="27.409" y="240.628" class="st9" width="48.744" height="48.744"/>
 </g>
 </svg>
