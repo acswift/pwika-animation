@@ -1296,9 +1296,8 @@ function listenScrollPoint(animation, whichEvent, vert, startPx){
 
   pageStart = pageStart / aiPixel
 
-  if (startPx < pageStart){
-    if (tline.totalTime() == 0) tline.play() // if hasn't yet run, play it
-  }
+  if (startPx < pageStart && tline.totalTime() == 0) // if hasn't yet run, play it
+    tline.play(.001)                                 // set to .001 so the next time we don't restart by mistake
 }
 
 /*———————————————————————————————————————— listenScrollScrub(animation, x, trig_top, trig_bot, params)
@@ -1346,9 +1345,9 @@ function listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, 
     log(tlineName+' created')
     window[tlineName] = new gsap.timeline({paused:true})
     var tline = window[tlineName]
-//log('💥 1116 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto)
+
     tline[animation.evnt[whichEvent].fromto](obj, params)
-//    setExistence(obj, true)
+
   }
 
   // % of bar above top of window = % of timeline
@@ -1708,17 +1707,10 @@ function createTline(namex, evntx, params){
   if (typeof tline == 'undefined'){
     window[funcName] = new gsap.timeline({paused:true})
     var tline = window[funcName]
-
-/*dumpKeys(params) // xxx all undefined
-duration: 4
-ease: function (t){return Math.pow(t,r)}
-delay: 3
-transformOrigin: 50% 50%
-x: +=118
-autoAlpha: 1
-display: block
-*/
     tline[evntx.fromto](evntx.obj, params)
+
+    tline.play(0.001) // prevent flash from clipping mask
+    tline.pause(0)    // objects that need to be moved
   }
 }
 
