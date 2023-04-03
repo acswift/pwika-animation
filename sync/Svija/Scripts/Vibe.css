@@ -100,7 +100,7 @@ polygon[id^='toggle_x2F_'], polygon[id^='delay_x2F_' ], polygon[id^='zone_x2F_' 
 
 #x{
   pointer-events:none;
-  display:none;
+  visibility:hidden;
 }
 
 svg{

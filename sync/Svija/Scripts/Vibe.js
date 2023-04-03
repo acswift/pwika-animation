@@ -180,7 +180,7 @@ class Animation{
     zoopy.obj  = obj;
     zoopy.kind = kind;
 
-    if (zoopy.kind == 'mouse') set_existence(zoopy.obj, true);
+    if (zoopy.kind == 'mouse') setExistence(zoopy.obj, true);
 
     // set defaults
 
@@ -348,8 +348,8 @@ class Animation{
     zoopy.transpInit = 1*zoopy.transpInit   // doesn't seem
     zoopy.transpFinal = 1*zoopy.transpFinal // to make a difference
 
-    if (setBlock(zoopy)){
-      zoopy.obj.style.display = 'block'
+    if (setVisible(zoopy)){
+      zoopy.obj.style.visibility = 'inherit'
     }
 
 ////////////////////// CHANGE ZOOPY['FINAL'] TO ZOOPY.FINAL EVERYWHERE WHEN DONE
@@ -791,7 +791,7 @@ for(var x=0; x<clippedObjects.length; x++){
       clippedObj.style.clipPath = newUrl;
       clipPath.id               = newId;
 
-      try{defsObj.style.display = 'block'} catch(e){log('object ' + decodeEntities(defsId) + ' could not be set to display:block')}
+      try{defsObj.style.visibility = 'inherit'} catch(e){log('object ' + decodeEntities(defsId) + ' could not be set to visibility:inherit')}
 
     }
     catch(msg){ log('⚠️  object with ID '+convertEntities(pathId)+' could not be updated:\n'+msg+ ' (line 779)'); }
@@ -1069,9 +1069,9 @@ function activate_scroll_events(animation){
 function add_time_delay(animation, x){
 
   delay  = animation.triggers[0].delay * 1000
-  params = gsap_params(animation.evnt[x])
+  params = gsapParams(animation.evnt[x])
 
-  create_tline(animation.name+x, animation.evnt[x], params)
+  createTline(animation.name+x, animation.evnt[x], params)
   setTimeout(lstn_play, delay, animation.name+x, animation.evnt[x])
 
 }
@@ -1080,11 +1080,11 @@ function add_time_delay(animation, x){
 
 function add_mouse_single(animation, x, type){
 
-  params = gsap_params(animation.evnt[x])
+  params = gsapParams(animation.evnt[x])
 
   for (var t=0; t<animation.triggers.length; t++){
 
-    create_tline(animation.name+x, animation.evnt[x], params)
+    createTline(animation.name+x, animation.evnt[x], params)
 
     animation.triggers[t].obj.addEventListener(type, lstn_play.bind(null, animation.name+x, animation.evnt[x]), false)
   }
@@ -1096,10 +1096,10 @@ function add_mouse_single(animation, x, type){
 
 function add_mouse_ovaway(animation, x){
 
-  params = gsap_params(animation.evnt[x]);
+  params = gsapParams(animation.evnt[x]);
 
   for (var t=0; t<animation.triggers.length; t++){
-    create_tline(animation.name+x, animation.evnt[x], params);
+    createTline(animation.name+x, animation.evnt[x], params);
     animation.triggers[t].obj.addEventListener('pointerover',  lstn_play.bind(null, animation.name+x, animation.evnt[x]   ), false);
     animation.triggers[t].obj.addEventListener('pointerout',   lstn_reverse.bind(null, animation.name+x , animation.evnt[x]), false);
   }
@@ -1112,11 +1112,11 @@ function add_mouse_ovaway(animation, x){
 
 function add_mouse_down(animation, x){
 
-  params = gsap_params(animation.evnt[x]);
+  params = gsapParams(animation.evnt[x]);
 
   for (var t=0; t<animation.triggers.length; t++){
 
-    create_tline(animation.name+x, animation.evnt[x], params);
+    createTline(animation.name+x, animation.evnt[x], params);
 
     animation.triggers[t].obj.addEventListener('pointerdown', lstn_play.bind(null, animation.name+x, animation.evnt[x]), false);
 
@@ -1129,10 +1129,10 @@ function add_mouse_down(animation, x){
 
 function add_mouse_toggle(animation, x){
 
-  params = gsap_params(animation.evnt[x]);
+  params = gsapParams(animation.evnt[x]);
 
   for (var t=0; t<animation.triggers.length; t++){
-    create_tline(animation.name+x, animation.evnt[x], params);
+    createTline(animation.name+x, animation.evnt[x], params);
     animation.triggers[t].obj.addEventListener('pointerup', lstn_mouse_toggle.bind(null, animation.name+x, animation.evnt[x]), false);
   }
 }
@@ -1157,8 +1157,8 @@ function addScrollPoint(animation, whichEvent){
     else
       var startPx = rect['x']                  // left of box, in pixels
 
-    var params = gsap_params(animation.evnt[whichEvent])
-    create_tline(animation.name+whichEvent, animation.evnt[whichEvent], params)
+    var params = gsapParams(animation.evnt[whichEvent])
+    createTline(animation.name+whichEvent, animation.evnt[whichEvent], params)
 
     window.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
     document.body.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
@@ -1185,9 +1185,9 @@ function addScrollScrub(animation, whichEvent){
       var endPx = startPx + rect['width']    // bottom
     }
 
-    var params = gsap_params(animation.evnt[whichEvent])
+    var params = gsapParams(animation.evnt[whichEvent])
 
-    create_tline(animation.name+whichEvent, animation.evnt[whichEvent], params)
+    createTline(animation.name+whichEvent, animation.evnt[whichEvent], params)
     window.addEventListener('scroll', listenScrollScrub.bind(null, animation, whichEvent, vert, startPx, endPx, 0)) 
     document.body.addEventListener('scroll', listenScrollScrub.bind(null, animation, whichEvent, vert, startPx, endPx, 0)) 
 
@@ -1215,9 +1215,9 @@ function addScrollZone(animation, whichEvent){
       var endPx = startPx + rect['width']    // bottom
     }
 
-    var params = gsap_params(animation.evnt[whichEvent])
+    var params = gsapParams(animation.evnt[whichEvent])
 
-    create_tline(animation.name+whichEvent, animation.evnt[whichEvent], params)
+    createTline(animation.name+whichEvent, animation.evnt[whichEvent], params)
     document.body.addEventListener('scroll', listenScrollZone.bind(null, animation, whichEvent, vert, startPx, endPx)) 
     window.addEventListener('scroll', listenScrollZone.bind(null, animation, whichEvent, vert, startPx, endPx)) 
 
@@ -1350,7 +1350,7 @@ function listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, 
     var tline = window[tlineName]
 //log('💥 1116 '+animation.name+x+' fromto is ' + animation.evnt[x].fromto)
     tline[animation.evnt[whichEvent].fromto](obj, params)
-//    set_existence(obj, true)
+//    setExistence(obj, true)
   }
 
   // % of bar above top of window = % of timeline
@@ -1361,7 +1361,7 @@ function listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, 
   if (startPx < pageStart && endPx > pageStart){
     triggerActive = true
 
-    set_existence(obj, true) //—————————————————————————————————————————————————————————————————-- is this too much?
+    setExistence(obj, true) //—————————————————————————————————————————————————————————————————-- is this too much?
     var triggerSize = endPx - startPx
     var passed      = pageStart - startPx
     var pcent       = passed/triggerSize
@@ -1382,7 +1382,7 @@ function listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, 
     // if trig object is above top of page, snap to 100
     if (endPx < pageStart){
       tline.totalTime(tline.totalDuration())
-//    if (params['autoAlpha'] == 0) set_existence(obj, false)
+//    if (params['autoAlpha'] == 0) setExistence(obj, false)
     }
   }
 
@@ -1462,11 +1462,11 @@ function lstn_mouse_toggle(namex, evntx, params){
     else tline.reverse()               // was playing forwards: play backwards
   else{
     if (tline.totalTime() == 0){       // was stopped at beginning
-      set_existence(obj, true)         // play forwards
+      setExistence(obj, true)         // play forwards
       tline.play()
     }
     else{                              // was stopped at end
-      set_existence(obj, true)         // play backwards
+      setExistence(obj, true)         // play backwards
       tline.reverse()
     }
   }
@@ -1485,7 +1485,7 @@ function lstn_play(namex, evntx){
 
   // play if it's not playing or if it's reversed
   if (!tline.isActive() || (tline.isActive() && tline.reversed())){
-    set_existence(obj, true)
+    setExistence(obj, true)
     tline.play()
   }
 }
@@ -1496,29 +1496,27 @@ function lstn_play(namex, evntx){
 function lstn_reverse(namex, evntx){
 // NEED TO MAKE OBJECT VISIBLE IF IT WAS MADE NON-EXISTANT
   var funcName = namex + '_timeline';
-  set_existence(evntx.obj, true);
+  setExistence(evntx.obj, true);
   window[funcName].reverse();
 }
 
 
 //:::::::::::::::::::::::::::::::::::::::: utility functions
 
-/*———————————————————————————————————————— set_existence(obj, exists)
+/*———————————————————————————————————————— setExistence(obj, exists)
 
     used only for triggers, which are not animated */
 
-function set_existence(obj, exists){
-//log(convertEntities(obj.id)+' exists set to '+exists);
+function setExistence(obj, exists){
+//log(convertEntities(obj.id)+' exists set to '+exists)
 
   if (exists){
-    obj.style.pointerEvents = 'visiblePainted';
-    obj.style.display       = 'block';
-//  log(convertEntities(obj.id) + ' made clickable');
+    //obj.style.pointerEvents = 'visiblePainted'
+    obj.style.visibility    = 'inherit'
   }
   else{
-    obj.style.pointerEvents = 'none';
-    obj.style.display       = 'none';
-//  log(convertEntities(obj.id) + ' hidden');
+    //obj.style.pointerEvents = 'none'
+    obj.style.visibility    = 'hidden'
   }
 }
 
@@ -1545,9 +1543,9 @@ function convert_origin(origin){
   return parts.join('% ') + '%';
 }
 
-//———————————————————————————————————————— gsap_params(evnt)
+//———————————————————————————————————————— gsapParams(evnt)
 
-function gsap_params(evntx){
+function gsapParams(evntx){
 
   var params = {};
 
@@ -1566,11 +1564,8 @@ function gsap_params(evntx){
   if (typeof evntx.xscale    != 'undefined') params['scaleX'         ] = '*=' + evntx.xscale;
   if (typeof evntx.yscale    != 'undefined') params['scaleY'         ] = '*=' + evntx.yscale;
 
-  if (typeof evntx.transpFinal != 'undefined') params['autoAlpha'      ] = evntx.transpFinal    ;
-  if (typeof evntx.rotate    != 'undefined') params['rotation'       ] = '+=' + evntx.rotate;
-
-  if (params['autoAlpha']==0) params['display'] = 'none';
-  if (params['autoAlpha']!=0) params['display'] = 'block';
+  if (typeof evntx.transpFinal != 'undefined') params['autoAlpha'      ] = evntx.transpFinal  ;
+  if (typeof evntx.rotate      != 'undefined') params['rotation'       ] = '+=' + evntx.rotate;
 
   return params;
 }
@@ -1704,17 +1699,27 @@ function decodeEntities(arg){
   return val
 }
 
-//———————————————————————————————————————— create_tline(namex, evntx, params)
+//———————————————————————————————————————— createTline(namex, evntx, params)
 
-function create_tline(namex, evntx, params){
+function createTline(namex, evntx, params){
 
-  var funcName = namex + '_timeline';
-  var tline    = window[funcName];
+  var funcName = namex + '_timeline'
+  var tline    = window[funcName]
 
   if (typeof tline == 'undefined'){
-    window[funcName] = new gsap.timeline({paused:true});
-    var tline = window[funcName];
-    tline[evntx.fromto](evntx.obj, params);
+    window[funcName] = new gsap.timeline({paused:true})
+    var tline = window[funcName]
+
+/*dumpKeys(params) // xxx all undefined
+duration: 4
+ease: function (t){return Math.pow(t,r)}
+delay: 3
+transformOrigin: 50% 50%
+x: +=118
+autoAlpha: 1
+display: block
+*/
+    tline[evntx.fromto](evntx.obj, params)
   }
 }
 
@@ -1777,7 +1782,8 @@ function dumpKeys(obj){
 
   for (var i in obj){
     try{
-      str += '\n'+i+': '+obj[i].typename;
+//    str += '\n'+i+': '+obj[i].typename;
+      str += '\n'+i+': '+obj[i].typename+', '+obj[i];
     }
     catch(e){
       str += '\n'+i+': error';
@@ -1786,7 +1792,7 @@ function dumpKeys(obj){
   alert(str);
 }
 
-/*———————————————————————————————————————— setBlock(anim)
+/*———————————————————————————————————————— setVisible(anim)
 
     will set display:none or display:block depending on
     whether it should be initially hidden
@@ -1796,7 +1802,7 @@ function dumpKeys(obj){
     see google spreadsheet for logic
     https://docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=601106820   */
 
-function setBlock(anim){
+function setVisible(anim){
   if (typeof anim.transpInit == 'undefined'        ) return true // no change in transparency
   if (anim.transpInit  > 0                         ) return true // starts visible
   if (anim.transpFinal > 0 && anim.fromto == 'from') return true // starts visible
