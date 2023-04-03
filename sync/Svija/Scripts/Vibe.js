@@ -770,6 +770,7 @@ for(var x=0; x<clippedObjects.length; x++){
   minusPeriod(clipPath)                                  // fix minus sign (fix #3 above)
 
   var defsId     = clipPath.firstElementChild.getAttributeNS('http://www.w3.org/1999/xlink', 'href').slice(1);
+
   var defsObj    = document.getElementById(defsId)
 
   // move clipped object status to parent <g>  (fix #1 above)
@@ -791,7 +792,7 @@ for(var x=0; x<clippedObjects.length; x++){
       clipPath.id               = newId;
 
       try{defsObj.style.display = 'block'} catch(e){log('object ' + decodeEntities(defsId) + ' could not be set to display:block')}
-  
+
     }
     catch(msg){ log('⚠️  object with ID '+convertEntities(pathId)+' could not be updated:\n'+msg+ ' (line 779)'); }
   }
@@ -1640,15 +1641,8 @@ function minusPeriod(clip_path){
   var first_child = clip_path.innerHTML
   var correct_id  = first_child.split('"')[1].slice(1);
   
-  if (correct_id.indexOf('_x002D_') > 0){
-    var wrong_id = correct_id.replace('_x002D_', '-');
-    var path = document.getElementById(wrong_id);
-    if (path != null)
-      path.id  = correct_id;
-  }
-
-  if (correct_id.indexOf('_x002E_') > 0){
-    var wrong_id = correct_id.replace('_x002E_', '.');
+  if (correct_id.indexOf('_x002D_') > 0 || correct_id.indexOf('_x002E_') > 0){
+    var wrong_id = correct_id.replace('_x002D_', '-').replace('_x002E_', '.');
     var path = document.getElementById(wrong_id);
     if (path != null)
       path.id  = correct_id;
