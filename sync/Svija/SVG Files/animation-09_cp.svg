@@ -32,10 +32,10 @@
 	<text transform="matrix(1 0 0 1 144.0405 156.7343)" class="st2 st3 st4">Clipping Mask Tests</text>
 	<text transform="matrix(1 0 0 1 435.1674 214.8991)"><tspan x="0" y="0" class="st2 st3 st5">mouse/name1</tspan><tspan x="0" y="70" class="st2 st3 st5">mouse/name2</tspan><tspan x="0" y="140" class="st2 st3 st5">mouse/name3</tspan><tspan x="0" y="210" class="st2 st3 st5">mouse/name4</tspan><tspan x="0" y="280" class="st2 st3 st5">mouse/name5</tspan><tspan x="0" y="350" class="st2 st3 st5">mouse/name6</tspan></text>
 	<g>
-		<text transform="matrix(1 0 0 1 598.582 93.6502)" class="st2 st3 st5">down/name1/&lt;90/1/hard/%300</text>
+		<text transform="matrix(1 0 0 1 582.375 93.6502)" class="st2 st3 st5">down/name1/&lt;90/1/hard/%300/d0.5</text>
 	</g>
 	<g>
-		<text transform="matrix(1 0 0 1 782.1787 66.6502)" class="st2 st3 st5">down/name2/+y50/1/hard/y%300/o50,0</text>
+		<text transform="matrix(1 0 0 1 776.5186 66.6502)" class="st2 st3 st5">down/name2/+y50/0.7/hard/y%300/o50,0</text>
 	</g>
 	<g>
 		<text transform="matrix(1 0 0 1 976.7607 274.6502)" class="st2 st3 st5">down/name3/90&gt;/-x190/%300</text>
@@ -63,12 +63,12 @@
 			<path id="down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000155849104001616638840000002493413145139164822_" d="
 				M793,537H645c-2.761,0-5-2.239-5-5V420c0-2.761,2.239-5,5-5h148c2.761,0,5,2.239,5,5v112C798,534.761,795.761,537,793,537z"/>
 		</defs>
-		<clipPath id="down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000158747108771795028630000007923189428806013589_">
+		<clipPath id="down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000097472969278895782870000009419001756331699895_">
 			
 				<use xlink:href="#down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000155849104001616638840000002493413145139164822_"  style="overflow:visible;"/>
 		</clipPath>
 		
-			<g style="clip-path:url(#down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000158747108771795028630000007923189428806013589_);">
+			<g style="clip-path:url(#down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000097472969278895782870000009419001756331699895_);">
 			
 				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 374 333)">
 			</image>
@@ -79,12 +79,12 @@
 			<path id="down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000167394625182453046380000001455090108547882425_" d="
 				M980,537H832c-2.761,0-5-2.239-5-5V420c0-2.761,2.239-5,5-5h148c2.761,0,5,2.239,5,5v112C985,534.761,982.761,537,980,537z"/>
 		</defs>
-		<clipPath id="down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000173843878330179577170000016216702162369619366_">
+		<clipPath id="down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000070822233811802785780000013045324135061068987_">
 			
 				<use xlink:href="#down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000167394625182453046380000001455090108547882425_"  style="overflow:visible;"/>
 		</clipPath>
 		
-			<g style="clip-path:url(#down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000173843878330179577170000016216702162369619366_);">
+			<g style="clip-path:url(#down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000070822233811802785780000013045324135061068987_);">
 			
 				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 561 333)">
 			</image>
@@ -95,12 +95,12 @@
 			<path id="down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000047056516298966776450000009315127644551733923_" d="
 				M793,689H645c-2.761,0-5-2.239-5-5V572c0-2.761,2.239-5,5-5h148c2.761,0,5,2.239,5,5v112C798,686.761,795.761,689,793,689z"/>
 		</defs>
-		<clipPath id="down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000020384323026045947020000003290172677606499486_">
+		<clipPath id="down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000168108299494660862530000000116039992870412675_">
 			
 				<use xlink:href="#down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000047056516298966776450000009315127644551733923_"  style="overflow:visible;"/>
 		</clipPath>
 		
-			<g transform="matrix(1 0 0 1 0 -3.051758e-05)" style="clip-path:url(#down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000020384323026045947020000003290172677606499486_);">
+			<g transform="matrix(1 0 0 1 0 -3.051758e-05)" style="clip-path:url(#down_x2F_name5_x2F_90_x3E__x2F_x_x25_120_x2F_y_x25_70_00000168108299494660862530000000116039992870412675_);">
 			
 				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 374 485)">
 			</image>
@@ -111,12 +111,12 @@
 			<path id="down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000019677853514642926420000000375066292613200018_" d="
 				M980,689H832c-2.761,0-5-2.239-5-5V572c0-2.761,2.239-5,5-5h148c2.761,0,5,2.239,5,5v112C985,686.761,982.761,689,980,689z"/>
 		</defs>
-		<clipPath id="down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000028325110561689596700000003108680062726758294_">
+		<clipPath id="down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000135692633127382770120000003340773106204569242_">
 			
 				<use xlink:href="#down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000019677853514642926420000000375066292613200018_"  style="overflow:visible;"/>
 		</clipPath>
 		
-			<g transform="matrix(1 0 0 1 0 -3.051758e-05)" style="clip-path:url(#down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000028325110561689596700000003108680062726758294_);">
+			<g transform="matrix(1 0 0 1 0 -3.051758e-05)" style="clip-path:url(#down_x2F_name5_x2F__x3C_90_x2F_x_x25_120_x2F_y_x25_70_00000135692633127382770120000003340773106204569242_);">
 			
 				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 561 485)">
 			</image>
@@ -126,11 +126,11 @@
 		<defs>
 			<path id="down_x2F_name3_x2F_90_x3E__x2F_-x190_x2F__x25_300" d="M1055,362H872v-72h183V362z M1129,371h-44v220h44V371z"/>
 		</defs>
-		<clipPath id="down_x2F_name3_x2F_90_x3E__x2F_-x190_x2F__x25_300_00000013906582319657703760000010043628045103567260_">
+		<clipPath id="down_x2F_name3_x2F_90_x3E__x2F_-x190_x2F__x25_300_00000077291977920567618480000015217793181849828774_">
 			<use xlink:href="#down_x2F_name3_x2F_90_x3E__x2F__x002D_x190_x2F__x25_300"  style="overflow:visible;"/>
 		</clipPath>
 		
-			<g style="clip-path:url(#down_x2F_name3_x2F_90_x3E__x2F_-x190_x2F__x25_300_00000013906582319657703760000010043628045103567260_);">
+			<g style="clip-path:url(#down_x2F_name3_x2F_90_x3E__x2F_-x190_x2F__x25_300_00000077291977920567618480000015217793181849828774_);">
 			
 				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 793 222)">
 			</image>
@@ -138,14 +138,15 @@
 	</g>
 	<g>
 		<defs>
-			<circle id="down_x2F_name2_x2F__x2B_y50_x2F_1_x2F_hard_x2F_y_x25_300_x2F_o50_x2C_0" cx="908" cy="169" r="88"/>
+			<circle id="down_x2F_name2_x2F__x2B_y50_x2F_0.7_x2F_hard_x2F_y_x25_300_x2F_o50_x2C_0" cx="908" cy="169" r="88"/>
 		</defs>
 		
-			<clipPath id="down_x2F_name2_x2F__x2B_y50_x2F_1_x2F_hard_x2F_y_x25_300_x2F_o50_x2C_0_00000116213218598975545740000007119406709997365927_">
-			<use xlink:href="#down_x2F_name2_x2F__x2B_y50_x2F_1_x2F_hard_x2F_y_x25_300_x2F_o50_x2C_0"  style="overflow:visible;"/>
+			<clipPath id="down_x2F_name2_x2F__x2B_y50_x2F_0.7_x2F_hard_x2F_y_x25_300_x2F_o50_x2C_0_00000052798165556016099010000000043257709641038007_">
+			
+				<use xlink:href="#down_x2F_name2_x2F__x2B_y50_x2F_0_x002E_7_x2F_hard_x2F_y_x25_300_x2F_o50_x2C_0"  style="overflow:visible;"/>
 		</clipPath>
 		
-			<g style="clip-path:url(#down_x2F_name2_x2F__x2B_y50_x2F_1_x2F_hard_x2F_y_x25_300_x2F_o50_x2C_0_00000116213218598975545740000007119406709997365927_);">
+			<g style="clip-path:url(#down_x2F_name2_x2F__x2B_y50_x2F_0.7_x2F_hard_x2F_y_x25_300_x2F_o50_x2C_0_00000052798165556016099010000000043257709641038007_);">
 			
 				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 563 35)">
 			</image>
@@ -153,14 +154,15 @@
 	</g>
 	<g>
 		<defs>
-			<path id="down_x2F_name1_x2F__x3C_90_x2F_1_x2F_hard_x2F__x25_300" d="M772,230H624c-2.761,0-5-2.239-5-5V113
+			<path id="down_x2F_name1_x2F__x3C_90_x2F_1_x2F_hard_x2F__x25_300_x2F_d0.5" d="M772,230H624c-2.761,0-5-2.239-5-5V113
 				c0-2.761,2.239-5,5-5h148c2.761,0,5,2.239,5,5v112C777,227.761,774.761,230,772,230z"/>
 		</defs>
-		<clipPath id="down_x2F_name1_x2F__x3C_90_x2F_1_x2F_hard_x2F__x25_300_00000155836151935162292960000007273952102761063299_">
-			<use xlink:href="#down_x2F_name1_x2F__x3C_90_x2F_1_x2F_hard_x2F__x25_300"  style="overflow:visible;"/>
+		
+			<clipPath id="down_x2F_name1_x2F__x3C_90_x2F_1_x2F_hard_x2F__x25_300_x2F_d0.5_00000015320059904030932500000006314737703840983722_">
+			<use xlink:href="#down_x2F_name1_x2F__x3C_90_x2F_1_x2F_hard_x2F__x25_300_x2F_d0_x002E_5"  style="overflow:visible;"/>
 		</clipPath>
 		
-			<g style="clip-path:url(#down_x2F_name1_x2F__x3C_90_x2F_1_x2F_hard_x2F__x25_300_00000155836151935162292960000007273952102761063299_);">
+			<g style="clip-path:url(#down_x2F_name1_x2F__x3C_90_x2F_1_x2F_hard_x2F__x25_300_x2F_d0.5_00000015320059904030932500000006314737703840983722_);">
 			
 				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 353 26)">
 			</image>
@@ -170,10 +172,10 @@
 		<defs>
 			<rect id="down_x2F_name4_x2F__x2B_x562" x="37" y="158" width="581" height="465"/>
 		</defs>
-		<clipPath id="down_x2F_name4_x2F__x2B_x562_00000073683125959189036290000005922863631604695211_">
+		<clipPath id="down_x2F_name4_x2F__x2B_x562_00000018197510680347369380000010587303740858717856_">
 			<use xlink:href="#down_x2F_name4_x2F__x2B_x562"  style="overflow:visible;"/>
 		</clipPath>
-		<g style="clip-path:url(#down_x2F_name4_x2F__x2B_x562_00000073683125959189036290000005922863631604695211_);">
+		<g style="clip-path:url(#down_x2F_name4_x2F__x2B_x562_00000018197510680347369380000010587303740858717856_);">
 			
 				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 619 158)">
 			</image>
@@ -184,11 +186,11 @@
 			<rect id="down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F_-y50_x2F_y_x25_70" x="37" y="158" width="581" height="465"/>
 		</defs>
 		
-			<clipPath id="down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F_-y50_x2F_y_x25_70_00000178178360851704948640000018097769790906752147_">
+			<clipPath id="down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F_-y50_x2F_y_x25_70_00000130641472041113964530000017536796835600958366_">
 			<use xlink:href="#down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F__x002D_y50_x2F_y_x25_70"  style="overflow:visible;"/>
 		</clipPath>
 		
-			<g style="clip-path:url(#down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F_-y50_x2F_y_x25_70_00000178178360851704948640000018097769790906752147_);">
+			<g style="clip-path:url(#down_x2F_name6_x2F__x2B_x640_x2F_x_x25_15_x2F_-y50_x2F_y_x25_70_00000130641472041113964530000017536796835600958366_);">
 			
 				<image style="overflow:visible;" width="750" height="500" xlink:href="../../Animation/Links/tennis.jpg"  transform="matrix(0.9298 0 0 0.9298 619 158)">
 			</image>

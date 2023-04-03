@@ -719,10 +719,10 @@ console.groupCollapsed('Svija Vibe');
 
        this is why adding a second level of group solved the problem.
 
-    3. in AI, a clipping mask is named with a minus sign -
+    3. in AI, a clipping mask is named with a minus sign - or .
 
        in exporting the .svg, Illustrator is inconsistent about converting
-       the - to an entity
+       the - or . to an entity
    
 
 ——— the script does three things:
@@ -767,13 +767,10 @@ for(var x=0; x<clippedObjects.length; x++){
   var pathId     = pathUrl.slice(6, pathUrl.length-2)
 
   var clipPath   = document.getElementById(pathId);      // object #2 above
-  fix_minus(clipPath)                                    // fix minus sign (fix #3 above)
+  minusPeriod(clipPath)                                  // fix minus sign (fix #3 above)
 
   var defsId     = clipPath.firstElementChild.getAttributeNS('http://www.w3.org/1999/xlink', 'href').slice(1);
   var defsObj    = document.getElementById(defsId)
-
-
-//alert(defsId) // problem with - sign
 
   // move clipped object status to parent <g>  (fix #1 above)
   var parentG = getParentG(clippedObj);
@@ -1624,7 +1621,7 @@ function convertEntities(str){
 
 }
 
-/*———————————————————————————————————————— fixMinus(clip_path)
+/*———————————————————————————————————————— minusPeriod(clip_path)
 
     fix illustrator bug with clipping masks with a - in the name
 
@@ -1636,7 +1633,7 @@ function convertEntities(str){
 
     https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain */
 
-function fix_minus(clip_path){
+function minusPeriod(clip_path){
   // fix illustrator bug
   // reported at: https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain
   
@@ -1645,6 +1642,13 @@ function fix_minus(clip_path){
   
   if (correct_id.indexOf('_x002D_') > 0){
     var wrong_id = correct_id.replace('_x002D_', '-');
+    var path = document.getElementById(wrong_id);
+    if (path != null)
+      path.id  = correct_id;
+  }
+
+  if (correct_id.indexOf('_x002E_') > 0){
+    var wrong_id = correct_id.replace('_x002E_', '.');
     var path = document.getElementById(wrong_id);
     if (path != null)
       path.id  = correct_id;
@@ -1681,6 +1685,8 @@ function getElementsByRegex(pattern){
     then converts those to regular text
     &#x22; to ! */
 
+/* breaks for four-character entities, like . and - */
+
 function decodeEntities(arg){
   if (typeof arg == 'undefined') return ''
 
@@ -1692,6 +1698,7 @@ function decodeEntities(arg){
         return x.replaceAll('_', ';')
   })
 
+  html = convertEntities(html)
   html = html.replaceAll('_', ' ')
 
   var tmpObject = document.createElement('textarea')
