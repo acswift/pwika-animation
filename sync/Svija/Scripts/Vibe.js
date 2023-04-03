@@ -1,15 +1,13 @@
 
-//:::::::::::::::::::::::::::::::::::::::: Svija Vibe.js
+//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.16
 
 // https://www.toptal.com/developers/javascript-minifier
 
 /*———————————————————————————————————————— notes
 
-  Svija Vibe 1.0.16
-
-  github.com/svijalove/animation
+  github.com/svijalove/vibe
   
-  ©2022 Svija SAS, Cusset France */
+  ©Svija SAS, Cusset France */
 
 /*———————————————————————————————————————— EULA
 
@@ -295,8 +293,7 @@ class Animation{
 //  obj.style.display = 'block';  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /* docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=1328156795 */
-    zoopy['opacity'] = +window.getComputedStyle(obj).getPropertyValue('opacity') // breaks clipping mask
-//  zoopy['opacity'] = 1                                                         // works
+    zoopy['opacity'] = +window.getComputedStyle(obj).getPropertyValue('opacity')
 
     if (typeof zoopy['autoAlpha'] == 'undefined'){
       var opacity  = zoopy['opacity']
@@ -1556,6 +1553,7 @@ function gsapParams(evntx){
 
   if (typeof evntx.delay     != 'undefined') params['delay'          ] = evntx.delay        ;
   if (typeof evntx.origin    != 'undefined') params['transformOrigin'] = evntx.origin       ;
+
   else params['transformOrigin'] = '50% 50%';
 
   if (typeof evntx.xmove     != 'undefined') params['x'              ] = '+=' + evntx.xmove ;
@@ -1566,7 +1564,7 @@ function gsapParams(evntx){
   if (typeof evntx.yscale    != 'undefined') params['scaleY'         ] = '*=' + evntx.yscale;
 
   if (typeof evntx.autoAlpha != 'undefined') params['autoAlpha'      ] = evntx.autoAlpha  ;
-  if (typeof evntx.rotate      != 'undefined') params['rotation'       ] = '+=' + evntx.rotate;
+  if (typeof evntx.rotate    != 'undefined') params['rotation'       ] = '+=' + evntx.rotate;
 
   return params;
 }
