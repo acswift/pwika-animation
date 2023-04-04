@@ -131,7 +131,6 @@ const fromtos = {
   '<' : 'from'
 }
 
-
 //———————————————————————————————————————— defaults
 
 const trigger_defaults = {
@@ -178,7 +177,7 @@ class Animation{
     zoopy.obj  = obj;
     zoopy.kind = kind;
 
-    if (zoopy.kind == 'mouse') setExistence(zoopy.obj, true);
+//  if (zoopy.kind == 'mouse') setExistence(zoopy.obj, true);
 
     // set defaults
 
@@ -1296,8 +1295,9 @@ function listenScrollPoint(animation, whichEvent, vert, startPx){
 
   pageStart = pageStart / aiPixel
 
-  if (startPx < pageStart && tline.totalTime() == 0) // if hasn't yet run, play it
-    tline.play(.001)                                 // set to .001 so the next time we don't restart by mistake
+  if (startPx < pageStart)
+    if(!tline.isActive() && tline.totalTime() == 0)    // if hasn't yet run, play it
+      playTimeline(tline, 0.01)
 }
 
 /*———————————————————————————————————————— listenScrollScrub(animation, x, trig_top, trig_bot, params)
@@ -1358,7 +1358,7 @@ function listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, 
   if (startPx < pageStart && endPx > pageStart){
     triggerActive = true
 
-    setExistence(obj, true) //—————————————————————————————————————————————————————————————————-- is this too much?
+//  setExistence(obj, true) //—————————————————————————————————————————————————————————————————-- is this too much?
     var triggerSize = endPx - startPx
     var passed      = pageStart - startPx
     var pcent       = passed/triggerSize
@@ -1459,11 +1459,11 @@ function lstn_mouse_toggle(namex, evntx, params){
     else tline.reverse()               // was playing forwards: play backwards
   else{
     if (tline.totalTime() == 0){       // was stopped at beginning
-      setExistence(obj, true)         // play forwards
-      tline.play()
+//    setExistence(obj, true)         // play forwards
+      playTimeline(tline)
     }
     else{                              // was stopped at end
-      setExistence(obj, true)         // play backwards
+//    setExistence(obj, true)         // play backwards
       tline.reverse()
     }
   }
@@ -1482,7 +1482,7 @@ function lstn_play(namex, evntx){
 
   // play if it's not playing or if it's reversed
   if (!tline.isActive() || (tline.isActive() && tline.reversed())){
-    setExistence(obj, true)
+//  setExistence(obj, true)
     tline.play()
   }
 }
@@ -1493,7 +1493,7 @@ function lstn_play(namex, evntx){
 function lstn_reverse(namex, evntx){
 // NEED TO MAKE OBJECT VISIBLE IF IT WAS MADE NON-EXISTANT
   var funcName = namex + '_timeline';
-  setExistence(evntx.obj, true);
+//setExistence(evntx.obj, true);
   window[funcName].reverse();
 }
 
@@ -1709,8 +1709,8 @@ function createTline(namex, evntx, params){
     var tline = window[funcName]
     tline[evntx.fromto](evntx.obj, params)
 
-    tline.play(0.001) // prevent flash from clipping mask
-    tline.pause(0)    // objects that need to be moved
+//  tline.play(0.001) // prevent flash from clipping mask
+//  tline.pause(0)    // objects that need to be moved
   }
 }
 
@@ -1813,6 +1813,20 @@ function isHorizontal(obj){
   if (rect.width > rect.height) return true
   else return false
 }
+
+/*———————————————————————————————————————— playTimeline(tline)
+
+    used to delay playing timelane slightly to fix a problem
+    where content inside clipping masks flashed before being
+    positioned correctly. */
+
+function playTimeline(tline, pos){
+   if (typeof pos == 'undefined') pos = 0
+   tline.pause(pos)                            // set to .01 so the next time we don't restart by mistake
+   setTimeout(playTimelineDelayed, 5, tline)   // set to 5ms so the playhead has time to advance
+}
+
+function playTimelineDelayed(tline){ tline.play() }
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
