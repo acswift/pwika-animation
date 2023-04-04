@@ -177,7 +177,7 @@ class Animation{
     zoopy.obj  = obj;
     zoopy.kind = kind;
 
-//  if (zoopy.kind == 'mouse') setExistence(zoopy.obj, true);
+    if (zoopy.kind == 'mouse') makeClickable(zoopy.obj, true);
 
     // set defaults
 
@@ -1358,7 +1358,7 @@ function listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, 
   if (startPx < pageStart && endPx > pageStart){
     triggerActive = true
 
-//  setExistence(obj, true) //—————————————————————————————————————————————————————————————————-- is this too much?
+//  makeClickable(obj, true) //—————————————————————————————————————————————————————————————————-- is this too much?
     var triggerSize = endPx - startPx
     var passed      = pageStart - startPx
     var pcent       = passed/triggerSize
@@ -1379,7 +1379,7 @@ function listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, 
     // if trig object is above top of page, snap to 100
     if (endPx < pageStart){
       tline.totalTime(tline.totalDuration())
-//    if (params['autoAlpha'] == 0) setExistence(obj, false)
+//    if (params['autoAlpha'] == 0) makeClickable(obj, false)
     }
   }
 
@@ -1459,11 +1459,11 @@ function lstn_mouse_toggle(namex, evntx, params){
     else tline.reverse()               // was playing forwards: play backwards
   else{
     if (tline.totalTime() == 0){       // was stopped at beginning
-//    setExistence(obj, true)         // play forwards
+//    makeClickable(obj, true)         // play forwards
       playTimeline(tline)
     }
     else{                              // was stopped at end
-//    setExistence(obj, true)         // play backwards
+//    makeClickable(obj, true)         // play backwards
       tline.reverse()
     }
   }
@@ -1482,7 +1482,7 @@ function lstn_play(namex, evntx){
 
   // play if it's not playing or if it's reversed
   if (!tline.isActive() || (tline.isActive() && tline.reversed())){
-//  setExistence(obj, true)
+//  makeClickable(obj, true)
     tline.play()
   }
 }
@@ -1493,27 +1493,28 @@ function lstn_play(namex, evntx){
 function lstn_reverse(namex, evntx){
 // NEED TO MAKE OBJECT VISIBLE IF IT WAS MADE NON-EXISTANT
   var funcName = namex + '_timeline';
-//setExistence(evntx.obj, true);
+//makeClickable(evntx.obj, true);
   window[funcName].reverse();
 }
 
 
 //:::::::::::::::::::::::::::::::::::::::: utility functions
 
-/*———————————————————————————————————————— setExistence(obj, exists)
+/*———————————————————————————————————————— makeClickable(obj, exists)
 
     used only for triggers, which are not animated */
 
-function setExistence(obj, exists){
-//log(convertEntities(obj.id)+' exists set to '+exists)
+function makeClickable(obj, bool){
+//log(convertEntities(obj.id)+' bool set to '+bool)
 
-  if (exists){
+  if (bool){
     obj.style.pointerEvents = 'visiblePainted'
-    obj.style.visibility    = 'inherit'
+  //obj.style.visibility    = 'inherit'
   }
   else{
+    obj.style.pointerEvents = 'none'
     //obj.style.pointerEvents = 'none'
-    obj.style.visibility    = 'hidden'
+  //obj.style.visibility    = 'hidden'
   }
 }
 
