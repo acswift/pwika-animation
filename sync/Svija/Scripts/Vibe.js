@@ -1,5 +1,5 @@
 
-//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.16
+//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.17
 
 // https://www.toptal.com/developers/javascript-minifier
 
@@ -939,7 +939,7 @@ if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG !
 
 //———————————————————————————————————————— ▲ end console.groupCollapsed
 
-if (debugOn && debugMessages.length > 0) alert('Svija Vibe Errors\n• ' + debugMessages.join('\n• '))
+if (debugOn && debugMessages.length > 0) alert('Svija Vibe Debugging\n• ' + debugMessages.join('\n• '))
 console.groupEnd();
 
 //———————————————————————————————————————— name debugging
