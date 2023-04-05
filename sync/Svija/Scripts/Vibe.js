@@ -808,6 +808,7 @@ trigger_types.forEach(kind => {
   // loop through adding trigger_types
   for(var x=obj_array.length-1; x>-1; x--){ // reverse order to match layer palette order
     var obj = obj_array[x];
+    log('——————————————————————-'+convertEntities(obj.id))
     var flags = obj.id.split(separator);
 
     // doesn't have at least trig and name
@@ -1811,7 +1812,10 @@ function setVisible(anim){
 
 function isHorizontal(obj){
   var rect = obj.getBoundingClientRect()
-  if (rect.width > rect.height) return true
+  var width = rect.width
+  var height = rect.height + .001
+
+  if (width > height) return true
   else return false
 }
 
