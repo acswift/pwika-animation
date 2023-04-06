@@ -36,6 +36,14 @@
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
+
+//  window.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
+//  document.body.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
+
+if (typeof scrollElement == 'undefined')
+  var scrollElement = window
+// var scrollElement = document.body
+
 //———————————————————————————————————————— start timer
 
 const d1 = new Date();
@@ -1158,8 +1166,7 @@ function addScrollPoint(animation, whichEvent){
     var params = gsapParams(animation.evnt[whichEvent])
     createTline(animation.name+whichEvent, animation.evnt[whichEvent], params)
 
-    window.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
-    document.body.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
+    scrollElement.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
 
   }
 }
