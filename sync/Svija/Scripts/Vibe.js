@@ -57,6 +57,9 @@ else debugOn = false
 
 var debugMessages = []
 
+
+var env_allTlines = []
+
 //———————————————————————————————————————— separator · types of triggers and events
 
 const     separator = '_x2F_'; // regular slash
@@ -945,6 +948,14 @@ if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG !
     arrMatches[x].style.opacity = 0.3;
 }
 
+//———————————————————————————————————————— reset all timelines
+
+for (var x=0; x<env_allTlines.length; x++){
+  var tline = window[env_allTlines[x]]
+  log('Timeline '+env_allTlines[x]+ ' reset')
+  tline.pause(0)
+}
+
 //———————————————————————————————————————— ▲ end console.groupCollapsed
 
 if (debugOn && debugMessages.length > 0) alert('Svija Vibe Debugging\n• ' + debugMessages.join('\n• '))
@@ -1718,8 +1729,8 @@ function createTline(namex, evntx, params){
     var tline = window[funcName]
     tline[evntx.fromto](evntx.obj, params)
 
-//  tline.play(0.001) // prevent flash from clipping mask
-//  tline.pause(0)    // objects that need to be moved
+  env_allTlines[env_allTlines.length] = funcName
+  tline.pause(0.1) // prevent flash from clipping mask — reset at end of setup
   }
 }
 

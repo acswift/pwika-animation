@@ -6,6 +6,8 @@
 
 ### Svija Vibe 1.0.14
 
+[GSAP Forum link](https://greensock.com/forums/topic/36423-how-can-i-get-a-breakdown-of-a-timeline-once-its-been-created/)
+
 This repository contains the development files for Svija Animation, which is included with each new Svija website.
 
 The files are developed at `svija.dev/sync/Svija/Scripts` (which also contains other files that are *not* part of this repository).
