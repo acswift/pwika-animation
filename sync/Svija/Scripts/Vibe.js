@@ -1,5 +1,5 @@
 
-//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.17
+//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.18
 
 // https://www.toptal.com/developers/javascript-minifier
 
@@ -36,18 +36,25 @@
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-
-//  window.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
-//  document.body.addEventListener('scroll', listenScrollPoint.bind(null, animation, whichEvent, vert, startPx)) 
-
-if (typeof scrollElement == 'undefined')
-  var scrollElement = window
-// var scrollElement = document.body will be in horz scrolling code
-
 //———————————————————————————————————————— start timer
 
 const d1 = new Date();
 let start_time = d1.getTime();
+
+/*———————————————————————————————————————— var scrollElement
+
+    used because horizontally scrolled pages use a different
+    element than vertically scrolled images
+
+    this means that listening for scroll events is different:
+
+    window.addEventListener('scroll') 
+    document.body.addEventListener('scroll')
+
+   var scrollElement = document.body will be in horz scrolling code */
+
+if (typeof scrollElement == 'undefined')
+  var scrollElement = window
 
 //———————————————————————————————————————— debugging variables
 
@@ -956,12 +963,12 @@ for (var x=0; x<env_allTlines.length; x++){
   tline.pause(0)
 }
 
-//———————————————————————————————————————— ▲ end console.groupCollapsed
+//———————————————————————————————————————— end console.groupCollapsed
 
 if (debugOn && debugMessages.length > 0) alert('Svija Vibe Debugging\n• ' + debugMessages.join('\n• '))
 console.groupEnd();
 
-//———————————————————————————————————————— name debugging
+//———————————————————————————————————————— ▲ name debugging
 
 if (typeof debug_name != 'undefined')
 	try { animations[debug_name].flagDump(); } catch (error) { log('⚠️  debug_name = \'' + debug_name + '\' — animation not found.'); }
