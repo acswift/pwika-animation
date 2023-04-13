@@ -42,7 +42,7 @@
 
 if (typeof scrollElement == 'undefined')
   var scrollElement = window
-// var scrollElement = document.body
+// var scrollElement = document.body will be in horz scrolling code
 
 //———————————————————————————————————————— start timer
 

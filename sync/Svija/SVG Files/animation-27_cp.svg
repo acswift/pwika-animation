@@ -3,8 +3,7 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 9000 1200" style="enable-background:new 0 0 9000 1200;" xml:space="preserve">
 <style type="text/css">
-	.Trigger{opacity:0.3;fill:#FF00FF;stroke:#2B2B2B;stroke-width:0.5;stroke-miterlimit:10;}
-	.st0{fill:#FFE788;}
+	.st0{fill:#FFCC00;}
 	.st1{fill:#333333;}
 	.st2{fill:#E03100;}
 	.st3{font-family:'Helvetica-Light';}
@@ -13,6 +12,7 @@
 	.st6{fill:#FFFFFF;}
 	.st7{font-family:'Helvetica-Bold';}
 	.st8{font-size:43.0796px;}
+	.st9{opacity:0.3;fill:#FF00FF;}
 </style>
 <g id="page_color">
 	<rect class="st0" width="9000" height="1200"/>
@@ -45,10 +45,9 @@
 	</g>
 </g>
 <g id="triggers">
-	<rect id="scroll_x2F_scrubTest" x="300" y="20" class="Trigger" width="700" height="10"/>
-	<rect id="scroll_x2F_zoneTest" x="700" y="10" class="Trigger" width="900" height="10"/>
-	
-		<rect id="scroll_x2F_pointTest_00000070830981707193566680000010702064421572337573_" x="400" class="Trigger" width="20" height="10"/>
+	<rect id="scroll_x2F_scrubTest" x="300" y="20" class="st9" width="700" height="10"/>
+	<rect id="scroll_x2F_zoneTest" x="700" y="10" class="st9" width="900" height="10"/>
+	<rect id="scroll_x2F_pointTest" x="400" class="st9" width="20" height="10"/>
 </g>
 <g id="debug">
 </g>
