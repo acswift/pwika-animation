@@ -959,7 +959,6 @@ if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG !
 
 for (var x=0; x<env_allTlines.length; x++){
   var tline = window[env_allTlines[x]]
-  log('Timeline '+env_allTlines[x]+ ' reset')
   tline.pause(0)
 }
 
