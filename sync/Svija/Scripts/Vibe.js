@@ -1733,10 +1733,10 @@ function createTline(namex, evntx, params){
   if (typeof tline == 'undefined'){
     window[funcName] = new gsap.timeline({paused:true})
     var tline = window[funcName]
+    tline.pause(0.1) // prevent flash from clipping mask — reset at end of setup
     tline[evntx.fromto](evntx.obj, params)
 
   env_allTlines[env_allTlines.length] = funcName
-  tline.pause(0.1) // prevent flash from clipping mask — reset at end of setup
   }
 }
 
