@@ -1,5 +1,5 @@
 
-//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.18
+//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.20
 
 // https://www.toptal.com/developers/javascript-minifier
 
@@ -58,12 +58,18 @@ if (typeof scrollElement == 'undefined')
 
 //———————————————————————————————————————— debugging variables
 
-if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined')
+/* <rect id="debug" x="120" y="97.541" class="st1" width="866.252" height="395.565"/>
+   <rect id="debug_00000182491029671138469570000004975659756911234963_" x="352.422" y="546.311" class="st1" width="515.854" height="249.831"/> */
+
+var corrupted = document.querySelectorAll('[id ^= "debug_000"]').length > 0
+
+if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined' || corrupted)
   var debugOn = true
 else debugOn = false
 
-var debugMessages = []
+alert(debugOn)
 
+var debugMessages = []
 
 var env_allTlines = []
 
