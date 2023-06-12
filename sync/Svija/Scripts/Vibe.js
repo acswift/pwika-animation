@@ -67,8 +67,6 @@ if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG !
   var debugOn = true
 else debugOn = false
 
-alert(debugOn)
-
 var debugMessages = []
 
 var env_allTlines = []
