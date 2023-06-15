@@ -1,5 +1,5 @@
 
-//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.21
+//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.20
 
 // https://www.toptal.com/developers/javascript-minifier
 
