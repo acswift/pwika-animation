@@ -1,5 +1,5 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe.css 1.0.20
+/*:::::::::::::::::::::::::::::::::::::::: Vibe.css 1.0.21
 
 /* https://www.toptal.com/developers/cssminifier */
 
@@ -11,7 +11,7 @@
 
 /*———————————————————————————————————————— EULA
 
-    Copyright (c) 2023 Svija
+    Copyright (c) Svija
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -82,6 +82,17 @@ polygon[id^='over_x2F_'  ], polygon[id^='away_x2F_'  ], polygon[id^='ovaway_x2F_
    rect[id^='over_x2F_'  ],    rect[id^='away_x2F_'  ],    rect[id^='ovaway_x2F_'],
   image[id^='over_x2F_'  ],   image[id^='away_x2F_'  ],   image[id^='ovaway_x2F_'],
    text[id^='over_x2F_'  ],    text[id^='away_x2F_'  ],    text[id^='ovaway_x2F_'],
+
+/*———————————————————————————————————————— ovover */
+
+ circle[id^='ovover_x2F_'],
+ellipse[id^='ovover_x2F_'],
+      g[id^='ovover_x2F_'],
+   path[id^='ovover_x2F_'],
+polygon[id^='ovover_x2F_'],
+   rect[id^='ovover_x2F_'],
+  image[id^='ovover_x2F_'],
+   text[id^='ovover_x2F_'],
 
 /*———————————————————————————————————————— toggle delay zone */
 

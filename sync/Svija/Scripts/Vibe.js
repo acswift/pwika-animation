@@ -1,5 +1,5 @@
 
-//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.20
+//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.21
 
 // https://www.toptal.com/developers/javascript-minifier
 
@@ -11,7 +11,7 @@
 
 /*———————————————————————————————————————— EULA
 
-    Copyright (c) 2023 Svija
+    Copyright (c) Svija
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -75,7 +75,7 @@ var env_allTlines = []
 
 const     separator = '_x2F_'; // regular slash
 const trigger_types = [ 'mouse', 'time', 'scroll' ];
-const   event_types = [ 'click', 'over',  'away',  'ovaway', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ];
+const   event_types = [ 'click', 'over',  'away',  'ovaway', 'ovover', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ];
 
 //———————————————————————————————————————— conversion dictionaries
 
@@ -152,6 +152,7 @@ const fromtos = {
   '>' : 'to',
   '<' : 'from'
 }
+
 
 //———————————————————————————————————————— defaults
 
@@ -685,7 +686,7 @@ class Evnt{
 
     this.name        = name;         // 20-character string
     this.obj         = obj;          // object reference
-    this.kind        = kind;         // string · kind of evnt                  click, over, down, away, ovaway, down, toggle, visible
+    this.kind        = kind;         // string · kind of evnt                  click, over, down, away, ovaway, ovover, down, toggle, visible
 
     // flags
     this.delay       = delay;        // number · seconds before animation starts
@@ -863,7 +864,7 @@ event_types.forEach(kind => {
   var obj_array = Array.from(document.querySelectorAll(stem))
 
 // if (obj_array.length == 0) alert(kind + ': '+obj_array.length);
-// click · over · away · ovaway · press · down · toggle · delay · point · zone · scrub
+// click · over · away · ovaway · ovover · press · down · toggle · delay · point · zone · scrub
 
   // loop through adding events
   for(var x=0; x<obj_array.length; x++){
@@ -1024,6 +1025,7 @@ function activate_mouse_events(animation){
   
       // special cases
       case 'ovaway': add_mouse_ovaway(animation, x); break;
+      case 'ovover': add_mouse_ovover(animation, x); break;
       case 'down'  :   add_mouse_down(animation, x); break;
       case 'toggle': add_mouse_toggle(animation, x); break;
   
@@ -1152,7 +1154,9 @@ function add_mouse_down(animation, x){
 
 }
 
-//———————————————————————————————————————— add_mouse_toggle(animation, x)
+/*———————————————————————————————————————— add_mouse_toggle(animation, x)
+
+    */
 
 function add_mouse_toggle(animation, x){
 
@@ -1161,6 +1165,22 @@ function add_mouse_toggle(animation, x){
   for (var t=0; t<animation.triggers.length; t++){
     createTline(animation.name+x, animation.evnt[x], params);
     animation.triggers[t].obj.addEventListener('pointerup', lstn_mouse_toggle.bind(null, animation.name+x, animation.evnt[x]), false);
+  }
+}
+
+/*———————————————————————————————————————— add_mouse_ovover(animation, x)
+
+    same as add_mouse_toggle */
+
+// rotation is not cumulative (rotating to 90° twice just turns to 90°)
+
+function add_mouse_ovover(animation, x){
+
+  params = gsapParams(animation.evnt[x]);
+
+  for (var t=0; t<animation.triggers.length; t++){
+    createTline(animation.name+x, animation.evnt[x], params);
+    animation.triggers[t].obj.addEventListener('pointerover', lstn_mouse_toggle.bind(null, animation.name+x, animation.evnt[x]), false);
   }
 }
 
