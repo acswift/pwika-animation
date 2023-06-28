@@ -3,6 +3,8 @@
 
 // https://www.toptal.com/developers/javascript-minifier
 
+// new transform code breaks https://vibe.svija.love/14
+
 /*———————————————————————————————————————— notes
 
   github.com/svijalove/vibe
@@ -439,8 +441,8 @@ class Animation{
       zoopy.delay= 1 * zoopy.delay;
 
     // scrub event_types default to hard ease
-    if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
-      zoopy.ease = 'none';
+//  if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
+//    zoopy.ease = 'none';
 
     // add to evnt array
     if (typeof this.evnt == 'undefined') this.evnt = []
@@ -998,8 +1000,10 @@ function scroll_triggers_funcs(name, triggers, args){
 
   var obj = triggers.obj
 
-  var box = obj.getBBox()      // get bounding box of trig object
-  var trig_top = box['y']             // top
+  var rect = obj.getBBox()             // get bounding box of trig object
+//var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
+
+  var trig_top = rect['y']             // top
 
   window.addEventListener('scroll', lstn_scroll_func.bind(null, name, triggers, trig_top, args)) 
 }
@@ -1197,6 +1201,7 @@ function addScrollPoint(animation, whichEvent){
 
     var obj  = animation.triggers[t].obj
     var rect = obj.getBBox()              // get bounding box of trig object
+//  var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
     var vert = animation.triggers[t].vert
 
     if (vert)
@@ -1220,6 +1225,7 @@ function addScrollScrub(animation, whichEvent){
 
     var obj  = animation.triggers[t].obj
     var rect = obj.getBBox()                // get bounding rect of trig object
+//  var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
     var vert = animation.triggers[t].vert
 
     if (vert){
@@ -1250,6 +1256,7 @@ function addScrollZone(animation, whichEvent){
 
     var obj  = animation.triggers[t].obj
     var rect = obj.getBBox()              // get bounding rect of trig object
+//  var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
     var vert = animation.triggers[t].vert
 
     if (vert){
@@ -1880,6 +1887,66 @@ function playTimeline(tline, pos){
 }
 
 function playTimelineDelayed(tline){ tline.play() }
+
+/*———————————————————————————————————————— transformedRect(rect, trans)
+
+   accepts an svg element and returns a rect
+   taking into account the transformation
+   used to correct scroll triggers */
+
+function transformedRect(obj){
+
+  var objBox = obj.getBBox()                       // array x, y, width, height
+
+  var mat = obj.getAttribute('transform')          // string or null
+
+  if (mat == null) return objBox                   // no transform
+  if (mat.slice(0, 6) != 'matrix') return objBox   // transform is not matrix
+
+  matVals = mat.slice(7,-1).split(' ')             // remove all but values, split at spaces
+  if (matVals.length != 6) return objBox           // not 6 values
+
+  x = objBox['x']
+  y = objBox['y']
+  w = objBox['width']
+  h = objBox['height']
+
+  var cornNew = {}
+
+  cornNew['tl'] = applyTransformation([x,   y  ], matVals)
+  cornNew['tr'] = applyTransformation([x+w, y  ], matVals)
+  cornNew['bl'] = applyTransformation([  x, y+h], matVals)
+  cornNew['br'] = applyTransformation([x+w, y+h], matVals)
+
+  var minX = Math.min(cornNew['tl'][0], cornNew['bl'][0])
+  var minY = Math.min(cornNew['tl'][1], cornNew['tr'][1])
+
+  var maxX = Math.max(cornNew['tr'][0], cornNew['br'][0])
+  var maxY = Math.max(cornNew['bl'][1], cornNew['br'][1])
+
+  w = maxX - minX
+  h = maxY - minY 
+
+  return {'x': minX, 'y': minY, 'width':w, 'height':h}
+
+}
+
+/*———————————————————————————————————————— applyTransformation(corner, matVals)
+
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
+
+    applies the calculation in the gray box
+    called by transformedRect() */
+
+function applyTransformation(corner, matVals){
+  let [a, b, c, d, e, f] = matVals
+
+  var oldX = corner[0]
+  var oldY = corner[1]
+  newX = a * oldX + c * oldY + 1*e
+  newY = b * oldX + d * oldY + 1*f
+  return [newX, newY]
+}
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
