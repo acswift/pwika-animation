@@ -1000,8 +1000,8 @@ function scroll_triggers_funcs(name, triggers, args){
 
   var obj = triggers.obj
 
-  var rect = obj.getBBox()             // get bounding box of trig object
-//var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
+//var rect = obj.getBBox()             // get bounding box of trig object
+  var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
 
   var trig_top = rect['y']             // top
 
@@ -1200,8 +1200,8 @@ function addScrollPoint(animation, whichEvent){
   for (var t=0; t<animation.triggers.length; t++){
 
     var obj  = animation.triggers[t].obj
-    var rect = obj.getBBox()              // get bounding box of trig object
-//  var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
+//  var rect = obj.getBBox()              // get bounding box of trig object
+    var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
     var vert = animation.triggers[t].vert
 
     if (vert)
@@ -1224,8 +1224,8 @@ function addScrollScrub(animation, whichEvent){
   for (var t=0; t<animation.triggers.length; t++){
 
     var obj  = animation.triggers[t].obj
-    var rect = obj.getBBox()                // get bounding rect of trig object
-//  var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
+    var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
+//  var rect = obj.getBBox()                // get bounding rect of trig object
     var vert = animation.triggers[t].vert
 
     if (vert){
@@ -1255,8 +1255,8 @@ function addScrollZone(animation, whichEvent){
   for (var t=0; t<animation.triggers.length; t++){
 
     var obj  = animation.triggers[t].obj
-    var rect = obj.getBBox()              // get bounding rect of trig object
-//  var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
+//  var rect = obj.getBBox()              // get bounding rect of trig object
+    var rect = transformedRect(obj)      // get bounding box of trig object, including transformations
     var vert = animation.triggers[t].vert
 
     if (vert){
@@ -1913,19 +1913,19 @@ function transformedRect(obj){
 
   var cornNew = {}
 
-  cornNew['tl'] = applyTransformation([x,   y  ], matVals)
+  cornNew['tl'] = applyTransformation([  x, y  ], matVals)
   cornNew['tr'] = applyTransformation([x+w, y  ], matVals)
   cornNew['bl'] = applyTransformation([  x, y+h], matVals)
   cornNew['br'] = applyTransformation([x+w, y+h], matVals)
 
-  var minX = Math.min(cornNew['tl'][0], cornNew['bl'][0])
-  var minY = Math.min(cornNew['tl'][1], cornNew['tr'][1])
+  var minX = Math.min(cornNew['tl'][0], cornNew['tr'][0], cornNew['bl'][0], cornNew['br'][0])
+  var maxX = Math.max(cornNew['tl'][0], cornNew['tr'][0], cornNew['bl'][0], cornNew['br'][0])
 
-  var maxX = Math.max(cornNew['tr'][0], cornNew['br'][0])
-  var maxY = Math.max(cornNew['bl'][1], cornNew['br'][1])
+  var minY = Math.min(cornNew['tl'][1], cornNew['tr'][1], cornNew['bl'][1], cornNew['br'][1])
+  var maxY = Math.max(cornNew['tl'][1], cornNew['tr'][1], cornNew['bl'][1], cornNew['br'][1])
 
-  w = maxX - minX
-  h = maxY - minY 
+  w = Math.abs(maxX - minX)
+  h = Math.abs(maxY - minY)
 
   return {'x': minX, 'y': minY, 'width':w, 'height':h}
 
@@ -1943,9 +1943,25 @@ function applyTransformation(corner, matVals){
 
   var oldX = corner[0]
   var oldY = corner[1]
+
   newX = a * oldX + c * oldY + 1*e
   newY = b * oldX + d * oldY + 1*f
+
   return [newX, newY]
+}
+
+/*———————————————————————————————————————— alertRect(obj, rect)
+
+    gives an alert with rect size
+    used by applyTransformation */
+
+function alertRect(obj, rect){
+  name = convertEntities(obj.id)
+  x = Math.round( rect['x'])
+  y = Math.round( rect['y'])
+  w = Math.round( rect['width'])
+  h = Math.round( rect['height'])
+  alert(name + ' is '+w+'x'+h+'px, left '+x+' & top '+y)
 }
 
 
