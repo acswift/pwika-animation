@@ -1,5 +1,5 @@
 
-//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.21
+//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.22
 
 // https://www.toptal.com/developers/javascript-minifier
 
@@ -746,7 +746,6 @@ console.groupCollapsed('Svija Vibe');
        in exporting the .svg, Illustrator is inconsistent about converting
        the - or . to an entity
    
-
 ——— the script does three things:
 
     1. "moves" the clippedObject status to the parent <g> element
@@ -789,7 +788,7 @@ for(var x=0; x<clippedObjects.length; x++){
   var pathId     = pathUrl.slice(6, pathUrl.length-2)
 
   var clipPath   = document.getElementById(pathId);      // object #2 above
-  minusPeriod(clipPath)                                  // fix minus sign (fix #3 above)
+  minusPeriod(clipPath, pathId)                                  // fix minus sign (fix #3 above)
 
   var defsId     = clipPath.firstElementChild.getAttributeNS('http://www.w3.org/1999/xlink', 'href').slice(1);
 
@@ -1684,12 +1683,20 @@ function convertEntities(str){
 
     https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain */
 
-function minusPeriod(clip_path){
+function minusPeriod(clip_path, pathId){
   // fix illustrator bug
   // reported at: https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain
   
+//  try{
+//    alert(pathId+': '+typeof clip_path +':'+ typeof clip_path.innerHTML) // object : string
+//  }
+//  catch(msg){
+//    alert(pathId+': '+'error')
+//    return
+//  }
+
   var first_child = clip_path.innerHTML
-  var correct_id  = first_child.split('"')[1].slice(1);
+  var correct_id  = first_child.split('"')[1].slice(1)
   
   if (correct_id.indexOf('_x002D_') > 0 || correct_id.indexOf('_x002E_') > 0){
     var wrong_id = correct_id.replace('_x002D_', '-').replace('_x002E_', '.');
@@ -1698,6 +1705,9 @@ function minusPeriod(clip_path){
       path.id  = correct_id;
   }
 }
+
+
+/* <use xlink:href="#delay_x2F_time1_x2F_3_x2F__x3C__x2F__x002D_y150" style="overflow:visible;"></use> */
 
 //———————————————————————————————————————— getElementsByRegex(pattern)
 
