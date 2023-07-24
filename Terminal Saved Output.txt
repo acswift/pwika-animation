@@ -1,0 +1,274 @@
+Last login: Tue Jun 27 12:31:58 on ttys000
+/Users
+before
+/Users/Main/Documents
+total 208
+drwxr-xr-x@   4 Main   128B Jun 16 21:26 Adobe/
+lrw-r--r--@   1 Main    49B Nov 26  2021 Adobe CEP extensions@ -> /Library/Application Support/Adobe/CEP/extensions
+drwxr-xr-x@   2 Main    64B May 17 16:28 Anastasiy Extension Manager/
+drwxr-xr-x@  10 Main   320B Apr 29  2022 Fonts/
+-rw-r--r--@   1 Main     0B Jun  3  2022 Icon?
+drwxr-xr-x@   7 Main   224B Apr 29  2022 Illustrator Preferences/
+drwxr-xr-x@   7 Main   224B Nov 25  2022 MailerLite/
+drwxr-xr-x@   5 Main   160B Apr 29  2022 Svija-Admin/
+drwxr-xr-x@   4 Main   128B Apr 29  2022 Svija-Design/
+drwxr-xr-x@  10 Main   320B Apr 29  2022 Svija-Shortcuts/
+-rw-r--r--@   1 Main   702B Jun 27 11:34 Windows Screen Capture.txt
+drwxr-xr-x@   4 Main   128B Apr 29  2022 Zoom/
+drwxr-xr-x@   9 Main   288B May 23 12:51 beta-software/
+drwxr-xr-x@  18 Main   576B Jun  9 22:22 cloud/
+drwxr-xr-x@  25 Main   800B Apr 20 15:57 cloud-update/
+drwxr-xr-x@  16 Main   512B Apr 29  2022 codes/
+drwxr-xr-x@  44 Main   1.4K Apr 29  2022 colors/
+drwxr-xr-x@   7 Main   224B Jan 19 18:12 delete/
+drwxr-xr-x@   4 Main   128B Apr 29  2022 design/
+drwxr-xr-x@  15 Main   480B Jun  5 15:00 distribution/
+drwxr-xr-x@  15 Main   480B Apr 29  2022 hotfixes/
+drwxr-xr-x@  41 Main   1.3K May 24 11:00 knowledge/
+drwxr-xr-x@ 177 Main   5.5K Jun 26 17:27 macos-configuration/
+drwxr-xr-x@   6 Main   192B Apr 29  2022 move-local/
+drwxr-xr-x@  14 Main   448B Apr 15 17:28 pwika/
+drwxr-xr-x@  10 Main   320B Sep 16  2022 replace-site/
+drwxr-xr-x@  58 Main   1.8K Jun 25 21:23 scripts-presets/
+drwxr-xr-x@  32 Main   1.0K Jun  8 10:23 secure/
+drwxr-xr-x@   3 Main    96B Jun  3 18:10 seignosse/
+drwxr-xr-x@  17 Main   544B Jun  6 13:57 server/
+drwxr-xr-x@   8 Main   256B Apr 29  2022 shortcuts/
+drwxr-xr-x@  20 Main   640B Jun 14 09:34 site-mgmt/
+drwxr-xr-x@  20 Main   640B Jan 24 13:44 social/
+drwxr-xr-x@   7 Main   224B Feb 28 12:52 svijalove/
+drwxr-xr-x@  24 Main   768B Jun  7 10:12 sync/
+drwxr-xr-x@  19 Main   608B Oct 19  2022 sync-old/
+drwxr-xr-x@  13 Main   416B Apr 29  2022 sync-rsync/
+drwxr-xr-x@  16 Main   512B Mar 25 08:02 templates-cool-extras/
+drwxr-xr-x@  28 Main   896B May 24 11:05 tools/
+drwxr-xr-x@   3 Main    96B May 22 10:19 trip-preparation/
+drwxr-xr-x@  67 Main   2.1K Jun 23 10:51 vibe/
+drwxr-xr-x@  33 Main   1.0K Jun 26 17:31 video/
+drwxr-xr-x@  34 Main   1.1K May 29 14:19 visuals/
+
+     macOS
+    .profile V1.07 cloud
+
+501  Documents   ssh live
+Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-148-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Tue Jun 27 12:36:42 CEST 2023
+
+  System load:           0.14
+  Usage of /:            22.1% of 48.42GB
+  Memory usage:          39%
+  Swap usage:            17%
+  Processes:             158
+  Users logged in:       0
+  IPv4 address for eth0: 172.104.236.45
+  IPv6 address for eth0: 2a01:7e01::f03c:92ff:fe31:c96f
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+40 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+New release '22.04.2 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+*** System restart required ***
+Last login: Tue Jun 27 12:32:01 2023 from 2a01:cb19:86a2:3300:25c2:295d:50d8:660e
+
+total 32K
+drwxr-xr-x 6 limited 4.0K Apr 20 14:27 base/
+drwxr-xr-x 3 root    4.0K Apr 20 14:44 cloud-update/
+drwxr-xr-x 2 root    4.0K Apr 20 14:27 db-backups-2.2.21/
+drwxr-xr-x 2 root    4.0K Apr 20 14:27 db-backups-2.2.23/
+drwxr-xr-x 6 limited 4.0K Jun  5 09:58 example/
+drwxr-xr-x 2 limited 4.0K Apr 20 14:27 limited/
+-rw-r--r-- 1 root      25 Apr 20 13:08 sitelist.txt
+drwxr-xr-x 6 limited 4.0K Apr 20 14:27 svija220831/
+
+    live.svija.love
+    .profile V1.07
+
+12:36    home    passwd example^C
+12:36    home    vi /etc/rsyncd.scrt
+12:37    home    passwd example
+New password: 
+Retype new password: 
+passwd: password updated successfully
+12:37    home    cd example
+12:51    example    ls 
+total 20K
+drwx------ 2 limited 4.0K Jan  4 16:41 cache/
+drwxr-xr-x 3 limited 4.0K Apr 20 15:07 example/
+-rwxr-xr-x 1 limited  663 Jan  4 16:41 manage.py*
+drwxr-xr-x 5 limited 4.0K Apr 20 14:27 static/
+drwxr-xr-x 4 example 4.0K Jun 27 10:07 sync/
+12:51    example    chmod -R 777 sync
+12:51    example    ls
+total 20K
+drwx------ 2 limited 4.0K Jan  4 16:41 cache/
+drwxr-xr-x 3 limited 4.0K Apr 20 15:07 example/
+-rwxr-xr-x 1 limited  663 Jan  4 16:41 manage.py*
+drwxr-xr-x 5 limited 4.0K Apr 20 14:27 static/
+drwxrwxrwx 4 example 4.0K Jun 27 10:07 sync/
+12:51    example    ls sync
+total 16M
+-rwxr-xr-x 1 example 5.0M Jun 26 17:04  Animation.ai*
+-rw-r--r-- 1 example 1.7M Jun 27 08:45 'Cloud Module.ai'
+-rwxr-xr-x 1 example 1.1M Jun 26 17:04 'Contact Form.ai'*
+-rwxr-xr-x 1 example 1.2M Jun 26 17:04  Footer.ai*
+-rwxr-xr-x 1 example 1.1M Jun 26 17:04  Header.ai*
+drwxr-xr-x 2 example 4.0K Jun 26 17:02  Links/
+-rwxr-xr-x 1 example 1.1M Jun 26 17:04  Menu.ai*
+-rwxr-xr-x 1 example 915K Jun 26 17:04  Missing.ai*
+-rwxr-xr-x 1 example 908K Jun 26 15:58 'New Page.ait'*
+-rwxr-xr-x 1 example 1.6M Jun 27 10:07  Page.ai*
+drwxr-xr-x 8 example 4.0K Jun 27 09:19  Svija/
+-rwxr-xr-x 1 example 1.8M Jun 26 17:03  Youtube.ai*
+12:51    example    client_loop: send disconnect: Broken pipe
+502  Documents   ssh dev
+Welcome to Ubuntu 22.04.2 LTS (GNU/Linux 5.15.0-71-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Wed Jun 28 10:24:57 AM CEST 2023
+
+  System load:           0.42041015625
+  Usage of /:            38.7% of 24.04GB
+  Memory usage:          57%
+  Swap usage:            92%
+  Processes:             140
+  Users logged in:       0
+  IPv4 address for eth0: 139.162.171.189
+  IPv6 address for eth0: 2a01:7e01::f03c:93ff:fec7:6797
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+28 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+*** System restart required ***
+Last login: Tue Jun 27 08:59:26 2023 from 2a01:cb19:86a2:3300:25c2:295d:50d8:660e
+
+total 92K
+-rw-r--r-- 1 root  13K Jun 22 16:43 admin.py
+-rw-r--r-- 1 root  115 May 11 14:35 apps.py
+drwxr-xr-x 2 root 4.0K May 11 14:35 fixtures/
+-rw-r--r-- 1 root    0 May 11 14:35 __init__.py
+drwxr-xr-x 3 root  20K Jun 22 16:41 migrations/
+-rw-r--r-- 1 root  21K Jun 22 16:41 models.py
+drwxr-xr-x 2 root 4.0K Jun 22 16:43 __pycache__/
+drwxr-xr-x 4 root 4.0K May 11 14:35 static/
+drwxr-xr-x 5 root 4.0K May 11 14:35 templates/
+-rw-r--r-- 1 root   60 May 11 14:35 tests.py
+-rw-r--r-- 1 root 3.4K May 11 14:35 urls.py
+drwxr-xr-x 4 root 4.0K May 11 16:20 views/
+
+    dev.svija.love
+   .profile v1.09
+
+-rwxr-xr-x 1 dev       13 Jun 27 09:18 /home/dev/sync/.last*
+-rwxr-xr-x 1 next      13 Jun  7 16:33 /home/next/sync/.last*
+-rwxr-xr-x 1 photoshop 13 Jun 21 17:12 /home/photoshop/sync/.last*
+-rwxr-xr-x 1 scripts   13 Jun 22 17:57 /home/scripts/sync/.last*
+-rwxr-xr-x 1 vibe      13 Jun 28 10:25 /home/vibe/sync/.last*
+
+248  svija    cd /home/vibe/sync/Svija/SVG\ Files/
+249  SVG Files    vi 230628
+230628-trigger-transforms_cp.svg  230628-trigger-transforms_mb.svg  
+249  SVG Files    vi 230628-trigger-transforms_cp.svg 
+250  SVG Files    vi 230628-trigger-transforms_cp.svg 
+251  SVG Files    vi 230628-trigger-transforms_cp.svg 
+252  SVG Files    vi 230628-trigger-transforms_cp.svg 
+
+      44     'bl': [],                                                                   
+      45     'br': []                                                                    
+      46   }                                                                             
+      47                                                                                 
+      48   var cornNew = {                                                               
+      49     'tl': [],                                                                   
+      50     'tr': [],                                                                   
+      51     'bl': [],                                                                   
+      52     'br': []                                                                    
+      53   }                                                                             
+      54                                                                                 
+      55   cornOld['tl'] = [x,   y  ]                                                    
+      56   cornOld['tr'] = [x+w, y  ]                                                    
+      57   cornOld['bl'] = [  x, y+h]                                                    
+      58   cornOld['tr'] = [x+w, y+h]                                                    
+      59                                                                                 
+      60   var oldX = cornOld['tl'][0] // top left                                       
+      61   var oldY = cornOld['tl'][1]                                                   
+      62   newX = a * oldX + c * oldY + e                                                
+      63   newY = b * oldX + d * oldY + f                                                
+      64   cornNew['tl'] = [newX, newY]                                                  
+      65                                                                                 
+      66   var oldX = cornOld['tr'][0] // top right                                      
+      67   var oldY = cornOld['tr'][1]                                                   
+      68   newX = a * oldX + c * oldY + e                                                
+      69   newY = b * oldX + d * oldY + f                                                
+      70   cornNew['tr'] = [newX, newY]                                                  
+      71                                                                                 
+      72   var oldX = cornOld['bl'][0] // bottom left                                    
+      73   var oldY = cornOld['bl'][1]                                                   
+      74   newX = a * oldX + c * oldY + e                                                
+      75   newY = b * oldX + d * oldY + f                                                
+      76   cornNew['bl'] = [newX, newY]                                                  
+      77                                                                                 
+      78   var oldX = cornOld['br'][0] // bottom right                                   
+      79   var oldY = cornOld['br'][1]                                                   
+      80   newX = a * oldX + c * oldY + e                                                
+      81   newY = b * oldX + d * oldY + f                                                
+      82   cornNew['br'] = [newX, newY]                                                  
+      83                                                                                 
+      84   x = Math.min(cornNew['tl'][0], cornNew['bl'][0])                              
+      85   y = Math.min(cornNew['tl'][1], cornNew['tr'][1])                              
+      86                                                                                 
+      87   maxX = Math.max(cornNew['tr'][0], cornNew['br'][0])                           
+      88   maxY = Math.max(cornNew['bl'][1], cornNew['br'][1])                           
+      89                                                                                 
+      90   w = maxX - x                                                                  
+      91   h = maxY - y                                                                  
+      92                                                                                 
+      93   return {'x': x, 'y': y, 'width':w, 'height':h}                                
+      94 }                                                                               
+      95                                                                                 
+      96 </script>                                                                       
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+~                                                                                                                                                                                                                     
+"230628-trigger-transforms_cp.svg" 96L, 2557B written

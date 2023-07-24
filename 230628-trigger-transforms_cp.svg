@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.5.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1200 1808" style="enable-background:new 0 0 1200 1808;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#FF00FF;}
+</style>
+<g id="page_color">
+	<rect id="computer" class="st0" width="1200" height="1808"/>
+</g>
+<g id="content">
+</g>
+<g>
+	<rect id="here" x="100" y="100" class="st1" width="50" height="50" transform="matrix(0.5 0 0 2 0 0)" />
+</g>
+</svg><script>
+
+  var myRect = getRect(here)
+  dumpKeys(myRect)
+
+/*———————————————————————————————————————— getRect(rect, trans)
+
+   accepts an object and returns a rect
+   taking into account the transformation */
+
+function getRect(obj){
+
+  var objBox = obj.getBBox()                       // array x, y, width, height
+
+  var mat = obj.getAttribute('transform')          // string or null
+
+  if (mat == null) return objBox                   // no transform
+  if (mat.slice(0, 6) != 'matrix') return objBox   // transform is not matrix
+
+  matVals = mat.slice(7,-1).split(' ')             // remove all but values, split at spaces
+  if (matVals.length != 6) return objBox           // not 6 values
+
+  x = objBox['x']
+  y = objBox['y']
+  w = objBox['width']
+  h = objBox['height']
+
+  var cornNew = {}
+
+  cornNew['tl'] = applyTran([x,   y  ], matVals)
+  cornNew['tr'] = applyTran([x+w, y  ], matVals)
+  cornNew['bl'] = applyTran([  x, y+h], matVals)
+  cornNew['br'] = applyTran([x+w, y+h], matVals)
+
+  var minX = Math.min(cornNew['tl'][0], cornNew['bl'][0])
+  var minY = Math.min(cornNew['tl'][1], cornNew['tr'][1])
+
+  var maxX = Math.max(cornNew['tr'][0], cornNew['br'][0])
+  var maxY = Math.max(cornNew['bl'][1], cornNew['br'][1])
+
+  w = maxX - minX
+  h = maxY - minY 
+
+  return {'x': minX, 'y': minY, 'width':w, 'height':h}
+
+}
+
+/*———————————————————————————————————————— applyTran(corner, matVals)
+
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
+
+    applies the calculation in the gray box */
+
+function applyTran(corner, matVals){
+  let [a, b, c, d, e, f] = matVals
+
+  var oldX = corner[0]
+  var oldY = corner[1]
+  newX = a * oldX + c * oldY + 1*e
+  newY = b * oldX + d * oldY + 1*f
+  return [newX, newY]
+}
+
+//———————————————————————————————————————— return transformed rect PREV
+
+function xtransformed(rect, trans){
+  [a, b, c, d, e, f] = trans
+  var x, y, w, h
+
+  x = rect['x']
+  y = rect['y']
+  w = rect['width']
+  h = rect['height']
+
+  var cornOld = {
+    'tl': [],
+    'tr': [],
+    'bl': [],
+    'br': []
+  }
+
+  var cornNew = {
+    'tl': [],
+    'tr': [],
+    'bl': [],
+    'br': []
+  }
+
+  cornOld['tl'] = [x,   y  ]
+  cornOld['tr'] = [x+w, y  ]
+  cornOld['bl'] = [  x, y+h]
+  cornOld['br'] = [x+w, y+h]
+
+  var oldX = cornOld['tl'][0] // top left
+  var oldY = cornOld['tl'][1]
+  newX = a * oldX + c * oldY + e
+  newY = b * oldX + d * oldY + f
+  cornNew['tl'] = [newX, newY]
+
+  var oldX = cornOld['tr'][0] // top right
+  var oldY = cornOld['tr'][1]
+  newX = a * oldX + c * oldY + e
+  newY = b * oldX + d * oldY + f
+  cornNew['tr'] = [newX, newY]
+
+  var oldX = cornOld['bl'][0] // bottom left
+  var oldY = cornOld['bl'][1]
+  newX = a * oldX + c * oldY + e
+  newY = b * oldX + d * oldY + f
+  cornNew['bl'] = [newX, newY]
+
+  var oldX = cornOld['br'][0] // bottom right
+  var oldY = cornOld['br'][1]
+  newX = a * oldX + c * oldY + e
+  newY = b * oldX + d * oldY + f
+  cornNew['br'] = [newX, newY]
+
+  x = Math.min(cornNew['tl'][0], cornNew['bl'][0])
+  y = Math.min(cornNew['tl'][1], cornNew['tr'][1])
+
+  var maxX = Math.max(cornNew['tr'][0], cornNew['br'][0])
+  var maxY = Math.max(cornNew['bl'][1], cornNew['br'][1])
+
+  w = maxX - x
+  h = maxY - y
+
+  return {'x': x, 'y': y, 'width':w, 'height':h}
+}
+
+//———————————————————————————————————————— dumpKeys(obj)
+
+function dumpKeys(obj){
+  var str = '';
+
+  for (var i in obj){
+    try{
+//    str += '\n'+i+': '+obj[i].typename;
+      str += '\n'+i+': '+obj[i];
+    }
+    catch(e){
+      str += '\n'+i+': error';
+    }
+  }
+  alert(str);
+}
+
+
+</script>
