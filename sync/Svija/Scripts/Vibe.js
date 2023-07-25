@@ -832,7 +832,7 @@ trigger_types.forEach(kind => {
   // loop through adding trigger_types
   for(var x=obj_array.length-1; x>-1; x--){ // reverse order to match layer palette order
     var obj = obj_array[x];
-    log('——————————————————————-'+convertEntities(obj.id))
+//  log('——————————————————————-'+convertEntities(obj.id))
     var flags = obj.id.split(separator);
 
     // doesn't have at least trig and name
