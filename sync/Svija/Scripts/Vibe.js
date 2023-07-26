@@ -492,7 +492,7 @@ class Animation{
          a single trigger calls several events */
 
       if (typeof functions[this.name] == 'undefined')
-        errLog('Function func_'+this.name+' not found.', this.triggers[x].obj);
+        errLog('Function func_'+this.name+' not found', this.triggers[x].obj);
 
       else switch (this.triggers[x].kind) {
         case 'mouse' :    mouse_trigger_funcs(this.name, this.triggers[x], args); break;
@@ -970,6 +970,19 @@ for (var x=0; x<env_allTlines.length; x++){
 }
 
 //———————————————————————————————————————— end console.groupCollapsed
+
+/*    Svija Vibe Debugging
+      • Function func_cloudModuleLink not found in cloudModule.ai › mouse/cloudModuleLink/n/fu
+      • Function func_cloudForceLink not found in cloudModule.ai › mouse/cloudForceLink/func/mb   */
+
+// remove cloud module related errors
+if (debugOn && debugMessages.length > 0){
+  for (var x=debugMessages.length-1; x>-1; x--){
+    var str = debugMessages[x]
+    if (str.indexOf('cloudModule') > 0)
+      var z = debugMessages.splice(x, 1)
+  }
+}
 
 if (debugOn && debugMessages.length > 0) alert('Svija Vibe Debugging\n• ' + debugMessages.join('\n• '))
 console.groupEnd();
