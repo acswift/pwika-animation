@@ -1209,6 +1209,8 @@ function addScrollPoint(animation, whichEvent){
     else
       var startPx = rect['x']                  // left of box, in pixels
 
+log('—————————————————————————————————-- startpx: '+startPx)
+
     var params = gsapParams(animation.evnt[whichEvent])
     createTline(animation.name+whichEvent, animation.evnt[whichEvent], params)
 
