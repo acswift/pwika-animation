@@ -439,6 +439,7 @@ class Animation{
     // convert delay to number
     if (typeof zoopy.delay!='undefined')
       zoopy.delay= 1 * zoopy.delay;
+    else zoopy.delay = 0
 
     // scrub event_types default to hard ease
 //  if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
@@ -1004,7 +1005,7 @@ function scroll_triggers_funcs(name, triggers, args){
 
   var trig_top = rect['y']             // top
 
-  window.addEventListener('scroll', lstn_scroll_func.bind(null, name, triggers, trig_top, args)) 
+  scrollElement.addEventListener('scroll', lstn_scroll_func.bind(null, name, triggers, trig_top, args)) 
 }
 
 
@@ -1239,8 +1240,7 @@ function addScrollScrub(animation, whichEvent){
     var params = gsapParams(animation.evnt[whichEvent])
 
     createTline(animation.name+whichEvent, animation.evnt[whichEvent], params)
-    window.addEventListener('scroll', listenScrollScrub.bind(null, animation, whichEvent, vert, startPx, endPx, 0)) 
-    document.body.addEventListener('scroll', listenScrollScrub.bind(null, animation, whichEvent, vert, startPx, endPx, 0)) 
+    scrollElement.addEventListener('scroll', listenScrollScrub.bind(null, animation, whichEvent, vert, startPx, endPx, 0)) 
 
     // in case something should already be visible
     listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, 0) 
@@ -1270,8 +1270,7 @@ function addScrollZone(animation, whichEvent){
     var params = gsapParams(animation.evnt[whichEvent])
 
     createTline(animation.name+whichEvent, animation.evnt[whichEvent], params)
-    document.body.addEventListener('scroll', listenScrollZone.bind(null, animation, whichEvent, vert, startPx, endPx)) 
-    window.addEventListener('scroll', listenScrollZone.bind(null, animation, whichEvent, vert, startPx, endPx)) 
+    scrollElement.addEventListener('scroll', listenScrollZone.bind(null, animation, whichEvent, vert, startPx, endPx)) 
 
     // in case something should already be visible
     listenScrollZone(animation, whichEvent, vert, startPx, endPx) 
@@ -1606,7 +1605,7 @@ function gsapParams(evntx){
 
   if (typeof evntx.ease      != 'undefined') params['ease'           ] = evntx.ease; else params['ease'] = Power1.easeInOut ;
 
-  if (typeof evntx.delay     != 'undefined') params['delay'          ] = evntx.delay        ;
+//if (typeof evntx.delay     != 'undefined') params['delay'          ] = evntx.delay        ;
   if (typeof evntx.origin    != 'undefined') params['transformOrigin'] = evntx.origin       ;
 
   else params['transformOrigin'] = '50% 50%';
@@ -1775,7 +1774,9 @@ function createTline(namex, evntx, params){
     window[funcName] = new gsap.timeline({paused:true})
     var tline = window[funcName]
     tline.pause(0.1) // prevent flash from clipping mask — reset at end of setup
-    tline[evntx.fromto](evntx.obj, params)
+
+//  log(namex+'——————————————————————-: '+evntx.delay)
+    tline[evntx.fromto](evntx.obj, params, evntx.delay)
 
   env_allTlines[env_allTlines.length] = funcName
   }
