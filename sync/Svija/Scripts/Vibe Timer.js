@@ -1,3 +1,10 @@
+
+/*:::::::::::::::::::::::::::::::::::::::: Vibe Timer.js 1.0.23
+
+https://www.toptal.com/developers/javascript-minifier
+
+*/
+
 setInterval(vibeAugment, 200)
 
 function vibeAugment(){
@@ -17,3 +24,6 @@ function fourDigits(x){
 fourDigits(0.2) // 0:2
 fourDigits(1.2) // 1:1.999999999
 fourDigits(120) // 120:0 */
+
+//:::::::::::::::::::::::::::::::::::::::: fin
+
