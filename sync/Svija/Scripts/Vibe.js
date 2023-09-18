@@ -292,31 +292,11 @@ class Animation{
 
     if (typeof zoopy.fromto=='undefined') zoopy.fromto = event_defaults.fromto
 
-    /* set transparency · see logic spreadsheet
+/*  events are set to display:none by default (in CSS)
 
-    events are set to display:none by default (in CSS)
+    the only exceptiont to strict logic is for simple mouseovers
+    an event with no flag goes from t0 to current transparency */
 
-    needs to be updated here for initially-visible objects
-
-    docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=1328156795 */
-
-//  obj.style.display = 'block'; alert(264); // broken
-
-//  var nutsId = String(obj.id);                    // toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard
-//  var nuts = document.getElementById(nutsId);     // broken
-//  nuts.style.display = 'block'; alert(267+'*');   // broken
-
-
-//  var nuts = document.getElementById('toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard'); // this works
-//  nuts.style.display = 'block'; alert(270);                                                            // this works
-
-    // toggle_x2F_trigger3
-    // toggle_x2F_trigger2_x2F_-x684_x2F_4_x2F_hard
-    // toggle_x2F_trigger1_x2F__x25_200_x2F_o50_x2C_0_x2F_2_x2F_hard
-
-//  obj.style.display = 'block';  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /* docs.google.com/spreadsheets/d/1wq1By47vzXZzdvb6JZS3AqR8mhwZ3c2ZSoF0eR1m25Y/edit#gid=1328156795 */
     zoopy['opacity'] = +window.getComputedStyle(obj).getPropertyValue('opacity')
 
     if (typeof zoopy['autoAlpha'] == 'undefined'){
@@ -331,39 +311,53 @@ class Animation{
     var to      = (zoopy.fromto == 'to')
     var visible = (opacity   != '0' )
 
+// log('opacity, autoAlpha, to, visible = ' + opacity +':'+ autoAlpha +':'+ to +':'+ visible) // 0.5:null:true:true
+
     // four cases of transparency ////////////////////
     transparency:{
 
       // exception · when no flags we assume mouseovers
-      if (to && !containsTransform(zoopy) && zoopy['autoAlpha']==null){
-        zoopy.obj.style.opacity = 0
-        zoopy['opacity']  = 0
-        if (visible)  zoopy['autoAlpha'] = opacity
-        if (!visible) zoopy['autoAlpha'] = 1
-        break transparency
-      }
+//    if (to && !containsTransform(zoopy) && zoopy['autoAlpha']==null){
+      if (flags.length == 0){
 
-      // exception · when visible and t100 flag
-      if (to && opacity==1 && autoAlpha==1){
-        zoopy['opacity' ] = 0
-        zoopy.obj.style.opacity = 0
-        break transparency
-      }
+        if (opacity == 1){
+          zoopy.obj.style.opacity = 0
+          zoopy['opacity']  = 0
+          zoopy['autoAlpha'] = 1
+          break transparency
+        }
+        else{
+          zoopy['autoAlpha'] = 1
+          break transparency
 
-      // error · zero to zero
-      if (opacity == 0 && autoAlpha == 0){
-        zoopy['opacity' ] = undefined
-        zoopy['autoAlpha'] = undefined
-        errLog('Zero to zero transparency', zoopy.obj)
-        break transparency
+//        zoopy.obj.style.opacity = 0
+//        zoopy['opacity']  = 0
+//        if (visible)  zoopy['autoAlpha'] = opacity
+//        if (!visible) zoopy['autoAlpha'] = 1
+//        break transparency
+        }
       }
 
       // all the rest: use current transparency as starting state
-      if (autoAlpha == null){
+      if (autoAlpha == null)
         zoopy['autoAlpha'] = zoopy['opacity']
+
+// OLD EXCEPTIONS COMMENTED OUT
+//    // exception · when visible and t100 flag
+//    if (to && opacity==1 && autoAlpha==1){
+//      zoopy['opacity' ] = 0
+//      zoopy.obj.style.opacity = 0
+//      break transparency
+//    }
+
+//    // error · zero to zero
+//    if (opacity == 0 && autoAlpha == 0){
 //      zoopy['opacity' ] = undefined
 //      zoopy['autoAlpha'] = undefined
-      }
+//      errLog('Zero to zero transparency', zoopy.obj)
+//      break transparency
+//    }
+
     }
 
     zoopy.opacity = 1*zoopy.opacity   // doesn't seem
@@ -425,7 +419,7 @@ class Animation{
       zoopy.obj.style.opacity = zoopy.transFinal
 */
 
-/*/////////////////////////////////////// set display based on transpinit, fromto */
+/*::::::::::::::::::::::::::::::::::::::: set display based on transpinit, fromto */
 
     // set default duration
     if (typeof zoopy.duration=='undefined')
@@ -441,7 +435,7 @@ class Animation{
       zoopy.delay= 1 * zoopy.delay;
     else zoopy.delay = 0
 
-    // scrub event_types default to hard ease
+    // scrub event_types default to hard ease DEACTIVATED
 //  if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
 //    zoopy.ease = 'none';
 
@@ -474,6 +468,7 @@ class Animation{
       }
     }
   
+
   }
 
   activate_func_flag(){
@@ -1805,9 +1800,10 @@ function svgName(obj){
   return decodeEntities(obj.id)
 }
 
-//———————————————————————————————————————— containsTransform(trigger)
+//———————————————————————————————————————— containsTransform(trigger) COMMENTED OUT
 
-function containsTransform(trigger){
+/* function containsTransform(trigger){
+
   if ( typeof trigger.xmove     == 'undefined' &&
        typeof trigger.ymove     == 'undefined' &&
        typeof trigger.rotate    == 'undefined' &&
@@ -1816,7 +1812,7 @@ function containsTransform(trigger){
        typeof trigger.yscale    == 'undefined'  ) return false
 
   return true
-}
+} */
 
 /*———————————————————————————————————————— getParentG()
 
