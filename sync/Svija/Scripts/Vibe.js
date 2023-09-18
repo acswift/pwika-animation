@@ -1,9 +1,9 @@
 
-//:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.22
+/*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.23
 
-// https://www.toptal.com/developers/javascript-minifier
+https://www.toptal.com/developers/javascript-minifier
 
-// new transform code breaks https://vibe.svija.love/14
+*/
 
 /*———————————————————————————————————————— notes
 
