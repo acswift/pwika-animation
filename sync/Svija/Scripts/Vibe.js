@@ -292,8 +292,9 @@ class Animation{
 
     if (typeof zoopy.fromto=='undefined') zoopy.fromto = event_defaults.fromto
 
-/*  events are set to display:none by default (in CSS)
+    // set transparency
 
+/*  events are set to display:none by default (in CSS)
     the only exceptiont to strict logic is for simple mouseovers
     an event with no flag goes from t0 to current transparency */
 
@@ -313,29 +314,19 @@ class Animation{
 
 // log('opacity, autoAlpha, to, visible = ' + opacity +':'+ autoAlpha +':'+ to +':'+ visible) // 0.5:null:true:true
 
-    // four cases of transparency ////////////////////
     transparency:{
 
       // exception · when no flags we assume mouseovers
-//    if (to && !containsTransform(zoopy) && zoopy['autoAlpha']==null){
-      if (flags.length == 0){
+      if (flags.length == 0 && opacity == 0){
+        zoopy['autoAlpha'] = 1
+        break transparency
+      }
 
-        if (opacity == 1){
-          zoopy.obj.style.opacity = 0
-          zoopy['opacity']  = 0
-          zoopy['autoAlpha'] = 1
-          break transparency
-        }
-        else{
-          zoopy['autoAlpha'] = 1
-          break transparency
-
-//        zoopy.obj.style.opacity = 0
-//        zoopy['opacity']  = 0
-//        if (visible)  zoopy['autoAlpha'] = opacity
-//        if (!visible) zoopy['autoAlpha'] = 1
-//        break transparency
-        }
+      if (flags.length == 0 && opacity != 0){
+        zoopy['autoAlpha'] = opacity
+        zoopy.obj.style.opacity = 0
+        zoopy['opacity']  = 0
+        break transparency
       }
 
       // all the rest: use current transparency as starting state
