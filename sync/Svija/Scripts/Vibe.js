@@ -441,8 +441,11 @@ class Animation{
   
     for (var t=0; t<this.triggers.length; t++){
 
-      if (typeof this.triggers[t].cursor != 'undefined')
+
+      if (typeof this.triggers[t].cursor != 'undefined'){
         this.triggers[t].obj.style.cursor = cursors[this.triggers[t].cursor];
+        log(this.triggers[t].obj.id +' style.cursor set to '+ cursors[this.triggers[t].cursor])
+      }
   
       else{
         var is_hand = false;
