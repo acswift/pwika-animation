@@ -1,5 +1,5 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe Timer.js 1.0.23
+/*:::::::::::::::::::::::::::::::::::::::: Vibe Timer.js 1.0.25
 
 https://www.toptal.com/developers/javascript-minifier
 

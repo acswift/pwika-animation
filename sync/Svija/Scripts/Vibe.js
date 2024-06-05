@@ -1,5 +1,5 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.24
+/*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.25
 
     updated to allow new Illustrator SVG format
 
@@ -9,8 +9,8 @@ https://www.toptal.com/developers/javascript-minifier
 
 //———————————————————————————————————————— version warning
 
-var msgEn = 'Compatibility Issue\nSvija Vibe 1.0.24 requires Adobe Illustrator 27 or earlier. You are using Illustrator 28 or later.'
-var msgFr = 'Problème de compatibilité\nSvija Vibe 1.0.24 requiert la version 27 ou plus ancienne d\'Adobe Illustrator. Vous utilisez la version 28 ou plus.'
+var msgEn = 'Compatibility Issue\nSvija Vibe 1.0.25 requires Adobe Illustrator 27 or earlier. You are using Illustrator 28 or later.'
+var msgFr = 'Problème de compatibilité\nSvija Vibe 1.0.25 requiert la version 27 ou plus ancienne d\'Adobe Illustrator. Vous utilisez la version 28 ou plus.'
 
 var ds = typeof document.body.querySelector('g').dataset.name
 
