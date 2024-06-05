@@ -4,8 +4,9 @@
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-### Illustrator Version 28
+<details><summary>Illustrator Version 28</summary>
 
+---
 I should just use the current Svija Tools with the next version of AI
 
 I should have two version of Vibe
@@ -25,7 +26,10 @@ How can I identify if new-style SVG? If there's:
 when I get to css:
 https://stackoverflow.com/questions/5324415/select-elements-by-attribute-in-css
 
-### Svija Vibe 1.0.14
+---
+</details>
+
+### Svija Vibe 1.0.24
 
 [GSAP Forum link](https://greensock.com/forums/topic/36423-how-can-i-get-a-breakdown-of-a-timeline-once-its-been-created/)
 
