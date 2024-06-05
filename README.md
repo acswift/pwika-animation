@@ -1,8 +1,29 @@
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
-*Updated 15 March, 2023 · Toulouse*
+*Updated 5 June, 2024 · Toulouse*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
+
+### Illustrator Version 28
+
+I should just use the current Svija Tools with the next version of AI
+
+I should have two version of Vibe
+- check for AI version
+- alert if wrong version, give address to download ZIP
+
+How can I identify if new-style SVG? If there's:
+- a style named "cls-1"
+- a data-name="page color"
+
+1. get first SVG element
+2. get first <g> element (or cycle through)
+3. see if dataset is defined
+
+
+
+when I get to css:
+https://stackoverflow.com/questions/5324415/select-elements-by-attribute-in-css
 
 ### Svija Vibe 1.0.14
 
