@@ -7,29 +7,19 @@ https://www.toptal.com/developers/javascript-minifier
 
 */
 
-//———————————————————————————————————————— version warning
-
-var msgEn = 'Compatibility Issue\nSvija Vibe 1.0.25 requires Adobe Illustrator 28 or later. You are using Illustrator 27 or earlier.'
-var msgFr = 'Problème de compatibilité\nSvija Vibe 1.0.25 requiert la version 28 ou plus récente d\'Adobe Illustrator. Vous utilisez la version 27 ou antérieure.'
-
-var ds = typeof document.body.querySelector('g').dataset.name
-
-if (ds == 'string') aiVersion = 28
-else                aiVersion = 27
-
-var tempMsg = msgEn
-
-if (typeof navigator.language != 'undefined')
-  if (navigator.language.substr(0,2) == 'fr')
-    tempMsg = msgFr
-
-if (aiVersion < 28) alert(tempMsg)
-
 /*———————————————————————————————————————— notes
 
   github.com/svijalove/vibe
   
-  ©Svija SAS, Cusset France */
+  ©Svija SAS, Cusset France
+
+  When there are two elements with the same name, it's just
+  debug, debug-2 for id
+
+
+*/
+
+
 
 /*———————————————————————————————————————— EULA
 
@@ -58,10 +48,28 @@ if (aiVersion < 28) alert(tempMsg)
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
+//———————————————————————————————————————— version warning
+
+var msgEn = 'Compatibility Issue\nSvija Vibe 1.0.25 requires Adobe Illustrator 28 or later. You are using Illustrator 27 or earlier.'
+var msgFr = 'Problème de compatibilité\nSvija Vibe 1.0.25 requiert la version 28 ou plus récente d\'Adobe Illustrator. Vous utilisez la version 27 ou antérieure.'
+
+var ds = typeof document.body.querySelector('g').dataset.name
+
+if (ds == 'string') aiVersion = 28
+else                aiVersion = 27
+
+var tempMsg = msgEn
+
+if (typeof navigator.language != 'undefined')
+  if (navigator.language.substr(0,2) == 'fr')
+    tempMsg = msgFr
+
+if (aiVersion < 28) alert(tempMsg)
+
 //———————————————————————————————————————— start timer
 
-const d1 = new Date();
-let start_time = d1.getTime();
+const d1 = new Date()
+let start_time = d1.getTime()
 
 /*———————————————————————————————————————— var scrollElement
 
@@ -83,21 +91,16 @@ if (typeof scrollElement == 'undefined')
 /* <rect id="debug" x="120" y="97.541" class="st1" width="866.252" height="395.565"/>
    <rect id="debug_00000182491029671138469570000004975659756911234963_" x="352.422" y="546.311" class="st1" width="515.854" height="249.831"/> */
 
-var corrupted = document.querySelectorAll('[id ^= "debug_000"]').length > 0
-
-if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined' || corrupted)
-  var debugOn = true
-else debugOn = false
+var debugOn = document.querySelectorAll('[id ^= "debug"]').length > 0
 
 var debugMessages = []
-
 var env_allTlines = []
 
 //———————————————————————————————————————— separator · types of triggers and events
 
-const     separator = '_x2F_'; // regular slash
-const trigger_types = [ 'mouse', 'time', 'scroll' ];
-const   event_types = [ 'click', 'over',  'away',  'ovaway', 'ovover', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ];
+const     separator = '/'
+const trigger_types = [ 'mouse', 'time', 'scroll' ]
+const   event_types = [ 'click', 'over',  'away',  'ovaway', 'ovover', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ]
 
 //———————————————————————————————————————— conversion dictionaries
 
@@ -110,7 +113,7 @@ const entity_conversion = {
   'x3C'  : '<',
   'x3E'  : '>',
   'x2C'  : ','
-};
+}
 
 const trigger_flag_value_to_key = {
 
@@ -187,13 +190,14 @@ const trigger_defaults = {
 
 }
 
-const time_trigger_default = 5.0;
+const time_trigger_default = 5.0
 
 const event_defaults = {
   'delay'   : 5.0, // only for time/delay anims
   'duration': 0.5,
   'fromto'  : 'to'
 }
+
 
 
 //:::::::::::::::::::::::::::::::::::::::: model definitions
@@ -209,28 +213,28 @@ class Animation{
 
   constructor( name, triggers, evnt ){
 
-    this.name     = name;     // 20-character string
-    this.triggers = triggers; // array of trigger_types
-    this.evnt     = evnt;     // array of event_types
+    this.name     = name     // 20-character string
+    this.triggers = triggers // array of trigger_types
+    this.evnt     = evnt     // array of event_types
   }
 
   add_trigger(obj, kind, flags){ //—————————————————————————————————————————————
 
     // initialize
 
-    var zoopy  = new Trigger;
-    zoopy.obj  = obj;
-    zoopy.kind = kind;
+    var zoopy  = new Trigger
+    zoopy.obj  = obj
+    zoopy.kind = kind
 
-    if (zoopy.kind == 'mouse') makeClickable(zoopy.obj, true);
+    if (zoopy.kind == 'mouse') makeClickable(zoopy.obj, true)
 
     // set defaults
 
     Object.keys(trigger_defaults).forEach(
-      key => { zoopy[key] = trigger_defaults[key]; }
-    );
+      key => { zoopy[key] = trigger_defaults[key] }
+    )
      
-    if (kind=='time') zoopy['delay'] = time_trigger_default;
+    if (kind=='time') zoopy['delay'] = time_trigger_default
 
     for(var x=2; x<flags.length; x++){ //————————————————————————————— loop through flags (kind|name|parameters...)
 
@@ -238,27 +242,27 @@ class Animation{
       // entity conversion not necessary for trigger_types
 
       // get correct key
-      var val = flags[x];
+      var val = flags[x]
 
       if (not_number(val))
-        var key = trigger_flag_value_to_key[val];
-      else if (kind == 'time') var key = 'delay';
+        var key = trigger_flag_value_to_key[val]
+      else if (kind == 'time') var key = 'delay'
 
-      if (kind=='time' && key=='delay') zoopy[key] = 1 * val; 
+      if (kind=='time' && key=='delay') zoopy[key] = 1 * val 
       else if (key=='func') {
-        zoopy.func = true;
-        zoopy.args = [];
+        zoopy.func = true
+        zoopy.args = []
         for (var y=x+1; y<flags.length; y++)
-          zoopy.args.push(decodeEntities(flags[y]));
-        x = 1000; // get out of loop — no other flags can follow func
+          zoopy.args.push(decodeEntities(flags[y]))
+        x = 1000 // get out of loop — no other flags can follow func
       }
       else{
-        var v = trigger_flag_value_to_key_value[val];
+        var v = trigger_flag_value_to_key_value[val]
         if (val == '')
-          errLog('Extra slash',  obj);
+          errLog('Extra slash',  obj)
         else if (typeof v == 'undefined')
-          errLog('Unknown flag "' + val + '"', obj);
-        else zoopy[key] = v;
+          errLog('Unknown flag "' + val + '"', obj)
+        else zoopy[key] = v
       }
 
     } //—————————————————————————————————————————————————————————————————————-
@@ -271,13 +275,13 @@ class Animation{
 
     // set link & parent target
  
-    zoopy.link = obj.parentNode.hasAttribute('xlink:href'); // true false
+    zoopy.link = obj.parentNode.hasAttribute('xlink:href') // true false
 
     if (zoopy.link && zoopy.blank)
-      zoopy.obj.parentNode.setAttribute("target", "_blank");
+      zoopy.obj.parentNode.setAttribute("target", "_blank")
 
-    if (typeof this.triggers == 'undefined') this.triggers = [];
-    this.triggers.push(zoopy);
+    if (typeof this.triggers == 'undefined') this.triggers = []
+    this.triggers.push(zoopy)
 
   }
 
@@ -397,7 +401,7 @@ class Animation{
     if (noFlags && !visible){  // lines 3-5 √
       zoopy['opacity' ] = 0
       zoopy['autoAlpha'] = 1
-      zoopy.obj.style.display = 'none';  // zyx
+      zoopy.obj.style.display = 'none'  // zyx
     }
 
     else if (noFlags && visible && !transform){  // lines 7-8 √
@@ -434,21 +438,21 @@ class Animation{
 
     // set default duration
     if (typeof zoopy.duration=='undefined')
-      zoopy.duration= event_defaults.duration;
-    else zoopy.duration = 1 * zoopy.duration;
+      zoopy.duration= event_defaults.duration
+    else zoopy.duration = 1 * zoopy.duration
 
     // convert rotation to number
     if (typeof zoopy.rotation != 'undefined')
-      zoopy.rotation = 1 * zoopy.rotation;
+      zoopy.rotation = 1 * zoopy.rotation
 
     // convert delay to number
     if (typeof zoopy.delay!='undefined')
-      zoopy.delay= 1 * zoopy.delay;
+      zoopy.delay= 1 * zoopy.delay
     else zoopy.delay = 0
 
     // scrub event_types default to hard ease DEACTIVATED
 //  if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
-//    zoopy.ease = 'none';
+//    zoopy.ease = 'none
 
     // add to evnt array
     if (typeof this.evnt == 'undefined') this.evnt = []
@@ -463,21 +467,21 @@ class Animation{
 
 
       if (typeof this.triggers[t].cursor != 'undefined'){
-        this.triggers[t].obj.style.cursor = cursors[this.triggers[t].cursor];
+        this.triggers[t].obj.style.cursor = cursors[this.triggers[t].cursor]
         log(this.triggers[t].obj.id +' style.cursor set to '+ cursors[this.triggers[t].cursor])
       }
   
       else{
-        var is_hand = false;
+        var is_hand = false
   
-        if (this.triggers[t].link ) is_hand = true;
-        if (this.triggers[t].func ) is_hand = true;
-        if (this.kind == 'click' ) is_hand = true;
-        if (this.kind == 'down'  ) is_hand = true;
-        if (this.kind == 'toggle') is_hand = true;
+        if (this.triggers[t].link ) is_hand = true
+        if (this.triggers[t].func ) is_hand = true
+        if (this.kind == 'click' ) is_hand = true
+        if (this.kind == 'down'  ) is_hand = true
+        if (this.kind == 'toggle') is_hand = true
 
         if (is_hand){
-          this.triggers[t].obj.style.cursor = cursors['default_link'];
+          this.triggers[t].obj.style.cursor = cursors['default_link']
         }
       }
     }
@@ -491,25 +495,25 @@ class Animation{
     // https://www.geeksforgeeks.org/how-to-call-function-from-it-name-stored-in-a-string-using-javascript/
 
     for (var x=0; x<this.triggers.length; x++){
-      if (!this.triggers[x].func) continue;
+      if (!this.triggers[x].func) continue
 
-      var args = this.triggers[x].args;
+      var args = this.triggers[x].args
 
-      functions[this.name] = window['func_'+this.name];
+      functions[this.name] = window['func_'+this.name]
 
       /* only create if necessary (could have been created on previous pass if
          a single trigger calls several events */
 
       if (typeof functions[this.name] == 'undefined')
-        errLog('Function func_'+this.name+' not found', this.triggers[x].obj);
+        errLog('Function func_'+this.name+' not found', this.triggers[x].obj)
 
       else switch (this.triggers[x].kind) {
-        case 'mouse' :    mouse_trigger_funcs(this.name, this.triggers[x], args); break;
-        case 'time'  :   time_trigger_funcs(this.name, this.triggers[x], args); break;
-        case 'scroll': scroll_triggers_funcs(this.name, this.triggers[x], args); break;
+        case 'mouse' :    mouse_trigger_funcs(this.name, this.triggers[x], args); break
+        case 'time'  :   time_trigger_funcs(this.name, this.triggers[x], args); break
+        case 'scroll': scroll_triggers_funcs(this.name, this.triggers[x], args); break
 
         default:
-          log('⚠️ unimplemented trig kind: "'+animations[name].triggers[0].kind+'" in animation "'+animation.name+'"');
+          log('⚠️ unimplemented trig kind: "'+animations[name].triggers[0].kind+'" in animation "'+animation.name+'"')
       }
     }
   }
@@ -518,48 +522,48 @@ class Animation{
     for (var t=0; t<this.triggers.length; t++){
       if (typeof this.evnt == 'undefined')
         if (!this.triggers[t].func && !this.triggers[t].link){
-          errLog('Trigger with no event, link or function', this.triggers[t].obj);
-          delete animations[this.name];
+          errLog('Trigger with no event, link or function', this.triggers[t].obj)
+          delete animations[this.name]
         }
     }
     
-    return true;
+    return true
   }
 
   flagDump(){
-    console.group('animation ' + this.name + ':');
+    console.group('animation ' + this.name + ':')
 
     Object.keys(this).forEach(key => {
       if (typeof this[key] != 'undefined')
-        if (key=='name') log(key+' ('+typeof(this[key])+'): '+this[key]);
-        else log(key+' ('+typeof(this[key])+'): '+this[key].length+' object(s)');
-    });
+        if (key=='name') log(key+' ('+typeof(this[key])+'): '+this[key])
+        else log(key+' ('+typeof(this[key])+'): '+this[key].length+' object(s)')
+    })
 
     for (var t=0; t<this.triggers.length; t++){
-      log('\nTrigger '+t);
+      log('\nTrigger '+t)
       Object.keys(this.triggers[t]).forEach(key => {
         if (typeof this.triggers[t][key] != 'undefined')
-          if(key=='obj')log('obj (object): '+convertEntities(this.triggers[t][key].id));
-          else log(key+' ('+typeof(this.triggers[t][key])+'): '+this.triggers[t][key]);
-      });
+          if(key=='obj')log('obj (object): '+convertEntities(this.triggers[t][key].id))
+          else log(key+' ('+typeof(this.triggers[t][key])+'): '+this.triggers[t][key])
+      })
     }
 
     if (typeof this.evnt != 'undefined'){
       for (var x=0; x<this.evnt.length; x++){
-        log('\nEvent ' + x);
+        log('\nEvent ' + x)
         Object.keys(this.evnt[x]).forEach(key => {
           if (typeof this.evnt[x][key] != 'undefined')
             if(key=='obj'){
-              log('obj (object): '+convertEntities(this.evnt[x][key].id));
+              log('obj (object): '+convertEntities(this.evnt[x][key].id))
               log('style.visibility: '+this.evnt[x].obj.style.visibility)
               log('style.opacity: '+this.evnt[x].obj.style.opacity)
             }
-            else log(key+' ('+typeof(this.evnt[x][key])+'): '+this.evnt[x][key]);
-        });
+            else log(key+' ('+typeof(this.evnt[x][key])+'): '+this.evnt[x][key])
+        })
       }
     }
     
-    console.groupEnd();
+    console.groupEnd()
   }
 
   event_key_from_flag(flag, obj){
@@ -621,39 +625,39 @@ class Animation{
   }
 
   get_flag_val(key, flag, obj){
-    var flag_len = flag_length[key];
-  
-    if (key=='ease')   return eases[flag];
-    if (key=='fromto') return fromtos[flag];
-    if (flag_len == 0) return flag;
-    if (key=='origin') return convert_origin(flag);
+    var flag_len = flag_length[key]
+ 
+    if (key=='ease')   return eases[flag]
+    if (key=='fromto') return fromtos[flag]
+    if (flag_len == 0) return flag
+    if (key=='origin') return convert_origin(flag)
 
     if (key=='rotate')
-      if (flag.slice(-1)=='>') return flag.slice(0, flag.length-1);
-      else return 0-flag.slice(1, flag.length);
+      if (flag.slice(-1)=='>') return flag.slice(0, flag.length-1)
+      else return 0-flag.slice(1, flag.length)
   
     if (key=='autoAlpha'){
-       var v = flag.substr(flag_len)/100;
-       return v;
+       var v = flag.substr(flag_len)/100
+       return v
     }
 
     if (key=='xmove' || key=='ymove')
       if (flag.slice(0,1)=='-')           // -x200
-        return 0-1*flag.substr(flag_len+1);
+        return 0-1*flag.substr(flag_len+1)
       else if (flag.slice(0,1)=='+')      // +x200
-        return flag.substr(flag_len+1);
-      else return flag.substr(flag_len);  //  x200
+        return flag.substr(flag_len+1)
+      else return flag.substr(flag_len)  //  x200
   
     if (key=='scale' || key=='xscale' || key=='yscale'){
-      var rest;
+      var rest
 
       if (flag.slice(0,1)=='-')                 // -%200, -x%200
-        rest = (0-flag.substr(flag_len+1))/100;
+        rest = (0-flag.substr(flag_len+1))/100
 
       else if (flag.slice(0,1)=='+')            // +%200, +x%200
-        rest = (flag.substr(flag_len+1)/100);
+        rest = (flag.substr(flag_len+1)/100)
 
-      else rest = (flag.substr(flag_len)/100);  //  %200, x%200
+      else rest = (flag.substr(flag_len)/100)  //  %200, x%200
 
       if (!isNaN(rest)) return rest
       else{
@@ -662,7 +666,7 @@ class Animation{
       }
     }
 
-    return flag.substr(flag_len);
+    return flag.substr(flag_len)
   }
 
 
@@ -674,18 +678,18 @@ class Trigger{
 
   constructor( name, obj, kind, cursor, func, args, link, blank, delay, vert){
 
-    this.name       = name;         // 20-character string
-    this.obj        = obj;          // object reference
-    this.kind       = kind;         // string · kind of trig                    scroll, mouse, time 
+    this.name       = name         // 20-character string
+    this.obj        = obj          // object reference
+    this.kind       = kind         // string · kind of trig                    scroll, mouse, time 
 
     // flags
-    this.cursor     = cursor;       // string · cursor on pointerover              a, h, t (arrow, hand, text)
-    this.func       = func;         // boolean · calls function of same name     onclick only 
-    this.args       = args;         // array · args passed to function           all flags following name
-    this.link       = link;         // boolean · is an SVG link                  programmatically
-    this.blank      = blank;        // boolean · link target is _blank           n
-    this.delay      = delay;        // number of seconds before activation (time trig)
-    this.vert       = vert;         // scrolling trigger is horizontal or vertical
+    this.cursor     = cursor       // string · cursor on pointerover              a, h, t (arrow, hand, text)
+    this.func       = func         // boolean · calls function of same name     onclick only 
+    this.args       = args         // array · args passed to function           all flags following name
+    this.link       = link         // boolean · is an SVG link                  programmatically
+    this.blank      = blank        // boolean · link target is _blank           n
+    this.delay      = delay        // number of seconds before activation (time trig)
+    this.vert       = vert         // scrolling trigger is horizontal or vertical
   }
 }
 
@@ -696,36 +700,37 @@ class Evnt{
   constructor( name, obj, kind, delay, handoff, handwait, duration, ease,
                xmove, ymove, origin, rotate, scale, xscale, yscale, autoAlpha, opacity ){
 
-    this.name        = name;         // 20-character string
-    this.obj         = obj;          // object reference
-    this.kind        = kind;         // string · kind of evnt                  click, over, down, away, ovaway, ovover, down, toggle, visible
+    this.name        = name         // 20-character string
+    this.obj         = obj          // object reference
+    this.kind        = kind         // string · kind of evnt                  click, over, down, away, ovaway, ovover, down, toggle, visible
 
     // flags
-    this.delay       = delay;        // number · seconds before animation starts
-    this.handoff     = handoff;      // string · following animation
-    this.handwait    = handwait;     // number · seconds before calling following animation
+    this.delay       = delay        // number · seconds before animation starts
+    this.handoff     = handoff      // string · following animation
+    this.handwait    = handwait     // number · seconds before calling following animation
 
     // GSAP-related flags
-    this.duration    = duration;     // number · duration in seconds             34.5 (1st number)
-    this.ease        = ease;         // animation ease                           in, out, inout, noease
-    this.xmove       = xmove;        // x movement                               x-30
-    this.ymove       = ymove;        // y movement                               y+25
-    this.origin      = origin;       // origin point                             o0,0 to o100,100
-    this.rotate      = rotate;       // number · rotation                        >20 or <45.5
-    this.scale       = scale;        // number · percentage to scale             %150
-    this.xscale      = xscale;       // number · percentage to scale x           x%20
-    this.yscale      = yscale;       // number · percentage to scale y           y%30
-    this.autoAlpha   = autoAlpha;    // number · percentage autoAlpha            o30
-    this.opacity = opacity;  // number · opacity/autoAlpha           programmatically
+    this.duration    = duration     // number · duration in seconds             34.5 (1st number)
+    this.ease        = ease         // animation ease                           in, out, inout, noease
+    this.xmove       = xmove        // x movement                               x-30
+    this.ymove       = ymove        // y movement                               y+25
+    this.origin      = origin       // origin point                             o0,0 to o100,100
+    this.rotate      = rotate       // number · rotation                        >20 or <45.5
+    this.scale       = scale        // number · percentage to scale             %150
+    this.xscale      = xscale       // number · percentage to scale x           x%20
+    this.yscale      = yscale       // number · percentage to scale y           y%30
+    this.autoAlpha   = autoAlpha    // number · percentage autoAlpha            o30
+    this.opacity = opacity  // number · opacity/autoAlpha           programmatically
   }
 }
 
 
 //:::::::::::::::::::::::::::::::::::::::: program
 
-//———————————————————————————————————————— ▼ start logging
+/*———————————————————————————————————————— ▼ start logging
+    */
 
-console.groupCollapsed('Svija Vibe');
+console.groupCollapsed('Svija Vibe')
 
 //console.log()
 console.table(['apples', 'oranges', 'pears'])
@@ -834,19 +839,24 @@ for(var x=0; x<clippedObjects.length; x++){
 
 log('clipping paths verified'); */
 
-//———————————————————————————————————————— register triggers by type
+/*———————————————————————————————————————— register triggers by type
+    */
 
 console.groupCollapsed('registering triggers…');
 
 trigger_types.forEach(kind => {
-  var stem = "[id^='" + kind + separator + "']";
+  var stem = "[data-name^='" + kind + separator + "']";
   var obj_array = Array.from(document.querySelectorAll(stem));
 
   // loop through adding trigger_types
   for(var x=obj_array.length-1; x>-1; x--){ // reverse order to match layer palette order
     var obj = obj_array[x];
 //  log('——————————————————————-'+convertEntities(obj.id))
-    var flags = obj.id.split(separator);
+    var str = obj.id
+    var str = obj.dataset.name
+    var flags = str.split(separator);
+
+alert('858: '+str)
 
     // doesn't have at least trig and name
     if (flags.length<2) continue; 
@@ -869,12 +879,13 @@ trigger_types.forEach(kind => {
 
 console.groupEnd();
 
-//———————————————————————————————————————— register events by type
+/*———————————————————————————————————————— register events by type
+    */
 
 console.groupCollapsed('registering events…')
 
 event_types.forEach(kind => {
-  var stem = "[id^='" + kind + separator + "']"
+  var stem = "[data-name^='" + kind + separator + "']"
   var obj_array = Array.from(document.querySelectorAll(stem))
 
 // if (obj_array.length == 0) alert(kind + ': '+obj_array.length);
@@ -907,7 +918,8 @@ event_types.forEach(kind => {
 
 console.groupEnd()
 
-//———————————————————————————————————————— set cursors and activate "func" flags
+/*———————————————————————————————————————— set cursors and activate "func" flags
+    */
 
 console.groupCollapsed('setup & error checking…')
 log('setting cursors & activating "/func" functions…')
@@ -917,7 +929,8 @@ Object.keys(animations).forEach(name => {
   animations[name].activate_func_flag() // method of Animation class, line 327
 })
 
-//———————————————————————————————————————— delete unused trigger_types
+/*———————————————————————————————————————— delete unused trigger_types
+    */
 
 log('checking for eventless triggers…');
 
@@ -927,7 +940,8 @@ Object.keys(animations).forEach(name =>
 
 console.groupEnd();
 
-//———————————————————————————————————————— activate events by type
+/*———————————————————————————————————————— activate events by type
+    */
 
 console.groupCollapsed('activating events…');
 
@@ -949,14 +963,16 @@ Object.keys(animations).forEach(name => {
 
 console.groupEnd();
 
-//———————————————————————————————————————— end timer
+/*———————————————————————————————————————— end timer
+    */
 
 const d2 = new Date();
 let end_time = d2.getTime();
 
 log((end_time-start_time)+'ms elapsed');
 
-//———————————————————————————————————————— visible triggers
+/*———————————————————————————————————————— visible triggers
+    */
 
 // https://stackoverflow.com/a/1938465
 
@@ -974,16 +990,17 @@ if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG !
     arrMatches[x].style.opacity = 0.3;
 }
 
-//———————————————————————————————————————— reset all timelines
+/*———————————————————————————————————————— reset all timelines
+    */
 
 for (var x=0; x<env_allTlines.length; x++){
   var tline = window[env_allTlines[x]]
   tline.pause(0)
 }
 
-//———————————————————————————————————————— end console.groupCollapsed
+/*———————————————————————————————————————— end console.groupCollapsed
 
-/*    Svija Vibe Debugging
+      Svija Vibe Debugging
       • Function func_cloudModuleLink not found in cloudModule.ai › mouse/cloudModuleLink/n/fu
       • Function func_cloudForceLink not found in cloudModule.ai › mouse/cloudForceLink/func/mb   */
 
@@ -999,27 +1016,32 @@ if (debugOn && debugMessages.length > 0){
 if (debugOn && debugMessages.length > 0) alert('Svija Vibe Debugging\n• ' + debugMessages.join('\n• '))
 console.groupEnd();
 
-//———————————————————————————————————————— ▲ name debugging
+/*———————————————————————————————————————— ▲ name debugging
+    */
 
 if (typeof debug_name != 'undefined'){
 	try { animations[debug_name].flagDump(); } catch (error) { log('⚠️  debug_name = \'' + debug_name + '\' — animation not found.'); }
 }
 
+
 //:::::::::::::::::::::::::::::::::::::::: program trigger "func" functions
 
-//———————————————————————————————————————— mouse_trigger_funcs(name, triggers, args)
+/*———————————————————————————————————————— mouse_trigger_funcs(name, triggers, args)
+    */
 
 function mouse_trigger_funcs(name, triggers, args){
   triggers.obj.addEventListener('click', functions[name].bind(null, ...args)) 
 }
 
-//———————————————————————————————————————— time_trigger_funcs(name, triggers, args)
+/*———————————————————————————————————————— time_trigger_funcs(name, triggers, args)
+    */
 
 function time_trigger_funcs(name, triggers, args){
   setTimeout(functions[name].bind(null, ...args), triggers.delay*1000)
 }
 
-//———————————————————————————————————————— scroll_triggers_funcs(name, triggers, args)
+/*———————————————————————————————————————— scroll_triggers_funcs(name, triggers, args)
+    */
 
 function scroll_triggers_funcs(name, triggers, args){
 
@@ -1036,7 +1058,8 @@ function scroll_triggers_funcs(name, triggers, args){
 
 //:::::::::::::::::::::::::::::::::::::::: activate events
 
-//———————————————————————————————————————— activate_mouse_events(animation)
+/*———————————————————————————————————————— activate_mouse_events(animation)
+    */
 
 function activate_mouse_events(animation){
 
@@ -1066,7 +1089,8 @@ function activate_mouse_events(animation){
   log('mouse events activated');
 }
 
-//———————————————————————————————————————— activate_time_events(animation)
+/*———————————————————————————————————————— activate_time_events(animation)
+    */
 
 function activate_time_events(animation){
 
@@ -1089,7 +1113,8 @@ function activate_time_events(animation){
   log('time events activated')
 }
 
-//———————————————————————————————————————— activate_scroll_events(animation)
+/*———————————————————————————————————————— activate_scroll_events(animation)
+    */
 
 function activate_scroll_events(animation){
 
@@ -1122,7 +1147,8 @@ function activate_scroll_events(animation){
 
 //:::::::::::::::::::::::::::::::::::::::: addEventListener type functions
 
-//———————————————————————————————————————— add_time_delay(animation)
+/*———————————————————————————————————————— add_time_delay(animation)
+    */
 
 function add_time_delay(animation, x){
 
@@ -1134,7 +1160,7 @@ function add_time_delay(animation, x){
 
 }
 
-//———————————————————————————————————————— add_mouse_single(animation, x, type)
+/*———————————————————————————————————————— add_mouse_single(animation, x, type)
 
 function add_mouse_single(animation, x, type){
 
@@ -1148,8 +1174,9 @@ function add_mouse_single(animation, x, type){
   }
 }
 
-//———————————————————————————————————————— add_mouse_ovaway(animation, x)
+/*———————————————————————————————————————— add_mouse_ovaway(animation, x)
 
+    */
 // rotation is not cumulative (rotating to 90° twice just turns to 90°)
 
 function add_mouse_ovaway(animation, x){
@@ -1164,7 +1191,8 @@ function add_mouse_ovaway(animation, x){
 
 }
 
-//———————————————————————————————————————— add_mouse_down(animation, x)
+/*———————————————————————————————————————— add_mouse_down(animation, x)
+    */
 
 // rotation is not cumulative (rotating to 90° twice just turns to 90°)
 
@@ -1244,7 +1272,8 @@ log('—————————————————————————
   }
 }
 
-//———————————————————————————————————————— addScrollScrub(animation,x)
+/*———————————————————————————————————————— addScrollScrub(animation,x)
+    *
 
 function addScrollScrub(animation, whichEvent){
 
@@ -1274,7 +1303,8 @@ function addScrollScrub(animation, whichEvent){
   }
 }
 
-//———————————————————————————————————————— addScrollZone(animation,x)
+/*———————————————————————————————————————— addScrollZone(animation,x)
+    */
 
 function addScrollZone(animation, whichEvent){
 
@@ -1346,7 +1376,7 @@ function lstn_scroll_func(name, triggers, trig_top, args){
 
 }
 
-//———————————————————————————————————————— listenScrollPoint(animation, which_event, vert, startPx)
+/*———————————————————————————————————————— listenScrollPoint(animation, which_event, vert, startPx)
 
 // https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
@@ -1470,7 +1500,8 @@ function listenScrollScrub(animation, whichEvent, vert, startPx, endPx, params, 
     setTimeout(listenScrollScrub, scrub_rate, animation, whichEvent, startPx, endPx, params, fois+1)
 }
 
-//———————————————————————————————————————— listenScrollZone(animation, x, trig_top, trig_bot, params)
+/*———————————————————————————————————————— listenScrollZone(animation, x, trig_top, trig_bot, params)
+    */
 
   // goes on when trig top scrolls up past top of page
   // goes off when trig object bottom < bottom of page
@@ -1527,7 +1558,8 @@ function listenScrollZone(animation, whichEvent, vert, startPx, endPx, params){
 
 }
 
-//———————————————————————————————————————— lstn_mouse_toggle(obj, params)
+/*———————————————————————————————————————— lstn_mouse_toggle(obj, params)
+    */
 
 function lstn_mouse_toggle(namex, evntx, params){
 
@@ -1551,7 +1583,8 @@ function lstn_mouse_toggle(namex, evntx, params){
 
 }
 
-//———————————————————————————————————————— lstn_play(obj, params)
+/*———————————————————————————————————————— lstn_play(obj, params)
+    */
 
 //nction lstn_play(animation, params){
 function lstn_play(namex, evntx){
@@ -1568,7 +1601,8 @@ function lstn_play(namex, evntx){
   }
 }
 
-//———————————————————————————————————————— lstn_reverse(obj, params)
+/*———————————————————————————————————————— lstn_reverse(obj, params)
+    */
 
 //nction lstn_reverse(animation){
 function lstn_reverse(namex, evntx){
@@ -1599,9 +1633,9 @@ function makeClickable(obj, bool){
   }
 }
 
-//———————————————————————————————————————— convert_origin(origin)
+/*———————————————————————————————————————— convert_origin(origin)
 
-/*  the _x2C_ is not converted when the flags are read betriggers
+    the _x2C_ is not converted when the flags are read betriggers
     flags are only converted if they have entities in first
     three characters */
 
@@ -1622,7 +1656,8 @@ function convert_origin(origin){
   return parts.join('% ') + '%';
 }
 
-//———————————————————————————————————————— gsapParams(evnt)
+/*———————————————————————————————————————— gsapParams(evnt)
+    */
 
 function gsapParams(evntx){
 
@@ -1650,13 +1685,15 @@ function gsapParams(evntx){
   return params;
 }
 
-//———————————————————————————————————————— log(arg)
+/*———————————————————————————————————————— log(arg)
+    */
 
 function log(arg){
   console.log(arg)
 }
 
-//———————————————————————————————————————— errLog(arg)
+/*———————————————————————————————————————— errLog(arg)
+    */
 
 function errLog(arg, obj){
 
@@ -1671,7 +1708,8 @@ function errLog(arg, obj){
   log('⚠️  '+arg)
 }
 
-//———————————————————————————————————————— not_number(x)
+/*———————————————————————————————————————— not_number(x)
+    */
 
 function not_number(x) {
   return parseFloat(x) != x;
@@ -1735,7 +1773,9 @@ function minusPeriod(clip_path, pathId){
 
 /* <use xlink:href="#delay_x2F_time1_x2F_3_x2F__x3C__x2F__x002D_y150" style="overflow:visible;"></use> */
 
-//———————————————————————————————————————— getElementsByRegex(pattern)
+/*———————————————————————————————————————— getElementsByRegex(pattern)
+    */
+
 
 // https://stackoverflow.com/a/1938465
 function getElementsByRegex(pattern){
@@ -1894,7 +1934,7 @@ function setVisible(anim){
   if (anim.opacity  > 0                         ) return true // if starts visible
   if (anim.autoAlpha > 0 && anim.fromto == 'from') return true // if starts visible
 
-  return false;
+  return false
 }
 
 /*———————————————————————————————————————— isHorizontal(obj)
