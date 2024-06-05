@@ -1,5 +1,7 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.23
+/*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.24
+
+    updated to allow new Illustrator SVG format
 
 https://www.toptal.com/developers/javascript-minifier
 
@@ -707,7 +709,10 @@ class Evnt{
 
 console.groupCollapsed('Svija Vibe');
 
-/*———————————————————————————————————————— disambiguate clipping masks
+//console.log()
+console.table(['apples', 'oranges', 'pears'])
+
+/*———————————————————————————————————————— disambiguate clipping masks COMMENTED OUT
 
 ——— A clipping path has three elements:
 
@@ -767,7 +772,7 @@ better to get it "officially", by following the reference in the clipPath
 
 I can get all the "use" tags and look for a similar ID */
 
-log('cleaning up clipping paths…');
+/*log('cleaning up clipping paths…');
 
 const clippedObjects = document.querySelectorAll("[style^='clip']")
 
@@ -809,7 +814,7 @@ for(var x=0; x<clippedObjects.length; x++){
   }
 }
 
-log('clipping paths verified');
+log('clipping paths verified'); */
 
 //———————————————————————————————————————— register triggers by type
 
@@ -978,9 +983,9 @@ console.groupEnd();
 
 //———————————————————————————————————————— ▲ name debugging
 
-if (typeof debug_name != 'undefined')
+if (typeof debug_name != 'undefined'){
 	try { animations[debug_name].flagDump(); } catch (error) { log('⚠️  debug_name = \'' + debug_name + '\' — animation not found.'); }
-
+}
 
 //:::::::::::::::::::::::::::::::::::::::: program trigger "func" functions
 
