@@ -1,0 +1,123 @@
+
+/*:::::::::::::::::::::::::::::::::::::::: Vibe.css 1.0.24
+
+https://www.toptal.com/developers/cssminifier
+
+*/
+
+/*———————————————————————————————————————— notes
+
+  github.com/svijalove/vibe
+  
+  ©Svija SAS, Cusset France */
+
+/*———————————————————————————————————————— EULA
+
+    Copyright (c) Svija
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+    
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+    
+    The software is provided "as is", without warranty of any kind, express or
+    implied, including but not limited to the warranties of merchantability,
+    fitness for a particular purpose and noninfringement. In no event shall the
+    authors or copyright holders be liable for any claim, damages or other
+    liability, whether in an action of contract, tort or otherwise, arising from,
+    out of or in connection with the software or the use or other dealings in
+    the software.
+
+    svija.com · hello@svija.com*/
+
+
+/*:::::::::::::::::::::::::::::::::::::::: triggers */
+
+/*———————————————————————————————————————— object list */
+
+ circle[id^='time_x2F_'  ],  circle[id^='scroll_x2F_'],  circle[id^='mouse_x2F_' ],
+ellipse[id^='time_x2F_'  ], ellipse[id^='scroll_x2F_'], ellipse[id^='mouse_x2F_' ],
+      g[id^='time_x2F_'  ],       g[id^='scroll_x2F_'],       g[id^='mouse_x2F_' ],
+   path[id^='time_x2F_'  ],    path[id^='scroll_x2F_'],    path[id^='mouse_x2F_' ],
+polygon[id^='time_x2F_'  ], polygon[id^='scroll_x2F_'], polygon[id^='mouse_x2F_' ],
+   rect[id^='time_x2F_'  ],    rect[id^='scroll_x2F_'],    rect[id^='mouse_x2F_' ],
+
+/*———————————————————————————————————————— style directives */
+
+/* https://www.arungudelli.com/tutorial/css/disable-text-selection-in-html-using-user-select-css-property/ */
+
+#x{
+              opacity: 0;
+          user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+
+/*:::::::::::::::::::::::::::::::::::::::: events */
+
+/*———————————————————————————————————————— click press down */
+
+ circle[id^='click_x2F_' ],  circle[id^='press_x2F_' ],  circle[id^='down_x2F_'  ],
+ellipse[id^='click_x2F_' ], ellipse[id^='press_x2F_' ], ellipse[id^='down_x2F_'  ],
+      g[id^='click_x2F_' ],       g[id^='press_x2F_' ],       g[id^='down_x2F_'  ],
+   path[id^='click_x2F_' ],    path[id^='press_x2F_' ],    path[id^='down_x2F_'  ],
+polygon[id^='click_x2F_' ], polygon[id^='press_x2F_' ], polygon[id^='down_x2F_'  ],
+   rect[id^='click_x2F_' ],    rect[id^='press_x2F_' ],    rect[id^='down_x2F_'  ],
+  image[id^='click_x2F_' ],   image[id^='press_x2F_' ],   image[id^='down_x2F_'  ],
+   text[id^='click_x2F_' ],    text[id^='press_x2F_' ],    text[id^='down_x2F_'  ],
+
+/*———————————————————————————————————————— over away ovaway */
+
+ circle[id^='over_x2F_'  ],  circle[id^='away_x2F_'  ],  circle[id^='ovaway_x2F_'],
+ellipse[id^='over_x2F_'  ], ellipse[id^='away_x2F_'  ], ellipse[id^='ovaway_x2F_'],
+      g[id^='over_x2F_'  ],       g[id^='away_x2F_'  ],       g[id^='ovaway_x2F_'],
+   path[id^='over_x2F_'  ],    path[id^='away_x2F_'  ],    path[id^='ovaway_x2F_'],
+polygon[id^='over_x2F_'  ], polygon[id^='away_x2F_'  ], polygon[id^='ovaway_x2F_'],
+   rect[id^='over_x2F_'  ],    rect[id^='away_x2F_'  ],    rect[id^='ovaway_x2F_'],
+  image[id^='over_x2F_'  ],   image[id^='away_x2F_'  ],   image[id^='ovaway_x2F_'],
+   text[id^='over_x2F_'  ],    text[id^='away_x2F_'  ],    text[id^='ovaway_x2F_'],
+
+/*———————————————————————————————————————— ovover */
+
+ circle[id^='ovover_x2F_'],
+ellipse[id^='ovover_x2F_'],
+      g[id^='ovover_x2F_'],
+   path[id^='ovover_x2F_'],
+polygon[id^='ovover_x2F_'],
+   rect[id^='ovover_x2F_'],
+  image[id^='ovover_x2F_'],
+   text[id^='ovover_x2F_'],
+
+/*———————————————————————————————————————— toggle delay zone */
+
+ circle[id^='toggle_x2F_'],  circle[id^='delay_x2F_' ],  circle[id^='zone_x2F_'  ],
+ellipse[id^='toggle_x2F_'], ellipse[id^='delay_x2F_' ], ellipse[id^='zone_x2F_'  ],
+      g[id^='toggle_x2F_'],       g[id^='delay_x2F_' ],       g[id^='zone_x2F_'  ],
+   path[id^='toggle_x2F_'],    path[id^='delay_x2F_' ],    path[id^='zone_x2F_'  ],
+polygon[id^='toggle_x2F_'], polygon[id^='delay_x2F_' ], polygon[id^='zone_x2F_'  ],
+   rect[id^='toggle_x2F_'],    rect[id^='delay_x2F_' ],    rect[id^='zone_x2F_'  ],
+  image[id^='toggle_x2F_'],   image[id^='delay_x2F_' ],   image[id^='zone_x2F_'  ],
+   text[id^='toggle_x2F_'],    text[id^='delay_x2F_' ],    text[id^='zone_x2F_'  ],
+
+/*———————————————————————————————————————— style directives */
+
+#x{
+  pointer-events:none;
+  visibility:hidden;
+}
+
+svg{
+  pointer-events:none;
+}
+
+
+/*:::::::::::::::::::::::::::::::::::::::: fin */
+

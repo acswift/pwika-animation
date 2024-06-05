@@ -1,4 +1,7 @@
 .DS_Store
 *.un~
 *.swp
-*
+untracked/*
+"Icon\r"
+.last
+sync/*

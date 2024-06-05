@@ -1,26 +1,37 @@
-<details><summary>Vim Folds</summary>
-
----
-To restore Vim folds when starting work:
-```
-cp folds/*svija.dev=+sync=+Svija=+Scripts* ~/.vim/view/
-```
-To add folds to repo at commit:
-```
-cp ~/.vim/view/*svija.dev=+sync=+Svija=+Scripts* ./folds/
-```
----
-</details>
-
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
-*Updated 14 June, 2022*
+*Updated 5 June, 2024 · Toulouse*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
-### Svija Life 1.0.5
+<details><summary>Illustrator Version 28</summary>
 
-Added beta branch.
+---
+I should just use the current Svija Tools with the next version of AI
+
+I should have two version of Vibe
+- check for AI version
+- alert if wrong version, give address to download ZIP
+
+How can I identify if new-style SVG? If there's:
+- a style named "cls-1"
+- a data-name="page color"
+
+1. get first SVG element
+2. get first <g> element (or cycle through)
+3. see if dataset is defined
+
+
+
+when I get to css:
+https://stackoverflow.com/questions/5324415/select-elements-by-attribute-in-css
+
+---
+</details>
+
+### Svija Vibe 1.0.24
+
+[GSAP Forum link](https://greensock.com/forums/topic/36423-how-can-i-get-a-breakdown-of-a-timeline-once-its-been-created/)
 
 This repository contains the development files for Svija Animation, which is included with each new Svija website.
 
@@ -31,7 +42,7 @@ The files are developed at `svija.dev/sync/Svija/Scripts` (which also contains o
 
 Update the version numbers:
 ```
-vi -O svija-life.css svija-life.js
+vi -O svija-vibe.css svija-vibe.js
 ```
 
 ---
@@ -60,7 +71,7 @@ git push origin master
 Copy info from/to:
 
 - [github.com/svijalove/admin/commits/master](https://github.com/svijalove/animation/commits/master)    
-- [tech.svija.love/manual/changelog-life](https://tech.svija.love/manual/changelog-life)   
+- [tech.svija.love/manual/changelog-vibe](https://tech.svija.love/manual/changelog-vibe)   
 
 ---
 ### 4. Create Fixtures
@@ -72,7 +83,7 @@ Need to learn how to do this!
 
 On Github, create a [new release](https://github.com/svijalove/admin/releases) from the **master branch**.
 
-- use the current version number for the tag (2.2.7)
+- use the current version number for the tag (1.0.10)
 - choose target **Master**
 - use the month & year for the title (October 2021)
 - if there is more than one release in a month, append -1, -2 etc. to all releases for the month
@@ -104,25 +115,17 @@ git merge master --no-ff -m "starting new version"
 git push -u
 ```
 ---
-### 11. Increment the Version Number
+### 8. Increment the Version Number
 
+**NOTE:** copy to websites *before* incrementing to new version.
 Places to update the version number:
 ```
-cd /opt/Svija-Admin
-vi -O README.md setup.py save_tar.sh svija/views/__init__.py svija/templates/admin/base_site.html
-# :windo %s/2.2.6/2.2.7/g
+cd ~/Desktop/svija.dev/sync/Svija/Scripts
+vi -O README.md params.md svija-vibe.js svija-vibe.css
+# :windo %s/1.0.10/1.0.11/g
 ```
 Then commit the version number change:
 ```
 git commit -m "updated version number" -a && git push -u  
 ```
----
-### 12. Update Websites
-
-Look at the [issues][li] for **⚠️ updates for version 2.2.17** (for example)
-
-Update websites accordingly.
-
-[li]: https://github.com/svijalove/admin-update/issues
-
 ---
