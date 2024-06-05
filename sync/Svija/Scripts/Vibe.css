@@ -40,12 +40,14 @@ https://www.toptal.com/developers/cssminifier
 
 /*———————————————————————————————————————— object list */
 
- circle[id^='time_x2F_'  ],  circle[id^='scroll_x2F_'],  circle[id^='mouse_x2F_' ],
-ellipse[id^='time_x2F_'  ], ellipse[id^='scroll_x2F_'], ellipse[id^='mouse_x2F_' ],
-      g[id^='time_x2F_'  ],       g[id^='scroll_x2F_'],       g[id^='mouse_x2F_' ],
-   path[id^='time_x2F_'  ],    path[id^='scroll_x2F_'],    path[id^='mouse_x2F_' ],
-polygon[id^='time_x2F_'  ], polygon[id^='scroll_x2F_'], polygon[id^='mouse_x2F_' ],
-   rect[id^='time_x2F_'  ],    rect[id^='scroll_x2F_'],    rect[id^='mouse_x2F_' ],
+/* https://stackoverflow.com/questions/5324415/select-elements-by-attribute-in-css */
+
+ circle[data-name^='time/'  ],  circle[data-name^='scroll/'],  circle[data-name^='mouse/' ],
+ellipse[data-name^='time/'  ], ellipse[data-name^='scroll/'], ellipse[data-name^='mouse/' ],
+      g[data-name^='time/'  ],       g[data-name^='scroll/'],       g[data-name^='mouse/' ],
+   path[data-name^='time/'  ],    path[data-name^='scroll/'],    path[data-name^='mouse/' ],
+polygon[data-name^='time/'  ], polygon[data-name^='scroll/'], polygon[data-name^='mouse/' ],
+   rect[data-name^='time/'  ],    rect[data-name^='scroll/'],    rect[data-name^='mouse/' ],
 
 /*———————————————————————————————————————— style directives */
 
@@ -65,51 +67,51 @@ polygon[id^='time_x2F_'  ], polygon[id^='scroll_x2F_'], polygon[id^='mouse_x2F_'
 
 /*———————————————————————————————————————— click press down */
 
- circle[id^='click_x2F_' ],  circle[id^='press_x2F_' ],  circle[id^='down_x2F_'  ],
-ellipse[id^='click_x2F_' ], ellipse[id^='press_x2F_' ], ellipse[id^='down_x2F_'  ],
-      g[id^='click_x2F_' ],       g[id^='press_x2F_' ],       g[id^='down_x2F_'  ],
-   path[id^='click_x2F_' ],    path[id^='press_x2F_' ],    path[id^='down_x2F_'  ],
-polygon[id^='click_x2F_' ], polygon[id^='press_x2F_' ], polygon[id^='down_x2F_'  ],
-   rect[id^='click_x2F_' ],    rect[id^='press_x2F_' ],    rect[id^='down_x2F_'  ],
-  image[id^='click_x2F_' ],   image[id^='press_x2F_' ],   image[id^='down_x2F_'  ],
-   text[id^='click_x2F_' ],    text[id^='press_x2F_' ],    text[id^='down_x2F_'  ],
+ circle[data-name^='click/' ],  circle[data-name^='press/' ],  circle[data-name^='down/'  ],
+ellipse[data-name^='click/' ], ellipse[data-name^='press/' ], ellipse[data-name^='down/'  ],
+      g[data-name^='click/' ],       g[data-name^='press/' ],       g[data-name^='down/'  ],
+   path[data-name^='click/' ],    path[data-name^='press/' ],    path[data-name^='down/'  ],
+polygon[data-name^='click/' ], polygon[data-name^='press/' ], polygon[data-name^='down/'  ],
+   rect[data-name^='click/' ],    rect[data-name^='press/' ],    rect[data-name^='down/'  ],
+  image[data-name^='click/' ],   image[data-name^='press/' ],   image[data-name^='down/'  ],
+   text[data-name^='click/' ],    text[data-name^='press/' ],    text[data-name^='down/'  ],
 
 /*———————————————————————————————————————— over away ovaway */
 
- circle[id^='over_x2F_'  ],  circle[id^='away_x2F_'  ],  circle[id^='ovaway_x2F_'],
-ellipse[id^='over_x2F_'  ], ellipse[id^='away_x2F_'  ], ellipse[id^='ovaway_x2F_'],
-      g[id^='over_x2F_'  ],       g[id^='away_x2F_'  ],       g[id^='ovaway_x2F_'],
-   path[id^='over_x2F_'  ],    path[id^='away_x2F_'  ],    path[id^='ovaway_x2F_'],
-polygon[id^='over_x2F_'  ], polygon[id^='away_x2F_'  ], polygon[id^='ovaway_x2F_'],
-   rect[id^='over_x2F_'  ],    rect[id^='away_x2F_'  ],    rect[id^='ovaway_x2F_'],
-  image[id^='over_x2F_'  ],   image[id^='away_x2F_'  ],   image[id^='ovaway_x2F_'],
-   text[id^='over_x2F_'  ],    text[id^='away_x2F_'  ],    text[id^='ovaway_x2F_'],
+ circle[data-name^='over/'  ],  circle[data-name^='away/'  ],  circle[data-name^='ovaway/'],
+ellipse[data-name^='over/'  ], ellipse[data-name^='away/'  ], ellipse[data-name^='ovaway/'],
+      g[data-name^='over/'  ],       g[data-name^='away/'  ],       g[data-name^='ovaway/'],
+   path[data-name^='over/'  ],    path[data-name^='away/'  ],    path[data-name^='ovaway/'],
+polygon[data-name^='over/'  ], polygon[data-name^='away/'  ], polygon[data-name^='ovaway/'],
+   rect[data-name^='over/'  ],    rect[data-name^='away/'  ],    rect[data-name^='ovaway/'],
+  image[data-name^='over/'  ],   image[data-name^='away/'  ],   image[data-name^='ovaway/'],
+   text[data-name^='over/'  ],    text[data-name^='away/'  ],    text[data-name^='ovaway/'],
 
 /*———————————————————————————————————————— ovover */
 
- circle[id^='ovover_x2F_'],
-ellipse[id^='ovover_x2F_'],
-      g[id^='ovover_x2F_'],
-   path[id^='ovover_x2F_'],
-polygon[id^='ovover_x2F_'],
-   rect[id^='ovover_x2F_'],
-  image[id^='ovover_x2F_'],
-   text[id^='ovover_x2F_'],
+ circle[data-name^='ovover/'],
+ellipse[data-name^='ovover/'],
+      g[data-name^='ovover/'],
+   path[data-name^='ovover/'],
+polygon[data-name^='ovover/'],
+   rect[data-name^='ovover/'],
+  image[data-name^='ovover/'],
+   text[data-name^='ovover/'],
 
 /*———————————————————————————————————————— toggle delay zone */
 
- circle[id^='toggle_x2F_'],  circle[id^='delay_x2F_' ],  circle[id^='zone_x2F_'  ],
-ellipse[id^='toggle_x2F_'], ellipse[id^='delay_x2F_' ], ellipse[id^='zone_x2F_'  ],
-      g[id^='toggle_x2F_'],       g[id^='delay_x2F_' ],       g[id^='zone_x2F_'  ],
-   path[id^='toggle_x2F_'],    path[id^='delay_x2F_' ],    path[id^='zone_x2F_'  ],
-polygon[id^='toggle_x2F_'], polygon[id^='delay_x2F_' ], polygon[id^='zone_x2F_'  ],
-   rect[id^='toggle_x2F_'],    rect[id^='delay_x2F_' ],    rect[id^='zone_x2F_'  ],
-  image[id^='toggle_x2F_'],   image[id^='delay_x2F_' ],   image[id^='zone_x2F_'  ],
-   text[id^='toggle_x2F_'],    text[id^='delay_x2F_' ],    text[id^='zone_x2F_'  ],
+ circle[data-name^='toggle/'],  circle[data-name^='delay/' ],  circle[data-name^='zone/'  ],
+ellipse[data-name^='toggle/'], ellipse[data-name^='delay/' ], ellipse[data-name^='zone/'  ],
+      g[data-name^='toggle/'],       g[data-name^='delay/' ],       g[data-name^='zone/'  ],
+   path[data-name^='toggle/'],    path[data-name^='delay/' ],    path[data-name^='zone/'  ],
+polygon[data-name^='toggle/'], polygon[data-name^='delay/' ], polygon[data-name^='zone/'  ],
+   rect[data-name^='toggle/'],    rect[data-name^='delay/' ],    rect[data-name^='zone/'  ],
+  image[data-name^='toggle/'],   image[data-name^='delay/' ],   image[data-name^='zone/'  ],
+   text[data-name^='toggle/'],    text[data-name^='delay/' ],    text[data-name^='zone/'  ],
 
 /*———————————————————————————————————————— style directives */
 
-#x{
+#x{ /* part of comma-separated list above */
   pointer-events:none;
   visibility:hidden;
 }
