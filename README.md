@@ -29,6 +29,7 @@ https://stackoverflow.com/questions/5324415/select-elements-by-attribute-in-css
 ---
 </details>
 
+
 ### Svija Vibe 1.0.24
 
 [GSAP Forum link](https://greensock.com/forums/topic/36423-how-can-i-get-a-breakdown-of-a-timeline-once-its-been-created/)
@@ -56,7 +57,7 @@ git status
 ---
 ### 2. Merge to Master
 
-Check out the **destination branch** and merge ([list of commits](https://github.com/svijalove/animation/commits/beta)):
+Check out the **destination branch** and merge ([list of commits](https://github.com/svijalove/vibe/commits/beta)):
 ```
 git checkout master
 git merge beta --no-ff
@@ -70,8 +71,8 @@ git push origin master
 
 Copy info from/to:
 
-- [github.com/svijalove/admin/commits/master](https://github.com/svijalove/animation/commits/master)    
-- [tech.svija.love/manual/changelog-vibe](https://tech.svija.love/manual/changelog-vibe)   
+- [github.com/svijalove/admin/commits/master](https://github.com/svijalove/vibe/commits/master)
+- [tech.svija.love/manual/changelog-vibe](https://tech.svija.love/programs/vibe/changelog)
 
 ---
 ### 4. Create Fixtures
