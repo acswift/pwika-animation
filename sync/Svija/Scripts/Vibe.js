@@ -58,9 +58,9 @@ var version = '1.0.25'
 var msgEn = 'Compatibility Issue\nSvija Vibe ' + version + ' requires Adobe Illustrator 28 or later. You are using Illustrator 27 or earlier.'
 var msgFr = 'Problème de compatibilité\nSvija Vibe 1.0.25 requiert la version 28 ou plus récente d\'Adobe Illustrator. Vous utilisez la version 27 ou antérieure.'
 
-var ds = typeof document.body.querySelector('g').dataset.name
+var ds = typeof document.querySelector('[data-name]')
 
-if (ds == 'string') aiVersion = 28
+if (ds == 'object') aiVersion = 28
 else                aiVersion = 27
 
 var tempMsg = msgEn
@@ -91,9 +91,10 @@ let start_time = d1.getTime()
 if (typeof scrollElement == 'undefined')
   var scrollElement = window
 
-//———————————————————————————————————————— debugging variables
+/*———————————————————————————————————————— debugging variables
 
-/* <rect id="debug" x="120" y="97.541" class="st1" width="866.252" height="395.565"/>
+    var stem = "[data-name^='" + kind + separator + "']"
+   <rect id="debug" x="120" y="97.541" class="st1" width="866.252" height="395.565"/>
    <rect id="debug_00000182491029671138469570000004975659756911234963_" x="352.422" y="546.311" class="st1" width="515.854" height="249.831"/> */
 
 var debugOn = document.querySelectorAll('[id ^= "debug"]').length > 0
