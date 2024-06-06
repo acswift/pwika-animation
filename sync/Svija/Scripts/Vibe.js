@@ -53,23 +53,35 @@ https://www.toptal.com/developers/javascript-minifier
 
 var version = '1.0.25'
 
-//———————————————————————————————————————— version warning
+/*———————————————————————————————————————— version warning
 
-var msgEn = 'Compatibility Issue\nSvija Vibe ' + version + ' requires Adobe Illustrator 28 or later. You are using Illustrator 27 or earlier.'
-var msgFr = 'Problème de compatibilité\nSvija Vibe 1.0.25 requiert la version 28 ou plus récente d\'Adobe Illustrator. Vous utilisez la version 27 ou antérieure.'
+    right now, if any element of the page contains a data-name
+    it is considered as 28 or newer
 
-var ds = typeof document.querySelector('[data-name]')
+    but if there are conflicting elements, it should be alerted
 
-if (ds == 'object') aiVersion = 28
-else                aiVersion = 27
+    I have a way to say: there is at least one element of 28+
+    and I need a way to know if there is at least one element of 27- */
 
-var tempMsg = msgEn
+var msg1 = 'Compatibility Issue\nContent created with Illustrator 27 or earlier.\nSvija Vibe ' + version + ' requires Adobe Illustrator 28 or later.\n\nSee Svija Cloud › Script Sets › Svija Vibe'
+var msg2 = 'Compatibility Issue\nContent created with multiple versions of illustrator.\nSvija Vibe ' + version + ' requires Adobe Illustrator 28 or later.\n\nSee Svija Cloud › Script Sets › Svija Vibe'
+
+var msgFr1 = 'Problème de compatibilité\nContenu créé avec Illustrator 27 ou plus ancien.\nSvija Vibe ' + version + ' requiert la version 28 ou plus récente.\n\nVoir Svija Cloud › Script Sets › Svija Vibe'
+var msgFr2 = 'Problème de compatibilité\nContenu créé avec de multiples versions d\'Illustrator.\nSvija Vibe ' + version + ' requiert la version 28 ou plus récente.\n\nVoir Svija Cloud › Script Sets › Svija Vibe'
 
 if (typeof navigator.language != 'undefined')
-  if (navigator.language.substr(0,2) == 'fr')
-    tempMsg = msgFr
+  if (navigator.language.substr(0,2) == 'fr'){
+    msg1 = msgFr1
+    msg2 = msgFr2
+  }
 
-if (aiVersion < 28) alert(tempMsg)
+//————————————————————————————————————————
+
+var newStyle = null !== document.querySelector('[data-name]')
+var oldStyle = null !== document.querySelectorAll('[id~="_x2F_"]')
+
+if (newStyle && oldStyle) alert (msg2)
+else if (oldStyle) alert(msg1)
 
 //———————————————————————————————————————— start timer
 
