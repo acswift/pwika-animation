@@ -50,9 +50,11 @@ https://www.toptal.com/developers/javascript-minifier
 
 // NEED TO MAKE SURE THAT IT WORKS IF MENU IS 28 AND PAGE IS 27
 
+var version = '1.0.25'
+
 //———————————————————————————————————————— version warning
 
-var msgEn = 'Compatibility Issue\nSvija Vibe 1.0.25 requires Adobe Illustrator 28 or later. You are using Illustrator 27 or earlier.'
+var msgEn = 'Compatibility Issue\nSvija Vibe ' + version + ' requires Adobe Illustrator 28 or later. You are using Illustrator 27 or earlier.'
 var msgFr = 'Problème de compatibilité\nSvija Vibe 1.0.25 requiert la version 28 ou plus récente d\'Adobe Illustrator. Vous utilisez la version 27 ou antérieure.'
 
 var ds = typeof document.body.querySelector('g').dataset.name
