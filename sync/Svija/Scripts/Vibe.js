@@ -313,7 +313,7 @@ class Animation{
 
       var flag = flags[x]
 
-      if (flag.indexOf('_') > -1) flag = convertEntitesOld(flag)
+      if (flag.indexOf('_') > -1) flag = convertEntitiesOld(flag)
 
       var key = this.event_key_from_flag(flag, obj)
 
@@ -555,7 +555,7 @@ class Animation{
       log('\nTrigger '+t)
       Object.keys(this.triggers[t]).forEach(key => {
         if (typeof this.triggers[t][key] != 'undefined')
-          if(key=='obj')log('obj (object): '+convertEntitesOld(this.triggers[t][key].id))
+          if(key=='obj')log('obj (object): '+convertEntitiesOld(this.triggers[t][key].id))
           else log(key+' ('+typeof(this.triggers[t][key])+'): '+this.triggers[t][key])
       })
     }
@@ -566,7 +566,7 @@ class Animation{
         Object.keys(this.evnt[x]).forEach(key => {
           if (typeof this.evnt[x][key] != 'undefined')
             if(key=='obj'){
-              log('obj (object): '+convertEntitesOld(this.evnt[x][key].id))
+              log('obj (object): '+convertEntitiesOld(this.evnt[x][key].id))
               log('style.visibility: '+this.evnt[x].obj.style.visibility)
               log('style.opacity: '+this.evnt[x].obj.style.opacity)
             }
@@ -848,7 +848,7 @@ for(var x=0; x<clippedObjects.length; x++){
       try{defsObj.style.visibility = 'inherit'} catch(e){log('object ' + decodeEntities(defsId) + ' could not be set to visibility:inherit')}
 
     }
-    catch(msg){ log('⚠️  object with ID '+convertEntitesOld(pathId)+' could not be updated:\n'+msg+ ' (line 779)') }
+    catch(msg){ log('⚠️  object with ID '+convertEntitiesOld(pathId)+' could not be updated:\n'+msg+ ' (line 779)') }
   }
 }
 
@@ -914,7 +914,7 @@ event_types.forEach(kind => {
   for(var x=0; x<obj_array.length; x++){
 
     var obj   = obj_array[x]
-    var str   = convertEntites(obj.dataset.name)
+    var str   = convertEntities(obj.dataset.name)
     var flags = str.split(separator)
 
 //  // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
@@ -992,22 +992,22 @@ let end_time = d2.getTime();
 log((end_time-start_time)+'ms elapsed');
 
 /*———————————————————————————————————————— visible triggers
-    */
 
-// https://stackoverflow.com/a/1938465
+// https://stackoverflow.com/a/1938465  */
 
-if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined'){
-  var arrMatches = getElementsByRegex('^time_x2F_.*');
-  for (var x=0; x<arrMatches.length; x++)
-    arrMatches[x].style.opacity = 0.3;
 
-  var arrMatches = getElementsByRegex('^scroll_x2F_.*');
-  for (var x=0; x<arrMatches.length; x++)
-    arrMatches[x].style.opacity = 0.3;
-
-  var arrMatches = getElementsByRegex('^mouse_x2F_.*');
-  for (var x=0; x<arrMatches.length; x++)
-    arrMatches[x].style.opacity = 0.3;
+if (debugOn){
+  trigger_types.forEach(kind => {
+    var stem = "[data-name^='" + kind + separator + "']"
+    var obj_array = Array.from(document.querySelectorAll(stem))
+  
+    // loop through adding events
+    for(var x=0; x<obj_array.length; x++){
+      var obj   = obj_array[x]
+      obj.style.display = 'block'
+      obj.style.opacity = 0.3
+    }
+  })
 }
 
 /*———————————————————————————————————————— reset all timelines
@@ -1641,7 +1641,7 @@ function lstn_reverse(namex, evntx){
     used only for triggers, which are not animated */
 
 function makeClickable(obj, bool){
-//log(convertEntitesOld(obj.id)+' bool set to '+bool)
+//log(convertEntitiesOld(obj.id)+' bool set to '+bool)
 
   if (bool){
     obj.style.pointerEvents = 'visiblePainted'
@@ -1719,7 +1719,7 @@ function log(arg){
 function errLog(arg, obj){
 
   if (typeof obj != 'undefined'){
-    var id   = decodeEntities(obj.id)
+    var id   = convertEntities(obj.dataset.name)
     if (id.length > 50) id = id.slice(0, -52);
 
     arg += ' in ' + svgName(obj) + '.ai' + ' › ' + id
@@ -1736,11 +1736,11 @@ function not_number(x) {
   return parseFloat(x) != x;
 };
 
-/*———————————————————————————————————————— convertEntites(str)
+/*———————————————————————————————————————— convertEntities(str)
 
   apparently, &amp is automatically converted to just & */
 
-function convertEntites(str){
+function convertEntities(str){
 
 
 //log('convertEntities: ' + str)
@@ -1759,11 +1759,11 @@ function htmlDecode(input) {
   return doc.documentElement.textContent;
 }
 
-/*———————————————————————————————————————— convertEntitesOld(in)
+/*———————————————————————————————————————— convertEntitiesOld(in)
 
     id="toggle_x2F_name15_x2F_-y10_x2F_x_x2B_30_x2F_t100" */
 
-function convertEntitesOld(str){
+function convertEntitiesOld(str){
 
   var parts = str.split('_');
   
@@ -1802,7 +1802,7 @@ function decodeEntities(arg){
         return x.replaceAll('_', ';')
   })
 
-  html = convertEntitesOld(html)
+  html = convertEntitiesOld(html)
   html = html.replaceAll('_', ' ')
 
   var tmpObject = document.createElement('textarea')
@@ -1900,7 +1900,7 @@ function createTline(namex, evntx, params){
 function svgName(obj){
   while (obj.tagName != 'svg')
     obj = obj.parentElement
-  return decodeEntities(obj.id)
+  return convertEntities(obj.id.substr(4))
 }
 
 /*———————————————————————————————————————— containsTransform(trigger) COMMENTED OUT
@@ -2083,7 +2083,7 @@ function applyTransformation(corner, matVals){
     used by applyTransformation */
 
 function alertRect(obj, rect){
-  name = convertEntitesOld(obj.id)
+  name = convertEntitiesOld(obj.id)
   x = Math.round( rect['x'])
   y = Math.round( rect['y'])
   w = Math.round( rect['width'])
