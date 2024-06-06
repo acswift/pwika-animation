@@ -48,6 +48,8 @@ https://www.toptal.com/developers/javascript-minifier
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
+// NEED TO MAKE SURE THAT IT WORKS IF MENU IS 28 AND PAGE IS 27
+
 //———————————————————————————————————————— version warning
 
 var msgEn = 'Compatibility Issue\nSvija Vibe 1.0.25 requires Adobe Illustrator 28 or later. You are using Illustrator 27 or earlier.'
@@ -105,6 +107,13 @@ const   event_types = [ 'click', 'over',  'away',  'ovaway', 'ovover', 'press', 
 //———————————————————————————————————————— conversion dictionaries
 
 const entity_conversion = {
+  '&lt;': '<',
+  '&gt;': '>'
+}
+
+const entity_conversion_keys = Object.keys(entity_conversion)
+
+const entity_conversion_old = {
   'x002E': '.',
   'x002D': '-',
   'x2F'  : '/',
@@ -301,7 +310,7 @@ class Animation{
 
       var flag = flags[x]
 
-      if (flag.indexOf('_') > -1) flag = convertEntities(flag)
+      if (flag.indexOf('_') > -1) flag = convertEntitesOld(flag)
 
       var key = this.event_key_from_flag(flag, obj)
 
@@ -543,7 +552,7 @@ class Animation{
       log('\nTrigger '+t)
       Object.keys(this.triggers[t]).forEach(key => {
         if (typeof this.triggers[t][key] != 'undefined')
-          if(key=='obj')log('obj (object): '+convertEntities(this.triggers[t][key].id))
+          if(key=='obj')log('obj (object): '+convertEntitesOld(this.triggers[t][key].id))
           else log(key+' ('+typeof(this.triggers[t][key])+'): '+this.triggers[t][key])
       })
     }
@@ -554,7 +563,7 @@ class Animation{
         Object.keys(this.evnt[x]).forEach(key => {
           if (typeof this.evnt[x][key] != 'undefined')
             if(key=='obj'){
-              log('obj (object): '+convertEntities(this.evnt[x][key].id))
+              log('obj (object): '+convertEntitesOld(this.evnt[x][key].id))
               log('style.visibility: '+this.evnt[x].obj.style.visibility)
               log('style.opacity: '+this.evnt[x].obj.style.opacity)
             }
@@ -672,7 +681,9 @@ class Animation{
 
 }
 
-//———————————————————————————————————————— class Trigger
+
+/*———————————————————————————————————————— class Trigger
+    */
 
 class Trigger{
 
@@ -693,7 +704,8 @@ class Trigger{
   }
 }
 
-//———————————————————————————————————————— class Evnt
+/*———————————————————————————————————————— class Evnt
+    */
 
 class Evnt{
 
@@ -795,25 +807,25 @@ better to get it "officially", by following the reference in the clipPath
 
 I can get all the "use" tags and look for a similar ID */
 
-/*log('cleaning up clipping paths…');
+/*log('cleaning up clipping paths…')
 
 const clippedObjects = document.querySelectorAll("[style^='clip']")
 
 for(var x=0; x<clippedObjects.length; x++){
 
   var clippedObj = clippedObjects[x]                     // object #3 above
-  var pathUrl    = clippedObj.style.clipPath;
+  var pathUrl    = clippedObj.style.clipPath
   var pathId     = pathUrl.slice(6, pathUrl.length-2)
 
-  var clipPath   = document.getElementById(pathId);      // object #2 above
+  var clipPath   = document.getElementById(pathId)      // object #2 above
   minusPeriod(clipPath, pathId)                                  // fix minus sign (fix #3 above)
 
-  var defsId     = clipPath.firstElementChild.getAttributeNS('http://www.w3.org/1999/xlink', 'href').slice(1);
+  var defsId     = clipPath.firstElementChild.getAttributeNS('http://www.w3.org/1999/xlink', 'href').slice(1)
 
   var defsObj    = document.getElementById(defsId)
 
   // move clipped object status to parent <g>  (fix #1 above)
-  var parentG = getParentG(clippedObj);
+  var parentG = getParentG(clippedObj)
   if (parentG != null){
     parentG.style.clipPath = pathUrl
     clippedObj.style.clipPath = ''
@@ -827,57 +839,61 @@ for(var x=0; x<clippedObjects.length; x++){
       var newId  = 'CP'     + pathId
       var newUrl = 'url("#' + newId + '")'
 
-      clippedObj.style.clipPath = newUrl;
-      clipPath.id               = newId;
+      clippedObj.style.clipPath = newUrl
+      clipPath.id               = newId
 
       try{defsObj.style.visibility = 'inherit'} catch(e){log('object ' + decodeEntities(defsId) + ' could not be set to visibility:inherit')}
 
     }
-    catch(msg){ log('⚠️  object with ID '+convertEntities(pathId)+' could not be updated:\n'+msg+ ' (line 779)'); }
+    catch(msg){ log('⚠️  object with ID '+convertEntitesOld(pathId)+' could not be updated:\n'+msg+ ' (line 779)') }
   }
 }
 
-log('clipping paths verified'); */
+log('clipping paths verified') */
 
 /*———————————————————————————————————————— register triggers by type
     */
 
-console.groupCollapsed('registering triggers…');
+console.groupCollapsed('registering triggers…')
 
 trigger_types.forEach(kind => {
-  var stem = "[data-name^='" + kind + separator + "']";
-  var obj_array = Array.from(document.querySelectorAll(stem));
+  var stem = "[data-name^='" + kind + separator + "']"
+  var obj_array = Array.from(document.querySelectorAll(stem))
 
   // loop through adding trigger_types
   for(var x=obj_array.length-1; x>-1; x--){ // reverse order to match layer palette order
-    var obj = obj_array[x];
-//  log('——————————————————————-'+convertEntities(obj.id))
-    var str = obj.id
-    var str = obj.dataset.name
-    var flags = str.split(separator);
-
-alert('858: '+str)
+    var obj   = obj_array[x]
+    var str   = obj.dataset.name
+    var flags = str.split(separator)
 
     // doesn't have at least trig and name
-    if (flags.length<2) continue; 
+    if (flags.length<2) continue 
 
-    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
-    if (flags[flags.length-1].length > 50)
-      flags[flags.length-1] = flags[flags.length-1].slice(0, -52);
+//  // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
+//  if (flags[flags.length-1].length > 50)
+//    flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
 
-    //  kind = flags[0];
-    var name = flags[1];
+    //  kind = flags[0]
+    var name = flags[1]
 
-    if (typeof animations[name] == 'undefined') animations[name] = new Animation(name);
-    animations[name].add_trigger(obj, kind, flags);
+    if (typeof animations[name] == 'undefined') animations[name] = new Animation(name)
+    animations[name].add_trigger(obj, kind, flags)
   }
 
   // log results
-  if (obj_array.length != 0)log(obj_array.length+' '+ kind+' triggers registered');
-  //                   else log('—› no '+kind+' trigger_types');
-});
+  if (obj_array.length != 0)log(obj_array.length+' '+ kind+' triggers registered')
+  //                   else log('—› no '+kind+' trigger_types')
+})
 
-console.groupEnd();
+console.groupEnd()
+
+
+// ovaway/name6/t50/<20
+// data-name="ovaway/name6/t50/&amp;lt;20"
+
+// ovaway/name1/+x20/<90/t100
+// data-name="ovaway/name6/t50/&amp;lt;20"
+
 
 /*———————————————————————————————————————— register events by type
     */
@@ -888,18 +904,19 @@ event_types.forEach(kind => {
   var stem = "[data-name^='" + kind + separator + "']"
   var obj_array = Array.from(document.querySelectorAll(stem))
 
-// if (obj_array.length == 0) alert(kind + ': '+obj_array.length);
+// if (obj_array.length == 0) alert(kind + ': '+obj_array.length)
 // click · over · away · ovaway · ovover · press · down · toggle · delay · point · zone · scrub
 
   // loop through adding events
   for(var x=0; x<obj_array.length; x++){
 
     var obj   = obj_array[x]
-    var flags = obj.id.split(separator)
+    var str   = convertEntites(obj.dataset.name)
+    var flags = str.split(separator)
 
-    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
-    if (flags[flags.length-1].length > 50)
-      flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
+//  // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
+//  if (flags[flags.length-1].length > 50)
+//    flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
 
     //  kind = flags[0]
     var name = flags[1]
@@ -1161,6 +1178,7 @@ function add_time_delay(animation, x){
 }
 
 /*———————————————————————————————————————— add_mouse_single(animation, x, type)
+    */
 
 function add_mouse_single(animation, x, type){
 
@@ -1620,7 +1638,7 @@ function lstn_reverse(namex, evntx){
     used only for triggers, which are not animated */
 
 function makeClickable(obj, bool){
-//log(convertEntities(obj.id)+' bool set to '+bool)
+//log(convertEntitesOld(obj.id)+' bool set to '+bool)
 
   if (bool){
     obj.style.pointerEvents = 'visiblePainted'
@@ -1715,17 +1733,40 @@ function not_number(x) {
   return parseFloat(x) != x;
 };
 
-/*———————————————————————————————————————— convertEntities(in)
+/*———————————————————————————————————————— convertEntites(str)
+
+  apparently, &amp is automatically converted to just & */
+
+function convertEntites(str){
+
+
+//log('convertEntities: ' + str)
+
+  var needed = str.indexOf('&') > 0
+  if (!needed) return str
+
+  else return htmlDecode(str)
+}
+
+/*———————————————————————————————————————— htmlDecode(input)
+    */
+
+function htmlDecode(input) {
+  var doc = new DOMParser().parseFromString(input, "text/html");
+  return doc.documentElement.textContent;
+}
+
+/*———————————————————————————————————————— convertEntitesOld(in)
 
     id="toggle_x2F_name15_x2F_-y10_x2F_x_x2B_30_x2F_t100" */
 
-function convertEntities(str){
+function convertEntitesOld(str){
 
   var parts = str.split('_');
   
   for (var x=1; x<parts.length; x+=1){
-    if (Object.keys(entity_conversion).includes(parts[x]))
-      parts[x] = entity_conversion[parts[x]];
+    if (Object.keys(entity_conversion_old).includes(parts[x]))
+      parts[x] = entity_conversion_old[parts[x]];
   }
 
   str2= parts.join('');
@@ -1733,6 +1774,41 @@ function convertEntities(str){
   // log('—————————————————————————————— 😈 conversion from '+str+' to '+str2);
   return str2;
 
+}
+
+/*———————————————————————————————————————— decodeEntities(arg)
+
+    used for args passed to func trigger flag
+
+    converts illustrator style entites to html entites
+    _x22_ to &#x22; to get normal entity
+
+    then converts those to regular text
+    &#x22; to ! */
+
+/* breaks for four-character entities, like . and - */
+
+function decodeEntities(arg){
+  if (typeof arg == 'undefined') return ''
+
+  const regex = /_x([0-9A-Z]{2})_/g
+
+  var html = arg.replace(regex, function($1){
+    var x = $1.toLowerCase() 
+        x = x.replaceAll('_x','&#x')
+        return x.replaceAll('_', ';')
+  })
+
+  html = convertEntitesOld(html)
+  html = html.replaceAll('_', ' ')
+
+  var tmpObject = document.createElement('textarea')
+
+  tmpObject.innerHTML = html
+  var val = tmpObject.value
+  tmpObject.remove()
+
+  return val
 }
 
 /*———————————————————————————————————————— minusPeriod(clip_path)
@@ -1795,42 +1871,8 @@ function getElementsByRegex(pattern){
    return arrElements; // return matching elements
 };
 
-/*———————————————————————————————————————— decodeEntities(arg)
-
-    used for args passed to func trigger flag
-
-    converts illustrator style entites to html entites
-    _x22_ to &#x22; to get normal entity
-
-    then converts those to regular text
-    &#x22; to ! */
-
-/* breaks for four-character entities, like . and - */
-
-function decodeEntities(arg){
-  if (typeof arg == 'undefined') return ''
-
-  const regex = /_x([0-9A-Z]{2})_/g
-
-  var html = arg.replace(regex, function($1){
-    var x = $1.toLowerCase() 
-        x = x.replaceAll('_x','&#x')
-        return x.replaceAll('_', ';')
-  })
-
-  html = convertEntities(html)
-  html = html.replaceAll('_', ' ')
-
-  var tmpObject = document.createElement('textarea')
-
-  tmpObject.innerHTML = html
-  var val = tmpObject.value
-  tmpObject.remove()
-
-  return val
-}
-
-//———————————————————————————————————————— createTline(namex, evntx, params)
+/*———————————————————————————————————————— createTline(namex, evntx, params)
+    */
 
 function createTline(namex, evntx, params){
 
@@ -1849,7 +1891,8 @@ function createTline(namex, evntx, params){
   }
 }
 
-//———————————————————————————————————————— svgName(obj)
+/*———————————————————————————————————————— svgName(obj)
+    */
 
 function svgName(obj){
   while (obj.tagName != 'svg')
@@ -1857,7 +1900,8 @@ function svgName(obj){
   return decodeEntities(obj.id)
 }
 
-//———————————————————————————————————————— containsTransform(trigger) COMMENTED OUT
+/*———————————————————————————————————————— containsTransform(trigger) COMMENTED OUT
+    */
 
 /* function containsTransform(trigger){
 
@@ -1902,7 +1946,8 @@ function getParentG(obj){
   return null;
 }
 
-//———————————————————————————————————————— dumpKeys(obj)
+/*———————————————————————————————————————— dumpKeys(obj)
+    */
 
 function dumpKeys(obj){
   var str = '';
@@ -2035,7 +2080,7 @@ function applyTransformation(corner, matVals){
     used by applyTransformation */
 
 function alertRect(obj, rect){
-  name = convertEntities(obj.id)
+  name = convertEntitesOld(obj.id)
   x = Math.round( rect['x'])
   y = Math.round( rect['y'])
   w = Math.round( rect['width'])
