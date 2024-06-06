@@ -49,6 +49,7 @@ https://www.toptal.com/developers/javascript-minifier
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
 // NEED TO MAKE SURE THAT IT WORKS IF MENU IS 28 AND PAGE IS 27
+// NEED TO FIX P3 COLOR
 
 var version = '1.0.25'
 
@@ -1293,7 +1294,7 @@ log('—————————————————————————
 }
 
 /*———————————————————————————————————————— addScrollScrub(animation,x)
-    *
+    */
 
 function addScrollScrub(animation, whichEvent){
 
