@@ -7,23 +7,36 @@ https://www.toptal.com/developers/javascript-minifier
 
 */
 
-//———————————————————————————————————————— version warning
+/*———————————————————————————————————————— version warning
 
-var msgEn = 'Compatibility Issue\nSvija Vibe 1.0.24 requires Adobe Illustrator 27 or earlier. You are using Illustrator 28 or later.'
-var msgFr = 'Problème de compatibilité\nSvija Vibe 1.0.24 requiert la version 27 ou plus ancienne d\'Adobe Illustrator. Vous utilisez la version 28 ou plus.'
+    right now, if any element of the page contains a data-name
+    it is considered as 28 or newer
 
-var ds = typeof document.body.querySelector('g').dataset.name
+    but if there are conflicting elements, it should be alerted
 
-if (ds == 'string') aiVersion = 28
-else                aiVersion = 27
+    I have a way to say: there is at least one element of 28+
+    and I need a way to know if there is at least one element of 27- */
 
-var tempMsg = msgEn
+var version = '1.0.24'
 
-if (typeof navigator.language != 'undefined')
-  if (navigator.language.substr(0,2) == 'fr')
-    tempMsg = msgFr
+var msg1   = 'Compatibility Issue\nContent created with Illustrator 28 or later.\nSvija Vibe ' + version + ' requires Adobe Illustrator 27 or earlier.\n\nSee Svija Cloud › Script Sets › Svija Vibe'
+var msgFr1 = 'Problème de compatibilité\nContenu créé avec Illustrator 28 ou plus récent.\nSvija Vibe ' + version + ' requiert la version 27 ou plus ancienne.\n\nVoir Svija Cloud › Script Sets › Svija Vibe'
 
-if (aiVersion > 27) alert(tempMsg)
+var msg2   = 'Compatibility Issue\nContent created with multiple versions of illustrator.\nSvija Vibe ' + version + ' requires Adobe Illustrator 27 or earlier.\n\nSee Svija Cloud › Script Sets › Svija Vibe'
+var msgFr2 = 'Problème de compatibilité\nContenu créé avec de multiples versions d\'Illustrator.\nSvija Vibe ' + version + ' requiert la version 27 ou plus ancienne.\n\nVoir Svija Cloud › Script Sets › Svija Vibe'
+
+if (isFrench()){
+  msg1 = msgFr1
+  msg2 = msgFr2
+}
+
+//————————————————————————————————————————
+
+var newStyle = null !== document.querySelector('[data-name]')
+var oldStyle = null !== document.querySelector('[id*="x2F"]')
+
+if (newStyle && oldStyle) alert (msg2)
+else if (newStyle) alert(msg1)
 
 /*———————————————————————————————————————— notes
 
