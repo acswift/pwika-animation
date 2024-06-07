@@ -50,7 +50,6 @@ https://www.toptal.com/developers/javascript-minifier
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-// NEED TO MAKE SURE THAT IT WORKS IF MENU IS 28 AND PAGE IS 27
 // NEED TO FIX P3 COLOR
 
 var version = '1.0.25'
@@ -905,14 +904,6 @@ trigger_types.forEach(kind => {
 
 console.groupEnd()
 
-
-// ovaway/name6/t50/<20
-// data-name="ovaway/name6/t50/&amp;lt;20"
-
-// ovaway/name1/+x20/<90/t100
-// data-name="ovaway/name6/t50/&amp;lt;20"
-
-
 /*———————————————————————————————————————— register events by type
     */
 
@@ -922,19 +913,12 @@ event_types.forEach(kind => {
   var stem = "[data-name^='" + kind + separator + "']"
   var obj_array = Array.from(document.querySelectorAll(stem))
 
-// if (obj_array.length == 0) alert(kind + ': '+obj_array.length)
-// click · over · away · ovaway · ovover · press · down · toggle · delay · point · zone · scrub
-
   // loop through adding events
   for(var x=0; x<obj_array.length; x++){
 
     var obj   = obj_array[x]
     var str   = convertEntities(obj.dataset.name)
     var flags = str.split(separator)
-
-//  // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
-//  if (flags[flags.length-1].length > 50)
-//    flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
 
     //  kind = flags[0]
     var name = flags[1]
