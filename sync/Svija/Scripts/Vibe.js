@@ -78,7 +78,7 @@ if (typeof navigator.language != 'undefined')
 //————————————————————————————————————————
 
 var newStyle = null !== document.querySelector('[data-name]')
-var oldStyle = null !== document.querySelectorAll('[id~="_x2F_"]')
+var oldStyle = null !== document.querySelector('[id*="x2F"]')
 
 if (newStyle && oldStyle) alert (msg2)
 else if (oldStyle) alert(msg1)
