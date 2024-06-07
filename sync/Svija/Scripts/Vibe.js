@@ -70,11 +70,10 @@ var msg2 = 'Compatibility Issue\nContent created with multiple versions of illus
 var msgFr1 = 'Problème de compatibilité\nContenu créé avec Illustrator 27 ou plus ancien.\nSvija Vibe ' + version + ' requiert la version 28 ou plus récente.\n\nVoir Svija Cloud › Script Sets › Svija Vibe'
 var msgFr2 = 'Problème de compatibilité\nContenu créé avec de multiples versions d\'Illustrator.\nSvija Vibe ' + version + ' requiert la version 28 ou plus récente.\n\nVoir Svija Cloud › Script Sets › Svija Vibe'
 
-if (typeof navigator.language != 'undefined')
-  if (navigator.language.substr(0,2) == 'fr'){
-    msg1 = msgFr1
-    msg2 = msgFr2
-  }
+if (isFrench()){
+  msg1 = msgFr1
+  msg2 = msgFr2
+}
 
 //————————————————————————————————————————
 
@@ -83,6 +82,42 @@ var oldStyle = null !== document.querySelector('[id*="x2F"]')
 
 if (newStyle && oldStyle) alert (msg2)
 else if (oldStyle) alert(msg1)
+
+/*———————————————————————————————————————— single-layer SVG warning
+
+This page exists to check injavascript if the page has onlyone layer and show an alert
+(Svija Tools cannot at this time savea single-layered SVG correctly).
+
+A single-layer SVG will have the layer name as the SVG IDwhich is fine, but the CSS ID created by Cloud will be:    #http://www.w3.org/2000/svg {
+The first SVG shoudl have an id of "svg_"
+
+the issue affects pages & modules independently (they'll be the wrong size if single-layered)
+
+If the single-layered SVG doesn't have a layer name, then it won't have an ID and there's no problem  */
+
+var msg = 'Single-layer Illustrator File\nOne or more Illustrator files used in this page contains only a single layer with content. This version of Svija Tools requires Illustrator files to have multiple content layers.\n\nLayer names in problem AI files:\n\n'
+
+var msgFr = 'Fichier Illustrator à un calque\nUn ou plusieurs fichiers Illustrator utilisés par cette page contiennent un seul calque avec des contenus. Cette version de Svija Tools requiert des fichiers Illustrator avec au moins deux calques de contenus.\n\nNom de calques problématiques :\n\n'
+
+if (isFrench()) msg = msgFr
+
+//————————————————————————————————————————
+
+var allSvgs = document.getElementsByTagName('svg')
+
+var errList = []
+
+for (x=0; x<allSvgs.length; x++){
+  
+  if (allSvgs[x].id.substr(0,4) != 'svg_'){
+    if (typeof allSvgs[x].dataset.name != 'undefined')
+      errList.push(allSvgs[x].dataset.name)
+    else
+      errList.push(allSvgs[x].id)
+  }
+}
+
+if (errList.length > 0) alert (msg+errList.join('\n'))
 
 //———————————————————————————————————————— start timer
 
@@ -2088,6 +2123,17 @@ function alertRect(obj, rect){
   w = Math.round( rect['width'])
   h = Math.round( rect['height'])
   alert(name + ' is '+w+'x'+h+'px, left '+x+' & top '+y)
+}
+
+/*———————————————————————————————————————— isFrench()
+
+    */
+
+function isFrench(){
+  if (typeof navigator.language != 'undefined'){
+    if (navigator.language.substr(0,2) == 'fr') return true
+  }
+  return false
 }
 
 
