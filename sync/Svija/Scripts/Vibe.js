@@ -2023,6 +2023,18 @@ function alertRect(obj, rect){
   alert(name + ' is '+w+'x'+h+'px, left '+x+' & top '+y)
 }
 
+/*———————————————————————————————————————— isFrench()
+
+    */
+
+function isFrench(){
+  if (typeof navigator.language != 'undefined'){
+    if (navigator.language.substr(0,2) == 'fr') return true
+  }
+  return false
+}
+
+
 
 //:::::::::::::::::::::::::::::::::::::::: fin
 
