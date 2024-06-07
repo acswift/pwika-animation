@@ -1,8 +1,10 @@
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
-*Updated 5 June, 2024 · Toulouse*
+*Updated 7 June, 2024 · Toulouse*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
+
+# THIS BRANCH IS FOR OLD TOOLS + OLD ILLUSTRATOR
 
 <details><summary>Illustrator Version 28</summary>
 
