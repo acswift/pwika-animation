@@ -16,6 +16,8 @@ https://www.toptal.com/developers/javascript-minifier
   When there are two elements with the same name, it's just
   debug, debug-2 for id
 
+  empty layers are not included in SVG, so can't
+  create empty layer for debug
 
 */
 
