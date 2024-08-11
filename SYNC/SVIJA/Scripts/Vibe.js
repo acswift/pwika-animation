@@ -21,8 +21,6 @@ https://www.toptal.com/developers/javascript-minifier
 
 */
 
-
-
 /*———————————————————————————————————————— EULA
 
     Copyright (c) Svija
@@ -50,8 +48,6 @@ https://www.toptal.com/developers/javascript-minifier
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-// NEED TO FIX P3 COLOR
-
 var version = '1.0.25'
 
 /*———————————————————————————————————————— version warning
@@ -75,7 +71,7 @@ if (isFrench()){
   msg2 = msgFr2
 }
 
-//————————————————————————————————————————
+/*————————————————————————————————————————*/
 
 var newStyle = null !== document.querySelector('[data-name]')
 var oldStyle = null !== document.querySelector('[id*="x2F"]')
@@ -83,43 +79,7 @@ var oldStyle = null !== document.querySelector('[id*="x2F"]')
 if (newStyle && oldStyle) alert (msg2)
 else if (oldStyle) alert(msg1)
 
-/*———————————————————————————————————————— single-layer SVG warning
-
-This page exists to check injavascript if the page has onlyone layer and show an alert
-(Svija Tools cannot at this time savea single-layered SVG correctly).
-
-A single-layer SVG will have the layer name as the SVG IDwhich is fine, but the CSS ID created by Cloud will be:    #http://www.w3.org/2000/svg {
-The first SVG shoudl have an id of "svg_"
-
-the issue affects pages & modules independently (they'll be the wrong size if single-layered)
-
-If the single-layered SVG doesn't have a layer name, then it won't have an ID and there's no problem  */
-
-var msg = 'Single-layer Illustrator File\nOne or more Illustrator files used in this page contains only a single layer with content. This version of Svija Tools requires Illustrator files to have multiple content layers.\n\nLayer names in problem AI files:\n\n'
-
-var msgFr = 'Fichier Illustrator à un calque\nUn ou plusieurs fichiers Illustrator utilisés par cette page contiennent un seul calque avec des contenus. Cette version de Svija Tools requiert des fichiers Illustrator avec au moins deux calques de contenus.\n\nNom de calques problématiques :\n\n'
-
-if (isFrench()) msg = msgFr
-
-//————————————————————————————————————————
-
-var allSvgs = document.getElementsByTagName('svg')
-
-var errList = []
-
-for (x=0; x<allSvgs.length; x++){
-  
-  if (allSvgs[x].id.substr(0,4) != 'svg_'){
-    if (typeof allSvgs[x].dataset.name != 'undefined')
-      errList.push(allSvgs[x].dataset.name)
-    else
-      errList.push(allSvgs[x].id)
-  }
-}
-
-if (errList.length > 0) alert (msg+errList.join('\n'))
-
-//———————————————————————————————————————— start timer
+/*———————————————————————————————————————— start timer */
 
 const d1 = new Date()
 let start_time = d1.getTime()
@@ -150,13 +110,13 @@ var debugOn = document.querySelectorAll('[id ^= "debug"]').length > 0
 var debugMessages = []
 var env_allTlines = []
 
-//———————————————————————————————————————— separator · types of triggers and events
+/*———————————————————————————————————————— separator · types of triggers and events */
 
 const     separator = '/'
 const trigger_types = [ 'mouse', 'time', 'scroll' ]
 const   event_types = [ 'click', 'over',  'away',  'ovaway', 'ovover', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ]
 
-//———————————————————————————————————————— conversion dictionaries
+/*———————————————————————————————————————— conversion dictionaries */
 
 const entity_conversion = {
   '&lt;': '<',
@@ -240,7 +200,7 @@ const fromtos = {
 }
 
 
-//———————————————————————————————————————— defaults
+/*———————————————————————————————————————— defaults */
 
 const trigger_defaults = {
 
@@ -258,7 +218,6 @@ const event_defaults = {
   'duration': 0.5,
   'fromto'  : 'to'
 }
-
 
 
 //:::::::::::::::::::::::::::::::::::::::: model definitions
