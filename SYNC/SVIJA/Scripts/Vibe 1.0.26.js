@@ -1,25 +1,13 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.25
-
-    updated to allow new Illustrator SVG format
-
-https://www.toptal.com/developers/javascript-minifier
-
-*/
+/*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.26 */
 
 /*———————————————————————————————————————— notes
 
+  https://www.toptal.com/developers/javascript-minifier
+
   github.com/svijalove/vibe
   
-  ©Svija SAS, Cusset France
-
-  When there are two elements with the same name, it's just
-  debug, debug-2 for id
-
-  empty layers are not included in SVG, so can't
-  create empty layer for debug
-
-*/
+  ©Svija SAS, Cusset France */
 
 /*———————————————————————————————————————— EULA
 
@@ -48,7 +36,7 @@ https://www.toptal.com/developers/javascript-minifier
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-var version = '1.0.25'
+var version = '1.0.26'
 
 /*———————————————————————————————————————— version warning
 
@@ -79,7 +67,7 @@ var oldStyle = null !== document.querySelector('[id*="x2F"]')
 if (newStyle && oldStyle) alert (msg2)
 else if (oldStyle) alert(msg1)
 
-/*———————————————————————————————————————— start timer */
+//———————————————————————————————————————— start timer
 
 const d1 = new Date()
 let start_time = d1.getTime()
@@ -101,31 +89,34 @@ if (typeof scrollElement == 'undefined')
 
 /*———————————————————————————————————————— debugging variables
 
-    var stem = "[data-name^='" + kind + separator + "']"
    <rect id="debug" x="120" y="97.541" class="st1" width="866.252" height="395.565"/>
    <rect id="debug_00000182491029671138469570000004975659756911234963_" x="352.422" y="546.311" class="st1" width="515.854" height="249.831"/> */
 
+/*xxx
+
 var debugOn = document.querySelectorAll('[id ^= "debug"]').length > 0
 
+*/
+
+var corrupted = document.querySelectorAll('[id ^= "debug_000"]').length > 0
+
+if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined' || corrupted)
+  var debugOn = true
+else debugOn = false
+
 var debugMessages = []
+
 var env_allTlines = []
 
-/*———————————————————————————————————————— separator · types of triggers and events */
+//———————————————————————————————————————— separator · types of triggers and events
 
-const     separator = '/'
+const     separator = '_x2F_' // regular slash
 const trigger_types = [ 'mouse', 'time', 'scroll' ]
 const   event_types = [ 'click', 'over',  'away',  'ovaway', 'ovover', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ]
 
-/*———————————————————————————————————————— conversion dictionaries */
+//———————————————————————————————————————— conversion dictionaries
 
 const entity_conversion = {
-  '&lt;': '<',
-  '&gt;': '>'
-}
-
-const entity_conversion_keys = Object.keys(entity_conversion)
-
-const entity_conversion_old = {
   'x002E': '.',
   'x002D': '-',
   'x2F'  : '/',
@@ -200,7 +191,7 @@ const fromtos = {
 }
 
 
-/*———————————————————————————————————————— defaults */
+//———————————————————————————————————————— defaults
 
 const trigger_defaults = {
 
@@ -321,7 +312,7 @@ class Animation{
 
       var flag = flags[x]
 
-      if (flag.indexOf('_') > -1) flag = convertEntitiesOld(flag)
+      if (flag.indexOf('_') > -1) flag = convertEntities(flag)
 
       var key = this.event_key_from_flag(flag, obj)
 
@@ -472,7 +463,7 @@ class Animation{
 
     // scrub event_types default to hard ease DEACTIVATED
 //  if (zoopy.kind == 'scrub' && typeof zoopy.ease == 'undefined')
-//    zoopy.ease = 'none
+//    zoopy.ease = 'none'
 
     // add to evnt array
     if (typeof this.evnt == 'undefined') this.evnt = []
@@ -563,7 +554,7 @@ class Animation{
       log('\nTrigger '+t)
       Object.keys(this.triggers[t]).forEach(key => {
         if (typeof this.triggers[t][key] != 'undefined')
-          if(key=='obj')log('obj (object): '+convertEntitiesOld(this.triggers[t][key].id))
+          if(key=='obj')log('obj (object): '+convertEntities(this.triggers[t][key].id))
           else log(key+' ('+typeof(this.triggers[t][key])+'): '+this.triggers[t][key])
       })
     }
@@ -574,7 +565,7 @@ class Animation{
         Object.keys(this.evnt[x]).forEach(key => {
           if (typeof this.evnt[x][key] != 'undefined')
             if(key=='obj'){
-              log('obj (object): '+convertEntitiesOld(this.evnt[x][key].id))
+              log('obj (object): '+convertEntities(this.evnt[x][key].id))
               log('style.visibility: '+this.evnt[x].obj.style.visibility)
               log('style.opacity: '+this.evnt[x].obj.style.opacity)
             }
@@ -646,7 +637,7 @@ class Animation{
 
   get_flag_val(key, flag, obj){
     var flag_len = flag_length[key]
- 
+
     if (key=='ease')   return eases[flag]
     if (key=='fromto') return fromtos[flag]
     if (flag_len == 0) return flag
@@ -856,7 +847,7 @@ for(var x=0; x<clippedObjects.length; x++){
       try{defsObj.style.visibility = 'inherit'} catch(e){log('object ' + decodeEntities(defsId) + ' could not be set to visibility:inherit')}
 
     }
-    catch(msg){ log('⚠️  object with ID '+convertEntitiesOld(pathId)+' could not be updated:\n'+msg+ ' (line 779)') }
+    catch(msg){ log('⚠️  object with ID '+convertEntities(pathId)+' could not be updated:\n'+msg+ ' (line 779)') }
   }
 }
 
@@ -868,21 +859,21 @@ log('clipping paths verified') */
 console.groupCollapsed('registering triggers…')
 
 trigger_types.forEach(kind => {
-  var stem = "[data-name^='" + kind + separator + "']"
+  var stem = "[id^='" + kind + separator + "']"
   var obj_array = Array.from(document.querySelectorAll(stem))
 
   // loop through adding trigger_types
   for(var x=obj_array.length-1; x>-1; x--){ // reverse order to match layer palette order
-    var obj   = obj_array[x]
-    var str   = obj.dataset.name
-    var flags = str.split(separator)
+    var obj = obj_array[x]
+//  log('——————————————————————-'+convertEntities(obj.id))
+    var flags = obj.id.split(separator)
 
     // doesn't have at least trig and name
     if (flags.length<2) continue 
 
-//  // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
-//  if (flags[flags.length-1].length > 50)
-//    flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
+    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
+    if (flags[flags.length-1].length > 50)
+      flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
 
     //  kind = flags[0]
     var name = flags[1]
@@ -904,15 +895,18 @@ console.groupEnd()
 console.groupCollapsed('registering events…')
 
 event_types.forEach(kind => {
-  var stem = "[data-name^='" + kind + separator + "']"
+  var stem = "[id^='" + kind + separator + "']"
   var obj_array = Array.from(document.querySelectorAll(stem))
 
   // loop through adding events
   for(var x=0; x<obj_array.length; x++){
 
     var obj   = obj_array[x]
-    var str   = convertEntities(obj.dataset.name)
-    var flags = str.split(separator)
+    var flags = obj.id.split(separator)
+
+    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
+    if (flags[flags.length-1].length > 50)
+      flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
 
     //  kind = flags[0]
     var name = flags[1]
@@ -945,18 +939,18 @@ Object.keys(animations).forEach(name => {
 /*———————————————————————————————————————— delete unused trigger_types
     */
 
-log('checking for eventless triggers…');
+log('checking for eventless triggers…')
 
 Object.keys(animations).forEach(name =>
   animations[name].delete_if_no_event()
 )
 
-console.groupEnd();
+console.groupEnd()
 
 /*———————————————————————————————————————— activate events by type
     */
 
-console.groupCollapsed('activating events…');
+console.groupCollapsed('activating events…')
 
 Object.keys(animations).forEach(name => {
 
@@ -974,19 +968,24 @@ Object.keys(animations).forEach(name => {
 
 })
 
-console.groupEnd();
+console.groupEnd()
 
 /*———————————————————————————————————————— end timer
     */
 
-const d2 = new Date();
-let end_time = d2.getTime();
+const d2 = new Date()
+let end_time = d2.getTime()
 
-log((end_time-start_time)+'ms elapsed');
+log((end_time-start_time)+'ms elapsed')
+
+/*———————————————————————————————————————— visible triggers
+     */
+
+/*xxx
 
 /*———————————————————————————————————————— visible triggers
 
-// https://stackoverflow.com/a/1938465  */
+// https://stackoverflow.com/a/1938465  /
 
 
 if (debugOn){
@@ -1001,6 +1000,23 @@ if (debugOn){
       obj.style.opacity = 0.3
     }
   })
+}
+*/
+
+// https://stackoverflow.com/a/1938465
+
+if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined'){
+  var arrMatches = getElementsByRegex('^time_x2F_.*')
+  for (var x=0; x<arrMatches.length; x++)
+    arrMatches[x].style.opacity = 0.3
+
+  var arrMatches = getElementsByRegex('^scroll_x2F_.*')
+  for (var x=0; x<arrMatches.length; x++)
+    arrMatches[x].style.opacity = 0.3
+
+  var arrMatches = getElementsByRegex('^mouse_x2F_.*')
+  for (var x=0; x<arrMatches.length; x++)
+    arrMatches[x].style.opacity = 0.3
 }
 
 /*———————————————————————————————————————— reset all timelines
@@ -1027,13 +1043,13 @@ if (debugOn && debugMessages.length > 0){
 }
 
 if (debugOn && debugMessages.length > 0) alert('Svija Vibe Debugging\n• ' + debugMessages.join('\n• '))
-console.groupEnd();
+console.groupEnd()
 
 /*———————————————————————————————————————— ▲ name debugging
     */
 
 if (typeof debug_name != 'undefined'){
-	try { animations[debug_name].flagDump(); } catch (error) { log('⚠️  debug_name = \'' + debug_name + '\' — animation not found.'); }
+	try { animations[debug_name].flagDump(); } catch (error) { log('⚠️  debug_name = \'' + debug_name + '\' — animation not found.') }
 }
 
 
@@ -1077,29 +1093,29 @@ function scroll_triggers_funcs(name, triggers, args){
 function activate_mouse_events(animation){
 
   if (typeof animation.evnt == 'undefined')
-    return true;  // is link or function
+    return true  // is link or function
 
   for (var x=0; x<animation.evnt.length; x++){
     switch (animation.evnt[x].kind) {
-      case undefined: break; // if it's just a link or func
+      case undefined: break // if it's just a link or func
   
-      case 'click' : add_mouse_single(animation, x, 'pointerup'  ); break;
-      case 'press' : add_mouse_single(animation, x, 'pointerdown'); break;
-      case 'over'  : add_mouse_single(animation, x, 'pointerover'); break;
-      case 'away'  : add_mouse_single(animation, x, 'pointerout' ); break; // or pointerleave
+      case 'click' : add_mouse_single(animation, x, 'pointerup'  ); break
+      case 'press' : add_mouse_single(animation, x, 'pointerdown'); break
+      case 'over'  : add_mouse_single(animation, x, 'pointerover'); break
+      case 'away'  : add_mouse_single(animation, x, 'pointerout' ); break // or pointerleave
   
       // special cases
-      case 'ovaway': add_mouse_ovaway(animation, x); break;
-      case 'ovover': add_mouse_ovover(animation, x); break;
-      case 'down'  :   add_mouse_down(animation, x); break;
-      case 'toggle': add_mouse_toggle(animation, x); break;
+      case 'ovaway': add_mouse_ovaway(animation, x); break
+      case 'ovover': add_mouse_ovover(animation, x); break
+      case 'down'  :   add_mouse_down(animation, x); break
+      case 'toggle': add_mouse_toggle(animation, x); break
   
       default:
-        errLog('Unknown mouse event', animation.evnt[x]);
+        errLog('Unknown mouse event', animation.evnt[x])
     }
   }
 
-  log('mouse events activated');
+  log('mouse events activated')
 }
 
 /*———————————————————————————————————————— activate_time_events(animation)
@@ -1195,10 +1211,10 @@ function add_mouse_single(animation, x, type){
 
 function add_mouse_ovaway(animation, x){
 
-  params = gsapParams(animation.evnt[x]);
+  params = gsapParams(animation.evnt[x])
 
   for (var t=0; t<animation.triggers.length; t++){
-    createTline(animation.name+x, animation.evnt[x], params);
+    createTline(animation.name+x, animation.evnt[x], params)
     animation.triggers[t].obj.addEventListener('pointerover',  lstn_play.bind(null, animation.name+x, animation.evnt[x]   ), false);
     animation.triggers[t].obj.addEventListener('pointerout',   lstn_reverse.bind(null, animation.name+x , animation.evnt[x]), false);
   }
@@ -1212,7 +1228,7 @@ function add_mouse_ovaway(animation, x){
 
 function add_mouse_down(animation, x){
 
-  params = gsapParams(animation.evnt[x]);
+  params = gsapParams(animation.evnt[x])
 
   for (var t=0; t<animation.triggers.length; t++){
 
@@ -1621,9 +1637,9 @@ function lstn_play(namex, evntx){
 //nction lstn_reverse(animation){
 function lstn_reverse(namex, evntx){
 // NEED TO MAKE OBJECT VISIBLE IF IT WAS MADE NON-EXISTANT
-  var funcName = namex + '_timeline';
-//makeClickable(evntx.obj, true);
-  window[funcName].reverse();
+  var funcName = namex + '_timeline'
+//makeClickable(evntx.obj, true)
+  window[funcName].reverse()
 }
 
 
@@ -1634,7 +1650,7 @@ function lstn_reverse(namex, evntx){
     used only for triggers, which are not animated */
 
 function makeClickable(obj, bool){
-//log(convertEntitiesOld(obj.id)+' bool set to '+bool)
+//log(convertEntities(obj.id)+' bool set to '+bool)
 
   if (bool){
     obj.style.pointerEvents = 'visiblePainted'
@@ -1656,18 +1672,18 @@ function makeClickable(obj, bool){
 // bug is betriggers when , is in first three characters it's converted, otherwise not
 
 function convert_origin(origin){
-  if (typeof origin == 'undefined') return "50% 50%";
+  if (typeof origin == 'undefined') return "50% 50%"
 
-  origin = origin.slice(1);
+  origin = origin.slice(1)
 
-  var parts = origin.split(',');
+  var parts = origin.split(',')
 
 //if (origin.indexOf(',') > 0)
-//  var parts = origin.split(',');
+//  var parts = origin.split(',')
 //else
-//  var parts = origin.split('_x2C_');
+//  var parts = origin.split('_x2C_')
 
-  return parts.join('% ') + '%';
+  return parts.join('% ') + '%'
 }
 
 /*———————————————————————————————————————— gsapParams(evnt)
@@ -1675,28 +1691,28 @@ function convert_origin(origin){
 
 function gsapParams(evntx){
 
-  var params = {};
+  var params = {}
 
-  params['duration']          = evntx.duration==0 ? 0.001:evntx.duration;
+  params['duration']          = evntx.duration==0 ? 0.001:evntx.duration
 
-  if (typeof evntx.ease      != 'undefined') params['ease'           ] = evntx.ease; else params['ease'] = Power1.easeInOut ;
+  if (typeof evntx.ease      != 'undefined') params['ease'           ] = evntx.ease; else params['ease'] = Power1.easeInOut 
 
-//if (typeof evntx.delay     != 'undefined') params['delay'          ] = evntx.delay        ;
-  if (typeof evntx.origin    != 'undefined') params['transformOrigin'] = evntx.origin       ;
+//if (typeof evntx.delay     != 'undefined') params['delay'          ] = evntx.delay        
+  if (typeof evntx.origin    != 'undefined') params['transformOrigin'] = evntx.origin       
 
-  else params['transformOrigin'] = '50% 50%';
+  else params['transformOrigin'] = '50% 50%'
 
-  if (typeof evntx.xmove     != 'undefined') params['x'              ] = '+=' + evntx.xmove ;
-  if (typeof evntx.ymove     != 'undefined') params['y'              ] = '+=' + evntx.ymove ;
+  if (typeof evntx.xmove     != 'undefined') params['x'              ] = '+=' + evntx.xmove 
+  if (typeof evntx.ymove     != 'undefined') params['y'              ] = '+=' + evntx.ymove 
 
-  if (typeof evntx.scale     != 'undefined') params['scale'          ] = '*=' + evntx.scale ;
-  if (typeof evntx.xscale    != 'undefined') params['scaleX'         ] = '*=' + evntx.xscale;
-  if (typeof evntx.yscale    != 'undefined') params['scaleY'         ] = '*=' + evntx.yscale;
+  if (typeof evntx.scale     != 'undefined') params['scale'          ] = '*=' + evntx.scale 
+  if (typeof evntx.xscale    != 'undefined') params['scaleX'         ] = '*=' + evntx.xscale
+  if (typeof evntx.yscale    != 'undefined') params['scaleY'         ] = '*=' + evntx.yscale
 
-  if (typeof evntx.autoAlpha != 'undefined') params['autoAlpha'      ] = evntx.autoAlpha  ;
-  if (typeof evntx.rotate    != 'undefined') params['rotation'       ] = '+=' + evntx.rotate;
+  if (typeof evntx.autoAlpha != 'undefined') params['autoAlpha'      ] = evntx.autoAlpha  
+  if (typeof evntx.rotate    != 'undefined') params['rotation'       ] = '+=' + evntx.rotate
 
-  return params;
+  return params
 }
 
 /*———————————————————————————————————————— log(arg)
@@ -1712,8 +1728,8 @@ function log(arg){
 function errLog(arg, obj){
 
   if (typeof obj != 'undefined'){
-    var id   = convertEntities(obj.dataset.name)
-    if (id.length > 50) id = id.slice(0, -52);
+    var id   = decodeEntities(obj.id)
+    if (id.length > 50) id = id.slice(0, -52)
 
     arg += ' in ' + svgName(obj) + '.ai' + ' › ' + id
   }
@@ -1726,85 +1742,27 @@ function errLog(arg, obj){
     */
 
 function not_number(x) {
-  return parseFloat(x) != x;
-};
-
-/*———————————————————————————————————————— convertEntities(str)
-
-  apparently, &amp is automatically converted to just & */
-
-function convertEntities(str){
-
-
-//log('convertEntities: ' + str)
-
-  var needed = str.indexOf('&') > 0
-  if (!needed) return str
-
-  else return htmlDecode(str)
+  return parseFloat(x) != x
 }
 
-/*———————————————————————————————————————— htmlDecode(input)
-    */
-
-function htmlDecode(input) {
-  var doc = new DOMParser().parseFromString(input, "text/html");
-  return doc.documentElement.textContent;
-}
-
-/*———————————————————————————————————————— convertEntitiesOld(in)
+/*———————————————————————————————————————— convertEntities(in)
 
     id="toggle_x2F_name15_x2F_-y10_x2F_x_x2B_30_x2F_t100" */
 
-function convertEntitiesOld(str){
+function convertEntities(str){
 
-  var parts = str.split('_');
+  var parts = str.split('_')
   
   for (var x=1; x<parts.length; x+=1){
-    if (Object.keys(entity_conversion_old).includes(parts[x]))
-      parts[x] = entity_conversion_old[parts[x]];
+    if (Object.keys(entity_conversion).includes(parts[x]))
+      parts[x] = entity_conversion[parts[x]]
   }
 
-  str2= parts.join('');
+  str2= parts.join('')
 
-  // log('—————————————————————————————— 😈 conversion from '+str+' to '+str2);
-  return str2;
+  // log('—————————————————————————————— 😈 conversion from '+str+' to '+str2)
+  return str2
 
-}
-
-/*———————————————————————————————————————— decodeEntities(arg)
-
-    used for args passed to func trigger flag
-
-    converts illustrator style entites to html entites
-    _x22_ to &#x22; to get normal entity
-
-    then converts those to regular text
-    &#x22; to ! */
-
-/* breaks for four-character entities, like . and - */
-
-function decodeEntities(arg){
-  if (typeof arg == 'undefined') return ''
-
-  const regex = /_x([0-9A-Z]{2})_/g
-
-  var html = arg.replace(regex, function($1){
-    var x = $1.toLowerCase() 
-        x = x.replaceAll('_x','&#x')
-        return x.replaceAll('_', ';')
-  })
-
-  html = convertEntitiesOld(html)
-  html = html.replaceAll('_', ' ')
-
-  var tmpObject = document.createElement('textarea')
-
-  tmpObject.innerHTML = html
-  var val = tmpObject.value
-  tmpObject.remove()
-
-  return val
 }
 
 /*———————————————————————————————————————— minusPeriod(clip_path)
@@ -1851,24 +1809,58 @@ function minusPeriod(clip_path, pathId){
 
 // https://stackoverflow.com/a/1938465
 function getElementsByRegex(pattern){
-   var arrElements = [];   // to accumulate matching elements
-   var re = new RegExp(pattern);   // the regex to match with
+   var arrElements = []   // to accumulate matching elements
+   var re = new RegExp(pattern)   // the regex to match with
 
    function findRecursively(aNode) { // recursive function to traverse DOM
       if (!aNode) 
-          return;
+          return
       if (aNode.id !== undefined && aNode.id.search(re) != -1)
-          arrElements.push(aNode);  // FOUND ONE!
+          arrElements.push(aNode)  // FOUND ONE!
       for (var idx in aNode.childNodes) // search children...
-          findRecursively(aNode.childNodes[idx]);
-   };
+          findRecursively(aNode.childNodes[idx])
+   }
 
-   findRecursively(document); // initiate recursive matching
-   return arrElements; // return matching elements
-};
+   findRecursively(document) // initiate recursive matching
+   return arrElements // return matching elements
+}
 
-/*———————————————————————————————————————— createTline(namex, evntx, params)
-    */
+/*———————————————————————————————————————— decodeEntities(arg)
+
+    used for args passed to func trigger flag
+
+    converts illustrator style entites to html entites
+    _x22_ to &#x22; to get normal entity
+
+    then converts those to regular text
+    &#x22; to ! */
+
+/* breaks for four-character entities, like . and - */
+
+function decodeEntities(arg){
+  if (typeof arg == 'undefined') return ''
+
+  const regex = /_x([0-9A-Z]{2})_/g
+
+  var html = arg.replace(regex, function($1){
+    var x = $1.toLowerCase() 
+        x = x.replaceAll('_x','&#x')
+        return x.replaceAll('_', ';')
+  })
+
+  html = convertEntities(html)
+  html = html.replaceAll('_', ' ')
+
+  var tmpObject = document.createElement('textarea')
+
+  tmpObject.innerHTML = html
+  var val = tmpObject.value
+  tmpObject.remove()
+
+  return val
+}
+
+//———————————————————————————————————————— createTline(namex, evntx, params)
 
 function createTline(namex, evntx, params){
 
@@ -1893,7 +1885,7 @@ function createTline(namex, evntx, params){
 function svgName(obj){
   while (obj.tagName != 'svg')
     obj = obj.parentElement
-  return convertEntities(obj.id.substr(4))
+  return decodeEntities(obj.id)
 }
 
 /*———————————————————————————————————————— containsTransform(trigger) COMMENTED OUT
@@ -1939,25 +1931,25 @@ function getParentG(obj){
   for (var x=0; x<parts.length; x++)
     if (parts[x].tagName == 'g') return parts[x]
 
-  return null;
+  return null
 }
 
 /*———————————————————————————————————————— dumpKeys(obj)
     */
 
 function dumpKeys(obj){
-  var str = '';
+  var str = ''
 
   for (var i in obj){
     try{
-//    str += '\n'+i+': '+obj[i].typename;
-      str += '\n'+i+': '+obj[i].typename+', '+obj[i];
+//    str += '\n'+i+': '+obj[i].typename
+      str += '\n'+i+': '+obj[i].typename+', '+obj[i]
     }
     catch(e){
-      str += '\n'+i+': error';
+      str += '\n'+i+': error'
     }
   }
-  alert(str);
+  alert(str)
 }
 
 /*———————————————————————————————————————— setVisible(anim)
@@ -2076,7 +2068,7 @@ function applyTransformation(corner, matVals){
     used by applyTransformation */
 
 function alertRect(obj, rect){
-  name = convertEntitiesOld(obj.id)
+  name = convertEntities(obj.id)
   x = Math.round( rect['x'])
   y = Math.round( rect['y'])
   w = Math.round( rect['width'])
