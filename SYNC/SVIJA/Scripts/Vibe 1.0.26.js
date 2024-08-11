@@ -48,16 +48,13 @@ var version = '1.0.26'
     I have a way to say: there is at least one element of 28+
     and I need a way to know if there is at least one element of 27- */
 
-var msg1 = 'Compatibility Issue\nContent created with Illustrator 27 or earlier.\nSvija Vibe ' + version + ' requires Adobe Illustrator 28 or later.\n\nSee Svija Cloud › Script Sets › Svija Vibe'
-var msg2 = 'Compatibility Issue\nContent created with multiple versions of illustrator.\nSvija Vibe ' + version + ' requires Adobe Illustrator 28 or later.\n\nSee Svija Cloud › Script Sets › Svija Vibe'
+var msg = 'Illustrator 28.4.1 —› 28.5\nSVG format incompatible.\n'
+        + 'Compatible: 28.6 and later\nCompatible: 28.4 and earlier'
 
-var msgFr1 = 'Problème de compatibilité\nContenu créé avec Illustrator 27 ou plus ancien.\nSvija Vibe ' + version + ' requiert la version 28 ou plus récente.\n\nVoir Svija Cloud › Script Sets › Svija Vibe'
-var msgFr2 = 'Problème de compatibilité\nContenu créé avec de multiples versions d\'Illustrator.\nSvija Vibe ' + version + ' requiert la version 28 ou plus récente.\n\nVoir Svija Cloud › Script Sets › Svija Vibe'
+var msgFr = 'Illustrator 28.4.1 —› 28.5\nFormat SVG incompatible.\n'
+          + 'Compatible : 28.6 ou plus récent\nCompatbile : 28.4 ou plus ancien'
 
-if (isFrench()){
-  msg1 = msgFr1
-  msg2 = msgFr2
-}
+if (isFrench()) msg = msgFr
 
 /*————————————————————————————————————————*/
 
@@ -65,7 +62,7 @@ var newStyle = null !== document.querySelector('[data-name]')
 var oldStyle = null !== document.querySelector('[id*="x2F"]')
 
 if (newStyle && oldStyle) alert (msg2)
-else if (oldStyle) alert(msg1)
+else if (oldStyle) alert(msg)
 
 //———————————————————————————————————————— start timer
 
@@ -213,7 +210,8 @@ const event_defaults = {
 
 //:::::::::::::::::::::::::::::::::::::::: model definitions
 
-//———————————————————————————————————————— class Animation
+/*———————————————————————————————————————— class Animation
+    */
 
 // https://www.w3schools.com/js/js_classes.asp
 
@@ -1410,7 +1408,7 @@ function lstn_scroll_func(name, triggers, trig_top, args){
 
 // https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
-/*    special cases:
+      special cases:
  
       • top is visible to start with
       • evnt transparency default is visible to start with */
