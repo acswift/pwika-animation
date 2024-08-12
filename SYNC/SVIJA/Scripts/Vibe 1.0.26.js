@@ -40,29 +40,20 @@ var version = '1.0.26'
 
 /*———————————————————————————————————————— version warning
 
-    right now, if any element of the page contains a data-name
-    it is considered as 28 or newer
+    [data-name] is 28.4.1-28.5
+    [id*="x2F"] is 28.4- & 28.6+ */
 
-    but if there are conflicting elements, it should be alerted
+var   msg = 'Illustrator 28.4.1-28.5\nSVG format incompatible.\n'
+          + 'Use 28.6 and later\nor 28.4 and earlier'
 
-    I have a way to say: there is at least one element of 28+
-    and I need a way to know if there is at least one element of 27- */
-
-var msg = 'Illustrator 28.4.1 —› 28.5\nSVG format incompatible.\n'
-        + 'Compatible: 28.6 and later\nCompatible: 28.4 and earlier'
-
-var msgFr = 'Illustrator 28.4.1 —› 28.5\nFormat SVG incompatible.\n'
-          + 'Compatible : 28.6 ou plus récent\nCompatbile : 28.4 ou plus ancien'
+var msgFr = 'Illustrator 28.4.1-28.5\nFormat SVG incompatible.\n'
+          + 'Utiliser 28.6 ou plus récent\nou 28.4 ou plus ancien'
 
 if (isFrench()) msg = msgFr
 
-/*————————————————————————————————————————*/
+var dataName = null !== document.querySelector('[data-name]')
 
-var newStyle = null !== document.querySelector('[data-name]')
-var oldStyle = null !== document.querySelector('[id*="x2F"]')
-
-if (newStyle && oldStyle) alert (msg2)
-else if (oldStyle) alert(msg)
+if (dataName) alert(msg)
 
 //———————————————————————————————————————— start timer
 
