@@ -1,4 +1,3 @@
-
 /*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.26 */
 
 /*———————————————————————————————————————— notes
@@ -43,17 +42,18 @@ var version = '1.0.26'
     [data-name] is 28.4.1-28.5
     [id*="x2F"] is 28.4- & 28.6+ */
 
-var   msg = 'Illustrator 28.4.1-28.5\nSVG format incompatible.\n'
-          + 'Use 28.6 and later\nor 28.4 and earlier'
+var   msg = 'Incompatible SVG Format\n\nIllustrator 28.4.1-28.5 detected.\n\n'
+          + 'Use 28.4 and earlier or 28.6 and later'
 
 var msgFr = 'Illustrator 28.4.1-28.5\nFormat SVG incompatible.\n'
           + 'Utiliser 28.6 ou plus récent\nou 28.4 ou plus ancien'
 
 if (isFrench()) msg = msgFr
 
+// need to search for id=...
 var dataName = null !== document.querySelector('[data-name]')
 
-if (dataName) alert(msg)
+// if (dataName) alert(msg)
 
 //———————————————————————————————————————— start timer
 
@@ -959,37 +959,17 @@ log((end_time-start_time)+'ms elapsed')
 
     https://stackoverflow.com/a/1938465  */
 
-alert('check at line 962 if debug works')
-
 if (debugOn){
   trigger_types.forEach(kind => {
-    var stem = "[id^='^" + kind + separator + ".*']"
+    var stem = "[id^='" + kind + separator + "']"
     var obj_array = Array.from(document.querySelectorAll(stem))
   
-    // loop through adding events
     for(var x=0; x<obj_array.length; x++){
-      var obj   = obj_array[x]
-      obj.style.display = 'block'
-      obj.style.opacity = 0.3
+      obj_array[x].style.display = 'block'
+      obj_array[x].style.opacity = 0.3
     }
   })
 }
-
-/* ORIGINAL VERSION
-if (debugOn){
-  var arrMatches = getElementsByRegex('^time_x2F_.*')
-  for (var x=0; x<arrMatches.length; x++)
-    arrMatches[x].style.opacity = 0.3
-
-  var arrMatches = getElementsByRegex('^scroll_x2F_.*')
-  for (var x=0; x<arrMatches.length; x++)
-    arrMatches[x].style.opacity = 0.3
-
-  var arrMatches = getElementsByRegex('^mouse_x2F_.*')
-  for (var x=0; x<arrMatches.length; x++)
-    arrMatches[x].style.opacity = 0.3
-}
-*/
 
 /*———————————————————————————————————————— reset all timelines
     */
