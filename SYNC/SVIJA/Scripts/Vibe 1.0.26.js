@@ -80,20 +80,8 @@ if (typeof scrollElement == 'undefined')
    <rect id="debug" x="120" y="97.541" class="st1" width="866.252" height="395.565"/>
    <rect id="debug_00000182491029671138469570000004975659756911234963_" x="352.422" y="546.311" class="st1" width="515.854" height="249.831"/> */
 
-/*xxx
-
-var debugOn = document.querySelectorAll('[id ^= "debug"]').length > 0
-
-*/
-
-var corrupted = document.querySelectorAll('[id ^= "debug_000"]').length > 0
-
-if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined' || corrupted)
-  var debugOn = true
-else debugOn = false
-
+var debugOn       = document.querySelectorAll('[id ^= "debug"]').length > 0
 var debugMessages = []
-
 var env_allTlines = []
 
 //———————————————————————————————————————— separator · types of triggers and events
@@ -968,18 +956,14 @@ let end_time = d2.getTime()
 log((end_time-start_time)+'ms elapsed')
 
 /*———————————————————————————————————————— visible triggers
-     */
 
-/*xxx
+    https://stackoverflow.com/a/1938465  */
 
-/*———————————————————————————————————————— visible triggers
-
-// https://stackoverflow.com/a/1938465  /
-
+alert('check at line 962 if debug works')
 
 if (debugOn){
   trigger_types.forEach(kind => {
-    var stem = "[data-name^='" + kind + separator + "']"
+    var stem = "[id^='^" + kind + separator + ".*']"
     var obj_array = Array.from(document.querySelectorAll(stem))
   
     // loop through adding events
@@ -990,11 +974,9 @@ if (debugOn){
     }
   })
 }
-*/
 
-// https://stackoverflow.com/a/1938465
-
-if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG != 'undefined'){
+/* ORIGINAL VERSION
+if (debugOn){
   var arrMatches = getElementsByRegex('^time_x2F_.*')
   for (var x=0; x<arrMatches.length; x++)
     arrMatches[x].style.opacity = 0.3
@@ -1007,6 +989,7 @@ if (typeof debug != 'undefined' || typeof Debug != 'undefined' || typeof DEBUG !
   for (var x=0; x<arrMatches.length; x++)
     arrMatches[x].style.opacity = 0.3
 }
+*/
 
 /*———————————————————————————————————————— reset all timelines
     */
@@ -1822,9 +1805,9 @@ function getElementsByRegex(pattern){
     _x22_ to &#x22; to get normal entity
 
     then converts those to regular text
-    &#x22; to ! */
+    &#x22; to !
 
-/* breaks for four-character entities, like . and - */
+   breaks for four-character entities, like . and - */
 
 function decodeEntities(arg){
   if (typeof arg == 'undefined') return ''
@@ -1849,7 +1832,8 @@ function decodeEntities(arg){
   return val
 }
 
-//———————————————————————————————————————— createTline(namex, evntx, params)
+/*———————————————————————————————————————— createTline(namex, evntx, params)
+    */
 
 function createTline(namex, evntx, params){
 
