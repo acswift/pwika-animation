@@ -1,0 +1,43 @@
+5:55:15.033 PM VERBOSE BashExecuter.execute():106 - ♻️ BashExecuter 106: successfully exiting from taskQueue?async
+5:55:19.811 PM VERBOSE BashExecuter.execute():53 - ♻️ BashExecuter 53: Process preparing: /Applications/Svija Sync.app/Contents/Resources/rsync, example@example.svija.site::example/sync/, aYtr)54Ytrf, success
+5:55:19.817 PM VERBOSE BashExecuter.execute():96 - ♻️ BashExecuter 96: Process starting
+5:55:20.499 PM VERBOSE BashExecuter.execute():74 - ♻️ BashExecuter 74: Process output: success
+5:55:20.505 PM VERBOSE BashExecuter.execute():79 - ♻️ BashExecuter 79: Process terminated with status: 0
+5:55:20.508 PM VERBOSE BashExecuter.execute():92 - ♻️⚠️ BashExecuter 92: end of termination observer
+5:55:20.513 PM VERBOSE BashExecuter.execute():99 - ♻️ BashExecuter 99: Process ending
+5:55:20.516 PM VERBOSE BashExecuter.execute():106 - ♻️ BashExecuter 106: successfully exiting from taskQueue?async
+5:55:25.303 PM VERBOSE BashExecuter.execute():53 - ♻️ BashExecuter 53: Process preparing: /Applications/Svija Sync.app/Contents/Resources/rsync, example@example.svija.site::example/sync/, aYtr)54Ytrf, success
+5:55:25.309 PM VERBOSE BashExecuter.execute():96 - ♻️ BashExecuter 96: Process starting
+5:55:25.978 PM VERBOSE BashExecuter.execute():74 - ♻️ BashExecuter 74: Process output: success
+5:55:25.984 PM VERBOSE BashExecuter.execute():79 - ♻️ BashExecuter 79: Process terminated with status: 0
+5:55:25.989 PM VERBOSE BashExecuter.execute():92 - ♻️⚠️ BashExecuter 92: end of termination observer
+5:55:25.996 PM VERBOSE BashExecuter.execute():99 - ♻️ BashExecuter 99: Process ending
+5:55:26.000 PM VERBOSE BashExecuter.execute():106 - ♻️ BashExecuter 106: successfully exiting from taskQueue?async
+5:55:30.775 PM VERBOSE BashExecuter.execute():53 - ♻️ BashExecuter 53: Process preparing: /Applications/Svija Sync.app/Contents/Resources/rsync, example@example.svija.site::example/sync/, aYtr)54Ytrf, success
+5:55:30.780 PM VERBOSE BashExecuter.execute():96 - ♻️ BashExecuter 96: Process starting
+5:55:31.432 PM VERBOSE BashExecuter.execute():79 - ♻️ BashExecuter 79: Process terminated with status: 0
+5:55:31.438 PM VERBOSE BashExecuter.execute():92 - ♻️⚠️ BashExecuter 92: end of termination observer
+5:55:31.443 PM VERBOSE BashExecuter.execute():74 - ♻️ BashExecuter 74: Process output: success
+5:55:31.447 PM VERBOSE BashExecuter.execute():99 - ♻️ BashExecuter 99: Process ending
+5:55:31.452 PM VERBOSE BashExecuter.execute():106 - ♻️ BashExecuter 106: successfully exiting from taskQueue?async
+5:55:36.238 PM VERBOSE BashExecuter.execute():53 - ♻️ BashExecuter 53: Process preparing: /Applications/Svija Sync.app/Contents/Resources/rsync, example@example.svija.site::example/sync/, aYtr)54Ytrf, success
+5:55:36.246 PM VERBOSE BashExecuter.execute():96 - ♻️ BashExecuter 96: Process starting
+5:55:36.952 PM VERBOSE BashExecuter.execute():79 - ♻️ BashExecuter 79: Process terminated with status: 0
+5:55:36.959 PM VERBOSE BashExecuter.execute():92 - ♻️⚠️ BashExecuter 92: end of termination observer
+5:55:36.964 PM VERBOSE BashExecuter.execute():74 - ♻️ BashExecuter 74: Process output: success
+5:55:36.972 PM VERBOSE BashExecuter.execute():99 - ♻️ BashExecuter 99: Process ending
+5:55:36.976 PM VERBOSE BashExecuter.execute():106 - ♻️ BashExecuter 106: successfully exiting from taskQueue?async
+5:55:41.749 PM VERBOSE BashExecuter.execute():53 - ♻️ BashExecuter 53: Process preparing: /Applications/Svija Sync.app/Contents/Resources/rsync, example@example.svija.site::example/sync/, aYtr)54Ytrf, success
+5:55:41.759 PM VERBOSE BashExecuter.execute():96 - ♻️ BashExecuter 96: Process starting
+5:55:42.529 PM VERBOSE BashExecuter.execute():74 - ♻️ BashExecuter 74: Process output: success
+5:55:42.539 PM VERBOSE BashExecuter.execute():79 - ♻️ BashExecuter 79: Process terminated with status: 0
+5:55:42.547 PM VERBOSE BashExecuter.execute():92 - ♻️⚠️ BashExecuter 92: end of termination observer
+5:55:42.555 PM VERBOSE BashExecuter.execute():99 - ♻️ BashExecuter 99: Process ending
+5:55:42.562 PM VERBOSE BashExecuter.execute():106 - ♻️ BashExecuter 106: successfully exiting from taskQueue?async
+5:55:47.324 PM VERBOSE BashExecuter.execute():53 - ♻️ BashExecuter 53: Process preparing: /Applications/Svija Sync.app/Contents/Resources/rsync, example@example.svija.site::example/sync/, aYtr)54Ytrf, success
+5:55:47.333 PM VERBOSE BashExecuter.execute():96 - ♻️ BashExecuter 96: Process starting
+5:55:48.036 PM VERBOSE BashExecuter.execute():74 - ♻️ BashExecuter 74: Process output: success
+5:55:48.045 PM VERBOSE BashExecuter.execute():79 - ♻️ BashExecuter 79: Process terminated with status: 0
+5:55:48.053 PM VERBOSE BashExecuter.execute():92 - ♻️⚠️ BashExecuter 92: end of termination observer
+5:55:48.059 PM VERBOSE BashExecuter.execute():99 - ♻️ BashExecuter 99: Process ending
+5:55:48.066 PM VERBOSE BashExecuter.execute():106 - ♻️ BashExecuter 106: successfully exiting from taskQueue?async

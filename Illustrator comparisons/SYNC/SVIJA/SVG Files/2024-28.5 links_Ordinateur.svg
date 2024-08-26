@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f0f;
+        opacity: .3;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #2a02b3;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="Fond">
+    <rect class="cls-3" y="0" width="1200" height="1500"/>
+  </g>
+  <g id="OD">
+    <rect id="click_link1_90_" data-name="click/link1/90&amp;gt;" class="cls-2" x="118.5" y="154" width="927" height="828"/>
+    <rect id="mouse_link1_n" data-name="mouse/link1/n" class="cls-1" x="79.5" y="49" width="333" height="69"/>
+  </g>
+</svg>
