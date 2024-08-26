@@ -1,6 +1,10 @@
-/*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.26 */
+
+/*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.27 */
 
 /*———————————————————————————————————————— notes
+
+  compatible AI 28.6 & later
+  compatible AI 28.4.0 & earlier (with earlier Tools)
 
   https://www.toptal.com/developers/javascript-minifier
 
@@ -35,27 +39,30 @@
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-var version = '1.0.26'
+var version = '1.0.27'
 
 /*———————————————————————————————————————— version warning
 
     [data-name] is 28.4.1-28.5
     [id*="x2F"] is 28.4- & 28.6+ */
 
-var   msg = 'Incompatible SVG Format\n\nIllustrator 28.4.1-28.5 detected.\n\n'
-          + 'Use 28.4 and earlier or 28.6 and later'
+var   msg = 'Incompatible Illustrator Version\n\n'
+          + 'Illustrator 28.5 or earlier detected. Either:\n\n'
+          + '• resave your AI files with Illustrator 28.6 or later.\n\n'
+          + '• change Svija Vibe version in Svija Cloud/Script Sets & change Cloud Component version in Svija Cloud/Components.'
 
-var msgFr = 'Illustrator 28.4.1-28.5\nFormat SVG incompatible.\n'
-          + 'Utiliser 28.6 ou plus récent\nou 28.4 ou plus ancien'
+var msgFr = 'Version Incompatible d\'Illustrator\n\n'
+          + 'Illustrator 28.5 ou plus ancien detecté. Vous pouvez :\n\n'
+          + '• resauvegarder vos fichiers AI files avec Illustrator 28.6 ou plus récent.\n\n'
+          + '• changer la version de Svija Vibe dans Svija Cloud/Script Sets et changer la version de Cloud Component dans Svija Cloud/Components.'
 
 if (isFrench()) msg = msgFr
 
-// need to search for id=...
 var dataName = null !== document.querySelector('[data-name]')
 
-// if (dataName) alert(msg)
+if (dataName) alert(msg)
 
-//———————————————————————————————————————— start timer
+/*———————————————————————————————————————— start timer */
 
 const d1 = new Date()
 let start_time = d1.getTime()
