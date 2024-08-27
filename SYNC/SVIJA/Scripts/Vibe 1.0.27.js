@@ -41,27 +41,6 @@
 
 var version = '1.0.27'
 
-/*———————————————————————————————————————— version warning
-
-    [data-name] is 28.4.1-28.5
-    [id*="x2F"] is 28.4- & 28.6+ */
-
-var   msg = 'Incompatible Illustrator Version\n\n'
-          + 'Illustrator 28.5 or earlier detected. Either:\n\n'
-          + '• resave your AI files with Illustrator 28.6 or later.\n\n'
-          + '• change Svija Vibe version in Svija Cloud/Script Sets & change Cloud Component version in Svija Cloud/Components.'
-
-var msgFr = 'Version Incompatible d\'Illustrator\n\n'
-          + 'Illustrator 28.5 ou plus ancien detecté. Vous pouvez :\n\n'
-          + '• resauvegarder vos fichiers AI files avec Illustrator 28.6 ou plus récent.\n\n'
-          + '• changer la version de Svija Vibe dans Svija Cloud/Script Sets et changer la version de Cloud Component dans Svija Cloud/Components.'
-
-if (isFrench()) msg = msgFr
-
-var dataName = null !== document.querySelector('[data-name]')
-
-if (dataName) alert(msg)
-
 /*———————————————————————————————————————— start timer */
 
 const d1 = new Date()
@@ -2034,17 +2013,6 @@ function alertRect(obj, rect){
   w = Math.round( rect['width'])
   h = Math.round( rect['height'])
   alert(name + ' is '+w+'x'+h+'px, left '+x+' & top '+y)
-}
-
-/*———————————————————————————————————————— isFrench()
-
-    */
-
-function isFrench(){
-  if (typeof navigator.language != 'undefined'){
-    if (navigator.language.substr(0,2) == 'fr') return true
-  }
-  return false
 }
 
 
