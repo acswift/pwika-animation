@@ -39,6 +39,8 @@
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
+// add timer to know how much time it takes
+
 var version = '1.0.27'
 
 /*———————————————————————————————————————— version check
