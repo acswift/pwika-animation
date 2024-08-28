@@ -1,13 +1,11 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe.js 1.0.25
-
-    updated to allow new Illustrator SVG format
-
-https://www.toptal.com/developers/javascript-minifier
-
-*/
+/*:::::::::::::::::::::::::::::::::::::::: Vibe 1.0.26.js */
 
 /*———————————————————————————————————————— notes
+
+  updated to allow new Illustrator SVG format
+
+  https://www.toptal.com/developers/javascript-minifier
 
   github.com/svijalove/vibe
   
@@ -17,9 +15,7 @@ https://www.toptal.com/developers/javascript-minifier
   debug, debug-2 for id
 
   empty layers are not included in SVG, so can't
-  create empty layer for debug
-
-*/
+  create empty layer for debug */
 
 /*———————————————————————————————————————— EULA
 
@@ -48,36 +44,7 @@ https://www.toptal.com/developers/javascript-minifier
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-var version = '1.0.25'
-
-/*———————————————————————————————————————— version warning
-
-    right now, if any element of the page contains a data-name
-    it is considered as 28 or newer
-
-    but if there are conflicting elements, it should be alerted
-
-    I have a way to say: there is at least one element of 28+
-    and I need a way to know if there is at least one element of 27- */
-
-var msg1 = 'Compatibility Issue\nContent created with Illustrator 27 or earlier.\nSvija Vibe ' + version + ' requires Adobe Illustrator 28 or later.\n\nSee Svija Cloud › Script Sets › Svija Vibe'
-var msg2 = 'Compatibility Issue\nContent created with multiple versions of illustrator.\nSvija Vibe ' + version + ' requires Adobe Illustrator 28 or later.\n\nSee Svija Cloud › Script Sets › Svija Vibe'
-
-var msgFr1 = 'Problème de compatibilité\nContenu créé avec Illustrator 27 ou plus ancien.\nSvija Vibe ' + version + ' requiert la version 28 ou plus récente.\n\nVoir Svija Cloud › Script Sets › Svija Vibe'
-var msgFr2 = 'Problème de compatibilité\nContenu créé avec de multiples versions d\'Illustrator.\nSvija Vibe ' + version + ' requiert la version 28 ou plus récente.\n\nVoir Svija Cloud › Script Sets › Svija Vibe'
-
-if (isFrench()){
-  msg1 = msgFr1
-  msg2 = msgFr2
-}
-
-/*————————————————————————————————————————*/
-
-var newStyle = null !== document.querySelector('[data-name]')
-var oldStyle = null !== document.querySelector('[id*="x2F"]')
-
-if (newStyle && oldStyle) alert (msg2)
-else if (oldStyle) alert(msg1)
+var version = '1.0.26'
 
 /*———————————————————————————————————————— start timer */
 
@@ -2082,17 +2049,6 @@ function alertRect(obj, rect){
   w = Math.round( rect['width'])
   h = Math.round( rect['height'])
   alert(name + ' is '+w+'x'+h+'px, left '+x+' & top '+y)
-}
-
-/*———————————————————————————————————————— isFrench()
-
-    */
-
-function isFrench(){
-  if (typeof navigator.language != 'undefined'){
-    if (navigator.language.substr(0,2) == 'fr') return true
-  }
-  return false
 }
 
 

@@ -39,9 +39,12 @@
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-// add timer to know how much time it takes
-
 var version = '1.0.27'
+
+/*———————————————————————————————————————— start timer */
+
+const d3 = new Date()
+let start_time2= d3.getTime()
 
 /*———————————————————————————————————————— version check
 
@@ -100,6 +103,14 @@ if (isFrench()) msg = msgFr
 /*———————————————————————————————————————— alert */
 
 if (!valid) alert(msg.replace('xxx', id))
+
+/*———————————————————————————————————————— end timer
+    */
+
+const d4 = new Date()
+let end_time2 = d4.getTime()
+
+// alert((end_time2-start_time2)+'ms elapsed')
 
 
 //:::::::::::::::::::::::::::::::::::::::: functions
