@@ -51,13 +51,32 @@ var version = '1.0.26'
 const d3 = new Date()
 let start_time2= d3.getTime()
 
-/*———————————————————————————————————————— version check */
+/*———————————————————————————————————————— version check
+
+    [data-name] is 27.0-28.5
+    [id*="x2F"] is 28.6+        */
 
 var valid   = true
+var allSvgs = document.getElementsByTagName('svg')
 
-var oldStyle = null !== document.querySelector('[id*="x2F"]')
+for (var x=0; x<allSvgs.length; x++){
 
-if (oldStyle) valid = false
+  var id = allSvgs[x].id
+  if (id.slice(0,4) == 'svg_') id = id.substr(4)
+
+  var stem = "[id*='_x2F_']"
+
+//var tempArray = Array.from(allSvgs[x].querySelectorAll(stem))
+//alert(id +'\n' + tempArray.length)
+
+  var newStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
+
+  if (newStyle != 0){
+    valid = false
+    break
+  }
+
+}
 
 /*———————————————————————————————————————— messages 
 
@@ -69,28 +88,32 @@ if (oldStyle) valid = false
     I have a way to say: there is at least one element of 28+
     and I need a way to know if there is at least one element of 27- */
 
-var msg   = 'Compatibility Issue\n'
-          + 'Content created with Illustrator 27 or earlier.\n'
-          + 'Svija Vibe ' + version + ' requires Adobe Illustrator 28 or later.\n\n'
-          + 'See Svija Cloud › Script Sets › Svija Vibe'
+var   msg = 'Incompatible SVG: xxx\n\n'
+          + 'Illustrator 28.6 or later detected:\n\n'
+          + '• resave your AI files with Illustrator 28.5 or earlier.\n\n'
+          + '• or change Svija Vibe version in Svija Cloud/Script Sets '
+          + '& change Cloud Component version in Svija Cloud/Components.'
 
-var msgFr = 'Problème de compatibilité\n'
-          + 'Contenu créé avec Illustrator 27 ou plus ancien.\n'
-          + 'Svija Vibe ' + version + ' requiert la version 28 ou plus récente.\n\n'
-          + 'Voir Svija Cloud › Script Sets › Svija Vibe'
+var msgFr = 'SVG Incompatible : xxx\n\n'
+          + 'Illustrator 28.6 ou plus récent detecté :\n\n'
+          + '• resauvegardez vos fichiers AI files avec '
+          + 'Illustrator 28.5 ou plus ancien.\n\n'
+          + '• ou changer la version de Svija Vibe dans '
+          + 'Svija Cloud/Script Sets et changer la version de '
+          + 'Cloud Component dans Svija Cloud/Components.'
 
 if (isFrench()) msg = msgFr
 
-/*———————————————————————————————————————— alert  */
+/*———————————————————————————————————————— alert */
 
-if (!valid) alert(msg1)
+if (!valid) alert(msg.replace('xxx', id))
 
 /*———————————————————————————————————————— end timer */
 
 const d4 = new Date()
 let end_time2 = d4.getTime()
 
-alert((end_time2-start_time2)+'ms elapsed')
+//alert((end_time2-start_time2)+'ms elapsed')
 
 
 //:::::::::::::::::::::::::::::::::::::::: functions

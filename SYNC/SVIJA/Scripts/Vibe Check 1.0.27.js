@@ -48,42 +48,52 @@ let start_time2= d3.getTime()
 
 /*———————————————————————————————————————— version check
 
-    [data-name] is 28.4.1-28.5
-    [id*="x2F"] is 28.4- & 28.6+ */
+    [data-name] is 27.0-28.5
+    [id*="x2F"] is 28.6+        */
 
 var valid   = true
 var allSvgs = document.getElementsByTagName('svg')
 
 for (var x=0; x<allSvgs.length; x++){
+
   var id = allSvgs[x].id
   if (id.slice(0,4) == 'svg_') id = id.substr(4)
 
   // mouse links
-  var stem = "[id^='mouse']"
+  var stem = "[id^='mouse_']"
   var oldStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
 
   var stem = "[id^='mouse_x2F_']"
   var newStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
 
-  if (oldStyle != newStyle) valid = false; break
+  if (oldStyle != newStyle){
+    valid = false
+    break
+  }
 
   // scroll links
-  var stem = "[id^='scroll']"
+  var stem = "[id^='scroll_']"
   var oldStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
 
   var stem = "[id^='scroll_x2F_']"
   var newStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
 
-  if (oldStyle != newStyle) valid = false; break
+  if (oldStyle != newStyle){
+    valid = false
+    break
+  }
 
   // time links
-  var stem = "[id^='time']"
+  var stem = "[id^='time_']"
   var oldStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
 
   var stem = "[id^='time_x2F_']"
   var newStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
 
-  if (oldStyle != newStyle) valid = false; break
+  if (oldStyle != newStyle){
+    valid = false
+    break
+  }
 }
 
 /*———————————————————————————————————————— messages */
@@ -91,12 +101,16 @@ for (var x=0; x<allSvgs.length; x++){
 var   msg = 'Incompatible SVG: xxx\n\n'
           + 'Illustrator 28.5 or earlier detected:\n\n'
           + '• resave your AI files with Illustrator 28.6 or later.\n\n'
-          + '• or change Svija Vibe version in Svija Cloud/Script Sets & change Cloud Component version in Svija Cloud/Components.'
+          + '• or change Svija Vibe version in Svija Cloud/Script Sets '
+          + '& change Cloud Component version in Svija Cloud/Components.'
 
 var msgFr = 'SVG Incompatible : xxx\n\n'
           + 'Illustrator 28.5 ou plus ancien detecté :\n\n'
-          + '• resauvegardez vos fichiers AI files avec Illustrator 28.6 ou plus récent.\n\n'
-          + '• ou changer la version de Svija Vibe dans Svija Cloud/Script Sets et changer la version de Cloud Component dans Svija Cloud/Components.'
+          + '• resauvegardez vos fichiers AI files avec '
+          + 'Illustrator 28.6 ou plus récent.\n\n'
+          + '• ou changer la version de Svija Vibe dans '
+          + 'Svija Cloud/Script Sets et changer la version de '
+          + 'Cloud Component dans Svija Cloud/Components.'
 
 if (isFrench()) msg = msgFr
 
