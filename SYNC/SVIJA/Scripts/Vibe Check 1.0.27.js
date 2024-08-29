@@ -59,6 +59,45 @@ for (var x=0; x<allSvgs.length; x++){
   var id = allSvgs[x].id
   if (id.slice(0,4) == 'svg_') id = id.substr(4)
 
+  //——————————————————————————————————————————— if new, continue
+
+  var stem = "[id^='mouse_x2F_']"
+  var occurences = Array.from(allSvgs[x].querySelectorAll(stem)).length
+  if (occurences > 0) continue
+
+  var stem = "[id^='scroll_x2F_']"
+  var occurences = Array.from(allSvgs[x].querySelectorAll(stem)).length
+  if (occurences > 0) continue
+
+  var stem = "[id^='time_x2F_']"
+  var occurences = Array.from(allSvgs[x].querySelectorAll(stem)).length
+  if (occurences > 0) continue
+
+  //——————————————————————————————————————————— find la faille
+
+/*  ai28.6
+
+<rect id="mouse_x2F_name9_x2F_n" class="cls-4" x="180" y="970" width="400" height="40"/>
+<g id="mouse_events">
+
+    ai27.0
+
+<rect id="mouse_name9_n" data-name="mouse/name9/n" class="cls-13" x="180" y="970" width="400" height="40"/>
+<g id="mouse_events" data-name="mouse events">
+
+
+    ai 28.5
+
+<rect id="mouse_name9_n" data-name="mouse/name9/n" class="cls-3" x="180" y="970" width="400" height="40"/>
+<g id="mouse_events" data-name="mouse events">
+
+if newstyle>0 continue, no problem
+
+otherwise, I can check for x-th character indata name  */
+
+
+
+
   // mouse links
   var stem = "[id^='mouse_']"
   var oldStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
@@ -67,6 +106,7 @@ for (var x=0; x<allSvgs.length; x++){
   var newStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
 
   if (oldStyle != newStyle){
+    alert('found')
     valid = false
     break
   }
@@ -124,7 +164,7 @@ if (!valid) alert(msg.replace('xxx', id))
 const d4 = new Date()
 let end_time2 = d4.getTime()
 
-// alert((end_time2-start_time2)+'ms elapsed')
+alert((end_time2-start_time2)+'ms elapsed')
 
 
 //:::::::::::::::::::::::::::::::::::::::: functions
