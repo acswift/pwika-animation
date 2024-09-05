@@ -4,6 +4,8 @@
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
+### Branch for Illustrator 28.5 & Earlier
+
 <details><summary>Illustrator Version 28</summary>
 
 ---
