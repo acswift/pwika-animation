@@ -1,5 +1,5 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe Check 1.0.26.js */
+/*:::::::::::::::::::::::::::::::::::::::: Vibe Check Legacy.js */
 
 /*———————————————————————————————————————— notes
 
@@ -54,24 +54,21 @@ let start_time2= d3.getTime()
 /*———————————————————————————————————————— version check
 
     [data-name] is 27.0-28.5
-    [id*="x2F"] is 28.6+        */
+    [id*="_x2F_"] is 28.6+        */
 
 var valid   = true
 var allSvgs = document.getElementsByTagName('svg')
 
 for (var x=0; x<allSvgs.length; x++){
 
-  var id = allSvgs[x].id
-  if (id.slice(0,4) == 'svg_') id = id.substr(4)
+  var svgId = allSvgs[x].id
+  if (svgId.slice(0,4) == 'svg_') svgId = svgId.substr(4)
 
   var stem = "[id*='_x2F_']"
 
-//var tempArray = Array.from(allSvgs[x].querySelectorAll(stem))
-//alert(id +'\n' + tempArray.length)
+  var newObjs = Array.from(allSvgs[x].querySelectorAll(stem)).length
 
-  var newStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
-
-  if (newStyle != 0){
+  if (newObjs != 0){
     valid = false
     break
   }
@@ -106,7 +103,7 @@ if (isFrench()) msg = msgFr
 
 /*———————————————————————————————————————— alert */
 
-if (!valid) alert(msg.replace('xxx', id))
+if (!valid) alert(msg.replace('xxx', svgId))
 
 /*———————————————————————————————————————— end timer */
 
