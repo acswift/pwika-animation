@@ -1,16 +1,21 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe 1.0.27.js */
+/*:::::::::::::::::::::::::::::::::::::::: Vibe 1.0.26.js */
 
 /*———————————————————————————————————————— notes
 
-  compatible AI 28.6 & later
-  compatible AI 28.4.0 & earlier (with earlier Tools)
+  updated to allow new Illustrator SVG format
 
   https://www.toptal.com/developers/javascript-minifier
 
   github.com/svijalove/vibe
   
-  ©Svija SAS, Cusset France */
+  ©Svija SAS, Cusset France
+
+  When there are two elements with the same name, it's just
+  debug, debug-2 for id
+
+  empty layers are not included in SVG, so can't
+  create empty layer for debug */
 
 /*———————————————————————————————————————— EULA
 
@@ -39,7 +44,7 @@
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-var version = '1.0.27'
+var version = '1.0.26'
 
 /*———————————————————————————————————————— start timer */
 
@@ -63,22 +68,31 @@ if (typeof scrollElement == 'undefined')
 
 /*———————————————————————————————————————— debugging variables
 
+    var stem = "[data-name^='" + kind + separator + "']"
    <rect id="debug" x="120" y="97.541" class="st1" width="866.252" height="395.565"/>
    <rect id="debug_00000182491029671138469570000004975659756911234963_" x="352.422" y="546.311" class="st1" width="515.854" height="249.831"/> */
 
-var debugOn       = document.querySelectorAll('[id ^= "debug"]').length > 0
+var debugOn = document.querySelectorAll('[id ^= "debug"]').length > 0
+
 var debugMessages = []
 var env_allTlines = []
 
-//———————————————————————————————————————— separator · types of triggers and events
+/*———————————————————————————————————————— separator · types of triggers and events */
 
-const     separator = '_x2F_' // regular slash
+const     separator = '/'
 const trigger_types = [ 'mouse', 'time', 'scroll' ]
 const   event_types = [ 'click', 'over',  'away',  'ovaway', 'ovover', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ]
 
-//———————————————————————————————————————— conversion dictionaries
+/*———————————————————————————————————————— conversion dictionaries */
 
 const entity_conversion = {
+  '&lt;': '<',
+  '&gt;': '>'
+}
+
+const entity_conversion_keys = Object.keys(entity_conversion)
+
+const entity_conversion_old = {
   'x002E': '.',
   'x002D': '-',
   'x2F'  : '/',
@@ -153,7 +167,7 @@ const fromtos = {
 }
 
 
-//———————————————————————————————————————— defaults
+/*———————————————————————————————————————— defaults */
 
 const trigger_defaults = {
 
@@ -175,8 +189,7 @@ const event_defaults = {
 
 //:::::::::::::::::::::::::::::::::::::::: model definitions
 
-/*———————————————————————————————————————— class Animation
-    */
+//———————————————————————————————————————— class Animation
 
 // https://www.w3schools.com/js/js_classes.asp
 
@@ -275,7 +288,7 @@ class Animation{
 
       var flag = flags[x]
 
-      if (flag.indexOf('_') > -1) flag = convertEntities(flag)
+      if (flag.indexOf('_') > -1) flag = convertEntitiesOld(flag)
 
       var key = this.event_key_from_flag(flag, obj)
 
@@ -517,7 +530,7 @@ class Animation{
       log('\nTrigger '+t)
       Object.keys(this.triggers[t]).forEach(key => {
         if (typeof this.triggers[t][key] != 'undefined')
-          if(key=='obj')log('obj (object): '+convertEntities(this.triggers[t][key].id))
+          if(key=='obj')log('obj (object): '+convertEntitiesOld(this.triggers[t][key].id))
           else log(key+' ('+typeof(this.triggers[t][key])+'): '+this.triggers[t][key])
       })
     }
@@ -528,7 +541,7 @@ class Animation{
         Object.keys(this.evnt[x]).forEach(key => {
           if (typeof this.evnt[x][key] != 'undefined')
             if(key=='obj'){
-              log('obj (object): '+convertEntities(this.evnt[x][key].id))
+              log('obj (object): '+convertEntitiesOld(this.evnt[x][key].id))
               log('style.visibility: '+this.evnt[x].obj.style.visibility)
               log('style.opacity: '+this.evnt[x].obj.style.opacity)
             }
@@ -810,7 +823,7 @@ for(var x=0; x<clippedObjects.length; x++){
       try{defsObj.style.visibility = 'inherit'} catch(e){log('object ' + decodeEntities(defsId) + ' could not be set to visibility:inherit')}
 
     }
-    catch(msg){ log('⚠️  object with ID '+convertEntities(pathId)+' could not be updated:\n'+msg+ ' (line 779)') }
+    catch(msg){ log('⚠️  object with ID '+convertEntitiesOld(pathId)+' could not be updated:\n'+msg+ ' (line 779)') }
   }
 }
 
@@ -822,21 +835,21 @@ log('clipping paths verified') */
 console.groupCollapsed('registering triggers…')
 
 trigger_types.forEach(kind => {
-  var stem = "[id^='" + kind + separator + "']"
+  var stem = "[data-name^='" + kind + separator + "']"
   var obj_array = Array.from(document.querySelectorAll(stem))
 
   // loop through adding trigger_types
   for(var x=obj_array.length-1; x>-1; x--){ // reverse order to match layer palette order
-    var obj = obj_array[x]
-//  log('——————————————————————-'+convertEntities(obj.id))
-    var flags = obj.id.split(separator)
+    var obj   = obj_array[x]
+    var str   = obj.dataset.name
+    var flags = str.split(separator)
 
     // doesn't have at least trig and name
     if (flags.length<2) continue 
 
-    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
-    if (flags[flags.length-1].length > 50)
-      flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
+//  // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
+//  if (flags[flags.length-1].length > 50)
+//    flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
 
     //  kind = flags[0]
     var name = flags[1]
@@ -858,18 +871,15 @@ console.groupEnd()
 console.groupCollapsed('registering events…')
 
 event_types.forEach(kind => {
-  var stem = "[id^='" + kind + separator + "']"
+  var stem = "[data-name^='" + kind + separator + "']"
   var obj_array = Array.from(document.querySelectorAll(stem))
 
   // loop through adding events
   for(var x=0; x<obj_array.length; x++){
 
     var obj   = obj_array[x]
-    var flags = obj.id.split(separator)
-
-    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
-    if (flags[flags.length-1].length > 50)
-      flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
+    var str   = convertEntities(obj.dataset.name)
+    var flags = str.split(separator)
 
     //  kind = flags[0]
     var name = flags[1]
@@ -943,16 +953,19 @@ log((end_time-start_time)+'ms elapsed')
 
 /*———————————————————————————————————————— visible triggers
 
-    https://stackoverflow.com/a/1938465  */
+// https://stackoverflow.com/a/1938465  */
+
 
 if (debugOn){
   trigger_types.forEach(kind => {
-    var stem = "[id^='" + kind + separator + "']"
+    var stem = "[data-name^='" + kind + separator + "']"
     var obj_array = Array.from(document.querySelectorAll(stem))
   
+    // loop through adding events
     for(var x=0; x<obj_array.length; x++){
-      obj_array[x].style.display = 'block'
-      obj_array[x].style.opacity = 0.3
+      var obj   = obj_array[x]
+      obj.style.display = 'block'
+      obj.style.opacity = 0.3
     }
   })
 }
@@ -1348,7 +1361,7 @@ function lstn_scroll_func(name, triggers, trig_top, args){
 
 // https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
-      special cases:
+/*    special cases:
  
       • top is visible to start with
       • evnt transparency default is visible to start with */
@@ -1588,7 +1601,7 @@ function lstn_reverse(namex, evntx){
     used only for triggers, which are not animated */
 
 function makeClickable(obj, bool){
-//log(convertEntities(obj.id)+' bool set to '+bool)
+//log(convertEntitiesOld(obj.id)+' bool set to '+bool)
 
   if (bool){
     obj.style.pointerEvents = 'visiblePainted'
@@ -1666,7 +1679,7 @@ function log(arg){
 function errLog(arg, obj){
 
   if (typeof obj != 'undefined'){
-    var id   = decodeEntities(obj.id)
+    var id   = convertEntities(obj.dataset.name)
     if (id.length > 50) id = id.slice(0, -52)
 
     arg += ' in ' + svgName(obj) + '.ai' + ' › ' + id
@@ -1683,17 +1696,40 @@ function not_number(x) {
   return parseFloat(x) != x
 }
 
-/*———————————————————————————————————————— convertEntities(in)
+/*———————————————————————————————————————— convertEntities(str)
+
+  apparently, &amp is automatically converted to just & */
+
+function convertEntities(str){
+
+
+//log('convertEntities: ' + str)
+
+  var needed = str.indexOf('&') > 0
+  if (!needed) return str
+
+  else return htmlDecode(str)
+}
+
+/*———————————————————————————————————————— htmlDecode(input)
+    */
+
+function htmlDecode(input) {
+  var doc = new DOMParser().parseFromString(input, "text/html");
+  return doc.documentElement.textContent;
+}
+
+/*———————————————————————————————————————— convertEntitiesOld(in)
 
     id="toggle_x2F_name15_x2F_-y10_x2F_x_x2B_30_x2F_t100" */
 
-function convertEntities(str){
+function convertEntitiesOld(str){
 
   var parts = str.split('_')
   
   for (var x=1; x<parts.length; x+=1){
-    if (Object.keys(entity_conversion).includes(parts[x]))
-      parts[x] = entity_conversion[parts[x]]
+    if (Object.keys(entity_conversion_old).includes(parts[x]))
+      parts[x] = entity_conversion_old[parts[x]]
   }
 
   str2= parts.join('')
@@ -1701,6 +1737,41 @@ function convertEntities(str){
   // log('—————————————————————————————— 😈 conversion from '+str+' to '+str2)
   return str2
 
+}
+
+/*———————————————————————————————————————— decodeEntities(arg)
+
+    used for args passed to func trigger flag
+
+    converts illustrator style entites to html entites
+    _x22_ to &#x22; to get normal entity
+
+    then converts those to regular text
+    &#x22; to ! */
+
+/* breaks for four-character entities, like . and - */
+
+function decodeEntities(arg){
+  if (typeof arg == 'undefined') return ''
+
+  const regex = /_x([0-9A-Z]{2})_/g
+
+  var html = arg.replace(regex, function($1){
+    var x = $1.toLowerCase() 
+        x = x.replaceAll('_x','&#x')
+        return x.replaceAll('_', ';')
+  })
+
+  html = convertEntitiesOld(html)
+  html = html.replaceAll('_', ' ')
+
+  var tmpObject = document.createElement('textarea')
+
+  tmpObject.innerHTML = html
+  var val = tmpObject.value
+  tmpObject.remove()
+
+  return val
 }
 
 /*———————————————————————————————————————— minusPeriod(clip_path)
@@ -1763,41 +1834,6 @@ function getElementsByRegex(pattern){
    return arrElements // return matching elements
 }
 
-/*———————————————————————————————————————— decodeEntities(arg)
-
-    used for args passed to func trigger flag
-
-    converts illustrator style entites to html entites
-    _x22_ to &#x22; to get normal entity
-
-    then converts those to regular text
-    &#x22; to !
-
-   breaks for four-character entities, like . and - */
-
-function decodeEntities(arg){
-  if (typeof arg == 'undefined') return ''
-
-  const regex = /_x([0-9A-Z]{2})_/g
-
-  var html = arg.replace(regex, function($1){
-    var x = $1.toLowerCase() 
-        x = x.replaceAll('_x','&#x')
-        return x.replaceAll('_', ';')
-  })
-
-  html = convertEntities(html)
-  html = html.replaceAll('_', ' ')
-
-  var tmpObject = document.createElement('textarea')
-
-  tmpObject.innerHTML = html
-  var val = tmpObject.value
-  tmpObject.remove()
-
-  return val
-}
-
 /*———————————————————————————————————————— createTline(namex, evntx, params)
     */
 
@@ -1823,8 +1859,12 @@ function createTline(namex, evntx, params){
 
 function svgName(obj){
   while (obj.tagName != 'svg')
-    obj = obj.parentElement
-  return decodeEntities(obj.id)
+    var obj = obj.parentElement
+
+  var objId = obj.id
+  if (objId.substr(0,4) == 'svg_') objId = (objId.substr(4))
+
+  return convertEntities(objId)
 }
 
 /*———————————————————————————————————————— containsTransform(trigger) COMMENTED OUT
@@ -2007,7 +2047,7 @@ function applyTransformation(corner, matVals){
     used by applyTransformation */
 
 function alertRect(obj, rect){
-  name = convertEntities(obj.id)
+  name = convertEntitiesOld(obj.id)
   x = Math.round( rect['x'])
   y = Math.round( rect['y'])
   w = Math.round( rect['width'])
