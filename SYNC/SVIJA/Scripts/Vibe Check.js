@@ -125,7 +125,7 @@ if (!valid) alert(msg.replace('xxx', svgId))
 const d4 = new Date()
 let end_time2 = d4.getTime()
 
-alert((end_time2-start_time2)+'ms elapsed')
+//alert((end_time2-start_time2)+'ms elapsed')
 
 
 //:::::::::::::::::::::::::::::::::::::::: functions
