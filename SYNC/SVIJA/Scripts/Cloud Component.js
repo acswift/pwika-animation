@@ -1,3 +1,4 @@
+
 /*:::::::::::::::::::::::::::::::::::::::: Cloud Component.js
 
 /*———————————————————————————————————————— notes
@@ -32,8 +33,8 @@ if (typeof admin != 'undefined')
     only used for pages, to go directly to the page being
     visited  — modules & fonts are just regular links */
 
-function func_cloudComponentLink(){
-  window.open("/cloud/svija/page/"+page_pk+"/change/", '_blank')
+function func_cloudComponentPages(){
+  window.open("/cloud/svija/page/"+page_pk+"/change/", '_blank').focus()
 }
 
 /*———————————————————————————————————————— mobile/desktop link
@@ -44,10 +45,10 @@ function func_cloudComponentLink(){
     cloudForce is used by templates/svija/js/screens.js
     to NOT redirect if used */
 
-function func_cloudForceLink(code){
+function func_cloudComponentVersion(code){
   code = convertCode(code)
 
-  var name = cookieName('cloudComponent', svija_version)
+  var name = cookieName('cloudModule', svija_version) // corresponds to Svija Cloud python code
 
   setCookie(name, 'true')
   setCookie('screen_code', code, 7)
@@ -86,3 +87,4 @@ function convertCode(code){
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
+
