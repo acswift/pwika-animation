@@ -2,7 +2,7 @@
 
 /*———————————————————————————————————————— notes
 
-   Version 1.0.2
+   Version 1.0.27
 
     This version integrates an ease function to make the scrolling
     look much nicer.

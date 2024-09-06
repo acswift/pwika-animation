@@ -1,3 +1,5 @@
+// Anchor Links 1.0.27
+
 function func_aLink1 (px){ anchorLinks(px) }
 function func_aLink2 (px){ anchorLinks(px) }
 function func_aLink3 (px){ anchorLinks(px) }
