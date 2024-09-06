@@ -1,28 +1,33 @@
-/*:::::::::::::::::::::::::::::::::::::::: Cloud Module.js
+/*:::::::::::::::::::::::::::::::::::::::: Cloud Module Legacy.js
+
+/*———————————————————————————————————————— notes
 
     https://www.toptal.com/developers/javascript-minifier
 
-    generates links to:
-    - the page settings in Svija Cloud
-    - a mobile version of the page */
+    Cloud Component contains 5 links:
 
-//———————————————————————————————————————— ▼ begin program:{
+    1. logo        mouse/cloudModuleLink/n          /cloud/svija/
+    2. pages       mouse/cloudModuleLink/n/func
+    3. components  mouse/cloudModuleLink/n          /cloud/svija/module/
+    4. fonts       mouse/cloudModuleLink/n          /cloud/svija/font/
+    5. mobile      mouse/cloudForceLink/func/mb
+
+    this script handles the PAGES and MOBILE link */
+
+/*———————————————————————————————————————— show if admin */
 
 program:{
 
-if (typeof admin == 'undefined') break program
-if (       admin != true       ) break program
-
-cloudModule.style.display = 'block'
-
-//———————————————————————————————————————— ▲ end program
+if (typeof admin != 'undefined')
+  if (admin == true )
+    cloudModule.style.display = 'block'
 
 }
 
 
 //:::::::::::::::::::::::::::::::::::::::: main functions
 
-/*———————————————————————————————————————— func_cloudModuleLink()
+/*———————————————————————————————————————— page link
 
     only used for pages, to go directly to the page being
     visited  — modules & fonts are just regular links */
@@ -31,7 +36,7 @@ function func_cloudModuleLink(){
   window.open("/cloud/svija/page/"+page_pk+"/change/", '_blank')
 }
 
-/*———————————————————————————————————————— func_cloudMobileLink()
+/*———————————————————————————————————————— mobile/desktop link
 
     used to redirect to mobile or desktop on the opposite
     platform. cookieName is a supplied variable
