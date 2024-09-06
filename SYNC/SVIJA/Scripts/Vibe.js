@@ -1823,8 +1823,12 @@ function createTline(namex, evntx, params){
 
 function svgName(obj){
   while (obj.tagName != 'svg')
-    obj = obj.parentElement
-  return decodeEntities(obj.id)
+    var obj = obj.parentElement
+
+  var objId = obj.id
+  if (objId.substr(0,4) == 'svg_') objId = (objId.substr(4))
+
+  return convertEntities(objId)
 }
 
 /*———————————————————————————————————————— containsTransform(trigger) COMMENTED OUT

@@ -1,5 +1,7 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe Check.js 1.0.27 */
+/*:::::::::::::::::::::::::::::::::::::::: Vibe Check.js */
+
+var version = '1.0.27'
 
 /*———————————————————————————————————————— notes
 
@@ -39,8 +41,6 @@
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-var version = '1.0.27'
-
 /*———————————————————————————————————————— start timer */
 
 const d3 = new Date()
@@ -49,33 +49,9 @@ let start_time2= d3.getTime()
 /*———————————————————————————————————————— version check
 
     [data-name] is 27.0-28.5
-    [id*="x2F"] is 28.6+        */
+    [id*="x2F"] is 28.6+
 
-var valid   = true
-var allSvgs = document.getElementsByTagName('svg')
-
-for (var x=0; x<allSvgs.length; x++){
-
-  var id = allSvgs[x].id
-  if (id.slice(0,4) == 'svg_') id = id.substr(4)
-
-  //——————————————————————————————————————————— if new, continue
-
-  var stem = "[id^='mouse_x2F_']"
-  var occurences = Array.from(allSvgs[x].querySelectorAll(stem)).length
-  if (occurences > 0) continue
-
-  var stem = "[id^='scroll_x2F_']"
-  var occurences = Array.from(allSvgs[x].querySelectorAll(stem)).length
-  if (occurences > 0) continue
-
-  var stem = "[id^='time_x2F_']"
-  var occurences = Array.from(allSvgs[x].querySelectorAll(stem)).length
-  if (occurences > 0) continue
-
-  //——————————————————————————————————————————— find la faille
-
-/*  ai28.6
+    ai28.6
 
 <rect id="mouse_x2F_name9_x2F_n" class="cls-4" x="180" y="970" width="400" height="40"/>
 <g id="mouse_events">
@@ -89,50 +65,35 @@ for (var x=0; x<allSvgs.length; x++){
     ai 28.5
 
 <rect id="mouse_name9_n" data-name="mouse/name9/n" class="cls-3" x="180" y="970" width="400" height="40"/>
-<g id="mouse_events" data-name="mouse events">
+<g id="mouse_events" data-name="mouse events"> */
 
-if newstyle>0 continue, no problem
+var valid   = true
+var allSvgs = document.getElementsByTagName('svg')
 
-otherwise, I can check for x-th character indata name  */
+for (var x=0; x<allSvgs.length; x++){
 
+  var svgId = allSvgs[x].id
+  if (svgId.slice(0,4) == 'svg_') svgId = svgId.substr(4)
 
+  //———————————————————— exclude files with _x2F_ in ID
 
+  var stem = "[id*='_x2F_']"
+  var occurences = Array.from(allSvgs[x].querySelectorAll(stem)).length
+  if (occurences > 0) continue
 
-  // mouse links
-  var stem = "[id^='mouse_']"
-  var oldStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
+  //———————————————————— if data-name contains a slash but ID does
+  //———————————————————— not have _x2F_ then it's old style
 
-  var stem = "[id^='mouse_x2F_']"
-  var newStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
+  var stem = "[data-name*='/']"
 
-  if (oldStyle != newStyle){
-    alert('found')
-    valid = false
-    break
-  }
-
-  // scroll links
-  var stem = "[id^='scroll_']"
-  var oldStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
-
-  var stem = "[id^='scroll_x2F_']"
-  var newStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
-
-  if (oldStyle != newStyle){
-    valid = false
-    break
-  }
-
-  // time links
-  var stem = "[id^='time_']"
-  var oldStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
-
-  var stem = "[id^='time_x2F_']"
-  var newStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
-
-  if (oldStyle != newStyle){
-    valid = false
-    break
+  var objArray = Array.from(allSvgs[x].querySelectorAll(stem))
+  if (objArray.length > 0){
+    var objID = Array.from(allSvgs[x].querySelectorAll(stem))[0].id
+  
+    if (objID.indexOf('_x2F_') < 0){
+      valid = false
+      break
+    }
   }
 }
 
@@ -156,7 +117,7 @@ if (isFrench()) msg = msgFr
 
 /*———————————————————————————————————————— alert */
 
-if (!valid) alert(msg.replace('xxx', id))
+if (!valid) alert(msg.replace('xxx', svgId))
 
 /*———————————————————————————————————————— end timer
     */
