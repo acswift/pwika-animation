@@ -1,8 +1,1 @@
-/* https://www.toptal.com/developers/cssminifier */
-
-#cloudComponent{
-   display: none;
-   z-index: 999;
-  position: absolute;
-    left:0; top:0;
-}
+#cloudComponent{display:none;z-index:999;position:absolute;left:0;top:0}
