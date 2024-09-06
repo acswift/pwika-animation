@@ -130,3 +130,8 @@ Then commit the version number change:
 git commit -m "updated version number" -a && git push -u  
 ```
 ---
+### Diverse Notes
+
+function minusPeriod(clip_path){
+  // fix illustrator bug
+  // reported at: https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/45420952-clipping-mask-broken-in-svg-export-if-name-contain
