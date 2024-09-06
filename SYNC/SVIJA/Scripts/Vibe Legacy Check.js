@@ -66,9 +66,9 @@ for (var x=0; x<allSvgs.length; x++){
 
   var stem = "[id*='_x2F_']"
 
-  var newObjs = Array.from(allSvgs[x].querySelectorAll(stem)).length
+  var newStyle = Array.from(allSvgs[x].querySelectorAll(stem)).length
 
-  if (newObjs != 0){
+  if (newStyle != 0){
     valid = false
     break
   }
