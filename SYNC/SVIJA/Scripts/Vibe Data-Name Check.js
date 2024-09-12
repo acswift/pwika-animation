@@ -1,5 +1,5 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe Check Legacy.js */
+/*:::::::::::::::::::::::::::::::::::::::: Vibe Data-Name Check.js */
 
 /*———————————————————————————————————————— notes
 
@@ -44,7 +44,7 @@
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-var version = '1.0.26'
+var version = '1.0.27'
 
 /*———————————————————————————————————————— start timer */
 
@@ -85,19 +85,13 @@ for (var x=0; x<allSvgs.length; x++){
     I have a way to say: there is at least one element of 28+
     and I need a way to know if there is at least one element of 27- */
 
-var   msg = 'Incompatible SVG: xxx\n\n'
-          + 'Illustrator 28.6 or later detected:\n\n'
-          + '• resave your AI files with Illustrator 28.5 or earlier.\n\n'
-          + '• or change Svija Vibe version in Svija Cloud/Script Sets '
-          + '& change Cloud Component version in Svija Cloud/Components.'
+var   msg = 'Incompatible File\n\n'
+          + 'SVG "xxx" is of format "x2F"\n\n'
+          + 'Visit tech.svija.love and search for "x2f".'
 
-var msgFr = 'SVG Incompatible : xxx\n\n'
-          + 'Illustrator 28.6 ou plus récent detecté :\n\n'
-          + '• resauvegardez vos fichiers AI files avec '
-          + 'Illustrator 28.5 ou plus ancien.\n\n'
-          + '• ou changer la version de Svija Vibe dans '
-          + 'Svija Cloud/Script Sets et changer la version de '
-          + 'Cloud Component dans Svija Cloud/Components.'
+var msgFr = 'Fichier Incompatible\n\n'
+          + 'SVG "xxx" est de format "x2F"\n\n'
+          + 'Visiter tech.svija.love et chercher "x2f".'
 
 if (isFrench()) msg = msgFr
 
