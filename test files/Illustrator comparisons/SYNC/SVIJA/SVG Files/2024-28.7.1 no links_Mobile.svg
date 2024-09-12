@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 1500">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #00e400;
+      }
+    </style>
+  </defs>
+  <g id="Fond">
+    <rect class="cls-1" width="300" height="1500"/>
+  </g>
+  <g id="OD">
+    <rect class="cls-2" x="70.5" y="543" width="141" height="474"/>
+  </g>
+</svg>

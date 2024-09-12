@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 1500">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #f0f;
+        opacity: .3;
+      }
+
+      .cls-3 {
+        fill: #00e400;
+      }
+    </style>
+  </defs>
+  <g id="Fond">
+    <rect class="cls-1" width="300" height="1500"/>
+  </g>
+  <g id="MB">
+    <rect id="scrub_x2F_link2_x2F__x25_200" class="cls-3" x="70.5" y="543" width="141" height="474"/>
+    <rect id="scrub_x2F_link2_x2F__x25_200-2" data-name="scrub_x2F_link2_x2F__x25_200" class="cls-3" x="70.5" y="543" width="141" height="474"/>
+    <rect id="scroll_x2F_link2" class="cls-2" x="70.5" y="237" width="141" height="123"/>
+  </g>
+</svg>
