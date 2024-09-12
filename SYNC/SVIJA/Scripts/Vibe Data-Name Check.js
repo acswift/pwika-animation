@@ -54,7 +54,15 @@ let start_time2= d3.getTime()
 /*———————————————————————————————————————— version check
 
     [data-name] is 27.0-28.5
-    [id*="_x2F_"] is 28.6+        */
+    [id*="_x2F_"] is 28.6+
+
+    right now, if any element of the page contains a data-name
+    it is considered as 28 or newer
+
+    but if there are conflicting elements, it should be alerted
+
+    I have a way to say: there is at least one element of 28+
+    and I need a way to know if there is at least one element of 27- */
 
 var valid   = true
 var allSvgs = document.getElementsByTagName('svg')
@@ -75,15 +83,7 @@ for (var x=0; x<allSvgs.length; x++){
 
 }
 
-/*———————————————————————————————————————— messages 
-
-    right now, if any element of the page contains a data-name
-    it is considered as 28 or newer
-
-    but if there are conflicting elements, it should be alerted
-
-    I have a way to say: there is at least one element of 28+
-    and I need a way to know if there is at least one element of 27- */
+/*———————————————————————————————————————— messages */
 
 var   msg = 'Incompatible File\n\n'
           + 'SVG "xxx" is of format "x2F"\n\n'

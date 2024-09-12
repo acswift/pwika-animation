@@ -1,7 +1,5 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe Check.js */
-
-var version = '1.0.27'
+/*:::::::::::::::::::::::::::::::::::::::: Vibe x2F Check.js */
 
 /*———————————————————————————————————————— notes
 
@@ -40,6 +38,8 @@ var version = '1.0.27'
 
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
+
+var version = '1.0.27'
 
 /*———————————————————————————————————————— start timer */
 
@@ -99,19 +99,14 @@ for (var x=0; x<allSvgs.length; x++){
 
 /*———————————————————————————————————————— messages */
 
-var   msg = 'Incompatible SVG: xxx\n\n'
-          + 'Illustrator 28.5 or earlier detected:\n\n'
-          + '• resave your AI files with Illustrator 28.6 or later.\n\n'
-          + '• or change Svija Vibe version in Svija Cloud/Script Sets '
-          + '& change Cloud Component version in Svija Cloud/Components.'
+var   msg = 'Incompatible File\n\n'
+          + 'SVG "xxx" is of format "Data Name"\n\n'
+          + 'Visit tech.svija.love and search for "x2f".'
 
-var msgFr = 'SVG Incompatible : xxx\n\n'
-          + 'Illustrator 28.5 ou plus ancien detecté :\n\n'
-          + '• resauvegardez vos fichiers AI files avec '
-          + 'Illustrator 28.6 ou plus récent.\n\n'
-          + '• ou changer la version de Svija Vibe dans '
-          + 'Svija Cloud/Script Sets et changer la version de '
-          + 'Cloud Component dans Svija Cloud/Components.'
+var msgFr = 'Fichier Incompatible\n\n'
+          + 'SVG "xxx" est de format "Data Name"\n\n'
+          + 'Visiter tech.svija.love et chercher "x2f".'
+
 
 if (isFrench()) msg = msgFr
 
