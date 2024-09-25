@@ -39,7 +39,7 @@
 
 //:::::::::::::::::::::::::::::::::::::::: initialization
 
-var version = '1.0.27'
+var version = '1.0.28'
 
 /*———————————————————————————————————————— start timer */
 
@@ -833,6 +833,28 @@ trigger_types.forEach(kind => {
 
     // doesn't have at least trig and name
     if (flags.length<2) continue 
+
+/*
+
+<rect id="mouse_x2F_link_x2F_n-2" data-name="mouse_x2F_link_x2F_n" class="cls-1" x="106.679" y="68.97" width="302.985" height="137.313"/>
+
+if it ends in "-X" where x is an integer
+and has a dataname
+and dataname is same as part before "-X"
+then
+  remove the end of the flags
+
+split at last "-"
+if at least two parts
+  if last part is integer
+    if has a data-name
+      if data-name == part before -integer
+
+
+if it has a dataname, use the dataname
+
+    var str   = obj.dataset.name
+*/
 
     // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
     if (flags[flags.length-1].length > 50)
