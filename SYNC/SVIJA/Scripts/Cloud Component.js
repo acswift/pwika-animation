@@ -17,16 +17,12 @@
 
 /*———————————————————————————————————————— show if admin */
 
-program:{
-
 if (typeof admin != 'undefined')
   if (admin == true )
     cloudComponent.style.display = 'block'
 
-}
 
-
-//:::::::::::::::::::::::::::::::::::::::: main functions
+//:::::::::::::::::::::::::::::::::::::::: link functions
 
 /*———————————————————————————————————————— page link
 
@@ -46,11 +42,12 @@ function func_cloudComponentPages(){
     to NOT redirect if used */
 
 function func_cloudComponentVersion(code){
+
+  if (all_screens.length < 2)
+    return true
+
   code = convertCode(code)
-
-  var name = cookieName('cloudModule', svija_version) // corresponds to Svija Cloud python code
-
-  setCookie(name, 'true')
+  localStorage.screen_code = code
   setCookie('screen_code', code, 7)
 
   window.location.replace(document.URL)
@@ -71,6 +68,7 @@ function func_cloudComponentVersion(code){
 // need if it's cp I look for 0 else teh other one
 
 function convertCode(code){
+
   if (all_screens[0][0] == 0){
     var cpCode = all_screens[0][1]
     var mbCode = all_screens[1][1]

@@ -1,9 +1,9 @@
 
-/*:::::::::::::::::::::::::::::::::::::::: Vibe 1.0.27.js */
+/*:::::::::::::::::::::::::::::::::::::::: Vibe x2F.js */
 
 /*———————————————————————————————————————— notes
 
-  compatible AI 28.6 & later
+  compatible AI 28.6-28.7.1
   compatible AI 28.4.0 & earlier (with earlier Tools)
 
   https://www.toptal.com/developers/javascript-minifier
@@ -70,13 +70,13 @@ var debugOn       = document.querySelectorAll('[id ^= "debug"]').length > 0
 var debugMessages = []
 var env_allTlines = []
 
-//———————————————————————————————————————— separator · types of triggers and events
+/*———————————————————————————————————————— separator · types of triggers and events */
 
 const     separator = '_x2F_' // regular slash
 const trigger_types = [ 'mouse', 'time', 'scroll' ]
 const   event_types = [ 'click', 'over',  'away',  'ovaway', 'ovover', 'press', 'down', 'toggle', 'delay', 'point', 'zone', 'scrub' ]
 
-//———————————————————————————————————————— conversion dictionaries
+/*———————————————————————————————————————— conversion dictionaries */
 
 const entity_conversion = {
   'x002E': '.',
@@ -153,7 +153,7 @@ const fromtos = {
 }
 
 
-//———————————————————————————————————————— defaults
+/*———————————————————————————————————————— defaults */
 
 const trigger_defaults = {
 
@@ -829,36 +829,26 @@ trigger_types.forEach(kind => {
   for(var x=obj_array.length-1; x>-1; x--){ // reverse order to match layer palette order
     var obj = obj_array[x]
 //  log('——————————————————————-'+convertEntities(obj.id))
-    var flags = obj.id.split(separator)
+
+    var tempVal = obj.id 
+    if (typeof obj.dataset.name != 'undefined'){
+      tempVal = obj.dataset.name
+    }
+    var flags = tempVal.split(separator)
 
     // doesn't have at least trig and name
     if (flags.length<2) continue 
 
-/*
+/* <rect id="mouse_x2F_link_x2F_n-2" data-name="mouse_x2F_link_x2F_n" class="cls-1" x="106.679" y="68.97" width="302.985" height="137.313"/>
 
-<rect id="mouse_x2F_link_x2F_n-2" data-name="mouse_x2F_link_x2F_n" class="cls-1" x="106.679" y="68.97" width="302.985" height="137.313"/>
+Illustrator adds -2 etc. to ID's for duplicate objects, but keeps the original name in the data-name attribute
 
-if it ends in "-X" where x is an integer
-and has a dataname
-and dataname is same as part before "-X"
-then
-  remove the end of the flags
+if it has a dataname, use the dataname */
 
-split at last "-"
-if at least two parts
-  if last part is integer
-    if has a data-name
-      if data-name == part before -integer
-
-
-if it has a dataname, use the dataname
-
-    var str   = obj.dataset.name
-*/
-
-    // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
-    if (flags[flags.length-1].length > 50)
-      flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
+//  this can probably be deleted, but wait until sept. 2025 to be sure ;-)
+//  // is a duplicate; AI added _00000018952208152505492020000014739121534903857057_ to ID
+//  if (flags[flags.length-1].length > 50)
+//    flags[flags.length-1] = flags[flags.length-1].slice(0, -52)
 
     //  kind = flags[0]
     var name = flags[1]
