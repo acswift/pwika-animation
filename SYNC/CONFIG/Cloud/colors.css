@@ -1,0 +1,15 @@
+:root {
+
+  --main:   rgb(  70%, 100%,    0% );
+  --accent: rgb(  87%, 100%,   60% );
+  --dark:   rgb(  15%,  15%,   15% );
+
+}
+
+@supports( background-color:color(display-p3 0.75 1 0) ){
+
+  :root{   --main: color(display-p3  0.70  1.00  0.00 );  
+         --accent: color(display-p3  0.87  1.00  0.60 );
+           --dark: color(display-p3  0.15  0.15  0.15 ); }
+
+}

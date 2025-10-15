@@ -1,6 +1,7 @@
 
 /*:::::::::::::::::::::::::::::::::::::::: Cloud Component.js
 
+
 /*———————————————————————————————————————— notes
 
     https://www.toptal.com/developers/javascript-minifier
@@ -27,7 +28,8 @@ if (typeof admin != 'undefined')
 /*———————————————————————————————————————— page link
 
     only used for pages, to go directly to the page being
-    visited  — modules & fonts are just regular links */
+    visited  — modules & fonts are just regular links
+    page_pk is in system js */
 
 function func_cloudComponentPages(){
   window.open("/cloud/svija/page/"+page_pk+"/change/", '_blank').focus()
@@ -58,6 +60,9 @@ function func_cloudComponentVersion(code){
 
 /*———————————————————————————————————————— convertCode(code)
 
+    currently only works if there are 1 or 2 screen codes
+    requires mobile code to start with 'm'
+
     the module sends either mb or cp, and doesn't know
     if it's really mobile or ordinateur or 1200 etc.
 
@@ -65,7 +70,7 @@ function func_cloudComponentVersion(code){
 
     var all_screens = [[0, "1200"], [700, "300"]]; */
 
-// need if it's cp I look for 0 else teh other one
+// need if it's cp I look for 0 else the other one
 
 function convertCode(code){
 
@@ -78,10 +83,13 @@ function convertCode(code){
     var mbCode = all_screens[0][1]
   }
 
-  if (code == 'mb') return mbCode
+  code = Array.from(code)[0]
+
+  if (code == 'm') return mbCode
   else return cpCode
   
 }
+
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
