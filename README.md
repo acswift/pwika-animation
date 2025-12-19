@@ -1,13 +1,14 @@
-[logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
-*Updated 5 June, 2024 · Toulouse*
+[logo]: http://files.pwika.com/github/github_banner.png "Pwika: SVG-based websites built in Adobe Illustrator"
 
-![Svija: SVG-based websites built in Adobe Illustrator][logo]
+*Updated 18 December, 2025*
+
+![Pwika: SVG-based websites built in Adobe Illustrator][logo]
 
 <details><summary>Illustrator Version 28</summary>
 
 ---
-I should just use the current Svija Tools with the next version of AI
+I should just use the current Pwika Tools with the next version of AI
 
 I should have two version of Vibe
 - check for AI version
@@ -30,36 +31,36 @@ https://stackoverflow.com/questions/5324415/select-elements-by-attribute-in-css
 </details>
 
 
-### Svija Vibe 1.0.27
+### Pwika Vibe 1.0.27
 
 #### AI 28.6+
 
 [GSAP Forum link](https://greensock.com/forums/topic/36423-how-can-i-get-a-breakdown-of-a-timeline-once-its-been-created/)
 
-This repository contains the development files for Svija Animation, which is included with each new Svija website.
+This repository contains the development files for Pwika Animation, which is included with each new Pwika website.
 
-The files are developed at `svija.dev/sync/Svija/Scripts` (which also contains other files that are *not* part of this repository).
+The files are developed at `pwika.dev/sync/Pwika/Scripts` (which also contains other files that are *not* part of this repository).
 
 ---
 ### Releasing a New Version
 
 Update the version numbers:
 ```
-vi -O svija-vibe.css svija-vibe.js
+vi -O pwika-vibe.css pwika-vibe.js
 ```
 
 ---
 ### 1. Commit the Beta Branch
 
-In Svija Admin, check for unsaved changes and commit:
+In Pwika Admin, check for unsaved changes and commit:
 ```
-cd ~/Desktop/svija.dev/sync/Svija/Scripts
+cd ~/Desktop/pwika.dev/sync/Pwika/Scripts
 git status
 ```
 ---
 ### 2. Merge to Master
 
-Check out the **destination branch** and merge ([list of commits](https://github.com/svijalove/vibe/commits/beta)):
+Check out the **destination branch** and merge ([list of commits](https://github.com/pwikapanel/vibe/commits/beta)):
 ```
 git checkout master
 git merge beta --no-ff
@@ -73,8 +74,8 @@ git push origin master
 
 Copy info from/to:
 
-- [github.com/svijalove/admin/commits/master](https://github.com/svijalove/vibe/commits/master)
-- [tech.svija.love/manual/changelog-vibe](https://tech.svija.love/programs/vibe/changelog)
+- [github.com/pwikapanel/admin/commits/master](https://github.com/pwikapanel/vibe/commits/master)
+- [tech.pwika.com/manual/changelog-vibe](https://tech.pwika.com/programs/vibe/changelog)
 
 ---
 ### 4. Create Fixtures
@@ -84,18 +85,18 @@ Need to learn how to do this!
 ---
 ### 5. Create A New Github Release
 
-On Github, create a [new release](https://github.com/svijalove/admin/releases) from the **master branch**.
+On Github, create a [new release](https://github.com/pwikapanel/admin/releases) from the **master branch**.
 
 - use the current version number for the tag (1.0.10)
 - choose target **Master**
 - use the month & year for the title (October 2021)
 - if there is more than one release in a month, append -1, -2 etc. to all releases for the month
-- use the [commit list](https://github.com/svijalove/admin/commits/master) for the description
+- use the [commit list](https://github.com/pwikapanel/admin/commits/master) for the description
 
 ---
 ### 6. Update Existing Sites
 
-Open the two login spreadsheets to get a list of svija sites ([svija][ss1], [clients][ss2])
+Open the two login spreadsheets to get a list of pwika sites ([pwika][ss1], [clients][ss2])
 
 [ss1]: https://docs.google.com/spreadsheets/d/1kZYUpenHkvHLGCyQgu5RaOrrRiOUIHVx4bQcugrhJQI/edit#gid=213266802
 [ss2]: https://docs.google.com/spreadsheets/d/1yz3OETWWM-lpTyubIba8ptQf7MJV6ft38_yTNd0MGcg/edit#gid=1287837631
@@ -123,8 +124,8 @@ git push -u
 **NOTE:** copy to websites *before* incrementing to new version.
 Places to update the version number:
 ```
-cd ~/Desktop/svija.dev/sync/Svija/Scripts
-vi -O README.md params.md svija-vibe.js svija-vibe.css
+cd ~/Desktop/pwika.dev/sync/Pwika/Scripts
+vi -O README.md params.md pwika-vibe.js pwika-vibe.css
 # :windo %s/1.0.10/1.0.11/g
 ```
 Then commit the version number change:
